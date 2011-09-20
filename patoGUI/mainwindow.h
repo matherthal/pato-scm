@@ -14,7 +14,8 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-
+private slots:
+    void setWorkspacePath(const QString &str);
 private:
     Ui::MainWindow *ui;
 };
