@@ -15,4 +15,11 @@ CONFIG   -= app_bundle
 TEMPLATE = app
 
 
-SOURCES += main.cpp
+SOURCES += main.cpp \
+    ../patoClientAPI/patoclientapi.cpp
+
+HEADERS += \
+    ../patoClientAPI/PatoClientApi_global.h \
+    ../patoClientAPI/patoclientapi.h
+
+
