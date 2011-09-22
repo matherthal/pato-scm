@@ -16,10 +16,9 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp \
-    ../patoClientAPI/patoclientapi.cpp
 
 HEADERS += \
-    ../patoClientAPI/PatoClientApi_global.h \
-    ../patoClientAPI/patoclientapi.h
+
+LIBS += -L../output  -lPatoClientApi
 
 
