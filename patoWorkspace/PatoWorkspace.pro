@@ -16,6 +16,9 @@ SOURCES += patoworkspace.cpp
 HEADERS += patoworkspace.h\
         PatoWorkspace_global.h
 
+LIBS += -L../output\
+         -lPatoBase
+
 symbian {
     MMP_RULES += EXPORTUNFROZEN
     TARGET.UID3 = 0xE2D147E2
