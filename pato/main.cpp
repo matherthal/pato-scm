@@ -1,14 +1,18 @@
 #include <QtCore/QCoreApplication>
+#include <QTimer>
 #include <ctype.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include "../patoClientAPI/patoclientapi.h"
 #include <iostream>
+
+#include "../patoClientAPI/patoclientapi.h"
+
 using namespace std;
 
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
+    a.setApplicationName("Pato-SCM");
 
     //process command lines here//TODO-PATO
 
@@ -58,6 +62,5 @@ int main(int argc, char *argv[])
     if(checkout)
         orquestrador->checkout(20, "kjdkfj", "kjdkfj", "kjdkfj", "kjdkfj");
 
-
-    return a.exec();
+    return 0;
 }
