@@ -12,6 +12,7 @@ private:
 public:
     Diff(ifstream*,ifstream*);
     Diff(char*,char*);
+    ~Diff();
     bool isEmpty();
 
 };

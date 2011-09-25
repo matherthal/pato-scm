@@ -42,7 +42,3 @@ unix:!symbian {
 
 OTHER_FILES +=
 
-
-
-
-
