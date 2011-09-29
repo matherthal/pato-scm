@@ -1,0 +1,1 @@
+1- Utilize a opção "Import" do Eclipse para carregar os projetos ".pro" ( plugin do Qt deve estar instalado )
