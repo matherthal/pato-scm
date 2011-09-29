@@ -7,14 +7,19 @@
 QT       -= gui
 
 TARGET = ../output/PatoAlgorithms
-TEMPLATE = lib
+TEMPLATE = app
 
 DEFINES += PATOALGORITHMS_LIBRARY
 
-SOURCES += patoalgorithms.cpp
+SOURCES += patoalgorithms.cpp \
+    main.cpp \
+    diff.cpp
 
 HEADERS += patoalgorithms.h\
-        PatoAlgorithms_global.h
+        PatoAlgorithms_global.h \
+    diff.h
+
+MAKEFILE =
 
 symbian {
     MMP_RULES += EXPORTUNFROZEN
@@ -34,3 +39,6 @@ unix:!symbian {
     }
     INSTALLS += target
 }
+
+OTHER_FILES +=
+
