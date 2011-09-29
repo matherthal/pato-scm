@@ -8,10 +8,12 @@ class Diff
 private:
     bool empty;
     ifstream *fileA,*fileB;
+    unsigned int sizeFileA,sizeFileB;
     void calculateDiff();
+    string lcs(char*,int, char*,int);
 public:
     Diff(ifstream*,ifstream*);
-    Diff(char*,char*);
+    Diff(const char*,const char*);
     ~Diff();
     bool isEmpty();
 
