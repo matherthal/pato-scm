@@ -3,10 +3,14 @@
 
 #include "PatoDataModel_global.h"
 
+#include <string>
+
+using namespace std;
+
 class PATODATAMODELSHARED_EXPORT PatoDataModel {
 private:
     PatoDataModel();
-    static PatoDataModel* mPato;
+    static PatoDataModel* patoDataModel;
 
 public:
 
@@ -16,6 +20,15 @@ public:
 
     //getters and setters
     int getFileKey(QString pFilePath);
+
+    //user operations >
+    bool validateUser(const string& login, const string& password);
+    //<
+
+    //project operations>
+    bool validateProject( const string& projectName );
+    //<
+
 
 };
 
