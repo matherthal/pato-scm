@@ -25,6 +25,15 @@ public:
     //init bd
     void initBD();
 
+
+    //user operations>
+    bool validateUser(const string& login, const string& password);
+    //<
+
+    //project operations>
+    bool validateProject( const string& projectName );
+    //<
+
 private:
 
     //singleton´s pattern variable

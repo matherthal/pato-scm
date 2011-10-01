@@ -11,10 +11,14 @@ TEMPLATE = lib
 
 DEFINES += PATODATAMODEL_LIBRARY
 
-SOURCES += patodatamodel.cpp
+SOURCES += patodatamodel.cpp \
+    BDPatoDataModel/source/CppSQLite3.cpp \
+    BDPatoDataModel/source/bdpatodatamodel.cpp
 
 HEADERS += patodatamodel.h\
-        PatoDataModel_global.h
+        PatoDataModel_global.h \
+    BDPatoDataModel/source/CppSQLite3.h \
+    BDPatoDataModel/source/bdpatodatamodel.h
 
 symbian {
     MMP_RULES += EXPORTUNFROZEN
@@ -34,3 +38,15 @@ unix:!symbian {
     }
     INSTALLS += target
 }
+
+
+
+symbian: LIBS += -lsqlite3
+else:unix|win32: LIBS += -L$$PWD/BDPatoDataModel/lib/ -lsqlite3
+
+INCLUDEPATH += $$PWD/BDPatoDataModel/source
+DEPENDPATH += $$PWD/BDPatoDataModel/source
+
+
+
+
