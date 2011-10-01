@@ -1,7 +1,8 @@
 #include <QtGui>
-#include "checkoutdialog.h"
 #include "mainwindow.h"
-CheckoutDialog::CheckoutDialog(QWidget *parent): QDialog(parent)
+#include "environmentsettingsdialog.h"
+
+EnvironmentSettingsDialog::EnvironmentSettingsDialog(QWidget *parent): QDialog(parent)
 {
     //Components
     repositoryPathLabel = new QLabel(tr("Repository Path:"));
@@ -30,15 +31,14 @@ CheckoutDialog::CheckoutDialog(QWidget *parent): QDialog(parent)
     userAuthenticationBox = new QCheckBox(tr("User Authentication"));
 
     cancelButton = new QPushButton(tr("Cancel"));
-    checkoutButton = new QPushButton(tr("Checkout"));
+    applyButton = new QPushButton(tr("Apply"));
 
     //Connections
     connect(cancelButton, SIGNAL(clicked()),this, SLOT(close()));
-    connect(checkoutButton, SIGNAL(clicked()),this, SLOT(checkout()));
+    connect(applyButton, SIGNAL(clicked()),this, SLOT(apply()));
 
     connect(chooseRepositoryButton, SIGNAL(clicked()), this, SLOT(getRepositoryPath()));
     connect(chooseWorkspaceButton, SIGNAL(clicked()), this, SLOT(getWorkspacePath()));
-
     connect(userAuthenticationBox, SIGNAL(clicked()),this, SLOT(getAuthentication()));
 
     //Layout
@@ -58,7 +58,7 @@ CheckoutDialog::CheckoutDialog(QWidget *parent): QDialog(parent)
     line3Layout->addWidget(userPasswordEdit);
     line3Layout->addStretch();
     QHBoxLayout *line4Layout = new QHBoxLayout;
-    line4Layout->addWidget(checkoutButton);
+    line4Layout->addWidget(applyButton);
     line4Layout->addWidget(cancelButton);
     line4Layout->addStretch();
     QVBoxLayout *mainLayout = new QVBoxLayout;
@@ -69,10 +69,10 @@ CheckoutDialog::CheckoutDialog(QWidget *parent): QDialog(parent)
     setLayout(mainLayout);
 
     //Window properties
-    setWindowTitle(tr("Checkout Settings"));
+    setWindowTitle(tr("Environment Settings"));
     setFixedHeight(sizeHint().height());
 }
-void CheckoutDialog::getRepositoryPath()
+void EnvironmentSettingsDialog::getRepositoryPath()
 {
     QString repositoryPath;
 
@@ -84,7 +84,7 @@ void CheckoutDialog::getRepositoryPath()
 
     repositoryPathEdit->setText(repositoryPath);
 }
-void CheckoutDialog::getWorkspacePath()
+void EnvironmentSettingsDialog::getWorkspacePath()
 {
     QString workspacePath;
 
@@ -96,9 +96,9 @@ void CheckoutDialog::getWorkspacePath()
 
     workspacePathEdit->setText(workspacePath);
 }
-void CheckoutDialog::getAuthentication()
+void EnvironmentSettingsDialog::getAuthentication()
 {
-    //Get the user name and password to execute the checkout if the userAuthenticationBox is checked.
+    //Get the user name and password if the userAuthenticationBox is checked.
     if (userAuthenticationBox->isChecked()) {
         userNameLabel->setVisible(true);
         userNameEdit->setVisible(true);
@@ -111,18 +111,27 @@ void CheckoutDialog::getAuthentication()
         userPasswordEdit->setVisible(false);
     }
 }
-void CheckoutDialog::checkout()
+void EnvironmentSettingsDialog::apply()
 {
     if (repositoryPathEdit->text().isEmpty() || workspacePathEdit->text().isEmpty()) {
-        QMessageBox msgBox;
-        msgBox.setText("Checkout cannot be done without the Repository and Workspace paths.");
-        msgBox.exec();
+        int msgBox = QMessageBox::warning(this, tr("Error"),
+                                          tr("Repository and Workspace paths cannot be empty."),
+                                          QMessageBox::Ok);
+    } if (repositoryPathEdit->text()==workspacePathEdit->text()) {
+        int msgBox = QMessageBox::warning(this, tr("Error"),
+                                          tr("Repository and Workspace paths cannot be equal."),
+                                          QMessageBox::Ok);
+
+        //    } if (userAuthenticationBox->isChecked() && (userNameEdit->text().isEmpty() || userPasswordEdit->text().isEmpty())) {
+        //        QMessageBox msgBox;
+        //        msgBox.setText("User name and password cannot be empty.");
+        //        msgBox.exec();
     } else {
-        //Checkout execution
-        QMessageBox msgBox;
-        msgBox.setText("Checkout done!");
-        msgBox.exec();
+        //Apply configurations
         emit setWorkspacePath(workspacePathEdit->text());
+        emit setRepositoryPath(repositoryPathEdit->text());
+        //        emit setUserName(userNameEdit->text());
+        //        emit setUserPassword(userPasswordEdit->text());
         this->close();
     }
 }

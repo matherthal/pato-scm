@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="mainwindow.qrc">
+    <normaloff>:/new/icons/icon</normaloff>:/new/icons/icon</iconset>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="QTreeView" name="treeViewWorkspace">
     <property name="geometry">
@@ -34,10 +38,17 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>20</y>
-      <width>61</width>
-      <height>16</height>
+      <y>15</y>
+      <width>81</width>
+      <height>21</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
     </property>
     <property name="text">
      <string>Workspace:</string>
@@ -46,11 +57,17 @@
    <widget class="QLabel" name="labelWorkspacePath">
     <property name="geometry">
      <rect>
-      <x>70</x>
-      <y>20</y>
-      <width>711</width>
-      <height>16</height>
+      <x>90</x>
+      <y>10</y>
+      <width>691</width>
+      <height>31</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+      <italic>false</italic>
+     </font>
     </property>
     <property name="text">
      <string>TextLabel</string>
@@ -70,7 +87,10 @@
     <property name="title">
      <string>Pato-SCM</string>
     </property>
-    <addaction name="actionCheckout_Settings"/>
+    <addaction name="actionEnvironment_Settings"/>
+    <addaction name="separator"/>
+    <addaction name="actionCheckin"/>
+    <addaction name="actionCheckout"/>
    </widget>
    <addaction name="menuPato_SCM"/>
   </widget>
@@ -83,13 +103,43 @@
    </attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <action name="actionCheckout_Settings">
+  <action name="actionCheckout">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="mainwindow.qrc">
+     <normaloff>:/new/icons/checkouticon</normaloff>:/new/icons/checkouticon</iconset>
+   </property>
    <property name="text">
-    <string>Checkout Settings</string>
+    <string>Check-out</string>
+   </property>
+  </action>
+  <action name="actionCheckin">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="mainwindow.qrc">
+     <normaloff>:/new/icons/checkinincon</normaloff>:/new/icons/checkinincon</iconset>
+   </property>
+   <property name="text">
+    <string>Check-in</string>
+   </property>
+  </action>
+  <action name="actionEnvironment_Settings">
+   <property name="icon">
+    <iconset resource="mainwindow.qrc">
+     <normaloff>:/new/icons/settingsicon</normaloff>:/new/icons/settingsicon</iconset>
+   </property>
+   <property name="text">
+    <string>Environment Settings</string>
    </property>
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="mainwindow.qrc"/>
+ </resources>
  <connections/>
 </ui>

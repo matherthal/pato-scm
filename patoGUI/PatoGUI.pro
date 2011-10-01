@@ -12,15 +12,50 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    checkoutdialog.cpp
+    environmentsettingsdialog.cpp \
+    checkindialog.cpp
 
 HEADERS  += mainwindow.h \
-    checkoutdialog.h
+    environmentsettingsdialog.h \
+    checkindialog.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    checkindialog.ui
 
-OTHER_FILES += \
-    images/icon.png
+OTHER_FILES +=
+
+RESOURCES += \
+    mainwindow.qrc
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

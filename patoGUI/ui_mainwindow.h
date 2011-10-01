@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created: Thu 29. Sep 11:35:59 2011
+** Created: Fri 30. Sep 22:17:34 2011
 **      by: Qt User Interface Compiler version 4.7.4
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -29,7 +29,9 @@ QT_BEGIN_NAMESPACE
 class Ui_MainWindow
 {
 public:
-    QAction *actionCheckout_Settings;
+    QAction *actionCheckout;
+    QAction *actionCheckin;
+    QAction *actionEnvironment_Settings;
     QWidget *centralWidget;
     QTreeView *treeViewWorkspace;
     QLabel *labelWorkspace;
@@ -44,8 +46,26 @@ public:
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
         MainWindow->resize(800, 500);
-        actionCheckout_Settings = new QAction(MainWindow);
-        actionCheckout_Settings->setObjectName(QString::fromUtf8("actionCheckout_Settings"));
+        QIcon icon;
+        icon.addFile(QString::fromUtf8(":/new/icons/icon"), QSize(), QIcon::Normal, QIcon::Off);
+        MainWindow->setWindowIcon(icon);
+        actionCheckout = new QAction(MainWindow);
+        actionCheckout->setObjectName(QString::fromUtf8("actionCheckout"));
+        actionCheckout->setEnabled(false);
+        QIcon icon1;
+        icon1.addFile(QString::fromUtf8(":/new/icons/checkouticon"), QSize(), QIcon::Normal, QIcon::Off);
+        actionCheckout->setIcon(icon1);
+        actionCheckin = new QAction(MainWindow);
+        actionCheckin->setObjectName(QString::fromUtf8("actionCheckin"));
+        actionCheckin->setEnabled(false);
+        QIcon icon2;
+        icon2.addFile(QString::fromUtf8(":/new/icons/checkinincon"), QSize(), QIcon::Normal, QIcon::Off);
+        actionCheckin->setIcon(icon2);
+        actionEnvironment_Settings = new QAction(MainWindow);
+        actionEnvironment_Settings->setObjectName(QString::fromUtf8("actionEnvironment_Settings"));
+        QIcon icon3;
+        icon3.addFile(QString::fromUtf8(":/new/icons/settingsicon"), QSize(), QIcon::Normal, QIcon::Off);
+        actionEnvironment_Settings->setIcon(icon3);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         treeViewWorkspace = new QTreeView(centralWidget);
@@ -58,10 +78,19 @@ public:
         treeViewWorkspace->setSizePolicy(sizePolicy);
         labelWorkspace = new QLabel(centralWidget);
         labelWorkspace->setObjectName(QString::fromUtf8("labelWorkspace"));
-        labelWorkspace->setGeometry(QRect(10, 20, 61, 16));
+        labelWorkspace->setGeometry(QRect(10, 15, 81, 21));
+        QFont font;
+        font.setPointSize(10);
+        font.setBold(true);
+        font.setWeight(75);
+        labelWorkspace->setFont(font);
         labelWorkspacePath = new QLabel(centralWidget);
         labelWorkspacePath->setObjectName(QString::fromUtf8("labelWorkspacePath"));
-        labelWorkspacePath->setGeometry(QRect(70, 20, 711, 16));
+        labelWorkspacePath->setGeometry(QRect(90, 10, 691, 31));
+        QFont font1;
+        font1.setPointSize(10);
+        font1.setItalic(false);
+        labelWorkspacePath->setFont(font1);
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
@@ -77,7 +106,10 @@ public:
         MainWindow->setStatusBar(statusBar);
 
         menuBar->addAction(menuPato_SCM->menuAction());
-        menuPato_SCM->addAction(actionCheckout_Settings);
+        menuPato_SCM->addAction(actionEnvironment_Settings);
+        menuPato_SCM->addSeparator();
+        menuPato_SCM->addAction(actionCheckin);
+        menuPato_SCM->addAction(actionCheckout);
 
         retranslateUi(MainWindow);
 
@@ -87,7 +119,9 @@ public:
     void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", 0, QApplication::UnicodeUTF8));
-        actionCheckout_Settings->setText(QApplication::translate("MainWindow", "Checkout Settings", 0, QApplication::UnicodeUTF8));
+        actionCheckout->setText(QApplication::translate("MainWindow", "Check-out", 0, QApplication::UnicodeUTF8));
+        actionCheckin->setText(QApplication::translate("MainWindow", "Check-in", 0, QApplication::UnicodeUTF8));
+        actionEnvironment_Settings->setText(QApplication::translate("MainWindow", "Environment Settings", 0, QApplication::UnicodeUTF8));
         labelWorkspace->setText(QApplication::translate("MainWindow", "Workspace:", 0, QApplication::UnicodeUTF8));
         labelWorkspacePath->setText(QApplication::translate("MainWindow", "TextLabel", 0, QApplication::UnicodeUTF8));
         menuPato_SCM->setTitle(QApplication::translate("MainWindow", "Pato-SCM", 0, QApplication::UnicodeUTF8));

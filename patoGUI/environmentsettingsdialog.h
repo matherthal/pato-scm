@@ -1,23 +1,26 @@
-#ifndef CHECKOUTDIALOG_H
-#define CHECKOUTDIALOG_H
+#ifndef ENVIRONMENTSETTINGSDIALOG_H
+#define ENVIRONMENTSETTINGSDIALOG_H
 #include <QDialog>
 
 class QCheckBox;
 class QLabel;
 class QLineEdit;
 class QPushButton;
-class CheckoutDialog : public QDialog
+class EnvironmentSettingsDialog : public QDialog
 {
     Q_OBJECT
 public:
-    CheckoutDialog(QWidget *parent = 0);
+    EnvironmentSettingsDialog(QWidget *parent = 0);
 signals:
     void setWorkspacePath(const QString &str);
+    void setRepositoryPath(const QString &str);
+    void setUserName(const QString &str);
+    void setUserPassword(const QString &str);
 private slots:
     void getRepositoryPath();
     void getWorkspacePath();
     void getAuthentication();
-    void checkout();
+    void apply();
 private:
     QLabel *repositoryPathLabel;
     QLabel *workspacePathLabel;
@@ -32,9 +35,8 @@ private:
     QCheckBox *userAuthenticationBox;
 
     QPushButton *cancelButton;
-    QPushButton *checkoutButton;
+    QPushButton *applyButton;
     QPushButton *chooseRepositoryButton;
     QPushButton *chooseWorkspaceButton;
 };
 #endif
-

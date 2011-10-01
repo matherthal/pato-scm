@@ -4,7 +4,7 @@
 #include <QMainWindow>
 
 namespace Ui {
-    class MainWindow;
+class MainWindow;
 }
 
 class MainWindow : public QMainWindow
@@ -15,7 +15,9 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 private slots:
-    void setWorkspacePath(const QString &str);
+    void setWorkspaceModel(const QString &str);
+    void checkout();
+    void enableActions();
 private:
     Ui::MainWindow *ui;
 };
