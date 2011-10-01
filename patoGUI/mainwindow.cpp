@@ -8,28 +8,17 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    ui->treeViewWorkspace->setVisible(false);
+    ui->labelWorkspace->setVisible(false);
+    ui->labelWorkspacePath->setVisible(false);
 
     //Creation of the "Checkout Settings" Dialog
     CheckoutDialog *checkoutDialog = new CheckoutDialog;
+
+    //Actions
     connect(checkoutDialog, SIGNAL(setWorkspacePath(QString)), this, SLOT(setWorkspacePath(QString)));
 
-    //Menu components and actions
-    QMenu *patoMenu = new QMenu(0);
-    patoMenu = menuBar()->addMenu(tr("&Pato-SCM"));
-
-    QAction *checkoutSettingsAct = new QAction("Checkout Settings", this);
-    connect(checkoutSettingsAct, SIGNAL(triggered()), checkoutDialog, SLOT(show()));
-    patoMenu->addAction(checkoutSettingsAct);
-
-    //Help menu --unfinished
-    //    QMenu *helpMenu = new QMenu(0);
-    //    helpMenu = menuBar()->addMenu(tr("&Help"));
-    //    QAction *contentsAct = new QAction("Contents", this);
-    //    connect(contentsAct, SIGNAL(triggered()), this, SLOT(close()));
-    //    helpMenu->addAction(contentsAct);
-    //    QAction *aboutPatoAct = new QAction("About Pato-SCM", this);
-    //    connect(aboutPatoAct, SIGNAL(triggered()), this, SLOT(close()));
-    //    helpMenu->addAction(aboutPatoAct);
+    connect(ui->actionCheckout_Settings, SIGNAL(triggered()), checkoutDialog, SLOT(show()));
 
     //Window properties
     setWindowTitle(tr("Pato-SCM"));
@@ -45,10 +34,13 @@ void MainWindow::setWorkspacePath(const QString &str)
     //Creation of the model view of the workspace
     QFileSystemModel *workspaceModel = new QFileSystemModel;
     workspaceModel->setRootPath(str);
-    QTreeView *workspaceTree = new QTreeView();
-    workspaceTree->setModel(workspaceModel);
-    workspaceTree->setRootIndex(workspaceModel->index(str));
 
-    statusBar()->showMessage(tr("Workspace View"));
-    setCentralWidget(workspaceTree);
+    ui->treeViewWorkspace->setModel(workspaceModel);
+    ui->treeViewWorkspace->setRootIndex(workspaceModel->index(str));
+    ui->treeViewWorkspace->setVisible(true);
+
+    ui->labelWorkspace->setVisible(true);
+
+    ui->labelWorkspacePath->setText(str);
+    ui->labelWorkspacePath->setVisible(true);
 }
