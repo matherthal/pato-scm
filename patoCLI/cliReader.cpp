@@ -6,8 +6,8 @@
  */
 
 #include "cliReader.h"
-#include"checkout.h"
-#include"checkin.h"
+#include"checkoutCLI.h"
+#include"checkinCLI.h"
 #include<iostream>
 #include<string.h>
 using namespace  std;
@@ -28,8 +28,8 @@ void cliReader::reader(int argc, char** argv){
     //i = 1, command
     //i > 1, parameters
     
-    checkout* co;
-    checkin* ci;
+    checkoutCLI* co;
+    checkinCLI* ci;
     
     
     if(argc < 1){
@@ -45,13 +45,13 @@ void cliReader::reader(int argc, char** argv){
     if(strcmp(command, "checkout") == 0){
         //call checkout command
         
-        co = new checkout();
+        co = new checkoutCLI();
         co->command(argc, argv);
     }
     if(strcmp(command, "checkin") == 0){
         //call checkout command
         
-        ci = new checkin();
+        ci = new checkinCLI();
         ci->command(argc, argv);
     }
 }

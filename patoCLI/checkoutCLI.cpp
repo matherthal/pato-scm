@@ -5,13 +5,13 @@
  * Created on October 3, 2011, 8:19 PM
  */
 
-#include "checkout.h"
+#include "checkoutCLI.h"
 #include<stdlib.h>
 #include <string.h>
 #include<iostream>
 using namespace std;
 
-void checkout::command(int argc, char** argv) {
+void checkoutCLI::command(int argc, char** argv) {
     //treating cases that argc > 1
 
     char* parameter;
@@ -43,7 +43,7 @@ void checkout::command(int argc, char** argv) {
 
 }
 
-checkout::checkout() {
+checkoutCLI::checkoutCLI() {
     revision = -1;
     workspace = "";
     username = "";
@@ -51,49 +51,49 @@ checkout::checkout() {
     address = "";
 }
 
-void checkout::setPassword(string password) {
+void checkoutCLI::setPassword(string password) {
     this->password = password;
 }
 
-string checkout::getPassword() const {
+string checkoutCLI::getPassword() const {
     return password;
 }
 
-void checkout::setUsername(string username) {
+void checkoutCLI::setUsername(string username) {
     this->username = username;
 }
 
-string checkout::getUsername() const {
+string checkoutCLI::getUsername() const {
     return username;
 }
 
-void checkout::setAddress(string address) {
+void checkoutCLI::setAddress(string address) {
     this->address = address;
 }
 
-string checkout::getAddress() const {
+string checkoutCLI::getAddress() const {
     return address;
 }
 
-void checkout::setWorkspace(string workspace) {
+void checkoutCLI::setWorkspace(string workspace) {
     this->workspace = workspace;
 }
 
-string checkout::getWorkspace() const {
+string checkoutCLI::getWorkspace() const {
     return workspace;
 }
 
-void checkout::setRevision(int revision) {
+void checkoutCLI::setRevision(int revision) {
     this->revision = revision;
 }
 
-int checkout::getRevision() const {
+int checkoutCLI::getRevision() const {
     return revision;
 }
 
-checkout::checkout(const checkout& orig) {
+checkoutCLI::checkoutCLI(const checkoutCLI& orig) {
 }
 
-checkout::~checkout() {
+checkoutCLI::~checkoutCLI() {
 }
 
