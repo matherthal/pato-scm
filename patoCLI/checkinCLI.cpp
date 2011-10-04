@@ -6,16 +6,25 @@
  */
 
 #include "checkinCLI.h"
+#include "../patoClientAPI/patoclientapi.h"
 #include<string.h>
 #include<iostream>
 using namespace std;
 
 checkinCLI::checkinCLI() {
+    
+    address = "";
+    username = "";
+    password = "";
+    workspace = "";
 }
+
 
 void checkinCLI::command(int argc, char** argv){
     //treating cases that argc > 1
 
+    PatoClientApi* clientAPI;
+    clientAPI = new PatoClientApi();
     char* parameter;
 
     for (int i = 2; i < argc; i += 2) {
@@ -35,42 +44,40 @@ void checkinCLI::command(int argc, char** argv){
         }
     }
     
-    cout << "workspace = " << workspace << endl;
-    cout << "username = " << username << endl;
-    cout << "password = " << password << endl;
-    cout << "address = " << address << endl;
-
+    
+    clientAPI->checkin(address, username, password, workspace);
+    
 }
 
-void checkinCLI::setPassword(string password) {
+void checkinCLI::setPassword(char* password) {
     this->password = password;
 }
 
-string checkinCLI::getPassword() const {
+char* checkinCLI::getPassword() const {
     return password;
 }
 
-void checkinCLI::setUsername(string username) {
+void checkinCLI::setUsername(char* username) {
     this->username = username;
 }
 
-string checkinCLI::getUsername() const {
+char* checkinCLI::getUsername() const {
     return username;
 }
 
-void checkinCLI::setAddress(string address) {
+void checkinCLI::setAddress(char* address) {
     this->address = address;
 }
 
-string checkinCLI::getAddress() const {
+char* checkinCLI::getAddress() const {
     return address;
 }
 
-void checkinCLI::setWorkspace(string workspace) {
+void checkinCLI::setWorkspace(char* workspace) {
     this->workspace = workspace;
 }
 
-string checkinCLI::getWorkspace() const {
+char* checkinCLI::getWorkspace() const {
     return workspace;
 }
 

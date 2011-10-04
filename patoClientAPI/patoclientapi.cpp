@@ -12,16 +12,16 @@ void PatoClientApi::checkout(int revision, char* address, char* username, char* 
     if (revision < -1) {
         cout << "Invalid revision number." << endl;
         return;
-    } else if (strcmp(address, "")) {
+    } else if (strcmp(address, "") == 0) {
         cout << "The checkout command needs of one address." << endl;
         return;
-    } else if (strcmp(username, "")) {
+    } else if (strcmp(username, "")  == 0) {
         cout << "The checkout command needs of one username." << endl;
         return;
-    } else if (strcmp(password, "")) {
+    } else if (strcmp(password, "")  == 0) {
         cout << "The checkout command needs of one password." << endl;
         return;
-    } else if (strcmp(workspace, "")) {
+    } else if (strcmp(workspace, "")  == 0) {
         cout << "The checkout command needs of one workspace." << endl;
         return;
     }
@@ -35,16 +35,16 @@ void PatoClientApi::checkout(int revision, char* address, char* username, char* 
 
 void PatoClientApi::checkin(char* address, char* username, char* password, char* workspace) {
 
-    if (strcmp(address, "")) {
+    if (strcmp(address, "") == 0 ) {
         cout << "The checkin command needs of one address." << endl;
         return;
-    } else if (strcmp(username, "")) {
+    } else if (strcmp(username, "") == 0) {
         cout << "The checkin command needs of one username." << endl;
         return;
-    } else if (strcmp(password, "")) {
+    } else if (strcmp(password, "") == 0) {
         cout << "The checkin command needs of one password." << endl;
         return;
-    } else if (strcmp(workspace, "")) {
+    } else if (strcmp(workspace, "") == 0) {
         cout << "The checkin command needs of one workspace." << endl;
         return;
     }
