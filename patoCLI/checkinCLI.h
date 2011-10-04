@@ -10,11 +10,11 @@ using namespace std;
 #ifndef CHECKIN_H
 #define	CHECKIN_H
 
-class checkin {
+class checkinCLI {
 public:
-    checkin();
-    checkin(const checkin& orig);
-    virtual ~checkin();
+    checkinCLI();
+    checkinCLI(const checkinCLI& orig);
+    virtual ~checkinCLI();
     void command(int argc, char** argv);
     void setPassword(string password);
     string getPassword() const;

@@ -5,15 +5,15 @@
  * Created on October 3, 2011, 9:02 PM
  */
 
-#include "checkin.h"
+#include "checkinCLI.h"
 #include<string.h>
 #include<iostream>
 using namespace std;
 
-checkin::checkin() {
+checkinCLI::checkinCLI() {
 }
 
-void checkin::command(int argc, char** argv){
+void checkinCLI::command(int argc, char** argv){
     //treating cases that argc > 1
 
     char* parameter;
@@ -42,41 +42,41 @@ void checkin::command(int argc, char** argv){
 
 }
 
-void checkin::setPassword(string password) {
+void checkinCLI::setPassword(string password) {
     this->password = password;
 }
 
-string checkin::getPassword() const {
+string checkinCLI::getPassword() const {
     return password;
 }
 
-void checkin::setUsername(string username) {
+void checkinCLI::setUsername(string username) {
     this->username = username;
 }
 
-string checkin::getUsername() const {
+string checkinCLI::getUsername() const {
     return username;
 }
 
-void checkin::setAddress(string address) {
+void checkinCLI::setAddress(string address) {
     this->address = address;
 }
 
-string checkin::getAddress() const {
+string checkinCLI::getAddress() const {
     return address;
 }
 
-void checkin::setWorkspace(string workspace) {
+void checkinCLI::setWorkspace(string workspace) {
     this->workspace = workspace;
 }
 
-string checkin::getWorkspace() const {
+string checkinCLI::getWorkspace() const {
     return workspace;
 }
 
-checkin::checkin(const checkin& orig) {
+checkinCLI::checkinCLI(const checkinCLI& orig) {
 }
 
-checkin::~checkin() {
+checkinCLI::~checkinCLI() {
 }
 

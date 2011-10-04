@@ -34,10 +34,10 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/checkinCLI.o \
 	${OBJECTDIR}/main.o \
-	${OBJECTDIR}/checkin.o \
-	${OBJECTDIR}/cliReader.o \
-	${OBJECTDIR}/checkout.o
+	${OBJECTDIR}/checkoutCLI.o \
+	${OBJECTDIR}/cliReader.o
 
 
 # C Compiler Flags
@@ -64,25 +64,25 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/patocli: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/patocli ${OBJECTFILES} ${LDLIBSOPTIONS} 
 
+${OBJECTDIR}/checkinCLI.o: checkinCLI.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/checkinCLI.o checkinCLI.cpp
+
 ${OBJECTDIR}/main.o: main.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/main.o main.cpp
 
-${OBJECTDIR}/checkin.o: checkin.cpp 
+${OBJECTDIR}/checkoutCLI.o: checkoutCLI.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/checkin.o checkin.cpp
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/checkoutCLI.o checkoutCLI.cpp
 
 ${OBJECTDIR}/cliReader.o: cliReader.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/cliReader.o cliReader.cpp
-
-${OBJECTDIR}/checkout.o: checkout.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/checkout.o checkout.cpp
 
 # Subprojects
 .build-subprojects:

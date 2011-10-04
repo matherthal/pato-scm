@@ -12,11 +12,11 @@ using namespace std;
 
 
 
-class checkout {
+class checkoutCLI {
 public:
-    checkout();
-    checkout(const checkout& orig);
-    virtual ~checkout();
+    checkoutCLI();
+    checkoutCLI(const checkoutCLI& orig);
+    virtual ~checkoutCLI();
     void command(int argc, char** argv);
     void setPassword(string password);
     string getPassword() const;
