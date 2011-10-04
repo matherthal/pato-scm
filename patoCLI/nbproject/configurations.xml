@@ -4,13 +4,13 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <itemPath>checkinCLI.h</itemPath>
+      <itemPath>checkoutCLI.h</itemPath>
+      <itemPath>cliReader.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
                    projectFiles="true">
-      <itemPath>checkinCLI.h</itemPath>
-      <itemPath>checkoutCLI.h</itemPath>
-      <itemPath>cliReader.h</itemPath>
     </logicalFolder>
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"

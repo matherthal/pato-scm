@@ -6,10 +6,10 @@
  */
 
 #include "cliReader.h"
-#include"checkoutCLI.h"
-#include"checkinCLI.h"
-#include<iostream>
-#include<string.h>
+#include "checkoutCLI.h"
+#include "checkinCLI.h"
+#include <iostream>
+#include <string.h>
 using namespace  std;
 
 
