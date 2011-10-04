@@ -8,12 +8,14 @@
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
                    projectFiles="true">
+      <itemPath>checkin.h</itemPath>
       <itemPath>checkout.h</itemPath>
       <itemPath>cliReader.h</itemPath>
     </logicalFolder>
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <itemPath>checkin.cpp</itemPath>
       <itemPath>checkout.cpp</itemPath>
       <itemPath>cliReader.cpp</itemPath>
       <itemPath>main.cpp</itemPath>

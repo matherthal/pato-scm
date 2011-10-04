@@ -44,6 +44,11 @@ void checkout::command(int argc, char** argv) {
 }
 
 checkout::checkout() {
+    revision = -1;
+    workspace = "";
+    username = "";
+    password = "";
+    address = "";
 }
 
 void checkout::setPassword(string password) {
