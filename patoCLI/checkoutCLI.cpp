@@ -6,6 +6,7 @@
  */
 
 #include "checkoutCLI.h"
+#include "../patoClientAPI/patoclientapi.h"
 #include<stdlib.h>
 #include <string.h>
 #include<iostream>
@@ -15,6 +16,7 @@ void checkoutCLI::command(int argc, char** argv) {
     //treating cases that argc > 1
 
     char* parameter;
+    PatoClientApi* clientAPI;
 
     for (int i = 2; i < argc; i += 2) {
         parameter = argv[i];
@@ -32,54 +34,43 @@ void checkoutCLI::command(int argc, char** argv) {
         }
     }
 
+    clientAPI = new PatoClientApi();
+    
+    clientAPI->checkout(revision, address, username, password, workspace);
     
     
     
-    cout << "revision = " << revision << endl;
-    cout << "workspace = " << workspace << endl;
-    cout << "username = " << username << endl;
-    cout << "password = " << password << endl;
-    cout << "address = " << address << endl;
-
 }
 
-checkoutCLI::checkoutCLI() {
-    revision = -1;
-    workspace = "";
-    username = "";
-    password = "";
-    address = "";
-}
-
-void checkoutCLI::setPassword(string password) {
+void checkoutCLI::setPassword(char* password) {
     this->password = password;
 }
 
-string checkoutCLI::getPassword() const {
+char* checkoutCLI::getPassword() const {
     return password;
 }
 
-void checkoutCLI::setUsername(string username) {
+void checkoutCLI::setUsername(char* username) {
     this->username = username;
 }
 
-string checkoutCLI::getUsername() const {
+char* checkoutCLI::getUsername() const {
     return username;
 }
 
-void checkoutCLI::setAddress(string address) {
+void checkoutCLI::setAddress(char* address) {
     this->address = address;
 }
 
-string checkoutCLI::getAddress() const {
+char* checkoutCLI::getAddress() const {
     return address;
 }
 
-void checkoutCLI::setWorkspace(string workspace) {
+void checkoutCLI::setWorkspace(char* workspace) {
     this->workspace = workspace;
 }
 
-string checkoutCLI::getWorkspace() const {
+char* checkoutCLI::getWorkspace() const {
     return workspace;
 }
 
@@ -89,6 +80,15 @@ void checkoutCLI::setRevision(int revision) {
 
 int checkoutCLI::getRevision() const {
     return revision;
+}
+
+checkoutCLI::checkoutCLI() {
+    revision = -1;
+    workspace = "";
+    username = "";
+    password = "";
+    address = "";
+    
 }
 
 checkoutCLI::checkoutCLI(const checkoutCLI& orig) {

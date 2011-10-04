@@ -10,12 +10,10 @@
 #include "checkinCLI.h"
 #include <iostream>
 #include <string.h>
-using namespace  std;
-
+using namespace std;
 
 cliReader::cliReader() {
 }
-
 
 cliReader::cliReader(const cliReader& orig) {
 }
@@ -23,36 +21,33 @@ cliReader::cliReader(const cliReader& orig) {
 cliReader::~cliReader() {
 }
 
-void cliReader::reader(int argc, char** argv){
+void cliReader::reader(int argc, char** argv) {
     //i = 0, local path
     //i = 1, command
     //i > 1, parameters
-    
+
     checkoutCLI* co;
     checkinCLI* ci;
-    
-    
-    if(argc < 1){
-        cout<<"Please specify a command"<<endl;
+
+    if (argc <= 1) {
+        cout << "Please specify a command" << endl;
         return;
     }
     command = argv[1];
-    for(int i = 0; i < argc; ++i){
-        
-        cout<<i<<"  "<<argv[i]<<endl;
-    }
-    
-    if(strcmp(command, "checkout") == 0){
+
+    if ((strcmp(command, "checkout") == 0) || (strcmp(command, "co") == 0)) {
         //call checkout command
-        
+
         co = new checkoutCLI();
         co->command(argc, argv);
     }
-    if(strcmp(command, "checkin") == 0){
+    else if ((strcmp(command, "checkin") == 0) || (strcmp(command, "ci") == 0)){
         //call checkout command
-        
+
         ci = new checkinCLI();
         ci->command(argc, argv);
+    }else{
+        cout<<"Invalid command!"<<endl; 
     }
 }
 

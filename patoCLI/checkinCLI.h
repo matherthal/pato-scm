@@ -16,19 +16,20 @@ public:
     checkinCLI(const checkinCLI& orig);
     virtual ~checkinCLI();
     void command(int argc, char** argv);
-    void setPassword(string password);
-    string getPassword() const;
-    void setUsername(string username);
-    string getUsername() const;
-    void setAddress(string address);
-    string getAddress() const;
-    void setWorkspace(string workspace);
-    string getWorkspace() const;
+    void setPassword(char* password);
+    char* getPassword() const;
+    void setUsername(char* username);
+    char* getUsername() const;
+    void setAddress(char* address);
+    char* getAddress() const;
+    void setWorkspace(char* workspace);
+    char* getWorkspace() const;
+    
 private:
-    string workspace;
-    string address;
-    string username;
-    string password;
+    char* workspace;
+    char* address;
+    char* username;
+    char* password;
     
     
 };

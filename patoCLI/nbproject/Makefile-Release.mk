@@ -34,10 +34,11 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/checkinCLI.o \
 	${OBJECTDIR}/main.o \
+	${OBJECTDIR}/checkinCLI.o \
 	${OBJECTDIR}/checkoutCLI.o \
-	${OBJECTDIR}/cliReader.o
+	${OBJECTDIR}/cliReader.o \
+	${OBJECTDIR}/_ext/764798604/patoclientapi.o
 
 
 # C Compiler Flags
@@ -64,15 +65,15 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/patocli: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/patocli ${OBJECTFILES} ${LDLIBSOPTIONS} 
 
-${OBJECTDIR}/checkinCLI.o: checkinCLI.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/checkinCLI.o checkinCLI.cpp
-
 ${OBJECTDIR}/main.o: main.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/main.o main.cpp
+
+${OBJECTDIR}/checkinCLI.o: checkinCLI.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/checkinCLI.o checkinCLI.cpp
 
 ${OBJECTDIR}/checkoutCLI.o: checkoutCLI.cpp 
 	${MKDIR} -p ${OBJECTDIR}
@@ -83,6 +84,11 @@ ${OBJECTDIR}/cliReader.o: cliReader.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/cliReader.o cliReader.cpp
+
+${OBJECTDIR}/_ext/764798604/patoclientapi.o: ../patoClientAPI/patoclientapi.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/764798604
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/764798604/patoclientapi.o ../patoClientAPI/patoclientapi.cpp
 
 # Subprojects
 .build-subprojects:
