@@ -16,13 +16,14 @@ public://STATICS
 
 public:
     //////////////PRIMEIRA FASE//////////////////////
-    void setPath(QString); //set workspace directory
-    void create( QList< QFile > files, QString repoAddress, RevisionKey revision); //create an initial workspace
+    bool setPath(QString); //set workspace directory
+    void create( QStringList files, QString repoAddress, RevisionKey revision); //create an initial workspace
     void update( PatoChangeSet changeSet, RevisionKey revision); //apply a changeset and update revision number
-    void setRepositoryRevision( RevisionKey revision, bool commiting = true ); //update revision number
-    void add( QList < QString > path ); //add files and/or directories
-    QString defaultRepositoryAddress(); // return the source repository
-    QList< PatoFileStatus > status(); // return a list of file status
+    void setRevision( RevisionKey revision, bool commiting = true ); //update revision number
+    void add( QStringList path ); //add files and/or directories
+    QString defaultRepositoryAddress() const; // return the source repository
+    RevisionKey revision() const; //get current revision
+    QList< PatoFileStatus > status() const; // return a list of file status
     /////////////////////////////////////////////////
 
     //////////////SEGUNDA FASE///////////////////////
@@ -37,8 +38,8 @@ private:
     PatoWorkspace();
     virtual ~PatoWorkspace();
 
-    void writeMetaData();
-    void readMetaData();
+    void writeMetadata();
+    void readMetadata();
 
 private:
     static PatoWorkspace* sigleWorkspace;
@@ -47,6 +48,11 @@ private:
     QString defaultPath;
     RevisionKey revKey;
 
+    QStringList versionedFiles;
+    QStringList removedFiles;
+    QStringList addedFiles;
+
+    QDateTime timespamp;
 };
 
 #endif // PATOWORKSPACE_H
