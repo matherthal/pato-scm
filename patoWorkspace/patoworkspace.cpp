@@ -29,28 +29,45 @@ PatoWorkspace::~PatoWorkspace()
 }
 
 //////////////PRIMEIRA FASE//////////////////////
-void PatoWorkspace::checkout(/*files, repoAddress, revision*/)
+void PatoWorkspace::create( QList< QFile > files, QString repoAddress, RevisionKey revision)
+{
+    revKey  = revision;
+}
+
+void PatoWorkspace::setPath(QString directory)
+{
+    workPath = directory;
+}
+
+
+void PatoWorkspace::add( QList< QString > path )
 {
 }
 
-void PatoWorkspace::add(/*path*/)
+QList< PatoFileStatus > PatoWorkspace::status()
 {
+    return QList< PatoFileStatus >();
 }
 
-void /*QList<FileStatus>*/ PatoWorkspace::status()
+void PatoWorkspace::setRepositoryRevision( RevisionKey revision,  bool commiting  )
 {
+    revKey  = revision;
+
+    if (commiting)
+    {
+          //clear added files list
+          //add into versioned files metadata
+    }
 }
 
-void PatoWorkspace::commit(/*revision*/)
+void PatoWorkspace::update( PatoChangeSet changeSet, RevisionKey revision)
 {
+    revKey  = revision;
 }
 
-void PatoWorkspace::update(/*files, revision*/)
+QString PatoWorkspace::defaultRepositoryAddress()
 {
-}
-
-void PatoWorkspace::defaultRepositoryAddress()
-{
+    return "";
 }
 /////////////////////////////////////////////////
 
