@@ -7,8 +7,10 @@ class PatoChangeSet : public QObject
 {
     Q_OBJECT
 public:
-    explicit PatoChangeSet(QObject *parent = 0);
+    PatoChangeSet(QObject *parent = 0);
+    PatoChangeSet(const PatoChangeSet&);
 
+    const PatoChangeSet& operator= (const PatoChangeSet&);
 signals:
 
 public slots:
