@@ -10,6 +10,8 @@ using namespace std;
 class PATODATAMODELSHARED_EXPORT PatoDataModel {
 private:
     PatoDataModel();
+    ~PatoDataModel();
+
     static PatoDataModel* patoDataModel;
 
 public:
@@ -19,19 +21,20 @@ public:
     static void destroyInstance();
 
     //getters and setters >
-    int getFileKey(const string& pFilePath);
 
-    int getLastVersion(const string& path);
+    //a set of file keys from the latest version
+    int* getFileKey(const string& pFilePath);
+
+    //a set of file keys from a specified version
+    int* getFileKey(const string& pFilePath, int version);
+
+    //return the latest version number
+    int getLastVersion(const string& pPath);
     //<
 
     //repositoy operations >
 
-    //version's default value -> 0 (latest version)
-    //the idea is return an array of int (all file keys)
-    int* checkout(const string& path, int version = 0);
 
-    //we need to define a data structure to represent the file!
-    int checkin(unsigned char file[], const string& path);
 
     //<
 
