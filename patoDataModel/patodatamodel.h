@@ -19,19 +19,15 @@ public:
     static void destroyInstance();
 
     //getters and setters >
-    int getFileKey(const string& pFilePath);
+
+    //return a set of file keys
+    int* getFileKey(const string& pFilePath); //keys from latest version
+    int* getFileKey(const string& pFilePath, int version);
 
     int getLastVersion(const string& path);
     //<
 
     //repositoy operations >
-
-    //version's default value -> 0 (latest version)
-    //the idea is return an array of int (all file keys)
-    int* checkout(const string& path, int version = 0);
-
-    //we need to define a data structure to represent the file!
-    int checkin(unsigned char file[], const string& path);
 
     //<
 
