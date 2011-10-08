@@ -24,13 +24,13 @@ void Tempo_CPU_Sistema(double *seg_CPU_total, double *seg_sistema_total)
 
 int main(int argc, char *argv[]){
     double s_CPU_inicial, s_CPU_final, s_total_inicial, s_total_final,t;
-		Diff::use_pd=1;
-		if(argc>1){
-			Diff::use_pd =atoi(argv[1]);
-		}
-		printf("PD: %d\n",Diff::use_pd);
+    Diff::use_pd=1;
+    if(argc>1){
+        Diff::use_pd =atoi(argv[1]);
+    }
+    printf("PD: %d\n",Diff::use_pd);
 
-   	printf("##### TESTE 1 #####\n");
+    printf("##### TESTE 1 #####\n");
     Tempo_CPU_Sistema(&s_CPU_inicial, &s_total_inicial);
 
     Diff *diff = new Diff("fixtures/arq1.txt","fixtures/arq2.txt",Diff::T_Txt);
@@ -57,7 +57,7 @@ int main(int argc, char *argv[]){
         printf("Resultado: CORRETO!\nTempo: %lf\n\n",t);
     delete diff2;
 
-		printf("##### TESTE 3 #####\n");
+    printf("##### TESTE 3 #####\n");
     Tempo_CPU_Sistema(&s_CPU_inicial, &s_total_inicial);
 
     Diff *diff3 = new Diff("fixtures/boa.txt","fixtures/boa2.txt",Diff::T_Txt);
@@ -70,7 +70,7 @@ int main(int argc, char *argv[]){
         printf("Resultado: CORRETO!\nTempo: %lf\n\n",t);
     delete diff3;
 
-		/*printf("##### TESTE 4 #####\n");
+    printf("##### TESTE 4 #####\n");
     Tempo_CPU_Sistema(&s_CPU_inicial, &s_total_inicial);
 
     Diff *diff4 = new Diff("fixtures/grande.txt","fixtures/grande2.txt",Diff::T_Txt);
@@ -81,7 +81,7 @@ int main(int argc, char *argv[]){
         printf("ERRADO!\n\nTempo: %lf\n\n",t);
     else
         printf("Resultado: CORRETO!\nTempo: %lf\n\n",t);
-    delete diff4;*/
+    delete diff4;
 
     return 0;
 }

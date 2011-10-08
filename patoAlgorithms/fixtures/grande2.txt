@@ -1084,4 +1084,1130 @@ function ValidatorOnSubmit() {
 </form>
 </body>
 </html>
+                
+                    <div class="comment">
+			            <h4>
+				            <a href="/whaggard/archive/2004/11/05/252685.aspx#1550818">#</a>
+				            <span>re: C++ static variables</span>
+			            </h4>		
+		                <div class="commentsbody">
+
+		                    <p><p>thx for the posting, save my prroblem, now!!</p></p>
+                        </div>
+                        <div class="commentssubhead">
+			                <span class="commentspan">
+			                    
+                            </span>
+			                Monday, February 05, 2007 10:41 AM
+			                by FRank
+                        </div>
+                     </div>
+                
+                    <div class="comment">
+
+			            <h4>
+				            <a href="/whaggard/archive/2004/11/05/252685.aspx#1576664">#</a>
+				            <span>re: C++ static variables</span>
+			            </h4>		
+		                <div class="commentsbody">
+		                    <p><p>C programmers, think of &quot;extern&quot; -- you're just publishing the linkable location of a global.</p></p>
+
+                        </div>
+                        <div class="commentssubhead">
+			                <span class="commentspan">
+			                    
+                            </span>
+			                Wednesday, February 07, 2007 3:21 PM
+			                by Bluejack
+                        </div>
+                     </div>
+                
+                    <div class="comment">
+			            <h4>
+
+				            <a href="/whaggard/archive/2004/11/05/252685.aspx#1583643">#</a>
+				            <span>re: C++ static variables</span>
+			            </h4>		
+		                <div class="commentsbody">
+		                    <p><p>Seems you are in good company ;) So many people who don't know that one and, oh, of course that was the reason why I stumbled across your blog. Didn't knew it either ^^</p></p>
+                        </div>
+                        <div class="commentssubhead">
+			                <span class="commentspan">
+
+			                    
+                            </span>
+			                Thursday, February 08, 2007 5:39 AM
+			                by 3Peso
+                        </div>
+                     </div>
+                
+                    <div class="comment">
+			            <h4>
+				            <a href="/whaggard/archive/2004/11/05/252685.aspx#1638127">#</a>
+				            <span>re: C++ static variables</span>
+
+			            </h4>		
+		                <div class="commentsbody">
+		                    <p><p>Hi,</p>
+<p>Thanks a lot!!</p>
+<p>I spent half a day tring to solve this problem.</p></p>
+                        </div>
+                        <div class="commentssubhead">
+			                <span class="commentspan">
+			                    
+                            </span>
+
+			                Monday, February 12, 2007 3:44 AM
+			                by Lior
+                        </div>
+                     </div>
+                
+                    <div class="comment">
+			            <h4>
+				            <a href="/whaggard/archive/2004/11/05/252685.aspx#1667660">#</a>
+				            <span>re: C++ static variables</span>
+			            </h4>		
+		                <div class="commentsbody">
+
+		                    <p><p>in this code you dont need the variable definition in the header file, only in the cpp file, try this code without the static definition in the header, it works the same...</p>
+<p>so i think its not the way how static members should be used, because its not a static and not a member, its a simple global variable...</p></p>
+                        </div>
+                        <div class="commentssubhead">
+			                <span class="commentspan">
+			                    
+                            </span>
+			                Wednesday, February 14, 2007 9:21 AM
+			                by peter
+                        </div>
+                     </div>
+
+                
+                    <div class="comment">
+			            <h4>
+				            <a href="/whaggard/archive/2004/11/05/252685.aspx#1751487">#</a>
+				            <span>re: C++ static variables</span>
+			            </h4>		
+		                <div class="commentsbody">
+		                    <p><p>yeah, so, you saved my night, etc, etc.</p></p>
+                        </div>
+
+                        <div class="commentssubhead">
+			                <span class="commentspan">
+			                    
+                            </span>
+			                Wednesday, February 21, 2007 9:45 PM
+			                by cb
+                        </div>
+                     </div>
+                
+                    <div class="comment">
+			            <h4>
+				            <a href="/whaggard/archive/2004/11/05/252685.aspx#1790041">#</a>
+
+				            <span>re: C++ static variables</span>
+			            </h4>		
+		                <div class="commentsbody">
+		                    <p><p>I've been banging my head on the desk all morning - but your post has saved me!!</p></p>
+                        </div>
+                        <div class="commentssubhead">
+			                <span class="commentspan">
+			                    
+                            </span>
+
+			                Saturday, February 24, 2007 8:25 PM
+			                by Russell
+                        </div>
+                     </div>
+                
+                    <div class="comment">
+			            <h4>
+				            <a href="/whaggard/archive/2004/11/05/252685.aspx#1935166">#</a>
+				            <span>re: C++ static variables</span>
+			            </h4>		
+		                <div class="commentsbody">
+
+		                    <p><p>Thanks a lot ! I spent the whole day trying to figure why i was getting the unresolved symbols </p></p>
+                        </div>
+                        <div class="commentssubhead">
+			                <span class="commentspan">
+			                    
+                            </span>
+			                Tuesday, March 06, 2007 7:21 PM
+			                by Harshal
+                        </div>
+                     </div>
+                
+                    <div class="comment">
+
+			            <h4>
+				            <a href="/whaggard/archive/2004/11/05/252685.aspx#1974534">#</a>
+				            <span>re: C++ static variables</span>
+			            </h4>		
+		                <div class="commentsbody">
+		                    <p><p>//statictest.h</p>
+<p>class</p>
+<p>	statictest</p>
+
+<p>{</p>
+<p>public:</p>
+<p>		static int a;</p>
+<p>		void sum();</p>
+<p>};</p>
+<p>///////////////////////////////////////////////</p>
+<p>//statictest.cpp</p>
+<p>#include &quot;statictest.h&quot;</p>
+
+<p>int statictest::a; &nbsp; &nbsp; &nbsp;//Pay attention</p>
+<p>void statictest::sum(){</p>
+<p>	a=0;</p>
+<p>}</p>
+<p>///////////////////////////////////////////////</p>
+<p>//main.cpp</p>
+<p>#include &quot;statictest.h&quot;</p>
+
+<p>int main()</p>
+<p>{</p>
+<p>	statictest	test;</p>
+<p>	test.sum();</p>
+<p>}</p>
+<p>///////////////////////////////////////////////</p></p>
+                        </div>
+                        <div class="commentssubhead">
+
+			                <span class="commentspan">
+			                    
+                            </span>
+			                Friday, March 09, 2007 4:58 AM
+			                by Ansari-Keshtkaran
+                        </div>
+                     </div>
+                
+                    <div class="comment">
+			            <h4>
+				            <a href="/whaggard/archive/2004/11/05/252685.aspx#2199152">#</a>
+				            <span>re: C++ static variables</span>
+
+			            </h4>		
+		                <div class="commentsbody">
+		                    <p><p>Thanks a lot... !!!</p></p>
+                        </div>
+                        <div class="commentssubhead">
+			                <span class="commentspan">
+			                    
+                            </span>
+			                Sunday, April 08, 2007 8:17 PM
+			                by miya
+                        </div>
+
+                     </div>
+                
+                    <div class="comment">
+			            <h4>
+				            <a href="/whaggard/archive/2004/11/05/252685.aspx#2342841">#</a>
+				            <span>re: C++ static variables</span>
+			            </h4>		
+		                <div class="commentsbody">
+		                    <p><p>REASON :: Class definition is just a template. No memory is allocated. But static variable requires memory allocation unlike other data members who will get their memory from instance definition.</p>
+
+<p>Hence, static data members have to be &quot;Defined&quot; seperately.</p></p>
+                        </div>
+                        <div class="commentssubhead">
+			                <span class="commentspan">
+			                    
+                            </span>
+			                Monday, April 23, 2007 9:57 AM
+			                by makarand kokane
+                        </div>
+                     </div>
+
+                
+                    <div class="comment">
+			            <h4>
+				            <a href="/whaggard/archive/2004/11/05/252685.aspx#3140674">#</a>
+				            <span>re: C++ static variables</span>
+			            </h4>		
+		                <div class="commentsbody">
+		                    <p><p>The last one was precise...thanks!!!!</p>
+</p>
+
+                        </div>
+                        <div class="commentssubhead">
+			                <span class="commentspan">
+			                    
+                            </span>
+			                Friday, July 13, 2007 11:34 PM
+			                by gs
+                        </div>
+                     </div>
+                
+                    <div class="comment">
+			            <h4>
+
+				            <a href="/whaggard/archive/2004/11/05/252685.aspx#3384735">#</a>
+				            <span>re: C++ static variables</span>
+			            </h4>		
+		                <div class="commentsbody">
+		                    <p><p>finally some one explains this .....</p>
+</p>
+                        </div>
+                        <div class="commentssubhead">
+
+			                <span class="commentspan">
+			                    
+                            </span>
+			                Friday, August 03, 2007 1:45 PM
+			                by sam
+                        </div>
+                     </div>
+                
+                    <div class="comment">
+			            <h4>
+				            <a href="/whaggard/archive/2004/11/05/252685.aspx#3418252">#</a>
+				            <span>re: C++ static variables</span>
+
+			            </h4>		
+		                <div class="commentsbody">
+		                    <p><p>hehe, thanks alot for this, was working all last night on it and couldn&#39;t see any way except to make it a normal member, which of course I wouldn&#39;t need.</p>
+</p>
+                        </div>
+                        <div class="commentssubhead">
+			                <span class="commentspan">
+			                    
+                            </span>
+
+			                Monday, August 06, 2007 5:48 PM
+			                by Steven
+                        </div>
+                     </div>
+                
+                    <div class="comment">
+			            <h4>
+				            <a href="/whaggard/archive/2004/11/05/252685.aspx#3458332">#</a>
+				            <span>re: C++ static variables</span>
+			            </h4>		
+		                <div class="commentsbody">
+
+		                    <p><p>Thanks a lot! I spent some time trying to find the reason behind my &quot;static&quot; errors. Now, it is clear.</p>
+</p>
+                        </div>
+                        <div class="commentssubhead">
+			                <span class="commentspan">
+			                    
+                            </span>
+			                Friday, August 10, 2007 9:59 AM
+			                by jbazzo
+                        </div>
+
+                     </div>
+                
+                    <div class="comment">
+			            <h4>
+				            <a href="/whaggard/archive/2004/11/05/252685.aspx#3533425">#</a>
+				            <span>re: C++ static variables</span>
+			            </h4>		
+		                <div class="commentsbody">
+		                    <p><p>Well, I just found out on this page. Anyway - thank you.</p>
+
+</p>
+                        </div>
+                        <div class="commentssubhead">
+			                <span class="commentspan">
+			                    
+                            </span>
+			                Friday, August 17, 2007 8:07 AM
+			                by Alessandro
+                        </div>
+                     </div>
+                
+                    <div class="comment">
+			            <h4>
+
+				            <a href="/whaggard/archive/2004/11/05/252685.aspx#4516947">#</a>
+				            <span>re: C++ static variables</span>
+			            </h4>		
+		                <div class="commentsbody">
+		                    <p><p>hey can somebody throw light on this :</p>
+<p>after declaring the static variables inside and outside ( for memory allocation) the class </p>
+<p>using the :: , is the static variable still a member of the class ? </p>
+<p>if it is then why its size does not show up if we say sizeof(object) of the class?</p>
+
+</p>
+                        </div>
+                        <div class="commentssubhead">
+			                <span class="commentspan">
+			                    
+                            </span>
+			                Wednesday, October 10, 2007 9:25 AM
+			                by Prasad 
+                        </div>
+                     </div>
+                
+                    <div class="comment">
+			            <h4>
+
+				            <a href="/whaggard/archive/2004/11/05/252685.aspx#5302505">#</a>
+				            <span>re: C++ static variables</span>
+			            </h4>		
+		                <div class="commentsbody">
+		                    <p><p>&quot;size does not show up if we say sizeof(object) of the class?&quot;</p>
+<p>It is not part of the allocated memory when an object is created, otherwise it would not make sense, as that would mean a new static member would have space for each object creation. &nbsp;This all stays consistent for memory allocations using malloc(sizeof(Class)) etc, as sizeof should not return the size of the class, but the size of an object to created. &nbsp;(As far as I know anyhow).</p>
+<p>I think static members are simply a global variable that is resolved in the name space of the class (e.g. Class::static_var)</p>
+
+</p>
+                        </div>
+                        <div class="commentssubhead">
+			                <span class="commentspan">
+			                    
+                            </span>
+			                Wednesday, November 21, 2007 12:55 AM
+			                by Kyle
+                        </div>
+                     </div>
+                
+                    <div class="comment">
+			            <h4>
+
+				            <a href="/whaggard/archive/2004/11/05/252685.aspx#5434050">#</a>
+				            <span>re: C++ static variables</span>
+			            </h4>		
+		                <div class="commentsbody">
+		                    <p><p>Gracias a Ansari-Keshtkaran por regalarme la</p>
+<p>soluci&#243;n al problema que me hizo qudar despierto</p>
+<p>toda una noche. Mil gracias...</p>
+
+</p>
+                        </div>
+                        <div class="commentssubhead">
+			                <span class="commentspan">
+			                    
+                            </span>
+			                Monday, December 10, 2007 5:43 PM
+			                by Oscar Palacios
+                        </div>
+                     </div>
+                
+                    <div class="comment">
+			            <h4>
+
+				            <a href="/whaggard/archive/2004/11/05/252685.aspx#5459724">#</a>
+				            <span>re: C++ static variables</span>
+			            </h4>		
+		                <div class="commentsbody">
+		                    <p><p>This was really helpful! I had the same problem in using the static variable and implementing singleton pattern. </p>
+<p>Thanks for the info and have a nice holidays !</p>
+<p>-SV</p>
+</p>
+
+                        </div>
+                        <div class="commentssubhead">
+			                <span class="commentspan">
+			                    
+                            </span>
+			                Saturday, December 15, 2007 7:02 PM
+			                by sv
+                        </div>
+                     </div>
+                
+                    <div class="comment">
+			            <h4>
+
+				            <a href="/whaggard/archive/2004/11/05/252685.aspx#5759146">#</a>
+				            <span>re: C++ static variables</span>
+			            </h4>		
+		                <div class="commentsbody">
+		                    <p><p>Many thanks!!!!!!!!!!!</p>
+<p>The problem that I had was that it was vital to put the line</p>
+<p>int MyClass::count;</p>
+<p>into the .cpp file and NOT in the .h file</p>
+
+<p>this made that clear.</p>
+</p>
+                        </div>
+                        <div class="commentssubhead">
+			                <span class="commentspan">
+			                    
+                            </span>
+			                Monday, February 11, 2008 7:20 AM
+			                by AlanE
+                        </div>
+                     </div>
+                
+                    <div class="comment">
+
+			            <h4>
+				            <a href="/whaggard/archive/2004/11/05/252685.aspx#6103455">#</a>
+				            <span>re: C++ static variables</span>
+			            </h4>		
+		                <div class="commentsbody">
+		                    <p><p>Yup, this is the retarded nature of C++.</p>
+<p>It doesn&#39;t have &quot;true&quot; class variables - just global variables that, with some hand waving and judicious squinting, we PRETEND are class variables.</p>
+
+<p>Objective C has true class variables. Which requires less headbanging and better production of code.</p>
+<p>But who uses Objective C other than Apple?</p>
+</p>
+                        </div>
+                        <div class="commentssubhead">
+			                <span class="commentspan">
+			                    
+                            </span>
+			                Wednesday, April 16, 2008 10:39 AM
+			                by feloneouscat
+                        </div>
+                     </div>
+
+                
+                    <div class="comment">
+			            <h4>
+				            <a href="/whaggard/archive/2004/11/05/252685.aspx#6212601">#</a>
+				            <span>re: C++ static variables</span>
+			            </h4>		
+		                <div class="commentsbody">
+		                    <p><p>Many thanks!!!!!!!!!!</p>
+</p>
+
+                        </div>
+                        <div class="commentssubhead">
+			                <span class="commentspan">
+			                    
+                            </span>
+			                Friday, May 23, 2008 12:39 AM
+			                by Dev
+                        </div>
+                     </div>
+                
+                    <div class="comment">
+			            <h4>
+
+				            <a href="/whaggard/archive/2004/11/05/252685.aspx#6381349">#</a>
+				            <span>re: C++ static variables</span>
+			            </h4>		
+		                <div class="commentsbody">
+		                    <p><p>Thanks...I seem to recall this now, but I still beat my head on it most of the day!!!!!</p>
+</p>
+                        </div>
+                        <div class="commentssubhead">
+
+			                <span class="commentspan">
+			                    
+                            </span>
+			                Wednesday, July 09, 2008 5:20 PM
+			                by DAWorX
+                        </div>
+                     </div>
+                
+                    <div class="comment">
+			            <h4>
+				            <a href="/whaggard/archive/2004/11/05/252685.aspx#6495032">#</a>
+				            <span>re: C++ static variables</span>
+
+			            </h4>		
+		                <div class="commentsbody">
+		                    <p><p>Awesome didn&#39;t know that and it fixed my bug!</p>
+<p>Thanks! </p>
+</p>
+                        </div>
+                        <div class="commentssubhead">
+			                <span class="commentspan">
+			                    
+                            </span>
+
+			                Thursday, August 07, 2008 11:44 AM
+			                by AWR
+                        </div>
+                     </div>
+                
+                    <div class="comment">
+			            <h4>
+				            <a href="/whaggard/archive/2004/11/05/252685.aspx#6535518">#</a>
+				            <span>re: C++ static variables</span>
+			            </h4>		
+		                <div class="commentsbody">
+
+		                    <p><p>Yeah..in Java this is a common practice to have static member variables. &nbsp;I was totally confused today when trying to brush up on some C++ programming and getting this error! hehehe...</p>
+</p>
+                        </div>
+                        <div class="commentssubhead">
+			                <span class="commentspan">
+			                    
+                            </span>
+			                Monday, August 18, 2008 3:09 PM
+			                by Juice
+                        </div>
+                     </div>
+
+                
+                    <div class="comment">
+			            <h4>
+				            <a href="/whaggard/archive/2004/11/05/252685.aspx#6542045">#</a>
+				            <span>re: C++ static variables</span>
+			            </h4>		
+		                <div class="commentsbody">
+		                    <p><p>I am using static variables in c++ code and have a linking to be done as the code is developed as a library.When linking I get the error as undefined reference to these variables.</p>
+<p>.h</p>
+
+<p>MyClass</p>
+<p>{</p>
+<p> &nbsp;static int var;</p>
+<p>}</p>
+<p>.cc</p>
+<p>MyClass::var = 0;//initializing.</p>
+<p>MyClass::Add_Entry()</p>
+<p>{</p>
+
+<p> &nbsp;if(var == 0)</p>
+<p> &nbsp;{</p>
+<p> &nbsp; //get no: of entries(int)</p>
+<p> &nbsp; var = var + entries;</p>
+<p> &nbsp;}</p>
+
+<p> &nbsp;else</p>
+<p> &nbsp;{</p>
+<p> &nbsp; &nbsp;for(var =0;var &lt; MAX_ENTRIES;var ++)</p>
+<p> &nbsp; &nbsp;{</p>
+<p> &nbsp; &nbsp; &nbsp; //do something</p>
+
+<p> &nbsp; &nbsp;}</p>
+<p> &nbsp;}</p>
+<p>}</p>
+<p>This code compiles fine with the above definition in the .cc file.However it shows error in linking with the error :Undefined Reference to var.</p>
+<p>Can anyone help me here?</p>
+</p>
+                        </div>
+                        <div class="commentssubhead">
+
+			                <span class="commentspan">
+			                    
+                            </span>
+			                Wednesday, August 20, 2008 7:15 AM
+			                by VR
+                        </div>
+                     </div>
+                
+                    <div class="comment">
+			            <h4>
+				            <a href="/whaggard/archive/2004/11/05/252685.aspx#6621284">#</a>
+				            <span>re: C++ static variables</span>
+
+			            </h4>		
+		                <div class="commentsbody">
+		                    <p><p>You should also put data type before the line of initialization, which should look like this.</p>
+<p>int MyClass::var = 0;</p>
+<p>Because it&#39;s not &quot;initialization&quot;, it&#39;s actually defining that variable.</p>
+</p>
+                        </div>
+
+                        <div class="commentssubhead">
+			                <span class="commentspan">
+			                    
+                            </span>
+			                Friday, September 12, 2008 4:45 PM
+			                by W2
+                        </div>
+                     </div>
+                
+                    <div class="comment">
+			            <h4>
+				            <a href="/whaggard/archive/2004/11/05/252685.aspx#6657921">#</a>
+
+				            <span>re: C++ static variables</span>
+			            </h4>		
+		                <div class="commentsbody">
+		                    <p><p>Thanks i have been struggling from last 3 hours......thanks u posted it</p>
+</p>
+                        </div>
+                        <div class="commentssubhead">
+			                <span class="commentspan">
+			                    
+                            </span>
+
+			                Saturday, October 04, 2008 6:40 PM
+			                by Deependu
+                        </div>
+                     </div>
+                
+                    <div class="comment">
+			            <h4>
+				            <a href="/whaggard/archive/2004/11/05/252685.aspx#6750435">#</a>
+				            <span>re: C++ static variables</span>
+			            </h4>		
+		                <div class="commentsbody">
+
+		                    <p><p>I learned this in C++ 101. The aggravating thing is that it is really extern data, so you can&#39;t protect it from being accessed.</p>
+<p>If you can, use function static data instead, that is, if it&#39;s a table, put it in a method that does nothing but handle the access to it, by which I don&#39;t mean a getter method but a method to interpret it. Or use (ugh) file static and put all of the implementations that use it in the same source file.</p>
+<p>OK now, how do I get a static const table to be generated at compile time? It does use classes, but these do not reference any run-time data and could be expressed as old-fashioned C initializations except that the table does use the STL string class.</p>
+</p>
+                        </div>
+                        <div class="commentssubhead">
+			                <span class="commentspan">
+
+			                    
+                            </span>
+			                Sunday, November 23, 2008 12:22 AM
+			                by Michael
+                        </div>
+                     </div>
+                
+                    <div class="comment">
+			            <h4>
+				            <a href="/whaggard/archive/2004/11/05/252685.aspx#6785717">#</a>
+				            <span>Class declarations and definitions &amp;laquo; :maohao:</span>
+
+			            </h4>		
+		                <div class="commentsbody">
+		                    <p><p>Pingback from &nbsp;Class declarations and definitions &amp;laquo; :maohao:</p>
+</p>
+                        </div>
+                        <div class="commentssubhead">
+			                <span class="commentspan">
+			                    
+                            </span>
+
+			                Sunday, December 14, 2008 8:10 PM
+			                by <a title="TrackBack" rel="nofollow" href="http://maohao.wordpress.com/2008/12/14/class-declarations-and-definitions/">Class declarations and definitions &laquo; :maohao:</a>
+                        </div>
+                     </div>
+                
+                    <div class="comment">
+			            <h4>
+				            <a href="/whaggard/archive/2004/11/05/252685.aspx#6810297">#</a>
+
+				            <span>re: C++ static variables</span>
+			            </h4>		
+		                <div class="commentsbody">
+		                    <p><p>Better define static member functions outside the class. Some compilers(IBM) don&#39;t allow this to be inlined &amp; creates separate static copy of the function in all the translation units that include this header. So, if you further define a static variable inside that static function ( e.g. Singleton definition ) you are going to face trouble because different translation units will have different function-static objects, which you really do not want.</p>
+</p>
+                        </div>
+                        <div class="commentssubhead">
+
+			                <span class="commentspan">
+			                    
+                            </span>
+			                Thursday, January 01, 2009 12:48 AM
+			                by Subhra
+                        </div>
+                     </div>
+                
+                    <div class="comment">
+			            <h4>
+				            <a href="/whaggard/archive/2004/11/05/252685.aspx#6935729">#</a>
+				            <span>re: C++ static variables</span>
+
+			            </h4>		
+		                <div class="commentsbody">
+		                    <p><p>Thanks. I was having the same problem. Feel kinda silly about it though xD</p>
+</p>
+                        </div>
+                        <div class="commentssubhead">
+			                <span class="commentspan">
+			                    
+                            </span>
+			                Monday, March 02, 2009 6:41 PM
+			                by Всеволод
+                        </div>
+
+                     </div>
+                
+                    <div class="comment">
+			            <h4>
+				            <a href="/whaggard/archive/2004/11/05/252685.aspx#7032659">#</a>
+				            <span>re: C++ static variables</span>
+			            </h4>		
+		                <div class="commentsbody">
+		                    <p><p>but y dont i need to define the same static variable globally in C?</p>
+
+</p>
+                        </div>
+                        <div class="commentssubhead">
+			                <span class="commentspan">
+			                    
+                            </span>
+			                Tuesday, April 07, 2009 4:55 AM
+			                by ankita
+                        </div>
+                     </div>
+                
+                    <div class="comment">
+			            <h4>
+
+				            <a href="/whaggard/archive/2004/11/05/252685.aspx#7050931">#</a>
+				            <span>re: C++ static variables</span>
+			            </h4>		
+		                <div class="commentsbody">
+		                    <p><p>Thanks, that was very instructive!</p>
+</p>
+                        </div>
+                        <div class="commentssubhead">
+
+			                <span class="commentspan">
+			                    
+                            </span>
+			                Monday, April 20, 2009 4:52 PM
+			                by Terracotta-Fin
+                        </div>
+                     </div>
+                
+                    <div class="comment">
+			            <h4>
+				            <a href="/whaggard/archive/2004/11/05/252685.aspx#7073005">#</a>
+				            <span>re: C++ static variables</span>
+
+			            </h4>		
+		                <div class="commentsbody">
+		                    <p><p>This was extremely uselful, thanks!!</p>
+</p>
+                        </div>
+                        <div class="commentssubhead">
+			                <span class="commentspan">
+			                    
+                            </span>
+			                Monday, May 04, 2009 11:25 PM
+			                by Cauvery
+                        </div>
+
+                     </div>
+                
+                    <div class="comment">
+			            <h4>
+				            <a href="/whaggard/archive/2004/11/05/252685.aspx#7093552">#</a>
+				            <span>re: C++ static variables</span>
+			            </h4>		
+		                <div class="commentsbody">
+		                    <p><p>Thank a lot...!!!</p>
+
+<p>Its solved my problem as well.. </p>
+</p>
+                        </div>
+                        <div class="commentssubhead">
+			                <span class="commentspan">
+			                    
+                            </span>
+			                Wednesday, May 20, 2009 10:18 AM
+			                by Jitesh
+                        </div>
+                     </div>
+                
+                    <div class="comment">
+
+			            <h4>
+				            <a href="/whaggard/archive/2004/11/05/252685.aspx#7103292">#</a>
+				            <span>re: C++ static variables</span>
+			            </h4>		
+		                <div class="commentsbody">
+		                    <p><p>Can anyone help with local static variables?</p>
+</p>
+                        </div>
+
+                        <div class="commentssubhead">
+			                <span class="commentspan">
+			                    
+                            </span>
+			                Sunday, May 31, 2009 2:04 AM
+			                by honey
+                        </div>
+                     </div>
+                
+                    <div class="comment">
+			            <h4>
+				            <a href="/whaggard/archive/2004/11/05/252685.aspx#7175829">#</a>
+
+				            <span>re: C++ static variables</span>
+			            </h4>		
+		                <div class="commentsbody">
+		                    <p><p>Thanks for the help..saved my day</p>
+</p>
+                        </div>
+                        <div class="commentssubhead">
+			                <span class="commentspan">
+			                    
+                            </span>
+
+			                Thursday, August 20, 2009 9:58 PM
+			                by Vaibhav
+                        </div>
+                     </div>
+                
+                    <div class="comment">
+			            <h4>
+				            <a href="/whaggard/archive/2004/11/05/252685.aspx#7190735">#</a>
+				            <span>re: C++ static variables</span>
+			            </h4>		
+		                <div class="commentsbody">
+
+		                    <p><p>Thanks! &nbsp;I&#39;ve been popping veins trying to figure this out. &nbsp;I&#39;m not *exactly* a C++ expert (I&#39;m a mathematician who prefers Python), but this is typical of why I&#39;m not pleased to have to deal with C++ right now!</p>
+<p>(It would be a lot nicer if C++ would just behave in more intuitive ways...)</p>
+</p>
+                        </div>
+                        <div class="commentssubhead">
+			                <span class="commentspan">
+
+			                    
+                            </span>
+			                Thursday, September 03, 2009 2:07 PM
+			                by Alpheus
+                        </div>
+                     </div>
+                
+                    <div class="comment">
+			            <h4>
+				            <a href="/whaggard/archive/2004/11/05/252685.aspx#7235415">#</a>
+				            <span>re: C++ static variables</span>
+
+			            </h4>		
+		                <div class="commentsbody">
+		                    <p><p>Man!!!</p>
+<p>You rock...it was awesome. I swear I had tried everything to solve the external link error. And I haven&#39;t another option ...</p>
+<p>You&#39;re great!</p>
+<p>thanks!</p>
+</p>
+                        </div>
+
+                        <div class="commentssubhead">
+			                <span class="commentspan">
+			                    
+                            </span>
+			                Wednesday, October 21, 2009 8:38 PM
+			                by Jacare Brasil
+                        </div>
+                     </div>
+                
+                    <div class="comment">
+			            <h4>
+				            <a href="/whaggard/archive/2004/11/05/252685.aspx#7245499">#</a>
+
+				            <span>re: C++ static variables</span>
+			            </h4>		
+		                <div class="commentsbody">
+		                    <p><p>Thanks it helped a lot!!</p>
+</p>
+                        </div>
+                        <div class="commentssubhead">
+			                <span class="commentspan">
+			                    
+                            </span>
+
+			                Monday, November 02, 2009 5:27 PM
+			                by DK
+                        </div>
+                     </div>
+                
+                    <div class="comment">
+			            <h4>
+				            <a href="/whaggard/archive/2004/11/05/252685.aspx#7271830">#</a>
+				            <span>re: C++ static variables</span>
+			            </h4>		
+		                <div class="commentsbody">
+
+		                    <p><p>Thankyou thankyou!</p>
+<p>I was stuck on this for a while.</p>
+<p>This post is still very relevant (especially newcomers to c++ like me)</p>
+</p>
+                        </div>
+                        <div class="commentssubhead">
+			                <span class="commentspan">
+			                    
+                            </span>
+			                Saturday, December 05, 2009 6:27 PM
+			                by Steven B
+                        </div>
+
+                     </div>
+                
+                    <div class="comment">
+			            <h4>
+				            <a href="/whaggard/archive/2004/11/05/252685.aspx#7359181">#</a>
+				            <span>re: C++ static variables</span>
+function ValidatorOnSubmit() {
+function ValidatorOnSubmit() {
+
+			            </h4>		
+		                <div class="commentsbody">
+		                    <p><p>ah - found the answer to the constructor destructor issue with class counts -- the copy-constructor has to increment the count as well</p>
+
+<p>So it was a &#39;beginner&#39; issue</p>
+</p>
+                        </div>
+                        <div class="commentssubhead">
+			                <span class="commentspan">
+			                    
+                            </span>
+			                Tuesday, February 23, 2010 6:59 AM
+			                by <a title="gareth" rel="nofollow" href="http://gw@westdale.demon.co.uk">gareth</a>
+
+                        </div>
+                     </div>
+                
+                    <div class="comment">
+			            <h4>
+				            <a href="/whaggard/archive/2004/11/05/252685.aspx#7699765">#</a>
+				            <span>Note to self: static member variable in C++ &amp;laquo; Ankur&amp;#039;s Tech blog</span>
+			            </h4>		
+		                <div class="commentsbody">
+
+		                    <p><p>Pingback from &nbsp;Note to self: static member variable in C++ &amp;laquo; Ankur&amp;#039;s Tech blog</p>
+</p>
+                        </div>
+                        <div class="commentssubhead">
+			                <span class="commentspan">
+			                    
+                            </span>
+			                Monday, February 07, 2011 10:04 AM
+			                by <a title="TrackBack" rel="nofollow" href="http://dodoincfedora.wordpress.com/2011/02/07/note-to-self-static-member-variable-in-c/">Note to self: static member variable in C++ &laquo; Ankur&#039;s Tech blog</a>
+
+                        </div>
+                     </div>
+                
+                    <div class="comment">
+			            <h4>
+				            <a href="/whaggard/archive/2004/11/05/252685.aspx#7739642">#</a>
+				            <span>Static class variable initialisation in C++</span>
+			            </h4>		
+		                <div class="commentsbody">
+
+		                    <p><p>Pingback from &nbsp;Static class variable initialisation in C++</p>
+</p>
+                        </div>
+                        <div class="commentssubhead">
+			                <span class="commentspan">
+			                    
+                            </span>
+			                Thursday, March 31, 2011 7:36 AM
+			                by <a title="TrackBack" rel="nofollow" href="http://error-success.piku.org.uk/2011/03/31/static-class-variable-initialisation
+function ValidatorOnSubmit() {
+function ValidatorOnSubmit() {
+function ValidatorOnSubmit() {
+function ValidatorOnSubmit() {
+-in-c/">Static class variable initialisation in C++</a>
+
+                        </div>
+                     </div>
+                
+                    </div>
+                
+            
+            
+            
+            
+                    <div id="commentform">
+                    <h3>Leave a Comment</h3>
+	                    <dl>
+                            <dt><label for="ctl00_Main_ctl09_ctl02_ctl02_ctl02_tbTitle">Title</label> <em>(required)</em><span id="ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl02" style="color:Red;visibility:hidden;">*</span></dt>
+
+	                        <dd><input name="ctl00$Main$ctl09$ctl02$ctl02$ctl02$tbTitle" type="text" value="re: C++ static variables" id="ctl00_Main_ctl09_ctl02_ctl02_ctl02_tbTitle" class="smallbox" /></dd>
+
+                            <dt id="ctl00_Main_ctl09_ctl02_ctl02_ctl02_NameTitle"><label for="ctl00_Main_ctl09_ctl02_ctl02_ctl02_tbName">Name</label> <em>(required)</em><span id="ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl10" style="color:Red;visibility:hidden;">*</span></dt>
+                            <dd id="ctl00_Main_ctl09_ctl02_ctl02_ctl02_NameDesc"><input name="ctl00$Main$ctl09$ctl02$ctl02$ctl02$tbName" type="text" id="ctl00_Main_ctl09_ctl02_ctl02_ctl02_tbName" class="smallbox" /></dd>
+
+                            <dt><label for="ctl00_Main_ctl09_ctl02_ctl02_ctl02_tbUrl">Your URL</label> <em>(optional</em>)</dt>
+
+                            <dd><input name="ctl00$Main$ctl09$ctl02$ctl02$ctl02$tbUrl" type="text" id="ctl00_Main_ctl09_ctl02_ctl02_ctl02_tbUrl" class="smallbox" /></dd>
+
+                            <dt><label for="ctl00_Main_ctl09_ctl02_ctl02_ctl02_tbComment">Comments</label> <em>(required)</em><span id="ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl07" style="color:Red;visibility:hidden;">*</span></dt>
+                            <dd><textarea name="ctl00$Main$ctl09$ctl02$ctl02$ctl02$tbComment" rows="5" cols="25" id="ctl00_Main_ctl09_ctl02_ctl02_ctl02_tbComment"></textarea></dd>
+
+                            <dt><input id="ctl00_Main_ctl09_ctl02_ctl02_ctl02_chkRemember" type="checkbox" name="ctl00$Main$ctl09$ctl02$ctl02$ctl02$chkRemember" /><label for="ctl00_Main_ctl09_ctl02_ctl02_ctl02_chkRemember">Remember Me?</label></dt>
+               
+                            <dt><input type="submit" name="ctl00$Main$ctl09$ctl02$ctl02$ctl02$btnSubmit" value="Submit" onclick="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$Main$ctl09$ctl02$ctl02$ctl02$btnSubmit&quot;, &quot;&quot;, true, &quot;CreateCommentForm&quot;, &quot;&quot;, false, false))" id="ctl00_Main_ctl09_ctl02_ctl02_ctl02_btnSubmit" /></dt>
+
+	                    </dl>
+                    </div>
+                    
+        
+        
+                    </div></div>
+                    <div id="contentfooter">&nbsp;</div>
+		        </div>
+                <div id="footer">
+                    
+				        <div> <span><a href="http://www.microsoft.com/info/cpyright.mspx">Terms of Use</a></span></div>
+    					
+				    
+                </div>
+
+            </div>        
+        </div>
+        <script type="text/javascript" src="http://i3.asp.net/script/omniture/omniture_all.js?cdn_id=2010-10-05-001"></script>
+            <noscript><a href="http://www.omniture.com" title="Web Analytics"><img
+                src="http://msstonojsaspnet.112.2O7.net/b/ss/msstonojsaspnet/1/H.20.2--NS/0"
+                height="1" width="1" border="0" alt="" /></a></noscript>
+    
+<script type="text/javascript">
+//<![CDATA[
+var Page_Validators =  new Array(document.getElementById("ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl02"), document.getElementById("ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl10"), document.getElementById("ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl07"));
+//]]>
+</script>
+
+<script type="text/javascript">
+//<![CDATA[
+var ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl02 = document.all ? document.all["ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl02"] : document.getElementById("ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl02");
+ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl02.controltovalidate = "ctl00_Main_ctl09_ctl02_ctl02_ctl02_tbTitle";
+ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl02.errormessage = "*";
+ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl02.validationGroup = "CreateCommentForm";
+ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl02.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl02.initialvalue = "";
+var ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl10 = document.all ? document.all["ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl10"] : document.getElementById("ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl10");
+ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl10.controltovalidate = "ctl00_Main_ctl09_ctl02_ctl02_ctl02_tbName";
+ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl10.errormessage = "*";
+ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl10.validationGroup = "CreateCommentForm";
+ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl10.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl10.initialvalue = "";
+var ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl07 = document.all ? document.all["ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl07"] : document.getElementById("ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl07");
+function ValidatorOnSubmit() {
+
+ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl07.controltovalidate = "ctl00_Main_ctl09_ctl02_ctl02_ctl02_tbComment";
+ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl07.errormessage = "*";
+ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl07.validationGroup = "CreateCommentForm";
+ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl07.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl07.initialvalue = "";
+//]]>
+</script>
+
+
+<!--
+function ValidatorOnSubmit() {
+function ValidatorOnSubmit() {
+
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+xmlns:dc="http://purl.org/dc/elements/1.1/"
+xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+<rdf:Description
+rdf:about="http://weblogs.asp.net/whaggard/archive/2004/11/05/252685.aspx"
+dc:identifier="http://weblogs.asp.net/whaggard/archive/2004/11/05/252685.aspx"
+dc:title="C++ static variables"
+trackback:ping="http://weblogs.asp.net/whaggard/trackback.ashx?PostID=252685" />
+</rdf:RDF>
+-->
+<script src="http://feeds.feedburner.com/~s/WesPuzzlingBlog?i=http://weblogs.asp.net/whaggard/archive/2004/11/05/252685.aspx" type="text/javascript" charset="utf-8"></script> <script type="text/javascript">
+// <![CDATA[
+Telligent_Modal.Configure('/utility/loading.htm',['Modal'],['ModalTitle'],['ModalClose'],['ModalContent'],['ModalFooter'],['ModalResize']
+function ValidatorOnSubmit() {
+,['ModalMask'],100);
+// ]]>
+function ValidatorOnSubmit() {
+
+</script><script type="text/javascript">
+// <![CDATA[
+window.ctl00_Main_ctl08_ctl01 = new Telligent_InlineEditorPanel('ctl00_Main_ctl08_ctl01','ctl00_Main_ctl08_ctl01','ctl00_Main_ctl08_ctl01_State','ctl00_Main_ctl08_ctl00',false,null,null,null);
+// ]]>
+</script>
+<script type="text/javascript">
+//<![CDATA[
+
+var Page_ValidationActive = false;
+if (typeof(ValidatorOnLoad) == "function") {
+    ValidatorOnLoad();
+}
+
+function ValidatorOnSubmit() {
+    if (Page_ValidationActive) {
+        return ValidatorCommonOnSubmit();
+    }
+    else {
+        return true;
+    }
+}
+        //]]>
+</script>
+</form>
+</body>
+</html>
 
