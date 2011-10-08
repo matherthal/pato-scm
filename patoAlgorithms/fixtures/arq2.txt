@@ -1,5 +1,5 @@
 Arquivo 2
 C
-Dado de Teste
+Dado de teste
 Falso!
 Errado?
