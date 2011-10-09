@@ -99,21 +99,51 @@ void Diff::calculateDiff(){
         htableA = init_hash(dataA,sizeFileA,0,&sizeHashA);
         htableB = init_hash(dataB,sizeFileB,0,&sizeHashB);
         if(use_pd)table = build_linked_table();
-
         int length_lcs = 0;
         t_lcs *p= lcsTxt(0,0,&length_lcs);
+        t_lcs *to_diff = p;
 
-        /*
-        printf("\nLCS:\n");
-        while(p!=NULL){
-            printf("%s\n",htableA[p->index]->line);
-            p = p->next;
-        }*/
+        generateDiff(to_diff);
+
         empty = sizeHashA==sizeHashB && length_lcs==sizeHashA;
         if(use_pd)free_table(table,sizeHashA,sizeHashB);
         free_hash(htableA,sizeHashA);
         free_hash(htableB,sizeHashB);
     }
+}
+
+void Diff::generateDiff(t_lcs *p){
+    int lastA=-1,lastB=-1;
+    int find;
+    while(p!=NULL){
+        find=0;
+        for(int i=lastA+1;i<p->indexA;i++){
+            printf("< %s\n",htableA[i]->line);
+            find=1;
+        }
+        if(find)printf("-----\n");
+        for(int i=lastB+1;i<p->indexB;i++){
+            printf("> %s\n",htableB[i]->line);
+            find=1;
+        }
+
+        lastA = p->indexA;
+        lastB = p->indexB;
+        if(find)printf("##\n");
+        p = p->next;
+    }
+    find=0;
+    for(int i=lastA+1;i<sizeHashA;i++){
+        printf("< %s\n",htableA[i]->line);
+        find=1;
+    }
+    if(find)printf("-----\n");
+    for(int i=lastB+1;i<sizeHashB;i++){
+        printf("> %s\n",htableB[i]->line);
+        find=1;
+    }
+
+
 }
 
 char* Diff::lcsBin(char *arqA,unsigned long a, char *arqB,unsigned long b){
@@ -140,18 +170,22 @@ char* Diff::lcsBin(char *arqA,unsigned long a, char *arqB,unsigned long b){
     }
 }
 
-void Diff::add_to_table(int i,int j,int index,int next_i,int next_j){
+void Diff::add_to_table(int i,int j,int indexA,int indexB,int next_i,int next_j){
     if(!use_pd)return;
     if(table[i]==NULL){
-        table[i]=(biglinkedtable**)malloc(sizeof(biglinkedtable*)*sizeHashB);
-        memset(table[i],NULL,sizeof(biglinkedtable*)*sizeHashB);
+        table[i]=(biglinkedtable**)malloc(sizeof(biglinkedtable*)*(sizeHashB));
+        memset(table[i],NULL,sizeof(biglinkedtable*)*(sizeHashB));
     }
     table[i][j] = (biglinkedtable*)malloc(sizeof(biglinkedtable));
-    table[i][j]->index = index;
-    if(table[next_i]!=NULL && next_i<sizeHashA && next_j<sizeHashB){
+    table[i][j]->indexA = indexA;
+    table[i][j]->indexB = indexB;
+    table[i][j]->i = i;
+    table[i][j]->j = j;
+    if(next_i<sizeHashA && table[next_i] && next_j<sizeHashB){
         table[i][j]->next = table[next_i][next_j];
-    }else
+    }else{
         table[i][j]->next=NULL;
+    }
 }
 
 t_lcs* Diff::lcsTxt(int i,int j,int *size){
@@ -163,15 +197,21 @@ t_lcs* Diff::lcsTxt(int i,int j,int *size){
         t_lcs *n=NULL,*ret=NULL;
         biglinkedtable *pt = table[i][j];
         while(pt!=NULL){
-            if(pt->index>=0){
-                n = (t_lcs*)malloc(sizeof(t_lcs));
+            if(pt->indexA>=0){
+                if(n==NULL)n = (t_lcs*)malloc(sizeof(t_lcs));
+                else{
+                    n->next = (t_lcs*)malloc(sizeof(t_lcs));
+                    n = n->next;
+                }
                 if(ret==NULL)ret = n;
-                n->index = pt->index;
+                *size = *size+1;
+                n->indexA = pt->indexA;
+                n->indexB = pt->indexB;
                 n->next = NULL;
-                n = n->next;
             }
             pt = pt->next;
         }
+        //if(ret!=NULL)printf("\n");
         return ret;
     }
     int same = 0;
@@ -183,9 +223,10 @@ t_lcs* Diff::lcsTxt(int i,int j,int *size){
         t_lcs *p = lcsTxt(i+1,j+1,size);
         *size = *size+1;
         t_lcs *n = (t_lcs*)malloc(sizeof(t_lcs));
-        n->index = i;
+        n->indexA = i;
+        n->indexB = j;
         n->next = p;
-        add_to_table(i,j,n->index,i+1,j+1);
+        add_to_table(i,j,n->indexA,n->indexB,i+1,j+1);
         return n;
     }else{
         int size1=*size;
@@ -193,12 +234,12 @@ t_lcs* Diff::lcsTxt(int i,int j,int *size){
         t_lcs *p1 = lcsTxt(i+1,j,&size1);
         t_lcs *p2 = lcsTxt(i,j+1,&size2);
         if(size1>size2){
-            add_to_table(i,j,-1,i+1,j);
+            add_to_table(i,j,-1,-1,i+1,j);
             *size = size1;
             free_lcs(p2);
             return p1;
         }else{
-            add_to_table(i,j,-1,i,j+1);
+            add_to_table(i,j,-1,-1,i,j+1);
             *size = size2;
             free_lcs(p1);
             return p2;
@@ -207,8 +248,9 @@ t_lcs* Diff::lcsTxt(int i,int j,int *size){
 }
 
 biglinkedtable*** Diff::build_linked_table(){
-    table = (biglinkedtable***)malloc(sizeof(biglinkedtable**)*sizeHashA);
-    memset(table,NULL,sizeof(biglinkedtable**)*sizeHashA);
+    table = (biglinkedtable***)malloc(sizeof(biglinkedtable**)*(sizeHashA));
+    memset(table,NULL,sizeof(biglinkedtable**)*(sizeHashA));
+    return table;
 }
 
 void Diff::free_lcs(t_lcs *p){
