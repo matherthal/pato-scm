@@ -69,6 +69,10 @@ Diff::Diff(ifstream *fileA,ifstream *fileB, int _type)
 
 Diff::Diff(const char *fileNameA,const char *fileNameB, int _type)
 {
+    diff = NULL;
+    last_diff = NULL;
+    first_diff = NULL;
+    position = -1;
     ifstream fileA,fileB;
     struct stat results;
     if (stat(fileNameA, &results) == 0)
@@ -86,6 +90,9 @@ Diff::Diff(const char *fileNameA,const char *fileNameB, int _type)
 }
 
 Diff::~Diff(){	
+    freeDiffItems(diff);
+    free_hash(htableA,sizeHashA);
+    free_hash(htableB,sizeHashB);
 }
 
 void Diff::calculateDiff(){
@@ -107,42 +114,100 @@ void Diff::calculateDiff(){
 
         empty = sizeHashA==sizeHashB && length_lcs==sizeHashA;
         if(use_pd)free_table(table,sizeHashA,sizeHashB);
-        free_hash(htableA,sizeHashA);
-        free_hash(htableB,sizeHashB);
+    }
+}
+
+void Diff::freeDiffItems(t_diff *_diff){
+    if(_diff!=NULL){
+        freeDiffItems(_diff->next);
+        delete _diff->diffItem;
+        free(_diff);
+    }
+}
+
+void Diff::addDiffItem(DiffItem* _item){
+    if(last_diff==NULL){
+        position = 0;
+        diff = (t_diff*)malloc(sizeof(t_diff));
+        diff->diffItem = _item;
+        diff->prev = NULL;
+        diff->next = NULL;
+        diff->pos = position;
+        last_diff = diff;
+        first_diff = diff;
+    }else{
+        last_diff->next = (t_diff*)malloc(sizeof(t_diff));
+        last_diff->next->diffItem = _item;
+        last_diff->next->next = NULL;
+        last_diff->next->prev = last_diff;
+        last_diff->next->pos = last_diff->pos+1;
+        last_diff = last_diff->next;
+    }
+}
+
+DiffItem* Diff::getDiffItem(int _pos){
+    if(diff==NULL)return NULL;
+    if(_pos>last_diff->pos)return NULL;
+    if(position<_pos){
+        do{
+            diff = diff->next;
+            position = diff->pos;
+        }while(position<_pos);
+        if(diff==NULL)diff=first_diff;
+    }else if(position>_pos){
+        do{
+            diff = diff->prev;
+            position = diff->pos;
+        }while(position>_pos);
+        if(diff==NULL)diff=last_diff;
+    }
+    return diff->diffItem;
+
+}
+
+void Diff::print(){
+    t_diff *p = first_diff;
+    while(p!=NULL){
+        p->diffItem->print();
+        p = p->next;
     }
 }
 
 void Diff::generateDiff(t_lcs *p){
+    DiffItem *diffitem;
     int lastA=-1,lastB=-1;
-    int find;
+    int findA,findB;
     while(p!=NULL){
-        find=0;
-        for(int i=lastA+1;i<p->indexA;i++){
-            printf("< %s\n",htableA[i]->line);
-            find=1;
-        }
-        if(find)printf("-----\n");
-        for(int i=lastB+1;i<p->indexB;i++){
-            printf("> %s\n",htableB[i]->line);
-            find=1;
-        }
+        findA=p->indexA-lastA-1;
+        findB=p->indexB-lastB-1;
 
+        if(findA && findB){
+            diffitem = new DiffItem(DiffItem::Action_Change,lastA+1,p->indexA-1,lastB+1,p->indexB-1,htableA,htableB);
+            addDiffItem(diffitem);
+        }else if(findA){
+            diffitem = new DiffItem(DiffItem::Action_Delete,lastA+1,p->indexA-1,lastB,lastB,htableA,htableB);
+            addDiffItem(diffitem);
+        }else if(findB){
+            diffitem = new DiffItem(DiffItem::Action_Add,lastA,lastA,lastB+1,p->indexB-1,htableA,htableB);
+            addDiffItem(diffitem);
+        }
         lastA = p->indexA;
         lastB = p->indexB;
-        if(find)printf("##\n");
         p = p->next;
     }
-    find=0;
-    for(int i=lastA+1;i<sizeHashA;i++){
-        printf("< %s\n",htableA[i]->line);
-        find=1;
-    }
-    if(find)printf("-----\n");
-    for(int i=lastB+1;i<sizeHashB;i++){
-        printf("> %s\n",htableB[i]->line);
-        find=1;
-    }
+    findA=sizeHashA-lastA-1;
+    findB=sizeHashB-lastB-1;
 
+    if(findA && findB){
+        diffitem = new DiffItem(DiffItem::Action_Change,lastA+1,sizeHashA-1,lastB+1,sizeHashB-1,htableA,htableB);
+        addDiffItem(diffitem);
+    }else if(findA){
+        diffitem = new DiffItem(DiffItem::Action_Delete,lastA+1,sizeHashA-1,lastB,lastB,htableA,htableB);
+        addDiffItem(diffitem);
+    }else if(findB){
+        diffitem = new DiffItem(DiffItem::Action_Add,lastA,lastA,lastB+1,sizeHashB-1,htableA,htableB);
+        addDiffItem(diffitem);
+    }
 
 }
 
@@ -233,7 +298,7 @@ t_lcs* Diff::lcsTxt(int i,int j,int *size){
         int size2=*size;
         t_lcs *p1 = lcsTxt(i+1,j,&size1);
         t_lcs *p2 = lcsTxt(i,j+1,&size2);
-        if(size1>size2){
+        if(size1>=size2){
             add_to_table(i,j,-1,-1,i+1,j);
             *size = size1;
             free_lcs(p2);
