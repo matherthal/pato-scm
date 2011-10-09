@@ -37,7 +37,29 @@ int main(int argc, char *argv[]){
 
     Tempo_CPU_Sistema(&s_CPU_final, &s_total_final);
     t = s_CPU_final - s_CPU_inicial;
-    if(diff->isEmpty())
+
+    int correct = 0;
+    correct = !diff->isEmpty();
+    correct = correct && diff->getDiffItem(0)->getType()==DiffItem::Action_Change;
+    correct = correct && diff->getDiffItem(0)->getFromA()==0;
+    correct = correct && diff->getDiffItem(0)->getToA()==1;
+    correct = correct && diff->getDiffItem(0)->getFromB()==0;
+    correct = correct && diff->getDiffItem(0)->getToB()==0;
+
+    correct = correct && diff->getDiffItem(1)->getType()==DiffItem::Action_Delete;
+    correct = correct && diff->getDiffItem(1)->getDeleteFrom()==4;
+    correct = correct && diff->getDiffItem(1)->getDeleteTo()==4;
+    correct = correct && diff->getDiffItem(1)->getAddAfter()==2;
+
+    correct = correct && diff->getDiffItem(2)->getType()==DiffItem::Action_Add;
+    correct = correct && diff->getDiffItem(2)->getAddAfter()==5;
+    correct = correct && diff->getDiffItem(2)->getFromB()==4;
+    correct = correct && diff->getDiffItem(2)->getToB()==4;
+
+    correct = correct && diff->getDiffItem(3) == NULL;
+
+    diff->print();
+    if(!correct)
         printf("ERRADO!\n\nTempo: %lf\n\n",t);
     else
         printf("Resultado: CORRETO!\nTempo: %lf\n\n",t);
@@ -48,10 +70,13 @@ int main(int argc, char *argv[]){
     Tempo_CPU_Sistema(&s_CPU_inicial, &s_total_inicial);
 
     Diff *diff2 = new Diff("fixtures/arq1.txt","fixtures/arq1.txt",Diff::T_Txt);
-
+    diff2->print();
     Tempo_CPU_Sistema(&s_CPU_final, &s_total_final);
     t = s_CPU_final - s_CPU_inicial;
-    if(!diff2->isEmpty())
+
+    correct = diff2->isEmpty();
+    correct = correct && diff->getDiffItem(0) == NULL;
+    if(!correct)
         printf("ERRADO!\n\nTempo: %lf\n\n",t);
     else
         printf("Resultado: CORRETO!\nTempo: %lf\n\n",t);
@@ -61,10 +86,35 @@ int main(int argc, char *argv[]){
     Tempo_CPU_Sistema(&s_CPU_inicial, &s_total_inicial);
 
     Diff *diff3 = new Diff("fixtures/boa.txt","fixtures/boa2.txt",Diff::T_Txt);
-
+    diff3->print();
     Tempo_CPU_Sistema(&s_CPU_final, &s_total_final);
     t = s_CPU_final - s_CPU_inicial;
-    if(diff3->isEmpty())
+
+    correct = !diff3->isEmpty();
+    correct = correct && diff3->getDiffItem(0)->getType()==DiffItem::Action_Delete;
+    correct = correct && diff3->getDiffItem(0)->getDeleteFrom()==2;
+    correct = correct && diff3->getDiffItem(0)->getDeleteTo()==2;
+    correct = correct && diff3->getDiffItem(0)->getAddAfter()==1;
+
+    correct = correct && diff3->getDiffItem(1)->getType()==DiffItem::Action_Change;
+    correct = correct && diff3->getDiffItem(1)->getFromA()==6;
+    correct = correct && diff3->getDiffItem(1)->getToA()==6;
+    correct = correct && diff3->getDiffItem(1)->getFromB()==5;
+    correct = correct && diff3->getDiffItem(1)->getToB()==5;
+
+    correct = correct && diff3->getDiffItem(2)->getType()==DiffItem::Action_Delete;
+    correct = correct && diff3->getDiffItem(2)->getDeleteFrom()==10;
+    correct = correct && diff3->getDiffItem(2)->getDeleteTo()==10;
+    correct = correct && diff3->getDiffItem(2)->getAddAfter()==8;
+
+    correct = correct && diff3->getDiffItem(3)->getType()==DiffItem::Action_Add;
+    correct = correct && diff3->getDiffItem(3)->getAddAfter()==15;
+    correct = correct && diff3->getDiffItem(3)->getFromB()==14;
+    correct = correct && diff3->getDiffItem(3)->getToB()==14;
+
+    correct = correct && diff3->getDiffItem(4) ==NULL;
+
+    if(!correct)
         printf("ERRADO!\n\nTempo: %lf\n\n",t);
     else
         printf("Resultado: CORRETO!\nTempo: %lf\n\n",t);
@@ -74,10 +124,22 @@ int main(int argc, char *argv[]){
     Tempo_CPU_Sistema(&s_CPU_inicial, &s_total_inicial);
 
     Diff *diff4 = new Diff("fixtures/grande.txt","fixtures/grande2.txt",Diff::T_Txt);
-
+    diff4->print();
     Tempo_CPU_Sistema(&s_CPU_final, &s_total_final);
     t = s_CPU_final - s_CPU_inicial;
-    if(diff4->isEmpty())
+
+    correct = !diff4->isEmpty();
+
+    correct = correct && diff4->getDiffItem(0)->getType()==DiffItem::Action_Delete;
+    correct = correct && diff4->getDiffItem(1)->getType()==DiffItem::Action_Add;
+    correct = correct && diff4->getDiffItem(2)->getType()==DiffItem::Action_Change;
+    correct = correct && diff4->getDiffItem(3)->getType()==DiffItem::Action_Add;
+    correct = correct && diff4->getDiffItem(4)->getType()==DiffItem::Action_Add;
+    correct = correct && diff4->getDiffItem(5)->getType()==DiffItem::Action_Change;
+    correct = correct && diff4->getDiffItem(6)->getType()==DiffItem::Action_Add;
+    correct = correct && diff4->getDiffItem(7) == NULL;
+
+    if(!correct)
         printf("ERRADO!\n\nTempo: %lf\n\n",t);
     else
         printf("Resultado: CORRETO!\nTempo: %lf\n\n",t);

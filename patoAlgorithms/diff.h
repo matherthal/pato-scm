@@ -2,33 +2,27 @@
 #define DIFF_H
 #include <iostream>
 #include <fstream>
+#include <vector>
+#include "lcs.h"
+#include "diffitem.h"
+
 using namespace std;
 
-struct biglinkedtable{
-    int indexA;
-    int indexB;
-    int i,j;
-    struct biglinkedtable *next;
+struct t_diff{
+    DiffItem *diffItem;
+    int pos;
+    struct t_diff *prev;
+    struct t_diff *next;
 };
-typedef struct biglinkedtable biglinkedtable;
-
-struct hashtable{
-    unsigned int hash;
-    int length;
-    char *line;
-};
-typedef struct hashtable hashtable;
-
-struct t_lcs{
-    int indexA;
-    int indexB;
-    struct t_lcs *next;
-};
-typedef struct t_lcs t_lcs;
+typedef struct t_diff t_diff;
 
 class Diff
 {
 private:
+    t_diff *diff;
+    int position;
+    t_diff *last_diff;
+    t_diff *first_diff;
     biglinkedtable ***table;
     hashtable **htableA,**htableB;
     bool empty;
@@ -45,8 +39,10 @@ private:
     void free_lcs(t_lcs*);
     void free_hash(hashtable**,int);
     void free_table(biglinkedtable***,int,int);
+    void freeDiffItems(t_diff *diff);
     void add_to_table(int,int,int,int,int,int);
     void generateDiff(t_lcs*);
+    void addDiffItem(DiffItem*);
 public:
     static int use_pd;
     static const int T_Bin = 0;
@@ -55,6 +51,8 @@ public:
     Diff(const char*,const char*,int);
     ~Diff();
     bool isEmpty();
+    void print();
+    DiffItem* getDiffItem(int _pos);
 };
 
 #endif // DIFF_H
