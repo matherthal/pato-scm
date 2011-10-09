@@ -5,7 +5,8 @@
 using namespace std;
 
 struct biglinkedtable{
-    int index;
+    int indexA;
+    int indexB;
     int i,j;
     struct biglinkedtable *next;
 };
@@ -19,7 +20,8 @@ struct hashtable{
 typedef struct hashtable hashtable;
 
 struct t_lcs{
-    int index;
+    int indexA;
+    int indexB;
     struct t_lcs *next;
 };
 typedef struct t_lcs t_lcs;
@@ -43,7 +45,8 @@ private:
     void free_lcs(t_lcs*);
     void free_hash(hashtable**,int);
     void free_table(biglinkedtable***,int,int);
-    void add_to_table(int,int,int,int,int);
+    void add_to_table(int,int,int,int,int,int);
+    void generateDiff(t_lcs*);
 public:
     static int use_pd;
     static const int T_Bin = 0;
