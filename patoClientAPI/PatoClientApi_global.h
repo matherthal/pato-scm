@@ -1,7 +1,7 @@
 #ifndef PATOCLIENTAPI_GLOBAL_H
 #define PATOCLIENTAPI_GLOBAL_H
 
-//#include <QtCore/qglobal.h>
+#include <QtCore/qglobal.h>
 
 #if defined(PATOCLIENTAPI_LIBRARY)
 #  define PATOCLIENTAPISHARED_EXPORT Q_DECL_EXPORT

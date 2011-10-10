@@ -2,56 +2,65 @@
 #include <iostream>
 #include<stdlib.h>
 #include <string.h>
+#include<QtCore/QString>
+#include<QtCore/QTextStream>
+
 using namespace std;
 
 PatoClientApi::PatoClientApi() {
 }
 
-void PatoClientApi::checkout(int revision, char* address, char* username, char* password, char* workspace) {
+void PatoClientApi::checkout(int revision, QString address, QString username, QString password, QString workspace) {
 
+    
+    QTextStream qout(stdout);
+    
     if (revision < -1) {
         cout << "Invalid revision number." << endl;
         return;
-    } else if (strcmp(address, "") == 0) {
-        cout << "The checkout command needs of one address." << endl;
+    } else if (address == "") {
+        cout << "The checkout command needs an address." << endl;
         return;
-    } else if (strcmp(username, "")  == 0) {
-        cout << "The checkout command needs of one username." << endl;
+    } else if (username == "") {
+        cout << "The checkout command needs an username." << endl;
         return;
-    } else if (strcmp(password, "")  == 0) {
-        cout << "The checkout command needs of one password." << endl;
+    } else if (password == "") {
+        cout << "The checkout command needs a password." << endl;
         return;
-    } else if (strcmp(workspace, "")  == 0) {
-        cout << "The checkout command needs of one workspace." << endl;
+    } else if (workspace == "") {
+        cout << "The checkout command needs a workspace." << endl;
         return;
     }
-    cout << revision << endl;
-    cout << address << endl;
-    cout << username << endl;
-    cout << password << endl;
-    cout << workspace << endl;
+
+    qout << "revision = " << revision << endl;
+    qout << "address = " <<  address << endl;
+    qout << "username = " << username << endl;
+    qout << "password = " << password << endl;
+    qout << "workspace = " << workspace << endl;
 
 }
 
-void PatoClientApi::checkin(char* address, char* username, char* password, char* workspace) {
+void PatoClientApi::checkin(QString address, QString username, QString password, QString workspace) {
 
-    if (strcmp(address, "") == 0 ) {
-        cout << "The checkin command needs of one address." << endl;
+    QTextStream qout(stdout);
+    
+    if (address == "") {
+        cout << "The checkin command needs an address." << endl;
         return;
-    } else if (strcmp(username, "") == 0) {
-        cout << "The checkin command needs of one username." << endl;
+    } else if (username == "") {
+        cout << "The checkin command needs an username." << endl;
         return;
-    } else if (strcmp(password, "") == 0) {
-        cout << "The checkin command needs of one password." << endl;
+    } else if (password == "") {
+        cout << "The checkin command needs a password." << endl;
         return;
-    } else if (strcmp(workspace, "") == 0) {
-        cout << "The checkin command needs of one workspace." << endl;
+    } else if (workspace == "") {
+        cout << "The checkin command needs a workspace." << endl;
         return;
     }
 
-    cout << address << endl;
-    cout << username << endl;
-    cout << password << endl;
-    cout << workspace << endl;
+    qout << "address = " << address << endl;
+    qout << "username = " << username << endl;
+    qout << "password = " << password << endl;
+    qout << "workspace = " << workspace << endl;
 
 }

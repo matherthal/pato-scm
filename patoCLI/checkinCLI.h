@@ -4,6 +4,8 @@
  *
  * Created on October 3, 2011, 9:02 PM
  */
+
+#include<QtCore/QString>
 #include<string>
 using namespace std;
 
@@ -16,20 +18,20 @@ public:
     checkinCLI(const checkinCLI& orig);
     virtual ~checkinCLI();
     void command(int argc, char** argv);
-    void setPassword(char* password);
-    char* getPassword() const;
-    void setUsername(char* username);
-    char* getUsername() const;
-    void setAddress(char* address);
-    char* getAddress() const;
-    void setWorkspace(char* workspace);
-    char* getWorkspace() const;
+    void setPassword(QString password);
+    QString getPassword() const;
+    void setUsername(QString username);
+    QString getUsername() const;
+    void setAddress(QString address);
+    QString getAddress() const;
+    void setWorkspace(QString workspace);
+    QString getWorkspace() const;
     
 private:
-    char* workspace;
-    char* address;
-    char* username;
-    char* password;
+    QString workspace;
+    QString address;
+    QString username;
+    QString password;
     
     
 };

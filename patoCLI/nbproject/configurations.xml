@@ -4,9 +4,12 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <itemPath>addCLI.h</itemPath>
       <itemPath>checkinCLI.h</itemPath>
       <itemPath>checkoutCLI.h</itemPath>
       <itemPath>cliReader.h</itemPath>
+      <itemPath>../patoClientAPI/statusCLI.h</itemPath>
+      <itemPath>updateCLI.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -26,10 +29,13 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <itemPath>addCLI.cpp</itemPath>
       <itemPath>checkinCLI.cpp</itemPath>
       <itemPath>checkoutCLI.cpp</itemPath>
       <itemPath>cliReader.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
+      <itemPath>../patoClientAPI/statusCLI.cpp</itemPath>
+      <itemPath>updateCLI.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"
@@ -42,6 +48,7 @@
                    kind="IMPORTANT_FILES_FOLDER">
       <itemPath>Makefile</itemPath>
     </logicalFolder>
+    <itemPath>Makefile</itemPath>
   </logicalFolder>
   <sourceRootList>
     <Elem>../patoClientAPI</Elem>
@@ -54,6 +61,21 @@
         <compilerSet>default</compilerSet>
       </toolsSet>
       <compileType>
+        <ccTool>
+          <incDir>
+            <pElem>../../../QtSDK/Desktop/Qt/474/gcc/include</pElem>
+            <pElem>../../../QtSDK/Madde/targets/harmattan-nokia-meego-api/bin</pElem>
+            <pElem>../../../QtSDK/Simulator/Qt/gcc/bin</pElem>
+          </incDir>
+        </ccTool>
+        <linkerTool>
+          <linkerAddLib>
+            <pElem>../../../QtSDK/Desktop/Qt/474/gcc/lib</pElem>
+          </linkerAddLib>
+          <linkerLibItems>
+            <linkerLibLibItem>QtCore</linkerLibLibItem>
+          </linkerLibItems>
+        </linkerTool>
       </compileType>
     </conf>
     <conf name="Release" type="1">

@@ -6,7 +6,6 @@
  */
 
 #include <cstdlib>
-
 #include "cliReader.h"
 
 using namespace std;

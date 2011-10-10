@@ -5,6 +5,7 @@
  * Created on October 3, 2011, 9:02 PM
  */
 
+#include<QtCore/QString>
 #include "checkinCLI.h"
 #include "../patoClientAPI/patoclientapi.h"
 #include<string.h>
@@ -49,37 +50,38 @@ void checkinCLI::command(int argc, char** argv){
     
 }
 
-void checkinCLI::setPassword(char* password) {
+void checkinCLI::setPassword(QString password) {
     this->password = password;
 }
 
-char* checkinCLI::getPassword() const {
+QString checkinCLI::getPassword() const {
     return password;
 }
 
-void checkinCLI::setUsername(char* username) {
+void checkinCLI::setUsername(QString username) {
     this->username = username;
 }
 
-char* checkinCLI::getUsername() const {
+QString checkinCLI::getUsername() const {
     return username;
 }
 
-void checkinCLI::setAddress(char* address) {
+void checkinCLI::setAddress(QString address) {
     this->address = address;
 }
 
-char* checkinCLI::getAddress() const {
+QString checkinCLI::getAddress() const {
     return address;
 }
 
-void checkinCLI::setWorkspace(char* workspace) {
+void checkinCLI::setWorkspace(QString workspace) {
     this->workspace = workspace;
 }
 
-char* checkinCLI::getWorkspace() const {
+QString checkinCLI::getWorkspace() const {
     return workspace;
 }
+
 
 checkinCLI::checkinCLI(const checkinCLI& orig) {
 }

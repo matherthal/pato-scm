@@ -34,10 +34,13 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/_ext/764798604/statusCLI.o \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/checkinCLI.o \
 	${OBJECTDIR}/checkoutCLI.o \
+	${OBJECTDIR}/updateCLI.o \
 	${OBJECTDIR}/cliReader.o \
+	${OBJECTDIR}/addCLI.o \
 	${OBJECTDIR}/_ext/764798604/patoclientapi.o
 
 
@@ -65,6 +68,11 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/patocli: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/patocli ${OBJECTFILES} ${LDLIBSOPTIONS} 
 
+${OBJECTDIR}/_ext/764798604/statusCLI.o: ../patoClientAPI/statusCLI.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/764798604
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/764798604/statusCLI.o ../patoClientAPI/statusCLI.cpp
+
 ${OBJECTDIR}/main.o: main.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
@@ -80,10 +88,20 @@ ${OBJECTDIR}/checkoutCLI.o: checkoutCLI.cpp
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/checkoutCLI.o checkoutCLI.cpp
 
+${OBJECTDIR}/updateCLI.o: updateCLI.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/updateCLI.o updateCLI.cpp
+
 ${OBJECTDIR}/cliReader.o: cliReader.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/cliReader.o cliReader.cpp
+
+${OBJECTDIR}/addCLI.o: addCLI.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/addCLI.o addCLI.cpp
 
 ${OBJECTDIR}/_ext/764798604/patoclientapi.o: ../patoClientAPI/patoclientapi.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/764798604

@@ -31,46 +31,49 @@ void checkoutCLI::command(int argc, char** argv) {
             address = argv[i + 1];
         } else if (strcmp(parameter, "--workspace") == 0) {
             workspace = argv[i + 1];
+        } else {
+            cout << "[ERROR] " << parameter << " don't exist." << endl;
+            return;
         }
     }
 
     clientAPI = new PatoClientApi();
-    
+
     clientAPI->checkout(revision, address, username, password, workspace);
-    
-    
-    
+
+
+
 }
 
-void checkoutCLI::setPassword(char* password) {
+void checkoutCLI::setPassword(QString password) {
     this->password = password;
 }
 
-char* checkoutCLI::getPassword() const {
+QString checkoutCLI::getPassword() const {
     return password;
 }
 
-void checkoutCLI::setUsername(char* username) {
+void checkoutCLI::setUsername(QString username) {
     this->username = username;
 }
 
-char* checkoutCLI::getUsername() const {
+QString checkoutCLI::getUsername() const {
     return username;
 }
 
-void checkoutCLI::setAddress(char* address) {
+void checkoutCLI::setAddress(QString address) {
     this->address = address;
 }
 
-char* checkoutCLI::getAddress() const {
+QString checkoutCLI::getAddress() const {
     return address;
 }
 
-void checkoutCLI::setWorkspace(char* workspace) {
+void checkoutCLI::setWorkspace(QString workspace) {
     this->workspace = workspace;
 }
 
-char* checkoutCLI::getWorkspace() const {
+QString checkoutCLI::getWorkspace() const {
     return workspace;
 }
 
@@ -82,13 +85,15 @@ int checkoutCLI::getRevision() const {
     return revision;
 }
 
+
+
 checkoutCLI::checkoutCLI() {
     revision = -1;
     workspace = "";
     username = "";
     password = "";
     address = "";
-    
+
 }
 
 checkoutCLI::checkoutCLI(const checkoutCLI& orig) {
