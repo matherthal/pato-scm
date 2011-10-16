@@ -34,10 +34,10 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/_ext/764798604/statusCLI.o \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/checkinCLI.o \
 	${OBJECTDIR}/checkoutCLI.o \
+	${OBJECTDIR}/statusCLI.o \
 	${OBJECTDIR}/updateCLI.o \
 	${OBJECTDIR}/cliReader.o \
 	${OBJECTDIR}/addCLI.o \
@@ -68,11 +68,6 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/patocli: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/patocli ${OBJECTFILES} ${LDLIBSOPTIONS} 
 
-${OBJECTDIR}/_ext/764798604/statusCLI.o: ../patoClientAPI/statusCLI.cpp 
-	${MKDIR} -p ${OBJECTDIR}/_ext/764798604
-	${RM} $@.d
-	$(COMPILE.cc) -g -I../../../QtSDK/Desktop/Qt/474/gcc/include -I../../../QtSDK/Madde/targets/harmattan-nokia-meego-api/bin -I../../../QtSDK/Simulator/Qt/gcc/bin -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/764798604/statusCLI.o ../patoClientAPI/statusCLI.cpp
-
 ${OBJECTDIR}/main.o: main.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
@@ -87,6 +82,11 @@ ${OBJECTDIR}/checkoutCLI.o: checkoutCLI.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -g -I../../../QtSDK/Desktop/Qt/474/gcc/include -I../../../QtSDK/Madde/targets/harmattan-nokia-meego-api/bin -I../../../QtSDK/Simulator/Qt/gcc/bin -MMD -MP -MF $@.d -o ${OBJECTDIR}/checkoutCLI.o checkoutCLI.cpp
+
+${OBJECTDIR}/statusCLI.o: statusCLI.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -g -I../../../QtSDK/Desktop/Qt/474/gcc/include -I../../../QtSDK/Madde/targets/harmattan-nokia-meego-api/bin -I../../../QtSDK/Simulator/Qt/gcc/bin -MMD -MP -MF $@.d -o ${OBJECTDIR}/statusCLI.o statusCLI.cpp
 
 ${OBJECTDIR}/updateCLI.o: updateCLI.cpp 
 	${MKDIR} -p ${OBJECTDIR}

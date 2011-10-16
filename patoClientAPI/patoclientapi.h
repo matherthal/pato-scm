@@ -9,6 +9,10 @@ class PatoClientApi {
 public:
     void checkout(int revision, QString adress, QString username, QString password, QString workspace);
     void checkin(QString address, QString username, QString password, QString workspace);
+    void status(QString workspace);
+    void add(QString workspace, QList<QString> files);
+    void update(QString revision, QString adress, QString username, QString password, QString workspace);
+    
     PatoClientApi();
 
 };

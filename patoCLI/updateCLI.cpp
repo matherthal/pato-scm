@@ -6,6 +6,12 @@
  */
 
 #include "updateCLI.h"
+#include "../patoClientAPI/patoclientapi.h"
+#include<stdlib.h>
+#include<iostream>
+#include<QtCore/QString>
+#include<QtCore/QTextStream>
+using namespace std;
 
 updateCLI::updateCLI() {
 }
@@ -14,6 +20,36 @@ updateCLI::updateCLI(const updateCLI& orig) {
 }
 
 updateCLI::~updateCLI() {
+}
+
+void updateCLI::command(int argc, char** argv) {
+    QString parameter;
+    PatoClientApi* clientAPI;
+
+    QTextStream qout(stdout);
+    
+    for (int i = 2; i < argc; i += 2) {
+        parameter = argv[i];
+
+        if (parameter == "--revision") {
+            revision = argv[i + 1];
+        } else if (parameter == "--username") {
+            username = argv[i + 1];
+        } else if (parameter == "--password") {
+            password = argv[i + 1];
+        } else if (parameter == "--address") {
+            address = argv[i + 1];
+        } else if (parameter == "--workspace") {
+            workspace = argv[i + 1];
+        } else {
+            qout << "[ERROR] " << parameter << " don't exist." << endl;
+            return;
+        }
+    }
+
+    clientAPI = new PatoClientApi();
+
+    clientAPI->update(revision, address, username, password, workspace);
 }
 
 void updateCLI::SetAddress(QString address) {
