@@ -3,6 +3,7 @@
 PatoWorkspace* PatoWorkspace::sigleWorkspace = NULL;
 
 const QString cWorkspaceMetadata = ".pato.md";
+const QString cAddedMetadata = ".added.md";
 
 PatoWorkspace* PatoWorkspace::instance()
 {
@@ -42,7 +43,8 @@ void PatoWorkspace::create( QStringList files, QString repoAddress, RevisionKey 
 
     for (int i=0; i < files.size(); i++)
     {
-        qDebug() << "Creating " << files[i];
+        versionedFiles << files[i];
+        qDebug() << "Creating: " << files[i];
     }
 
     writeMetadata();
@@ -61,7 +63,6 @@ bool PatoWorkspace::setPath(QString directory)
 
     return false;
 }
-
 
 void PatoWorkspace::add( QStringList paths )
 {
@@ -83,23 +84,43 @@ void PatoWorkspace::add( QStringList paths )
     writeMetadata();
 }
 
-QList< PatoFileStatus > PatoWorkspace::status() const
+QList< PatoFileStatus > PatoWorkspace::status(PatoFileStatus::FileStatus statusFilter) const
 {
     QList< PatoFileStatus > statusList;
 
     for (int i=0; i < versionedFiles.size(); i++)
     {
-        QFileInfo fileInfo( workPath + "/" + versionedFiles[i] );
-        if ( fileInfo.lastModified() > timespamp )
+        if (  QFile( workPath + "/" + versionedFiles[i]).exists() )
         {
-            statusList.append( PatoFileStatus( versionedFiles[i], PatoFileStatus::MODIFIED ) );
+            QFileInfo fileInfo( workPath + "/" + versionedFiles[i] );
+
+            if ( (statusFilter & PatoFileStatus::MODIFIED) && (fileInfo.lastModified() > timespamp ) )
+            {
+                statusList.append( PatoFileStatus( versionedFiles[i], PatoFileStatus::MODIFIED ) );
+            }
+
+            if ( (statusFilter & PatoFileStatus::CLEAN) && (fileInfo.lastModified() <= timespamp) )
+            {
+                statusList.append( PatoFileStatus( versionedFiles[i], PatoFileStatus::CLEAN ) );
+            }
+        }
+        else
+        {
+            if ( statusFilter & PatoFileStatus::MISSING )
+            {
+                statusList.append( PatoFileStatus( versionedFiles[i], PatoFileStatus::MISSING ) );
+            }
         }
     }
 
-    for (int i=0; i < addedFiles.size(); i++)
-    {
-        statusList.append( PatoFileStatus( addedFiles[i], PatoFileStatus::MODIFIED ) );
 
+    if (statusFilter & PatoFileStatus::ADDED)
+    {
+        for (int i=0; i < addedFiles.size(); i++)
+        {
+            statusList.append( PatoFileStatus( addedFiles[i], PatoFileStatus::ADDED ) );
+
+        }
     }
 
     qDebug() << "warning: status returns only modified and added files";
@@ -115,17 +136,23 @@ void PatoWorkspace::setRevision( RevisionKey revision,  bool commiting  )
 
     if (commiting)
     {
-        //clear added files list
-        //add into versioned files metadata
+        versionedFiles << addedFiles;
     }
-
+    else
+    {
+        if (addedFiles.size())
+        {
+            qWarning() << "Ignoring added files" ;
+        }
+    }
+    addedFiles.clear();
     writeMetadata();
 }
 
 void PatoWorkspace::update( PatoChangeSet changeSet, RevisionKey revision)
 {
     changeSet = changeSet; //PatoAlgorithms::ApplyChangeSet( workPath, changeSet);
-    qDebug() << "warning: update workspace needs PatoAlgorithms::ApplyChangeSet( workPath, changeSet)";
+    qWarning() << "Update workspace needs PatoAlgorithms::ApplyChangeSet( workPath, changeSet)";
     revKey  = revision;
 
     writeMetadata();
@@ -143,41 +170,84 @@ QString PatoWorkspace::defaultRepositoryAddress() const
 /////////////////////////////////////////////////
 
 
-void PatoWorkspace::writeMetadata()
+void PatoWorkspace::writeMetadata(MetadataType types)
 {
-    QFile file( workPath + "/" + cWorkspaceMetadata);
-    if (file.open( QFile::WriteOnly | QFile::Truncate))
+    if (types & META_CONTROL)
     {
-        QTextStream textStream(&file);
-
-        textStream << "Revision: " << revKey;
-        textStream << "Default Repository: " << defaultPath;
-        textStream << "Versioned Files: ";// << versionedFiles;
-    }
-}
-
-void PatoWorkspace::readMetadata()
-{
-    QFile file( workPath + "/" + cWorkspaceMetadata);
-    if (file.open( QFile::ReadOnly))
-    {
-        QTextStream textStream(&file);
-
-        while (!textStream.atEnd())
+        QFile file( workPath + "/" + cWorkspaceMetadata);
+        if (file.open( QFile::WriteOnly | QFile::Truncate))
         {
-            qDebug() << textStream.readLine();
+            QTextStream textStream(&file);
+
+            textStream << "Revision: " << revKey;
+            textStream << "Default Repository: " << defaultPath;
+
+            for (int i=0; i < versionedFiles.size(); i++)
+            {
+                textStream << versionedFiles[i] << endl;// << versionedFiles;
+            }
+
+            file.close();
+        }
+        else
+        {
+            qWarning() << "Cannot open .pato.pm ";
+        }
+    }
+
+    if (types & META_ADDED)
+    {
+        QFile file( workPath + "/" + cAddedMetadata);
+        if (file.open( QFile::WriteOnly | QFile::Truncate))
+        {
+            QTextStream textStream(&file);
+
+            for (int i=0; i < addedFiles.size(); i++)
+            {
+                textStream << addedFiles[i] << endl;// << addedFiles;
+            }
+
+            file.close();
+        }
+        else
+        {
+            qWarning() << "Cannot open .added.pm ";
         }
     }
 }
 
+void PatoWorkspace::readMetadata(MetadataType types)
+{
+    if (types & META_CONTROL)
+    {
+        QFile file( workPath + "/" + cWorkspaceMetadata);
+        if (file.open( QFile::ReadOnly))
+        {
+            QTextStream textStream(&file);
+            textStream << "Revision: " << revKey << endl;
+            textStream << "Default Repository: " << defaultPath << endl;
 
+            while (!textStream.atEnd())
+            {
+                versionedFiles << textStream.readLine();
+            }
+        }
+    }
 
+    if (types & META_ADDED)
+    {
+        QFile file( workPath + "/" + cAddedMetadata);
+        if (file.open( QFile::ReadOnly))
+        {
+            QTextStream textStream(&file);
 
-
-
-
-
-
+            while (!textStream.atEnd())
+            {
+                addedFiles << textStream.readLine();
+            }
+        }
+    }
+}
 
 //////////////SEGUNDA FASE///////////////////////
 void PatoWorkspace::revert(/*path*/)
