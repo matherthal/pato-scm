@@ -13,8 +13,8 @@ private:
     static PatoFS* mPatoFS;
     QSqlDatabase db;
 public:
-	static PatoFS* getInstance();
-	static vod destroyInstance();
+    static PatoFS* getInstance();
+    static void destroyInstance();
 };
 
 #endif // PATOFS_H
