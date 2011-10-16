@@ -1,29 +1,9 @@
 #include "patoworkspace.h"
-#include <QDir>
 
 PatoWorkspace* PatoWorkspace::sigleWorkspace = NULL;
 
 const QString cWorkspaceMetadata = ".pato.md";
 const QString cAddedMetadata = ".added.md";
-
-
-QString getDir(QString str)
-{
-    str.replace('\\', '/');
-
-    while( str[ str.length() - 1] != '/')
-    {
-        str.remove( str.length() - 1, 1);
-    }
-    return str;
-}
-
-void copyFile(QString path1, QString path2, QString file)
-{
-    QDir().mkpath(getDir(path2 + '/' + file));
-    QFile(path1 + '/' + file).copy(path2 + '/' + file);
-}
-
 
 PatoWorkspace* PatoWorkspace::instance()
 {
@@ -52,7 +32,7 @@ PatoWorkspace::~PatoWorkspace()
 }
 
 //////////////PRIMEIRA FASE//////////////////////
-bool PatoWorkspace::create(QString sourceDir, QStringList files, QString repoAddress, RevisionKey revision )
+bool PatoWorkspace::create( QStringList files, QString repoAddress, RevisionKey revision)
 {
     if ( workPath.isEmpty())
     {
@@ -72,10 +52,13 @@ bool PatoWorkspace::create(QString sourceDir, QStringList files, QString repoAdd
 
     timespamp = QDateTime::currentDateTime();
 
+    qDebug() << "Repo: " << repoAddress;
+    qDebug() << "Rev: " << revision;
+
     for (int i=0; i < files.size(); i++)
     {
         versionedFiles << files[i];
-        copyFile(sourceDir, workPath, files[i] );
+        qDebug() << "Creating: " << files[i];
     }
 
     writeMetadata();
@@ -84,20 +67,11 @@ bool PatoWorkspace::create(QString sourceDir, QStringList files, QString repoAdd
     return true;
 }
 
-bool PatoWorkspace::setPath(QString directory, bool createDir)
+bool PatoWorkspace::setPath(QString directory)
 {
-    ready = false;
     workPath = directory;
-
-    if(!QDir(directory).exists())
-    {
-        if (createDir)
-            return QDir().mkpath(directory);
-
-        lastError = "Directory doesn't exist";
-    }
-
     QFile file( directory + "/" + cWorkspaceMetadata);
+
     if ( (ready = file.exists()) )
     {
         readMetadata();
@@ -106,7 +80,7 @@ bool PatoWorkspace::setPath(QString directory, bool createDir)
     return true;
 }
 
-bool PatoWorkspace::add( QString sourceDir, QStringList paths )
+bool PatoWorkspace::add( QStringList paths )
 {
     for (int i = 0; i < paths.size(); i++)
     {
@@ -115,11 +89,11 @@ bool PatoWorkspace::add( QString sourceDir, QStringList paths )
             if (!addedFiles.contains(paths[i]))
                 addedFiles.append(paths[i]);
 
-            copyFile(sourceDir, workPath, paths[i] );
+            qDebug() << QString("%1 - Added!!!").arg(paths[i]);
         }
         else
         {
-            qWarning() << QString("%1 - Already Versioned!!!").arg(paths[i]);
+            qDebug() << QString("%1 - Already Versioned!!!").arg(paths[i]);
         }
     }
 
@@ -154,6 +128,7 @@ QList< PatoFileStatus > PatoWorkspace::status(PatoFileStatus::FileStatus statusF
             }
         }
     }
+
 
     if (statusFilter & PatoFileStatus::ADDED)
     {
@@ -220,8 +195,8 @@ void PatoWorkspace::writeMetadata(MetadataType types)
         {
             QTextStream textStream(&file);
 
-            textStream << "Revision: " << revKey << endl;
-            textStream << "Default Repository: " << defaultPath << endl;
+            textStream << "Revision: " << revKey;
+            textStream << "Default Repository: " << defaultPath;
 
             for (int i=0; i < versionedFiles.size(); i++)
             {
@@ -265,8 +240,8 @@ void PatoWorkspace::readMetadata(MetadataType types)
         if (file.open( QFile::ReadOnly))
         {
             QTextStream textStream(&file);
-            revKey = textStream.readLine().toInt();
-            defaultPath = textStream.readLine();
+            textStream << "Revision: " << revKey << endl;
+            textStream << "Default Repository: " << defaultPath << endl;
 
             while (!textStream.atEnd())
             {
@@ -316,9 +291,4 @@ void PatoWorkspace::copy(/*originalPath, destinationPath*/)
 QString PatoWorkspace::getLastError() const
 {
     return lastError;
-}
-
-bool PatoWorkspace::isReady() const
-{
-    return ready;
 }
