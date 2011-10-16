@@ -12,8 +12,10 @@ public:
         ADDED,
         MODIFIED,
         REMOVED,
-        VERSIONED,
-        UNVERSIONED
+        CLEAN,
+        MISSING,
+        UNVERSIONED,
+        ALL
     };
 
 public:

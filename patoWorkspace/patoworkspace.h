@@ -6,6 +6,12 @@
 
 #include "../patoBase/patotypes.h"
 
+enum MetadataType
+{
+    META_ADDED = 0x00000001,
+    META_CONTROL = 0x00000002,
+    META_ALL = 0xFFFFFFFF
+};
 
 class PATOWORKSPACESHARED_EXPORT PatoWorkspace
 {
@@ -23,7 +29,8 @@ public:
     void add( QStringList path ); //add files and/or directories
     QString defaultRepositoryAddress() const; // return the source repository
     RevisionKey revision() const; //get current revision
-    QList< PatoFileStatus > status() const; // return a list of file status
+    QList< PatoFileStatus > status(PatoFileStatus::FileStatus = PatoFileStatus::ALL) const; // return a list of file status
+    QList< PatoFileStatus > changes() const; // return a list of file status
     /////////////////////////////////////////////////
 
     //////////////SEGUNDA FASE///////////////////////
@@ -38,8 +45,8 @@ private:
     PatoWorkspace();
     virtual ~PatoWorkspace();
 
-    void writeMetadata();
-    void readMetadata();
+    void writeMetadata(MetadataType = META_ALL);
+    void readMetadata(MetadataType = META_ALL);
 
 private:
     static PatoWorkspace* sigleWorkspace;
