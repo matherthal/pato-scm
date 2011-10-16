@@ -6,6 +6,8 @@
 #include "CppSQLite3.h"
 
 #include <string>
+#include <vector>
+#include <sstream>
 
 using namespace std;
 
@@ -25,13 +27,46 @@ public:
     //init bd
     void initBD();
 
+    //repository operations>
+    bool saveTransaction( std::string& message, std::string loginUser );
+    bool saveProjectElement(std::string& filePath, std::string& previousElement);
+    int getLastAvailableVersion();
+
+    bool getFilePath(std::string& project, int version, std::vector<std::string>& filePath);
+    bool getLog(std::string& project, int version, std::vector<std::string>&  filePath);
+    //<
+
 
     //user operations>
     bool validateUser(const string& login, const string& password);
+    bool validateUserProject( const std::string& login, const std::string& password, const std::string& project );
+    int getUserId(std::string& loginUser);
     //<
 
     //project operations>
     bool validateProject( const string& projectName );
+    int getProjectId(std::string& project);
+    //<
+
+    //IC operations>
+    bool insertProjectElement(std::string& filePath, std::string& project);
+    bool insertRelationElement(std::string& project, std::string& element, std::string& previousElement);
+    int  getLastElement( std::string& project, std::string& element );
+    int getLastProjectElement(std::string& project);
+    //<
+
+    //file operations>
+    bool insertFile(std::string& filePath, std::string& project);
+    //<
+
+    //folder operations>
+    bool hasFolderInsert(std::string& folder, std::string& project);
+    bool insertFolder(std::string& filePath, std::string& project);
+    //<
+
+    //Relation Project version with elements>
+    bool insertRelationProjectElementTransaction(std::string& project);
+    bool insertRelationProjectTransaction(const std::string& sqlInsert);
     //<
 
 private:
@@ -39,7 +74,7 @@ private:
     //singleton´s pattern variable
     static BDPatoDataModel *bdPato;
 
-    CppSQLite3DB bancoDados;
+    CppSQLite3DB dataBase;
 };
 
 }
