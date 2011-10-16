@@ -22,11 +22,11 @@ public://STATICS
 
 public:
     //////////////PRIMEIRA FASE//////////////////////
-    bool setPath(QString,bool createDir = false); //set workspace directory
-    bool create( QString sourceDir, QStringList files, QString repoAddress, RevisionKey revision); //create an initial workspace
+    bool setPath(QString); //set workspace directory
+    bool create( QStringList files, QString repoAddress, RevisionKey revision); //create an initial workspace
     bool update( PatoChangeSet changeSet, RevisionKey revision); //apply a changeset and update revision number
     bool setRevision( RevisionKey revision, bool commiting = true ); //update revision number
-    bool add( QString sourceDir, QStringList path ); //add files and/or directories
+    bool add( QStringList path ); //add files and/or directories
     QString defaultRepositoryAddress() const; // return the source repository
     RevisionKey revision() const; //get current revision
     QList< PatoFileStatus > status(PatoFileStatus::FileStatus = PatoFileStatus::ALL) const; // return a list of file status
@@ -42,7 +42,6 @@ public:
     /////////////////////////////////////////////////
 
     QString getLastError() const;
-    bool isReady() const;
 
 private:
     PatoWorkspace();
