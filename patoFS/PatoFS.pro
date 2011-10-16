@@ -5,6 +5,7 @@
 #-------------------------------------------------
 
 QT       -= gui
+QT       += sql
 
 TARGET = ../output/PatoFS
 TEMPLATE = lib
