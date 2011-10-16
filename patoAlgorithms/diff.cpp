@@ -3,6 +3,61 @@
 #include <sys/stat.h>
 #include <string.h>
 #include <stdlib.h>
+int Diff::use_pd;
+
+unsigned int func_hash(char* str, unsigned int len)
+{
+   unsigned int hash = 0;
+   unsigned int x    = 0;
+   unsigned int i    = 0;
+
+   for(i = 0; i < len; str++, i++)
+   {
+      hash = (hash << 4) + (*str);
+      if((x = hash & 0xF0000000L) != 0)
+      {
+         hash ^= (x >> 24);
+      }
+      hash &= ~x;
+   }
+
+   return hash;
+}
+
+char* init_str(char *str,unsigned int from,unsigned int *to){
+    if(str[*to]=='\n'){
+        unsigned int length = *to-from;
+        char *tmp = (char*)malloc(sizeof(char)*(length+1));
+        tmp[length]='\0';
+        return tmp;
+    }else{
+        unsigned int posTmp = *to-from;
+        unsigned int posStr = *to;
+        *to = *to+1;
+        char* tmp = init_str(str,from,to);
+        tmp[posTmp]=str[posStr];
+        return tmp;
+    }
+}
+
+hashtable** Diff::init_hash(char *arq,int size,unsigned int i,int *length){
+    if(i>=size){
+        hashtable** _htable =(hashtable**)malloc(sizeof(hashtable*)* (*length));
+        return _htable;
+    }else{
+        unsigned int pos=i;
+        char *str = init_str(arq,i,&pos);
+        unsigned int str_length = pos-i;
+        int my_pos = *length;
+        *length = *length+1;
+        hashtable** _htable = init_hash(arq,size,pos+1,length);
+        _htable[my_pos] = (hashtable*)malloc(sizeof(hashtable));
+        _htable[my_pos]->line = str;
+        _htable[my_pos]->length=str_length;
+        _htable[my_pos]->hash = func_hash(str,str_length);
+        return _htable;
+    }
+}
 
 Diff::Diff(ifstream *fileA,ifstream *fileB, int _type)
 {
@@ -14,6 +69,10 @@ Diff::Diff(ifstream *fileA,ifstream *fileB, int _type)
 
 Diff::Diff(const char *fileNameA,const char *fileNameB, int _type)
 {
+    diff = NULL;
+    last_diff = NULL;
+    first_diff = NULL;
+    position = -1;
     ifstream fileA,fileB;
     struct stat results;
     if (stat(fileNameA, &results) == 0)
@@ -26,11 +85,14 @@ Diff::Diff(const char *fileNameA,const char *fileNameB, int _type)
     Diff::fileB->open(fileNameB,fstream::binary);
     type = _type;
     calculateDiff();
-}
-
-Diff::~Diff(){
     Diff::fileA->close();
     Diff::fileB->close();
+}
+
+Diff::~Diff(){	
+    freeDiffItems(diff);
+    free_hash(htableA,sizeHashA);
+    free_hash(htableB,sizeHashB);
 }
 
 void Diff::calculateDiff(){
@@ -40,91 +102,254 @@ void Diff::calculateDiff(){
         dataB = new char[sizeFileB];
         fileA->read(dataA,sizeFileA);
         fileB->read(dataB,sizeFileB);
-        char *lcs_ret = lcs(dataA,dataB,type);
-        cout<<lcs_ret<<endl;
-        empty = sizeFileA == sizeFileB && strlen(lcs_ret)==sizeFileA;
+        sizeHashA=0,sizeHashB=0;
+        htableA = init_hash(dataA,sizeFileA,0,&sizeHashA);
+        htableB = init_hash(dataB,sizeFileB,0,&sizeHashB);
+        if(use_pd)table = build_linked_table();
+        int length_lcs = 0;
+        t_lcs *p= lcsTxt(0,0,&length_lcs);
+        t_lcs *to_diff = p;
+
+        generateDiff(to_diff);
+
+        empty = sizeHashA==sizeHashB && length_lcs==sizeHashA;
+        if(use_pd)free_table(table,sizeHashA,sizeHashB);
     }
+}
+
+void Diff::freeDiffItems(t_diff *_diff){
+    if(_diff!=NULL){
+        freeDiffItems(_diff->next);
+        delete _diff->diffItem;
+        free(_diff);
+    }
+}
+
+void Diff::addDiffItem(DiffItem* _item){
+    if(last_diff==NULL){
+        position = 0;
+        diff = (t_diff*)malloc(sizeof(t_diff));
+        diff->diffItem = _item;
+        diff->prev = NULL;
+        diff->next = NULL;
+        diff->pos = position;
+        last_diff = diff;
+        first_diff = diff;
+    }else{
+        last_diff->next = (t_diff*)malloc(sizeof(t_diff));
+        last_diff->next->diffItem = _item;
+        last_diff->next->next = NULL;
+        last_diff->next->prev = last_diff;
+        last_diff->next->pos = last_diff->pos+1;
+        last_diff = last_diff->next;
+    }
+}
+
+DiffItem* Diff::getDiffItem(int _pos){
+    if(diff==NULL)return NULL;
+    if(_pos>last_diff->pos)return NULL;
+    if(position<_pos){
+        do{
+            diff = diff->next;
+            position = diff->pos;
+        }while(position<_pos);
+        if(diff==NULL)diff=first_diff;
+    }else if(position>_pos){
+        do{
+            diff = diff->prev;
+            position = diff->pos;
+        }while(position>_pos);
+        if(diff==NULL)diff=last_diff;
+    }
+    return diff->diffItem;
+
+}
+
+void Diff::print(){
+    t_diff *p = first_diff;
+    while(p!=NULL){
+        p->diffItem->print();
+        p = p->next;
+    }
+}
+
+void Diff::generateDiff(t_lcs *p){
+    DiffItem *diffitem;
+    int lastA=-1,lastB=-1;
+    int findA,findB;
+    while(p!=NULL){
+        findA=p->indexA-lastA-1;
+        findB=p->indexB-lastB-1;
+
+        if(findA && findB){
+            diffitem = new DiffItem(DiffItem::Action_Change,lastA+1,p->indexA-1,lastB+1,p->indexB-1,htableA,htableB);
+            addDiffItem(diffitem);
+        }else if(findA){
+            diffitem = new DiffItem(DiffItem::Action_Delete,lastA+1,p->indexA-1,lastB,lastB,htableA,htableB);
+            addDiffItem(diffitem);
+        }else if(findB){
+            diffitem = new DiffItem(DiffItem::Action_Add,lastA,lastA,lastB+1,p->indexB-1,htableA,htableB);
+            addDiffItem(diffitem);
+        }
+        lastA = p->indexA;
+        lastB = p->indexB;
+        p = p->next;
+    }
+    findA=sizeHashA-lastA-1;
+    findB=sizeHashB-lastB-1;
+
+    if(findA && findB){
+        diffitem = new DiffItem(DiffItem::Action_Change,lastA+1,sizeHashA-1,lastB+1,sizeHashB-1,htableA,htableB);
+        addDiffItem(diffitem);
+    }else if(findA){
+        diffitem = new DiffItem(DiffItem::Action_Delete,lastA+1,sizeHashA-1,lastB,lastB,htableA,htableB);
+        addDiffItem(diffitem);
+    }else if(findB){
+        diffitem = new DiffItem(DiffItem::Action_Add,lastA,lastA,lastB+1,sizeHashB-1,htableA,htableB);
+        addDiffItem(diffitem);
+    }
+
 }
 
 char* Diff::lcsBin(char *arqA,unsigned long a, char *arqB,unsigned long b){
     if(strlen(arqA)==a || strlen(arqB)==b){
-            return (char*)"";
+        return (char*)"";
     }else if(arqA[a]==arqB[b]){
-            char *ret,*tmp;
+        char *ret,*tmp;
 
-            tmp = lcsBin(arqA,a+1,arqB,b+1);
-            ret = (char*)malloc(sizeof(char)*(strlen(tmp)+1));
-            ret[0] = arqA[a];
-            strcat(ret,tmp);
+        tmp = lcsBin(arqA,a+1,arqB,b+1);
+        ret = new char[strlen(tmp)+1];//(char*)malloc(sizeof(char)*(strlen(tmp)+1));
+        ret[0] = arqA[a];
+        strcat(ret,tmp);
 
-            return ret;
+        return ret;
     }else{
-            char *p1,*p2;
-            p1 = lcsBin(arqA,a+1,arqB,b);
-            p2 = lcsBin(arqA,a,arqB,b+1);
-            if(strlen(p2)>strlen(p1)){
-                    return p2;
-            }else{
-                    return p1;
-            }
+        char *p1,*p2;
+        p1 = lcsBin(arqA,a+1,arqB,b);
+        p2 = lcsBin(arqA,a,arqB,b+1);
+        if(strlen(p2)>strlen(p1)){
+                return p2;
+        }else{
+                return p1;
+        }
     }
 }
 
-char* Diff::lcsTxt(char *arqA,unsigned long a, char *arqB,unsigned long b){
-
-    if(strlen(arqA)==a || strlen(arqB)==b){
-            //cout <<"*";
-            return (char*)"\0";
+void Diff::add_to_table(int i,int j,int indexA,int indexB,int next_i,int next_j){
+    if(!use_pd)return;
+    if(table[i]==NULL){
+        table[i]=(biglinkedtable**)malloc(sizeof(biglinkedtable*)*(sizeHashB));
+        memset(table[i],NULL,sizeof(biglinkedtable*)*(sizeHashB));
     }
-
-    int i=0;
-    int fimA,fimB,iguais;
-    fimA = fimB = 0;
-    iguais = 1;
-    while(!fimA || !fimB){
-            if(!fimA && !fimB){
-                    if(arqA[a+i] != arqB[b+i])
-                            iguais = 0;
-                    if(arqA[a+i]=='\n'||arqA[a+i]=='\0')fimA=a+i;
-                    if(arqB[b+i]=='\n'||arqB[b+i]=='\0')fimB=b+i;
-            }else if(fimA){
-                    if(arqB[b+i]=='\n'||arqB[b+i]=='\0')fimB=b+i;
-            }	else if(fimB){
-                    if(arqA[a+i]=='\n'||arqA[a+i]=='\0')fimA=a+i;
-            }
-            i++;
-    }
-
-    if(iguais)
-    {
-            char *ret,*tmp;
-            tmp = lcsTxt(arqA,fimA+1,arqB,fimB+1);
-            ret = (char*)malloc(sizeof(char)*(strlen(tmp)+(fimA-a+1)));
-            for(int j=a;j<fimA+1;j++)
-                    ret[j-a] = arqA[j];
-            //printf("%s%s==",ret,tmp);
-            strcat(ret,tmp);
-            //printf("%s?\n",ret);
-            return ret;
-
+    table[i][j] = (biglinkedtable*)malloc(sizeof(biglinkedtable));
+    table[i][j]->indexA = indexA;
+    table[i][j]->indexB = indexB;
+    table[i][j]->i = i;
+    table[i][j]->j = j;
+    if(next_i<sizeHashA && table[next_i] && next_j<sizeHashB){
+        table[i][j]->next = table[next_i][next_j];
     }else{
-            char *p1,*p2;
-            p1 = lcsTxt(arqA,fimA+1,arqB,b);
-            p2 = lcsTxt(arqA,a,arqB,fimB+1);
-            if(strlen(p2)>strlen(p1)){
-                    return p2;
-            }else{
-                    return p1;
-            }
+        table[i][j]->next=NULL;
     }
 }
 
-char* Diff::lcs(char *arqA, char *arqB, int type){
+t_lcs* Diff::lcsTxt(int i,int j,int *size){
+    if(i>=sizeHashA || j>=sizeHashB){
+        *size=0;
+        return NULL;
+    }
+    if(use_pd && table[i]!=NULL && table[i][j]!=NULL){
+        t_lcs *n=NULL,*ret=NULL;
+        biglinkedtable *pt = table[i][j];
+        while(pt!=NULL){
+            if(pt->indexA>=0){
+                if(n==NULL)n = (t_lcs*)malloc(sizeof(t_lcs));
+                else{
+                    n->next = (t_lcs*)malloc(sizeof(t_lcs));
+                    n = n->next;
+                }
+                if(ret==NULL)ret = n;
+                *size = *size+1;
+                n->indexA = pt->indexA;
+                n->indexB = pt->indexB;
+                n->next = NULL;
+            }
+            pt = pt->next;
+        }
+        //if(ret!=NULL)printf("\n");
+        return ret;
+    }
+    int same = 0;
+    if(htableA[i]->hash == htableB[j]->hash){
+        if(htableA[i]->length==htableB[j]->length)
+            same = strcmp(htableA[i]->line,htableB[j]->line)==0;
+    }
+    if(same){
+        t_lcs *p = lcsTxt(i+1,j+1,size);
+        *size = *size+1;
+        t_lcs *n = (t_lcs*)malloc(sizeof(t_lcs));
+        n->indexA = i;
+        n->indexB = j;
+        n->next = p;
+        add_to_table(i,j,n->indexA,n->indexB,i+1,j+1);
+        return n;
+    }else{
+        int size1=*size;
+        int size2=*size;
+        t_lcs *p1 = lcsTxt(i+1,j,&size1);
+        t_lcs *p2 = lcsTxt(i,j+1,&size2);
+        if(size1>=size2){
+            add_to_table(i,j,-1,-1,i+1,j);
+            *size = size1;
+            free_lcs(p2);
+            return p1;
+        }else{
+            add_to_table(i,j,-1,-1,i,j+1);
+            *size = size2;
+            free_lcs(p1);
+            return p2;
+        }
+    }
+}
+
+biglinkedtable*** Diff::build_linked_table(){
+    table = (biglinkedtable***)malloc(sizeof(biglinkedtable**)*(sizeHashA));
+    memset(table,NULL,sizeof(biglinkedtable**)*(sizeHashA));
+    return table;
+}
+
+void Diff::free_lcs(t_lcs *p){
+    if(p!=NULL && p->next==NULL)
+        free(p);
+    else if(p!=NULL){
+        free_lcs(p->next);
+        p->next=NULL;
+        free(p);
+    }
+}
+
+void Diff::free_hash(hashtable** _htable,int size){
+    for(int i=0;i<size;i++){
+        free(_htable[i]);
+    }
+    free(_htable);
+}
+
+void Diff::free_table(biglinkedtable*** _table,int _linesA, int _linesB){
+    for(int i=0;i<_linesA;i++){
+        if(_table[i]!=NULL)free(_table[i]);
+    }
+    free(_table);
+}
+
+char* Diff::lcs(char *_arqA, char *_arqB, int type){
     char *tmp;
     if (type == T_Bin)
-            tmp = lcsBin(arqA,0,arqB,0);
-    else
-            tmp = lcsTxt(arqA,0,arqB,0);
+        tmp = lcsBin(_arqA,0,_arqB,0);
+    else{
+
+        //tmp = lcsTxt(0,0);
+    }
     return tmp;
 }
 

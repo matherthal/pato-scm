@@ -21,7 +21,6 @@ public:
     static void destroyInstance();
 
     //getters and setters >
-
     //a set of file keys from the latest version
     int* getFileKey(const string& pFilePath);
 
@@ -33,9 +32,6 @@ public:
     //<
 
     //repositoy operations >
-
-
-
     //<
 
     //user operations >

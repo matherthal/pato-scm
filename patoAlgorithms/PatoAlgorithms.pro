@@ -13,11 +13,14 @@ DEFINES += PATOALGORITHMS_LIBRARY
 
 SOURCES += patoalgorithms.cpp \
     main.cpp \
-    diff.cpp
+    diff.cpp \
+    diffitem.cpp
 
 HEADERS += patoalgorithms.h\
         PatoAlgorithms_global.h \
-    diff.h
+    diff.h \
+    diffitem.h \
+    lcs.h
 
 MAKEFILE =
 
@@ -41,4 +44,7 @@ unix:!symbian {
 }
 
 OTHER_FILES +=
+
+
+
 

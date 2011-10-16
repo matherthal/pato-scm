@@ -15,7 +15,8 @@ PatoFS::PatoFS() {
 
 }
 
-PatoFS* PatoFS::getInstance() {
+PatoFS* PatoFS::getInstance() 
+{
 
 	if (mPatoFS == NULL)
 		mPatoFS = new mPatoFS();
@@ -25,9 +26,9 @@ PatoFS* PatoFS::getInstance() {
 
 void PatoFS::destroyInstance() {
 
+
 	if (mPatoFS != NULL) {
 		delete mPatoFS;
 		mPatoFS = NULL;
 	}
 }
-
