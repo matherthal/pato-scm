@@ -14,11 +14,12 @@ class statusCLI {
 public:
     statusCLI();
     statusCLI(const statusCLI& orig);
+    void command(int argc, char** argv);
     virtual ~statusCLI();
-    void SetPath(QString path);
-    QString GetPath() const;
+    void SetWorkspace(QString workspace);
+    QString GetWorkspace() const;
 private:
-    QString path;
+    QString workspace;
     
 };
 

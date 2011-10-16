@@ -15,6 +15,7 @@ public:
     updateCLI();
     updateCLI(const updateCLI& orig);
     virtual ~updateCLI();
+    void command(int argc, char** argv);
     void SetAddress(QString address);
     QString GetAddress() const;
     void SetPassword(QString password);

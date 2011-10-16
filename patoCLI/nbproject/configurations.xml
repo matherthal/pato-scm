@@ -8,7 +8,7 @@
       <itemPath>checkinCLI.h</itemPath>
       <itemPath>checkoutCLI.h</itemPath>
       <itemPath>cliReader.h</itemPath>
-      <itemPath>../patoClientAPI/statusCLI.h</itemPath>
+      <itemPath>statusCLI.h</itemPath>
       <itemPath>updateCLI.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
@@ -34,7 +34,7 @@
       <itemPath>checkoutCLI.cpp</itemPath>
       <itemPath>cliReader.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
-      <itemPath>../patoClientAPI/statusCLI.cpp</itemPath>
+      <itemPath>statusCLI.cpp</itemPath>
       <itemPath>updateCLI.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
