@@ -1,13 +1,16 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <iostream>
-#include <sys/resource.h>
+//#include <sys/resource.h>
 #include "diff.h"
 
 using namespace std;
 
 void Tempo_CPU_Sistema(double *seg_CPU_total, double *seg_sistema_total)
 {
+    *seg_CPU_total=0;
+    *seg_sistema_total=0;
+    /*
   long seg_CPU, seg_sistema, mseg_CPU, mseg_sistema;
   struct rusage ptempo;
 
@@ -20,6 +23,7 @@ void Tempo_CPU_Sistema(double *seg_CPU_total, double *seg_sistema_total)
 
  *seg_CPU_total     = (seg_CPU + 0.000001 * mseg_CPU);
  *seg_sistema_total = (seg_sistema + 0.000001 * mseg_sistema);
+ */
 }
 
 int main(int argc, char *argv[]){
