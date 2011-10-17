@@ -9,12 +9,16 @@ private:
     ifstream *fileA;
     ifstream *fileBase;
     ifstream *fileB;
-    ifstream *mergeFile;
+    ofstream *mergeFile;
     void doMerge();
+    void doAdd(DiffItem*);
+    void doDeletion(DiffItem*);
+    void doChange(DiffItem*);
+    void insertLines(DiffItem*,int from,int to);
 public:
     Merge(char* _fileBase,char* _fileA,char* _fileB);
     ~Merge();
-    ifstream getFile();
+    ofstream* getFile();
 };
 
 #endif // MERGE_H
