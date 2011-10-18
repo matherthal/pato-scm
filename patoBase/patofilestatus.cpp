@@ -40,4 +40,6 @@ const PatoFileStatus& PatoFileStatus::operator = (const PatoFileStatus& src)
 {
     _fileName = src._fileName;
     _status = src._status;
+
+    return *this;
 }
