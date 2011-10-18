@@ -5,8 +5,9 @@ PatoFileStatus::PatoFileStatus(QObject *parent) : QObject(parent)
 }
 
 
-PatoFileStatus::PatoFileStatus(const PatoFileStatus&) :  QObject(NULL)
+PatoFileStatus::PatoFileStatus(const PatoFileStatus& src) :  QObject(NULL)
 {
+    *this = src;
 }
 
 PatoFileStatus::PatoFileStatus(QString file, FileStatus stat) :QObject(NULL)
@@ -35,3 +36,8 @@ void PatoFileStatus::setStatus( FileStatus  s)
     _status = s;
 }
 
+const PatoFileStatus& PatoFileStatus::operator = (const PatoFileStatus& src)
+{
+    _fileName = src._fileName;
+    _status = src._status;
+}
