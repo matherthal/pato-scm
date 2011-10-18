@@ -30,6 +30,8 @@ public:
     void setFileName( QString );
     void setStatus( FileStatus );
 
+    const PatoFileStatus& operator = (const PatoFileStatus&);
+
 
 
 signals:
