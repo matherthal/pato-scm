@@ -27,6 +27,7 @@ void PatoDataModel::destroyInstance() {
 bool PatoDataModel::checkIn(std::vector<std::string>& filePath, std::string& project, std::string loginUser, std::string& message)
 {
     bd::BDPatoDataModel* dataBase = bd::BDPatoDataModel::getInstance();
+    using namespace std;
 
     if ( !dataBase->saveTransaction(message, loginUser) )
         return false;
