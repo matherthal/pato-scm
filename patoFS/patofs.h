@@ -8,7 +8,6 @@ class PATOFSSHARED_EXPORT PatoFS {
 
 private:
     PatoFS();
-    ~PatoFS();
 
     static PatoFS* mPatoFS;
     QSqlDatabase db;
