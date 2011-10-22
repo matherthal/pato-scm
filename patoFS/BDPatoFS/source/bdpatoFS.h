@@ -1,7 +1,7 @@
-#ifndef BDPATODATAMODEL_H
-#define BDPATODATAMODEL_H
+#ifndef BDPatoFS_H
+#define BDPatoFS_H
 
-#include "PatoDataModel_global.h"
+#include "PatoFs_global.h"
 
 #include "CppSQLite3.h"
 
@@ -12,15 +12,15 @@
 using namespace std;
 
 namespace bd {
-class PATODATAMODELSHARED_EXPORT BDPatoDataModel
+class PATOFSSHARED_EXPORT BDPatoFS
 {
 private:
-    BDPatoDataModel();
+    BDPatoFS();
 
 public:
 
     //singleton´s pattern functions>
-    static BDPatoDataModel* getInstance();
+    static BDPatoFS* getInstance();
     static void destroyInstance();
     //<
 
@@ -72,11 +72,11 @@ public:
 private:
 
     //singleton´s pattern variable
-    static BDPatoDataModel *bdPato;
+    static BDPatoFS *bdPato;
 
     CppSQLite3DB dataBase;
 };
 
 }
 
-#endif // BDPATODATAMODEL_H
+#endif // BDPatoFS_H

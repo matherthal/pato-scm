@@ -1,6 +1,8 @@
 #include "patofs.h"
 #include <iostream>
 
+PatoFS* PatoFS::mPatoFS = NULL;
+
 //constructor
 PatoFS::PatoFS() {
     db = QSqlDatabase::addDatabase( "QSQLITE" );

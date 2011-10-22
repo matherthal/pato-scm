@@ -1,25 +1,25 @@
-#include "bdpatodatamodel.h"
+#include "bdpatofs.h"
 
-#define PATH_BD "\\BDPatoDataModel\\DataBase"
+#define PATH_BD "..\\patoDataModel\\BDPatoDataModel\\DataBase\\DataModelBD"
 namespace bd {
 
-    BDPatoDataModel* BDPatoDataModel::bdPato = NULL;
+    BDPatoFS* BDPatoFS::bdPato = NULL;
 
-    BDPatoDataModel::BDPatoDataModel()
+    BDPatoFS::BDPatoFS()
     {
         //init bd
         initBD();
     }
 
-    BDPatoDataModel* BDPatoDataModel::getInstance()
+    BDPatoFS* BDPatoFS::getInstance()
     {
         if ( !bdPato )
-            bdPato = new BDPatoDataModel();
+            bdPato = new BDPatoFS();
 
         return bdPato;
     }
 
-    void BDPatoDataModel::destroyInstance()
+    void BDPatoFS::destroyInstance()
     {
         if ( bdPato )
         {
@@ -28,7 +28,7 @@ namespace bd {
         }
     }
 
-    void BDPatoDataModel::initBD()
+    void BDPatoFS::initBD()
     {
         try{
             dataBase.open(PATH_BD);
@@ -42,7 +42,7 @@ namespace bd {
     }
 
     //repository operations>
-    bool BDPatoDataModel::saveTransaction( std::string& message, std::string loginUser )
+    bool BDPatoFS::saveTransaction( std::string& message, std::string loginUser )
     {
         int userId = getUserId(loginUser);
         std::stringstream outUserId;
@@ -70,7 +70,7 @@ namespace bd {
 
     }
 
-    int BDPatoDataModel::getLastAvailableVersion()
+    int BDPatoFS::getLastAvailableVersion()
     {
         std::string sqlLastAvailableVersion = "select max(tran_id) from transacao;";
 
@@ -96,7 +96,7 @@ namespace bd {
     }
 
 
-    bool BDPatoDataModel::getFilePath(std::string& project, int version, std::vector<std::string>& filePath)
+    bool BDPatoFS::getFilePath(std::string& project, int version, std::vector<std::string>& filePath)
     {
         int projectId = getProjectId(project);
         std::stringstream outProjectId;
@@ -144,7 +144,7 @@ namespace bd {
 
     }
 
-    bool BDPatoDataModel::getLog(std::string& project, int version, std::vector<std::string>&  filePath)
+    bool BDPatoFS::getLog(std::string& project, int version, std::vector<std::string>&  filePath)
     {
         std::stringstream outVersion;
         if ( version == -1 )
@@ -197,7 +197,7 @@ namespace bd {
 //<
 
 //user operations>
-    bool BDPatoDataModel::validateUser(const string& login, const string& password)
+    bool BDPatoFS::validateUser(const string& login, const string& password)
     {
         try{
             std::string sqlUser = "select count(*) from usuario where usua_login like '";
@@ -229,7 +229,7 @@ namespace bd {
         return false;
     }
 
-    bool BDPatoDataModel::validateUserProject( const std::string& login, const std::string& password, const std::string& project )
+    bool BDPatoFS::validateUserProject( const std::string& login, const std::string& password, const std::string& project )
     {
         std::string sqlUserProject = "select count(*) from usuario u, projeto_usuario pu, projeto p where u.usua_id = pu.usua_id and ";
         sqlUserProject.append("pu.proj_id = p.proj_id and ");
@@ -267,7 +267,7 @@ namespace bd {
         return true;
     }
 
-    int BDPatoDataModel::getUserId(std::string& loginUser)
+    int BDPatoFS::getUserId(std::string& loginUser)
     {
         std::string sqlUser = "select usua_id from usuario where upper(usua_login) like upper('";
         sqlUser.append(loginUser);
@@ -296,7 +296,7 @@ namespace bd {
     //<
 
     //project operations>
-    bool BDPatoDataModel::validateProject( const string& projectName )
+    bool BDPatoFS::validateProject( const string& projectName )
     {
         try{
             std::string sqlUser = "select count(*) from projeto where proj_nome like '";
@@ -327,7 +327,7 @@ namespace bd {
 
     }
 
-    int BDPatoDataModel::getProjectId(std::string& project)
+    int BDPatoFS::getProjectId(std::string& project)
     {
         std::string sqlProjectId = "select proj_id from projeto where upper(proj_nome) like upper('";
         sqlProjectId.append(project);
@@ -356,7 +356,7 @@ namespace bd {
     //<
 
     //IC operations>
-    bool BDPatoDataModel::insertProjectElement(std::string& filePath, std::string& project)
+    bool BDPatoFS::insertProjectElement(std::string& filePath, std::string& project)
     {
         int lastVersion = getLastAvailableVersion();
         std::stringstream outLastVersion;
@@ -391,7 +391,7 @@ namespace bd {
         return false;
     }
 
-    bool BDPatoDataModel::insertRelationElement(std::string& project, std::string& element, std::string& previousElement)
+    bool BDPatoFS::insertRelationElement(std::string& project, std::string& element, std::string& previousElement)
     {
         if ( previousElement.empty() )
                 return false;
@@ -426,7 +426,7 @@ namespace bd {
         return false;
     }
 
-    int BDPatoDataModel::getLastElement( std::string& project, std::string& element )
+    int BDPatoFS::getLastElement( std::string& project, std::string& element )
     {
         int projectId = getProjectId(project);
         std::stringstream outProjectId;
@@ -457,7 +457,7 @@ namespace bd {
         return -1;
     }
 
-    int BDPatoDataModel::getLastProjectElement(std::string& project)
+    int BDPatoFS::getLastProjectElement(std::string& project)
     {
         int projectId = getProjectId(project);
         std::stringstream outProjectId;
@@ -493,7 +493,7 @@ namespace bd {
     //<
 
     //file operations>
-    bool BDPatoDataModel::insertFile(std::string& filePath, std::string& project)
+    bool BDPatoFS::insertFile(std::string& filePath, std::string& project)
     {
         insertProjectElement(filePath, project);
 
@@ -525,7 +525,7 @@ namespace bd {
     //<
 
     //folder operations>
-    bool BDPatoDataModel::hasFolderInsert(std::string& folder, std::string& project)
+    bool BDPatoFS::hasFolderInsert(std::string& folder, std::string& project)
     {
         int projectId = getProjectId(project);
         std::stringstream outProjectId;
@@ -562,7 +562,7 @@ namespace bd {
         return false;
     }
 
-    bool BDPatoDataModel::insertFolder(std::string& filePath, std::string& project)
+    bool BDPatoFS::insertFolder(std::string& filePath, std::string& project)
     {
         insertProjectElement(filePath, project);
 
@@ -593,7 +593,7 @@ namespace bd {
     //<
 
     //Relation Project version with elements>
-    bool BDPatoDataModel::insertRelationProjectElementTransaction(std::string& project)
+    bool BDPatoFS::insertRelationProjectElementTransaction(std::string& project)
     {
         std::stringstream outMaxVersion;
         int maxVersion = getLastAvailableVersion();
@@ -644,7 +644,7 @@ namespace bd {
 
     }
 
-    bool BDPatoDataModel::insertRelationProjectTransaction(const std::string& sqlInsert)
+    bool BDPatoFS::insertRelationProjectTransaction(const std::string& sqlInsert)
     {
         try{
 
