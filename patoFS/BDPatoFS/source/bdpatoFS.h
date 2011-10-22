@@ -27,47 +27,19 @@ public:
     //init bd
     void initBD();
 
-    //repository operations>
-    bool saveTransaction( std::string& message, std::string loginUser );
-    bool saveProjectElement(std::string& filePath, std::string& previousElement);
-    int getLastAvailableVersion();
+    //sqls
+    void createSqlInsert(const std::string& data, std::string& sql);
 
-    bool getFilePath(std::string& project, int version, std::vector<std::string>& filePath);
-    bool getLog(std::string& project, int version, std::vector<std::string>&  filePath);
-    //<
+    //saving data
+    int saveData(const std::string& data);
+    bool saveData(const std::vector<std::string>& data, std::vector<int>& vecIdFile);
 
+    //loading data
+    bool loadData(const int idFile, std::string& data);
+    bool loadData(const std::vector<int>& vecIdFile, std::vector<std::string>& vecData);
 
-    //user operations>
-    bool validateUser(const string& login, const string& password);
-    bool validateUserProject( const std::string& login, const std::string& password, const std::string& project );
-    int getUserId(std::string& loginUser);
-    //<
-
-    //project operations>
-    bool validateProject( const string& projectName );
-    int getProjectId(std::string& project);
-    //<
-
-    //IC operations>
-    bool insertProjectElement(std::string& filePath, std::string& project);
-    bool insertRelationElement(std::string& project, std::string& element, std::string& previousElement);
-    int  getLastElement( std::string& project, std::string& element );
-    int getLastProjectElement(std::string& project);
-    //<
-
-    //file operations>
-    bool insertFile(std::string& filePath, std::string& project);
-    //<
-
-    //folder operations>
-    bool hasFolderInsert(std::string& folder, std::string& project);
-    bool insertFolder(std::string& filePath, std::string& project);
-    //<
-
-    //Relation Project version with elements>
-    bool insertRelationProjectElementTransaction(std::string& project);
-    bool insertRelationProjectTransaction(const std::string& sqlInsert);
-    //<
+    //delete data
+    bool deleteData(const std::vector<int>& idFile);
 
 private:
 
