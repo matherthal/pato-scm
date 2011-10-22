@@ -1,5 +1,6 @@
 #include "patofs.h"
 #include <iostream>
+#include "bdpatofs.h"
 
 PatoFS* PatoFS::mPatoFS = NULL;
 
@@ -32,4 +33,26 @@ void PatoFS::destroyInstance() {
         delete mPatoFS;
         mPatoFS = NULL;
     }
+}
+
+//saving data
+int PatoFS::saveData(const std::string& data)
+{
+    return bd::BDPatoFS::getInstance()->saveData(data);
+}
+
+bool PatoFS::saveData(const std::vector<std::string>& data, std::vector<int>& vecIdFile)
+{
+    return bd::BDPatoFS::getInstance()->saveData(data, vecIdFile);
+}
+
+//loading data
+bool PatoFS::loadData(const int idFile, std::string& data)
+{
+    return bd::BDPatoFS::getInstance()->loadData(idFile, data);
+}
+
+bool PatoFS::loadData(const std::vector<int>& vecIdFile, std::vector<std::string>& vecData)
+{
+    return bd::BDPatoFS::getInstance()->loadData(vecIdFile, vecData);
 }
