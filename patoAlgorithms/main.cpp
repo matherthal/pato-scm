@@ -28,16 +28,11 @@ void Tempo_CPU_Sistema(double *seg_CPU_total, double *seg_sistema_total)
 
 int main(int argc, char *argv[]){
     double s_CPU_inicial, s_CPU_final, s_total_inicial, s_total_final,t;
-    Diff::use_pd=1;
-    if(argc>1){
-        Diff::use_pd =atoi(argv[1]);
-    }
-    printf("PD: %d\n",Diff::use_pd);
 
     printf("##### TESTE 1 #####\n");
     Tempo_CPU_Sistema(&s_CPU_inicial, &s_total_inicial);
 
-    Diff *diff = new Diff("fixtures/arq1.txt","fixtures/arq2.txt",Diff::T_Txt);
+    Diff *diff = new Diff("fixtures/arq1.txt","fixtures/arq2.txt");
 
     Tempo_CPU_Sistema(&s_CPU_final, &s_total_final);
     t = s_CPU_final - s_CPU_inicial;
@@ -73,7 +68,7 @@ int main(int argc, char *argv[]){
     printf("##### TESTE 2 #####\n");
     Tempo_CPU_Sistema(&s_CPU_inicial, &s_total_inicial);
 
-    Diff *diff2 = new Diff("fixtures/arq1.txt","fixtures/arq1.txt",Diff::T_Txt);
+    Diff *diff2 = new Diff("fixtures/arq1.txt","fixtures/arq1.txt");
     diff2->print();
     Tempo_CPU_Sistema(&s_CPU_final, &s_total_final);
     t = s_CPU_final - s_CPU_inicial;
@@ -89,7 +84,7 @@ int main(int argc, char *argv[]){
     printf("##### TESTE 3 #####\n");
     Tempo_CPU_Sistema(&s_CPU_inicial, &s_total_inicial);
 
-    Diff *diff3 = new Diff("fixtures/boa.txt","fixtures/boa2.txt",Diff::T_Txt);
+    Diff *diff3 = new Diff("fixtures/boa.txt","fixtures/boa2.txt");
     diff3->print();
     Tempo_CPU_Sistema(&s_CPU_final, &s_total_final);
     t = s_CPU_final - s_CPU_inicial;
@@ -127,7 +122,7 @@ int main(int argc, char *argv[]){
     printf("##### TESTE 4 #####\n");
     Tempo_CPU_Sistema(&s_CPU_inicial, &s_total_inicial);
 
-    Diff *diff4 = new Diff("fixtures/grande.txt","fixtures/grande2.txt",Diff::T_Txt);
+    Diff *diff4 = new Diff("fixtures/grande.txt","fixtures/grande2.txt");
     diff4->print();
     Tempo_CPU_Sistema(&s_CPU_final, &s_total_final);
     t = s_CPU_final - s_CPU_inicial;
