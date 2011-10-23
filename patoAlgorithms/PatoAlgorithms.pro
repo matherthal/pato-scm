@@ -15,7 +15,8 @@ SOURCES += patoalgorithms.cpp \
     main.cpp \
     diff.cpp \
     diffitem.cpp \
-    merge.cpp
+    merge.cpp \
+    lcs.cpp
 
 HEADERS += patoalgorithms.h\
         PatoAlgorithms_global.h \
@@ -46,6 +47,7 @@ unix:!symbian {
 }
 
 OTHER_FILES +=
+
 
 
 
