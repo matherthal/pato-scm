@@ -1,0 +1,9 @@
+A
+<<<<<<< fileA.txt
+C
+=======
+B
+X
+>>>>>>> fileB.txt
+D
+E
