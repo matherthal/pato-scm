@@ -14,6 +14,7 @@ private:
     void doDeletion(DiffItem*);
     void doChange(DiffItem*);
     void insertLines(DiffItem*,int from,int to);
+    bool is_in_lcs(int index,t_lcs *lcs);
 public:
     Merge(const char* _fileBase,const char* _fileA,const char* _fileB);
     ~Merge();
