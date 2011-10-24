@@ -53,5 +53,7 @@ public:
     int num_linesB();
     hashtable** get_htableA();
     hashtable** get_htableB();
+    char* getLineA(int _num_line);
+    char* getLineB(int _num_line);
 };
 #endif // LCS_H

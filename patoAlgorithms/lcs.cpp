@@ -228,3 +228,11 @@ hashtable** Lcs::get_htableA(){
 hashtable** Lcs::get_htableB(){
     return htableB;
 }
+
+char* Lcs::getLineA(int _num_line){
+    return htableA[_num_line]->line;
+}
+
+char* Lcs::getLineB(int _num_line){
+    return htableB[_num_line]->line;
+}

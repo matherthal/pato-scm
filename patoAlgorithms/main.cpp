@@ -147,15 +147,16 @@ int main(int argc, char *argv[]){
 */
 
     printf("=============== MERGE ==============\n");
+    printf("##### TESTE 1 #####\n");
     Merge *merge1 = new Merge("fixtures/base.txt","fixtures/fileA.txt","fixtures/fileB.txt");
     delete merge1;
-    printf("\nTESTE2\n");
+    printf("\n##### TESTE 2 #####\n");
     Merge *merge2 = new Merge("fixtures/base.txt","fixtures/fileA2.txt","fixtures/fileB2.txt");
     delete merge2;
-    printf("\nTESTE3\n");
+    printf("\n##### TESTE 3 #####\n");
     Merge *merge3 = new Merge("fixtures/base.txt","fixtures/fileA3.txt","fixtures/fileB3.txt");
     delete merge3;
-    printf("\nTESTE4\n");
+    printf("\n##### TESTE 4 #####\n");
     Merge *merge4 = new Merge("fixtures/base.txt","fixtures/fileA4.txt","fixtures/fileB4.txt");
     delete merge4;
 

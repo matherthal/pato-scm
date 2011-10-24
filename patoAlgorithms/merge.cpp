@@ -14,24 +14,29 @@ void Merge::doMerge(){
     int i=0;
     int lastLine=-1;
     while(diff->getDiffItem(i)!=NULL){
-
         switch (diff->getDiffItem(i)->getType()){
             case DiffItem::Action_Add:
+                insertLines(lcs_fileA_base,lastLine+1,diff->getDiffItem(i)->getAddAfter());
                 doAdd(diff->getDiffItem(i));
+                lastLine = diff->getDiffItem(i)->getAddAfter();
                 break;
             case DiffItem::Action_Delete:
+                insertLines(lcs_fileA_base,lastLine+1,diff->getDiffItem(i)->getFromA()-1);
                 doDeletion(diff->getDiffItem(i));
+                lastLine = diff->getDiffItem(i)->getToA();
                 break;
             case DiffItem::Action_Change:                
+                insertLines(lcs_fileA_base,lastLine+1,diff->getDiffItem(i)->getFromA()-1);
                 doChange(diff->getDiffItem(i));
+                lastLine = diff->getDiffItem(i)->getToA();
                 break;
         }
-
         i++;
     }
+    insertLines(lcs_fileA_base,lastLine+1,lcs_fileA_base->num_linesA()-1);
 }
 
-void Merge::insertLines(DiffItem* item, int from,int to){
+void Merge::insertLines(Lcs* item, int from,int to){
     for(int i=from;i<=to;i++){
         printf("%s\n",item->getLineA(i));
        // mergeFile->write(item->getLineA(i),sizeof(char)*strlen(item->getLineA(i)));
