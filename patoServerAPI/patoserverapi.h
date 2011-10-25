@@ -15,7 +15,6 @@ private:
 public:
     void checkout(int revision, QString path, QString username, QString password);
     void checkin(QString path, QString username, QString password);
-    void update(QString revision, QString path, QString username, QString password);
 
     PatoServerApi();
 };
