@@ -75,7 +75,39 @@ void PatoClientApi::add(QString workspace, QList<QString> files) {
         return;
     } else if (files.isEmpty()) {
         cout << "The add command needs at least one file to add." << endl;
-        return;
+        return;TextStream qout(stdout);
+
+        bool* conversao;
+        int revisionInt = revision.toInt(conversao, 10);
+
+
+
+        if(revision == revision.null){
+            cout<<"revision is null!!!"<<endl;
+        }
+
+        if (revisionInt < -1) {
+            cout << "Invalid revision number." << endl;
+            return;
+        } else if (address == "") {
+            cout << "The update command needs an address." << endl;
+            return;
+        } else if (username == "") {
+            cout << "The update command needs an username." << endl;
+            return;
+        } else if (password == "") {
+            cout << "The update command needs a password." << endl;
+            return;
+        } else if (workspace == "") {
+            cout << "The update command needs a workspace." << endl;
+            return;
+        }
+
+        qout << "revision = " << revision << endl;
+        qout << "address = " << address << endl;
+        qout << "username = " << username << endl;
+        qout << "password = " << password << endl;
+        qout << "workspace = " << workspace << endl;
     }
 
     qout << "workspace = " << workspace << endl;
