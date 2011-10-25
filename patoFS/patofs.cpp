@@ -1,6 +1,6 @@
 #include "patofs.h"
 #include <iostream>
-#include "bdpatofs.h"
+#include "bdpatoFS.h"
 
 PatoFS* PatoFS::mPatoFS = NULL;
 
