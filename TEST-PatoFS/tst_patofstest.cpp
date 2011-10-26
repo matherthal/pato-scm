@@ -1,6 +1,7 @@
 #include <QtCore/QString>
 #include <QtTest/QtTest>
 #include <patofs.h>
+
 class PatoFSTest : public QObject
 {
     Q_OBJECT

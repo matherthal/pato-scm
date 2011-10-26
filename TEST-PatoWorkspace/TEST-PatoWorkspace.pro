@@ -7,6 +7,7 @@
 QT       += testlib
 
 QT       -= gui
+QT       += sql
 
 TARGET = ../output/tst_test_patoworkspace
 CONFIG   += console

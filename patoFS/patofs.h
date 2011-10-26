@@ -2,7 +2,7 @@
 #define PATOFS_H
 
 #include "PatoFS_global.h"
-#include <QtSql>
+#include <QSqlDatabase>
 
 class PATOFSSHARED_EXPORT PatoFS {
 
