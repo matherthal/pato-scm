@@ -1,13 +1,14 @@
 #ifndef BDPatoFS_H
 #define BDPatoFS_H
 
-#include "PatoFs_global.h"
+#include "PatoFS_global.h"
 
-#include "CppSQLite3.h"
+//#include "CppSQLite3.h"
 
 #include <string>
 #include <vector>
 #include <sstream>
+#include <QtSql>
 
 using namespace std;
 
@@ -16,6 +17,7 @@ class PATOFSSHARED_EXPORT BDPatoFS
 {
 private:
     BDPatoFS();
+    QSqlDatabase db;
 
 public:
 
@@ -46,7 +48,7 @@ private:
     //singleton´s pattern variable
     static BDPatoFS *bdPato;
 
-    CppSQLite3DB dataBase;
+    //CppSQLite3DB dataBase;
 };
 
 }
