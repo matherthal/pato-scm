@@ -1,7 +1,7 @@
 #include "patoworkspace.h"
 #include <QDir>
 #include "../patoBase/patoResourceAbstractFactory.h"
-#include "../patoBase/IFile.h"
+#include "../patoBase/ifile.h"
 
 PatoWorkspace* PatoWorkspace::sigleWorkspace = NULL;
 

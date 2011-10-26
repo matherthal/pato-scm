@@ -1,7 +1,7 @@
 #include <QtCore/QString>
 #include <QtTest/QtTest>
 #include "../patoWorkspace/patoworkspace.h"
-#include "../patoBase/PatoResourceAbstractFactory.h"
+#include "../patoBase/patoResourceAbstractFactory.h"
 
 const QString testDIR  = QString("./testDIR/");
 const QString testTMP  = QString("./testTMP/");

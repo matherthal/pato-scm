@@ -19,4 +19,4 @@ TEMPLATE = app
 SOURCES += tst_test_patoworkspace.cpp
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
 
-LIBS += -L"../output" -lPatoWorkspace
+LIBS += -L"../output" -lPatoWorkspace -lPatoBase
