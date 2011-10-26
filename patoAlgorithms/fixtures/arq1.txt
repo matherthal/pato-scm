@@ -1,0 +1,6 @@
+Arquivo 1
+B
+C
+Dado de teste
+Errado?
+Falso!
