@@ -5,16 +5,21 @@
 #-------------------------------------------------
 
 QT       -= gui
+QT       += sql
 
 TARGET = ../output/PatoFS
 TEMPLATE = lib
 
 DEFINES += PATOFS_LIBRARY
 
-SOURCES += patofs.cpp
+SOURCES += patofs.cpp \
+    BDPatoFS/source/CppSQLite3.cpp \
+    BDPatoFS/source/bdpatoFS.cpp
 
 HEADERS += patofs.h\
-        PatoFS_global.h
+        PatoFS_global.h \
+    BDPatoFS/source/CppSQLite3.h \
+    BDPatoFS/source/bdpatoFS.h
 
 symbian {
     MMP_RULES += EXPORTUNFROZEN
@@ -34,3 +39,11 @@ unix:!symbian {
     }
     INSTALLS += target
 }
+
+
+
+symbian: LIBS += -lsqlite3
+else:unix|win32: LIBS += -L$$PWD/BDPatoFS/lib/ #-lsqlite3
+
+INCLUDEPATH += $$PWD/BDPatoFS/source
+DEPENDPATH += $$PWD/BDPatoFS
