@@ -3,6 +3,7 @@
 
 #include "PatoFS_global.h"
 #include <QSqlDatabase>
+#include <vector>
 
 class PATOFSSHARED_EXPORT PatoFS {
 
