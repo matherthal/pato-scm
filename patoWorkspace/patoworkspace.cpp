@@ -1,5 +1,7 @@
 #include "patoworkspace.h"
 #include <QDir>
+#include "../patoBase/patoResourceAbstractFactory.h"
+#include "../patoBase/IFile.h"
 
 PatoWorkspace* PatoWorkspace::sigleWorkspace = NULL;
 
@@ -23,7 +25,6 @@ void copyFile(QString path1, QString path2, QString file)
     QDir().mkpath(getDir(path2 + '/' + file));
     QFile(path1 + '/' + file).copy(path2 + '/' + file);
 }
-
 
 PatoWorkspace* PatoWorkspace::instance()
 {
@@ -60,8 +61,10 @@ bool PatoWorkspace::create(QString sourceDir, QStringList files, QString repoAdd
         return false;
     }
 
-    QFile file( workPath + "/" + cWorkspaceMetadata);
-    if ( file.exists() )
+    PatoResourceAbstractFactory *factory = PatoResourceAbstractFactory::getInstance();
+    IFile *file = factory->createFile(workPath + "/" + cWorkspaceMetadata);
+
+    if ( file->exists() )
     {
         lastError = "Repository already created.";
         return false;
