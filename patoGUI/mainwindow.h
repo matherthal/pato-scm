@@ -16,7 +16,6 @@ public:
     ~MainWindow();
 private slots:
     void setWorkspaceModel(const QString &str);
-    void checkout();
     void enableActions();
 private:
     Ui::MainWindow *ui;

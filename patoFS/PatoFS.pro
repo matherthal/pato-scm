@@ -43,7 +43,7 @@ unix:!symbian {
 
 
 symbian: LIBS += -lsqlite3
-else:unix|win32: LIBS += -L$$PWD/BDPatoFS/lib/ -lsqlite3
+else:unix|win32: LIBS += -L$$PWD/BDPatoFS/lib/ #-lsqlite3
 
 INCLUDEPATH += $$PWD/BDPatoFS/source
 DEPENDPATH += $$PWD/BDPatoFS

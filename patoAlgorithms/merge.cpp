@@ -2,7 +2,7 @@
 #include "merge.h"
 
 Merge::Merge(char* _fileNameBase,char* _fileNameA,char* _fileNameB){
-    diff = new Diff(_fileNameA,_fileNameB,Diff::T_Txt);
+    diff = new Diff(_fileNameA,_fileNameB);
 
     Merge::mergeFile = NULL;
     ifstream _fileA,_fileB,_fileBase;
