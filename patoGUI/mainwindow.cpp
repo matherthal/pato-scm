@@ -2,6 +2,8 @@
 #include "ui_mainwindow.h"
 #include "environmentsettingsdialog.h"
 #include "checkindialog.h"
+#include "checkoutdialog.h"
+#include "exportdialog.h"
 #include <QtGui>
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -16,18 +18,27 @@ MainWindow::MainWindow(QWidget *parent) :
     //Creation of the Pato-SCM Dialogs
     EnvironmentSettingsDialog *environmentSettingsDialog = new EnvironmentSettingsDialog;
     CheckinDialog *checkinDialog = new CheckinDialog;
+    CheckoutDialog *checkoutDialog = new CheckoutDialog;
+    ExportDialog *exportDialog = new ExportDialog;
 
 
     //Actions
     connect(environmentSettingsDialog, SIGNAL(setWorkspacePath(QString)), this, SLOT(setWorkspaceModel(QString)));
     connect(environmentSettingsDialog, SIGNAL(setWorkspacePath(QString)), this, SLOT(enableActions()));
-    connect(ui->actionCheckout, SIGNAL(triggered()), this, SLOT(checkout()));
+
+    connect(environmentSettingsDialog, SIGNAL(setWorkspacePath(QString)), checkoutDialog, SLOT(setTitle(QString)));
+    connect(environmentSettingsDialog, SIGNAL(setRepositoryPath(QString)), checkoutDialog, SLOT(setRepositoryPath(QString)));
+    connect(ui->actionCheckout, SIGNAL(triggered()), checkoutDialog, SLOT(show()));
 
     connect(environmentSettingsDialog, SIGNAL(setWorkspacePath(QString)), checkinDialog, SLOT(setTitle(QString)));
     connect(environmentSettingsDialog, SIGNAL(setRepositoryPath(QString)), checkinDialog, SLOT(setRepositoryPath(QString)));
     connect(ui->actionCheckin, SIGNAL(triggered()), checkinDialog, SLOT(show()));
 
+    connect(environmentSettingsDialog, SIGNAL(setRepositoryPath(QString)), exportDialog, SLOT(setRepositoryPath(QString)));
+    connect(ui->actionExport, SIGNAL(triggered()), exportDialog, SLOT(show()));
+
     connect(checkinDialog, SIGNAL(showEnvironmentSettings()), environmentSettingsDialog, SLOT(show()));
+    connect(checkoutDialog, SIGNAL(showEnvironmentSettings()), environmentSettingsDialog, SLOT(show()));
     connect(ui->actionEnvironment_Settings, SIGNAL(triggered()), environmentSettingsDialog, SLOT(show()));
 
     //Window properties
@@ -58,8 +69,9 @@ void MainWindow::enableActions()
 {
     ui->actionCheckin->setEnabled(true);
     ui->actionCheckout->setEnabled(true);
-}
-void MainWindow::checkout()
-{
-    //Checkout
+    ui->menuWorkspace->setEnabled(true);
+    ui->actionAdd_File_Dir->setEnabled(true);
+    ui->actionRemove_File_Dir->setEnabled(true);
+    ui->actionUpdate->setEnabled(true);
+
 }

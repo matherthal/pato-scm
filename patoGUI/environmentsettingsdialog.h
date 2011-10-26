@@ -2,15 +2,21 @@
 #define ENVIRONMENTSETTINGSDIALOG_H
 #include <QDialog>
 
-class QCheckBox;
-class QLabel;
-class QLineEdit;
-class QPushButton;
+namespace Ui {
+class EnvironmentSettingsDialog;
+}
+
 class EnvironmentSettingsDialog : public QDialog
 {
     Q_OBJECT
+
 public:
-    EnvironmentSettingsDialog(QWidget *parent = 0);
+    explicit EnvironmentSettingsDialog(QWidget *parent = 0);
+    ~EnvironmentSettingsDialog();
+
+private:
+    Ui::EnvironmentSettingsDialog *ui;
+
 signals:
     void setWorkspacePath(const QString &str);
     void setRepositoryPath(const QString &str);
@@ -19,24 +25,6 @@ signals:
 private slots:
     void getRepositoryPath();
     void getWorkspacePath();
-    void getAuthentication();
     void apply();
-private:
-    QLabel *repositoryPathLabel;
-    QLabel *workspacePathLabel;
-    QLabel *userPasswordLabel;
-    QLabel *userNameLabel;
-
-    QLineEdit *repositoryPathEdit;
-    QLineEdit *workspacePathEdit;
-    QLineEdit *userPasswordEdit;
-    QLineEdit *userNameEdit;
-
-    QCheckBox *userAuthenticationBox;
-
-    QPushButton *cancelButton;
-    QPushButton *applyButton;
-    QPushButton *chooseRepositoryButton;
-    QPushButton *chooseWorkspaceButton;
 };
-#endif
+#endif // ENVIRONMENTSETTINGSDIALOG_H
