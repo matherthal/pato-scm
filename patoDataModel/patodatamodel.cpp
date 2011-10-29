@@ -5,6 +5,7 @@ PatoDataModel* PatoDataModel::patoDataModel = NULL;
 
 PatoDataModel::PatoDataModel()
 {
+
 }
 
 PatoDataModel* PatoDataModel::getInstance() {
@@ -23,14 +24,20 @@ void PatoDataModel::destroyInstance() {
     }
 }
 
+bool PatoDataModel::initBD()
+{
+    return bd::BDPatoDataModel::getInstance()->initBD();
+}
+
 //repositoy operations >
 bool PatoDataModel::checkIn(std::vector<std::string>& filePath, std::string& project, std::string loginUser, std::string& message)
 {
     bd::BDPatoDataModel* dataBase = bd::BDPatoDataModel::getInstance();
-    using namespace std;
-
+    qDebug()<< "inicio";
     if ( !dataBase->saveTransaction(message, loginUser) )
         return false;
+
+    qDebug()<< "salvou transacao";
 
     std::vector<std::string>::iterator itFilePath;
     for( itFilePath = filePath.begin(); itFilePath != filePath.end(); itFilePath++ )

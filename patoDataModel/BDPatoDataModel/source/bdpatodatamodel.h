@@ -8,6 +8,7 @@
 #include <string>
 #include <vector>
 #include <sstream>
+#include <QtSql>
 
 using namespace std;
 
@@ -16,16 +17,17 @@ class PATODATAMODELSHARED_EXPORT BDPatoDataModel
 {
 private:
     BDPatoDataModel();
+    virtual ~BDPatoDataModel();
 
 public:
 
     //singleton´s pattern functions>
     static BDPatoDataModel* getInstance();
     static void destroyInstance();
-    //<
+     //<
 
     //init bd
-    void initBD();
+    bool initBD();
 
     //repository operations>
     bool saveTransaction( std::string& message, std::string loginUser );
@@ -74,7 +76,8 @@ private:
     //singleton´s pattern variable
     static BDPatoDataModel *bdPato;
 
-    CppSQLite3DB dataBase;
+    QSqlDatabase db;
+    //CppSQLite3DB dataBase;
 };
 
 }

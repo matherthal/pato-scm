@@ -1,6 +1,6 @@
 #include "bdpatodatamodel.h"
 
-#define PATH_BD "\\BDPatoDataModel\\DataBase"
+#define PATH_BD "..\\patoDataModel\\BDPatoDataModel\\DataBase\\DataModelBD"
 namespace bd {
 
     BDPatoDataModel* BDPatoDataModel::bdPato = NULL;
@@ -9,6 +9,15 @@ namespace bd {
     {
         //init bd
         initBD();
+    }
+
+    BDPatoDataModel::~BDPatoDataModel()
+    {
+        db.close();
+        for(int i = 0; i < db.connectionNames().size(); i++)
+        {
+            QSqlDatabase::removeDatabase(db.connectionNames()[i]);
+        }
     }
 
     BDPatoDataModel* BDPatoDataModel::getInstance()
@@ -28,17 +37,15 @@ namespace bd {
         }
     }
 
-    void BDPatoDataModel::initBD()
+    bool BDPatoDataModel::initBD()
     {
-        try{
-            dataBase.open(PATH_BD);
-        }
-        catch (CppSQLite3Exception& e)
+        if ( db.connectionName().isEmpty() )
         {
-            //write the code error in file log
-            e.errorMessage();
-            return;
+            db = QSqlDatabase::addDatabase( "QSQLITE","Connection" );
+            db.setDatabaseName(PATH_BD);
         }
+
+        return db.open();
     }
 
     //repository operations>
@@ -55,7 +62,16 @@ namespace bd {
         sqlInsertTransaction.append(message);
         sqlInsertTransaction.append("');");
 
-        try{
+        QSqlQuery query(db);
+        if ( query.exec(sqlInsertTransaction.c_str()) )
+        {
+            db.commit();
+            return true;
+        }
+
+        return false;
+
+        /*try{
 
             dataBase.execDML(sqlInsertTransaction.c_str());
             return true;
@@ -66,14 +82,26 @@ namespace bd {
             //write the code error in file log
             e.errorMessage();
             return false;
-        }
+        }*/
 
     }
 
     int BDPatoDataModel::getLastAvailableVersion()
     {
+        int nLastVersion = -1;
         std::string sqlLastAvailableVersion = "select max(tran_id) from transacao;";
+        QSqlQuery query(db);
+        if ( query.exec(sqlLastAvailableVersion.c_str()) )
+        {
 
+            while ( query.next() )
+            {
+                nLastVersion = query.value(0).toInt();
+            }
+        }
+
+        return nLastVersion;
+/*
         try{
 
                 CppSQLite3Query resultSet = dataBase.execQuery(sqlLastAvailableVersion.c_str());
@@ -91,7 +119,7 @@ namespace bd {
                 return -1;
         }
 
-        return -1;
+        return -1;*/
 
     }
 
@@ -119,7 +147,21 @@ namespace bd {
         sqlFilePath.append(outProjectId.str());
         sqlFilePath.append(";");
 
-        try{
+        QSqlQuery query(db);
+        if ( query.exec(sqlFilePath.c_str()) )
+        {
+            while(query.next())
+            {
+                QString path = query.value(0).toString();
+                filePath.push_back(path.toStdString());
+            }
+
+            return true;
+        }
+
+        return false;
+
+        /*try{
 
             CppSQLite3Query resultSet = dataBase.execQuery(sqlFilePath.c_str());
             while ( !resultSet.eof() )
@@ -140,7 +182,7 @@ namespace bd {
             return false;
         }
 
-        return false;
+        return false;*/
 
     }
 
@@ -171,7 +213,21 @@ namespace bd {
         sqlLog.append(outProjectId.str());
         sqlLog.append(";");
 
-        try{
+        QSqlQuery query(db);
+        if ( query.exec(sqlLog.c_str()) )
+        {
+            while ( query.next() )
+            {
+                QString path = query.value(0).toString();
+                filePath.push_back(path.toStdString());
+            }
+
+            return true;
+        }
+
+        return false;
+
+        /*try{
 
             CppSQLite3Query resultSet = dataBase.execQuery(sqlLog.c_str());
             while ( !resultSet.eof() )
@@ -191,7 +247,7 @@ namespace bd {
             return false;
         }
 
-        return false;
+        return false;*/
 
     }
 //<
@@ -199,6 +255,27 @@ namespace bd {
 //user operations>
     bool BDPatoDataModel::validateUser(const string& login, const string& password)
     {
+        std::string sqlUser = "select count(*) from usuario where usua_login like '";
+        sqlUser.append(login);
+        sqlUser.append("' and usua_senha like '");
+        sqlUser.append(password);
+        sqlUser.append("';");
+
+        QSqlQuery query(db);
+        if ( query.exec(sqlUser.c_str()) )
+        {
+            if( query.next() )
+            {
+                int nCountUser = query.value(0).toInt();
+                if ( nCountUser > 0 )
+                    return true;
+
+                return false;
+            }
+        }
+
+        return false;
+        /*
         try{
             std::string sqlUser = "select count(*) from usuario where usua_login like '";
             sqlUser.append(login);
@@ -226,7 +303,7 @@ namespace bd {
             return false;
         }
 
-        return false;
+        return false;*/
     }
 
     bool BDPatoDataModel::validateUserProject( const std::string& login, const std::string& password, const std::string& project )
@@ -243,7 +320,22 @@ namespace bd {
         sqlUserProject.append(password);
         sqlUserProject.append("');");
 
-        try{
+        QSqlQuery query(db);
+        if ( query.exec(sqlUserProject.c_str()) )
+        {
+            if ( query.next() )
+            {
+                int nCountUserProject = query.value(0).toInt();
+                if ( nCountUserProject > 0 )
+                    return true;
+
+                return false;
+            }
+        }
+
+        return false;
+
+        /*try{
 
             CppSQLite3Query resultSet = dataBase.execQuery(sqlUserProject.c_str());
             if ( !resultSet.eof() )
@@ -264,7 +356,7 @@ namespace bd {
             return false;
         }
 
-        return true;
+        return true;*/
     }
 
     int BDPatoDataModel::getUserId(std::string& loginUser)
@@ -273,6 +365,16 @@ namespace bd {
         sqlUser.append(loginUser);
         sqlUser.append("');");
 
+        int nUserId = -1;
+        QSqlQuery query(db);
+        if ( query.exec(sqlUser.c_str()) )
+        {
+            if ( query.next() )
+                nUserId = query.value(0).toInt();
+        }
+
+        return nUserId;
+/*
         try{
 
             CppSQLite3Query resultSet = dataBase.execQuery(sqlUser.c_str());
@@ -290,7 +392,7 @@ namespace bd {
             return -1;
         }
 
-        return -1;
+        return -1;*/
     }
 
     //<
@@ -298,7 +400,25 @@ namespace bd {
     //project operations>
     bool BDPatoDataModel::validateProject( const string& projectName )
     {
-        try{
+        std::string sqlUser = "select count(*) from projeto where proj_nome like '";
+        sqlUser.append(projectName);
+        sqlUser.append("';");
+
+        QSqlQuery query(db);
+        if ( query.exec(sqlUser.c_str()) )
+        {
+            if ( query.next() )
+            {
+                int nCount = query.value(0).toInt();
+                if (nCount > 0)
+                    return true;
+
+                return false;
+            }
+        }
+
+        return false;
+  /*      try{
             std::string sqlUser = "select count(*) from projeto where proj_nome like '";
             sqlUser.append(projectName);
             sqlUser.append("';");
@@ -323,7 +443,7 @@ namespace bd {
             return false;
         }
 
-        return false;
+        return false;*/
 
     }
 
@@ -333,7 +453,19 @@ namespace bd {
         sqlProjectId.append(project);
         sqlProjectId.append("');");
 
-        try{
+        int nProjectId = -1;
+        QSqlQuery query(db);
+        if ( query.exec(sqlProjectId.c_str()) )
+        {
+            if ( query.next() )
+            {
+                nProjectId = query.value(0).toInt();
+            }
+        }
+
+        return nProjectId;
+
+        /*try{
 
             CppSQLite3Query resultSet = dataBase.execQuery(sqlProjectId.c_str());
             if ( !resultSet.eof() )
@@ -350,7 +482,7 @@ namespace bd {
             return -1;
         }
 
-        return -1;
+        return -1;*/
 
     }
     //<
@@ -375,7 +507,16 @@ namespace bd {
         sqlInsert.append(outProjectId.str());
         sqlInsert.append(");");
 
-        try{
+        QSqlQuery query(db);
+        if ( query.exec(sqlInsert.c_str()) )
+        {
+            db.commit();
+            return true;
+        }
+
+        return false;
+
+        /*try{
 
             dataBase.execDML(sqlInsert.c_str());
             return true;
@@ -388,7 +529,7 @@ namespace bd {
             return false;
         }
 
-        return false;
+        return false;*/
     }
 
     bool BDPatoDataModel::insertRelationElement(std::string& project, std::string& element, std::string& previousElement)
@@ -410,7 +551,16 @@ namespace bd {
         sqlInsertRelationElement.append(outLastElement.str());
         sqlInsertRelationElement.append(");");
 
-        try{
+        QSqlQuery query(db);
+        if ( query.exec(sqlInsertRelationElement.c_str()) )
+        {
+            db.commit();
+            return true;
+        }
+
+        return false;
+
+        /*try{
 
                 dataBase.execDML(sqlInsertRelationElement.c_str());
                 return true;
@@ -423,7 +573,7 @@ namespace bd {
                 return false;
         }
 
-        return false;
+        return false;*/
     }
 
     int BDPatoDataModel::getLastElement( std::string& project, std::string& element )
@@ -438,7 +588,16 @@ namespace bd {
         sqlLastElement.append(outProjectId.str());
         sqlLastElement.append(";");
 
-        try{
+        int nLastElement = -1;
+        QSqlQuery query(db);
+        if ( query.exec(sqlLastElement.c_str()) )
+        {
+            if ( query.next() )
+                nLastElement = query.value(0).toInt();
+        }
+
+        return nLastElement;
+        /*try{
 
             CppSQLite3Query resultSet = dataBase.execQuery(sqlLastElement.c_str());
             if ( !resultSet.eof() )
@@ -454,7 +613,7 @@ namespace bd {
             return -1;
         }
 
-        return -1;
+        return -1;*/
     }
 
     int BDPatoDataModel::getLastProjectElement(std::string& project)
@@ -467,7 +626,17 @@ namespace bd {
         sqlLastProjectElement.append(outProjectId.str());
         sqlLastProjectElement.append(";");
 
-        try{
+        int nMaxProjectElement = -1;
+        QSqlQuery query(db);
+        if ( query.exec(sqlLastProjectElement.c_str()) )
+        {
+            if ( query.next() )
+                nMaxProjectElement = query.value(0).toInt();
+        }
+
+        return nMaxProjectElement;
+
+        /*try{
 
             CppSQLite3Query resultSet = dataBase.execQuery(sqlLastProjectElement.c_str());
             if ( !resultSet.eof() )
@@ -484,7 +653,7 @@ namespace bd {
                 return -1;
         }
 
-        return -1;
+        return -1;*/
     }
 
 
@@ -506,7 +675,16 @@ namespace bd {
         sqlInsertFile.append(outLastProjectElement.str());
         sqlInsertFile.append(", null, null, 0);");
 
-        try{
+        QSqlQuery query(db);
+        if ( query.exec(sqlInsertFile.c_str()) )
+        {
+            db.commit();
+            return true;
+        }
+
+        return false;
+
+        /*try{
 
             dataBase.execDML(sqlInsertFile.c_str());
             return true;
@@ -519,7 +697,7 @@ namespace bd {
             return false;
         }
 
-        return false;
+        return false;*/
     }
 
     //<
@@ -537,7 +715,22 @@ namespace bd {
         sqlFolderInsert.append(outProjectId.str());
         sqlFolderInsert.append(";");
 
-        try{
+        QSqlQuery query(db);
+        if ( query.exec(sqlFolderInsert.c_str()) )
+        {
+            if ( query.next() )
+            {
+                int nCount = query.value(0).toInt();
+                if ( nCount > 0 )
+                    return true;
+
+                return false;
+            }
+        }
+
+        return false;
+
+        /*try{
 
             CppSQLite3Query resultSet = dataBase.execQuery(sqlFolderInsert.c_str());
             if ( !resultSet.eof() )
@@ -559,7 +752,7 @@ namespace bd {
             return false;
         }
 
-        return false;
+        return false;*/
     }
 
     bool BDPatoDataModel::insertFolder(std::string& filePath, std::string& project)
@@ -575,7 +768,16 @@ namespace bd {
         sqlInsertFolder.append(outLastProjectElement.str());
         sqlInsertFolder.append(");");
 
-        try{
+        QSqlQuery query(db);
+        if ( query.exec(sqlInsertFolder.c_str()) )
+        {
+            db.commit();
+            return true;
+        }
+
+        return false;
+
+        /*try{
 
             dataBase.execDML(sqlInsertFolder.c_str());
             return true;
@@ -588,7 +790,7 @@ namespace bd {
             return false;
         }
 
-        return false;
+        return false;*/
     }
     //<
 
@@ -608,7 +810,43 @@ namespace bd {
         sqlMaxVersionFiles.append("WHERE I.PROJ_ID = ");
         sqlMaxVersionFiles.append(outProjectId.str());
         sqlMaxVersionFiles.append(" AND VERS_ID = (SELECT MAX(VERS_ID) FROM ITEM_CONFIGURACAO WHERE I.ITCO_NOME = ITCO_NOME );");
-        try{
+
+        std::string sqlInsertRelation;
+        QSqlQuery query(db);
+        if ( query.exec(sqlMaxVersionFiles.c_str()) )
+        {
+            while ( query.next() )
+            {
+                int elementId = query.value(0).toInt();
+
+                std::stringstream outElementId;
+                outElementId << elementId;
+
+                std::string sqlInsert = "insert into proj_item_tran(PRIT_ID, PROJ_ID, ITCO_ID, TRAN_ID) ";
+                sqlInsert.append("values ( null, ");
+                sqlInsert.append(outProjectId.str());
+                sqlInsert.append(", ");
+                sqlInsert.append(outElementId.str());
+                sqlInsert.append(", ");
+                sqlInsert.append(outMaxVersion.str());
+                sqlInsert.append("); \n");
+
+                //sqlInsertRelation.append(sqlInsert);
+
+                QSqlQuery queryTransaction(db);
+                if ( queryTransaction.exec(sqlInsert.c_str()) )
+                {
+                    db.commit();
+                }
+                else
+                    return false;
+
+            }
+        }
+
+        return false;
+
+        /*try{
             std::string sqlInsertRelation;
             CppSQLite3Query resultSet = dataBase.execQuery(sqlMaxVersionFiles.c_str());
             while ( !resultSet.eof() )
@@ -640,13 +878,21 @@ namespace bd {
             return false;
         }
 
-        return false;
+        return false;*/
 
     }
 
     bool BDPatoDataModel::insertRelationProjectTransaction(const std::string& sqlInsert)
     {
-        try{
+        QSqlQuery query(db);
+        if ( query.exec(sqlInsert.c_str()) )
+        {
+            db.commit();
+            return true;
+        }
+
+        return false;
+        /*try{
 
             dataBase.execDML(sqlInsert.c_str());
             return true;
@@ -657,7 +903,7 @@ namespace bd {
             //write code error in file log
             e.errorMessage();
             return false;
-        }
+        }*/
     }
 
 

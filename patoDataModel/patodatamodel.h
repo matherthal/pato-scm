@@ -19,6 +19,7 @@ public:
     static PatoDataModel* getInstance();
     static void destroyInstance();
 
+    bool initBD();
     //getters and setters >
     //a set of file keys from the latest version
     //int* getFileKey(const string& pFilePath);
