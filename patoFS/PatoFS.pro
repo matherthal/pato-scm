@@ -7,7 +7,9 @@
 QT       -= gui
 QT       += sql
 
-TARGET = ../output/PatoFS
+win32: TARGET = ../../output/PatoFS
+unix: TARGET = $$PWD/../output/PatoFS
+
 TEMPLATE = lib
 
 DEFINES += PATOFS_LIBRARY

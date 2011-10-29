@@ -11,11 +11,12 @@ private:
     PatoFS();
 
     static PatoFS* mPatoFS;
-    QSqlDatabase db;
+
 public:
     static PatoFS* getInstance();
-    static void destroyInstance();
+    static bool destroyInstance();
 
+    bool initBD();
     //saving data
     int saveData(const std::string& data);
     bool saveData(const std::vector<std::string>& data, std::vector<int>& vecIdFile);
