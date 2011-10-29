@@ -6,15 +6,6 @@ PatoFS* PatoFS::mPatoFS = NULL;
 
 //constructor
 PatoFS::PatoFS() {
-    db = QSqlDatabase::addDatabase( "QSQLITE" );
-    db.setDatabaseName("DataBase/PatoDB.sqlite");
-
-    if (!db.open()) {
-        std::cout << "Erro..." << endl;
-    }
-    else {
-        std::cout << "Ok" << endl;
-    }
 
 }
 
@@ -26,13 +17,21 @@ PatoFS* PatoFS::getInstance()
     return mPatoFS;
 }
 
-void PatoFS::destroyInstance() {
-
+bool PatoFS::destroyInstance() {
 
     if (mPatoFS != NULL) {
         delete mPatoFS;
         mPatoFS = NULL;
+
+        return true;
     }
+
+    return false;
+}
+
+bool PatoFS::initBD()
+{
+   return bd::BDPatoFS::getInstance()->initBD();
 }
 
 //saving data

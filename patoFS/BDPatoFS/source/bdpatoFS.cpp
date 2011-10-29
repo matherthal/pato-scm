@@ -12,6 +12,16 @@ namespace bd {
         initBD();
     }
 
+
+    BDPatoFS::~BDPatoFS()
+    {
+        db.close();
+        for(int i = 0; i < db.connectionNames().size(); i++)
+        {
+            QSqlDatabase::removeDatabase(db.connectionNames()[i]);
+        }
+    }
+
     BDPatoFS* BDPatoFS::getInstance()
     {
         if ( !bdPato )
@@ -20,31 +30,27 @@ namespace bd {
         return bdPato;
     }
 
-    void BDPatoFS::destroyInstance()
+    bool BDPatoFS::destroyInstance()
     {
         if ( bdPato )
         {
             delete bdPato;
             bdPato = NULL;
+
+            return true;
         }
+        return false;
     }
 
-    void BDPatoFS::initBD()
+    bool BDPatoFS::initBD()
     {
-        /*
-        try{
-            dataBase.open(PATH_BD);
-        }
-        catch (CppSQLite3Exception& e)
+        if ( db.connectionName().isEmpty() )
         {
-            //write the code error in file log
-            e.errorMessage();
-            return;
+            db = QSqlDatabase::addDatabase( "QSQLITE","Connection" );
+            db.setDatabaseName(PATH_BD);
+            return db.open();
         }
-        */
-
-        db = QSqlDatabase::addDatabase( "QSQLITE" );
-        db.setDatabaseName(PATH_BD);
+        return true;
     }
 
     //sqls
@@ -192,7 +198,7 @@ namespace bd {
         QString file;
         QSqlQuery query(db);
 
-        query.prepare("SELECT content FROM ARMAZENAMENTO WHERE arma_id = :key");
+        query.prepare("SELECT ARMA_CONTEUDO FROM ARMAZENAMENTO WHERE arma_id = :key");
         query.bindValue(":key",idFile);
 
         query.exec();
@@ -253,10 +259,13 @@ namespace bd {
             if ( itIdFile != vecIdFile.begin() )
                 sqlLoadData.append(", ");
 
-            sqlLoadData.append((*itIdFile));
+            std::stringstream OutId;
+            OutId << (*itIdFile);
+
+            sqlLoadData.append(OutId.str().c_str());
         }
 
-        sqlLoadData.append(")");
+        sqlLoadData.append(");");
 
         if (query.exec(sqlLoadData)) {
 

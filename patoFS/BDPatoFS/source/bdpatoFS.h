@@ -1,7 +1,7 @@
 #ifndef BDPatoFS_H
 #define BDPatoFS_H
 
-#include "PatoFS_global.h"
+#include "../../PatoFS_global.h"
 
 //#include "CppSQLite3.h"
 
@@ -17,17 +17,18 @@ class PATOFSSHARED_EXPORT BDPatoFS
 {
 private:
     BDPatoFS();
+    virtual ~BDPatoFS();
     QSqlDatabase db;
 
 public:
 
     //singleton´s pattern functions>
     static BDPatoFS* getInstance();
-    static void destroyInstance();
+    static bool destroyInstance();
     //<
 
     //init bd
-    void initBD();
+    bool initBD();
 
     //sqls
     void createSqlInsert(const std::string& data, std::string& sql);
