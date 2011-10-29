@@ -2,7 +2,11 @@
 # Project created by QtCreator 2011-08-25T11:56:35
 # -------------------------------------------------
 QT -= gui
-TARGET = ../output/PatoDataModel
+QT       += sql
+
+win32: TARGET = ../../output/PatoDataModel
+unix: TARGET = $$PWD/../output/PatoDataModel
+
 TEMPLATE = lib
 DEFINES += PATODATAMODEL_LIBRARY
 SOURCES += patodatamodel.cpp \
