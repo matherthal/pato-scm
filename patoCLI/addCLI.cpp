@@ -7,6 +7,8 @@
 
 #include "addCLI.h"
 #include "../patoClientAPI/patoclientapi.h"
+#include "../patoClientAPI/PatoClientException.h"
+#include "utils.h"
 #include<iostream>
 #include<QtCore/QTextStream>
 using namespace std;
@@ -24,30 +26,33 @@ void addCLI::command(int argc, char** argv) {
     PatoClientApi* clientAPI;
     clientAPI = new PatoClientApi();
     QString parameter;
-    
+
     QTextStream qout(stdout);
-    
-    for (int i = 2; i < argc; ) {
+
+    for (int i = 2; i < argc;) {
         parameter = argv[i];
 
-        
+        qout<<"for"<<endl;
         if (parameter == "--workspace") {
             workspace = argv[i + 1];
             i += 2;
-        }else {
-            qout << "[ERROR] " << parameter << " don't exist." << endl;
-            return;
+        } else {
+            qout << "fkjfdl" << endl;
+            workspace = utils::returnPath();
+            qout << workspace << endl;
         }
-        
-        for(; i < argc; i++){
+
+        for (; i < argc; i++) {
             QString aux = argv[i];
             files.append(aux);
         }
     }
-
-
-    clientAPI->add(workspace, files);
-
+    try {
+        clientAPI->add(workspace, files);
+    } catch (PatoClientException t) {
+        qout<<t.GetMessage()<<endl;
+        qout<<t.what()<<endl;
+    }
 }
 
 void addCLI::setFiles(QList<QString> files) {

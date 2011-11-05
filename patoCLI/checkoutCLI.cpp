@@ -15,8 +15,9 @@ using namespace std;
 void checkoutCLI::command(int argc, char** argv) {
     //treating cases that argc > 1
 
-    char* parameter;
     PatoClientApi* clientAPI;
+    clientAPI = new PatoClientApi();
+    char* parameter;
 
     for (int i = 2; i < argc; i += 2) {
         parameter = argv[i];
@@ -36,11 +37,11 @@ void checkoutCLI::command(int argc, char** argv) {
             return;
         }
     }
-
+    
     clientAPI = new PatoClientApi();
-
+    
     clientAPI->checkout(revision, address, username, password, workspace);
-
+    
 
 
 }

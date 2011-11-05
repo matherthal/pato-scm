@@ -10,6 +10,7 @@
       <itemPath>cliReader.h</itemPath>
       <itemPath>statusCLI.h</itemPath>
       <itemPath>updateCLI.h</itemPath>
+      <itemPath>utils.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -22,6 +23,8 @@
         </logicalFolder>
         <itemPath>../patoClientAPI/PatoClientApi.pro</itemPath>
         <itemPath>../patoClientAPI/PatoClientApi_global.h</itemPath>
+        <itemPath>../patoClientAPI/PatoClientException.cpp</itemPath>
+        <itemPath>../patoClientAPI/PatoClientException.h</itemPath>
         <itemPath>../patoClientAPI/patoclientapi.cpp</itemPath>
         <itemPath>../patoClientAPI/patoclientapi.h</itemPath>
       </logicalFolder>
@@ -36,6 +39,7 @@
       <itemPath>main.cpp</itemPath>
       <itemPath>statusCLI.cpp</itemPath>
       <itemPath>updateCLI.cpp</itemPath>
+      <itemPath>utils.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"
