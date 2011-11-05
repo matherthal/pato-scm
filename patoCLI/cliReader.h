@@ -8,7 +8,7 @@
 #ifndef CLIREADER_H
 #define	CLIREADER_H
 
-#include<string>
+#include<QtCore/QString>
 using namespace std;
 
 class cliReader {
@@ -17,11 +17,11 @@ public:
     cliReader(const cliReader& orig);
     virtual ~cliReader();
     void reader(int argc, char** argv);
-    void setCommand(char* command);
-    char* getCommand() const;
+    void setCommand(QString command);
+    QString getCommand() const;
     
 private:
-    char* command;
+    QString command;
 
 };
 

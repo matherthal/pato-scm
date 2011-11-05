@@ -37,9 +37,11 @@ OBJECTFILES= \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/checkinCLI.o \
 	${OBJECTDIR}/checkoutCLI.o \
+	${OBJECTDIR}/_ext/764798604/PatoClientException.o \
 	${OBJECTDIR}/statusCLI.o \
 	${OBJECTDIR}/updateCLI.o \
 	${OBJECTDIR}/cliReader.o \
+	${OBJECTDIR}/utils.o \
 	${OBJECTDIR}/addCLI.o \
 	${OBJECTDIR}/_ext/764798604/patoclientapi.o
 
@@ -83,6 +85,11 @@ ${OBJECTDIR}/checkoutCLI.o: checkoutCLI.cpp
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/checkoutCLI.o checkoutCLI.cpp
 
+${OBJECTDIR}/_ext/764798604/PatoClientException.o: ../patoClientAPI/PatoClientException.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/764798604
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/764798604/PatoClientException.o ../patoClientAPI/PatoClientException.cpp
+
 ${OBJECTDIR}/statusCLI.o: statusCLI.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
@@ -97,6 +104,11 @@ ${OBJECTDIR}/cliReader.o: cliReader.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/cliReader.o cliReader.cpp
+
+${OBJECTDIR}/utils.o: utils.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/utils.o utils.cpp
 
 ${OBJECTDIR}/addCLI.o: addCLI.cpp 
 	${MKDIR} -p ${OBJECTDIR}

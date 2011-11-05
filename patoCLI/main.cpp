@@ -5,8 +5,12 @@
  * Created on October 3, 2011, 8:00 PM
  */
 
+#include "cliReader.h"  
 #include <cstdlib>
-#include "cliReader.h"
+#include<iostream>
+#include<fstream>
+#include<QtCore/QFile>
+#include<QtCore/QTextStream>
 
 using namespace std;
 
@@ -15,6 +19,7 @@ using namespace std;
  */
 int main(int argc, char** argv) {
 
+    
     cliReader* cli;
     
     cli = new cliReader();
