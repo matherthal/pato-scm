@@ -30,9 +30,6 @@ public:
     //init bd
     bool initBD();
 
-    //sqls
-    void createSqlInsert(const std::string& data, std::string& sql);
-
     //saving data
     int saveData(const std::string& data);
     bool saveData(const std::vector<std::string>& data, std::vector<int>& vecIdFile);

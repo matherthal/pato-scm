@@ -37,8 +37,6 @@ bool PatoFS::initBD()
 //saving data
 int PatoFS::saveData(const std::string& data)
 {
-    qDebug() << "save Data: ";
-    qDebug(data.c_str());
     return bd::BDPatoFS::getInstance()->saveData(data);
 }
 

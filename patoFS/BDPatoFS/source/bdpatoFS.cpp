@@ -44,7 +44,6 @@ namespace bd {
 
     bool BDPatoFS::initBD()
     {
-        qDebug("conecta no bd");
         if ( db.connectionName().isEmpty() )
         {
             db = QSqlDatabase::addDatabase( "QSQLITE","ConnectionPatoFS" );
@@ -57,30 +56,6 @@ namespace bd {
     //sqls
 
     //nao entendi pra que essa funcao...
-    void BDPatoFS::createSqlInsert(const std::string& data, std::string& sql)
-    {
-        /*
-        std::string sqlInsert = "insert into armazenamento ( arma_id, arma_conteudo ) values ( null, '";
-        sqlInsert.append(data);
-        sqlInsert.append("' ); \n");
-
-        sql.append(sqlInsert);
-        */
-
-        //Cria um objeto query
-        QSqlQuery query(db);
-        QString qdata = QString(data.c_str());
-
-        db.transaction();
-
-        query.prepare("INSERT INTO ARMAZENAMENTO (arma_conteudo) VALUES (:cont)");
-        query.bindValue(":cont", qdata);
-        query.exec();
-
-        db.commit();
-
-    }
-
     //saving data
     int BDPatoFS::saveData(const std::string& data)
     {
@@ -91,22 +66,18 @@ namespace bd {
         sqlInsert.append(data);
         sqlInsert.append("');");
 
-        qDebug() << sqlInsert.c_str();
-
         QSqlQuery query(db);
         if (query.exec(sqlInsert.c_str())) {
-            qDebug()<< "executou a query";
+
             db.commit();
-            //última chave inserida...
-            query.exec("SELECT MAX(ARQU_ID) FROM ARMAZENAMENTO");
+            //Pega a ultima chave inserida...
+           query.exec("SELECT MAX(ARMA_ID) FROM ARMAZENAMENTO");
 
             if ( query.next() )
                 key = query.value(0).toInt();
         }
 
         return key;
-
-       qDebug() << query.executedQuery();
 
     }
 
@@ -117,6 +88,7 @@ namespace bd {
         for( itData = data.begin(); itData != data.end(); itData++ )
         {
             int idFile = saveData((*itData));
+
             if ( idFile == -1 )
             {
                 deleteData(vecIdFile);
