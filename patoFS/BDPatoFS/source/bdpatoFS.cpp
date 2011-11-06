@@ -44,9 +44,10 @@ namespace bd {
 
     bool BDPatoFS::initBD()
     {
+        qDebug("conecta no bd");
         if ( db.connectionName().isEmpty() )
         {
-            db = QSqlDatabase::addDatabase( "QSQLITE","Connection" );
+            db = QSqlDatabase::addDatabase( "QSQLITE","ConnectionPatoFS" );
             db.setDatabaseName(PATH_BD);
             return db.open();
         }
@@ -83,63 +84,29 @@ namespace bd {
     //saving data
     int BDPatoFS::saveData(const std::string& data)
     {
-        /*
-        std::string sqlInsert = "insert into armazenamento ( arma_id, arma_conteudo ) values ( null, '";
-        sqlInsert.append(data);
-        sqlInsert.append("' );");
-
-        try{
-
-            dataBase.execDML("begin transaction;");
-            dataBase.execDML(sqlInsert.c_str());
-            dataBase.execDML("commit transaction;");
-
-            std::string sqlMaxId = "select max(arma_id) from armazenamento;";
-            CppSQLite3Query resultSet = dataBase.execQuery(sqlMaxId.c_str());
-            if ( !resultSet.eof() )
-            {
-                int maxID = resultSet.getIntField(0);
-                return maxID;
-            }
-
-            return -1;
-        }
-        catch(CppSQLite3Exception& e)
-        {
-            dataBase.execDML("rollback;");
-            e.errorMessage();
-            return -1;
-        }
-
-       return -1;
-       */
-
-        //Cria um objeto query
-        QSqlQuery query(db);
-        QString qdata = QString(data.c_str());
         int key = -1;
 
-        db.transaction();
+        std::string sqlInsert = "INSERT INTO ARMAZENAMENTO (arma_id, arma_conteudo) VALUES ";
+        sqlInsert.append("(null,'");
+        sqlInsert.append(data);
+        sqlInsert.append("');");
 
-        query.prepare("INSERT INTO ARMAZENAMENTO (arma_conteudo) VALUES (:cont)");
-        query.bindValue(":cont", qdata);
-        if (query.exec()) {
+        qDebug() << sqlInsert.c_str();
 
+        QSqlQuery query(db);
+        if (query.exec(sqlInsert.c_str())) {
+            qDebug()<< "executou a query";
             db.commit();
             //última chave inserida...
-            query.exec("SELECT last_insert_rowid() FROM ARMAZENAMENTO");
+            query.exec("SELECT MAX(ARQU_ID) FROM ARMAZENAMENTO");
 
-            while(query.next())
+            if ( query.next() )
                 key = query.value(0).toInt();
-
-            return key;
         }
-        else {
 
-            std::cout << query.lastError().text().toStdString() << std::endl;
-            db.rollback();
-            return -1;
-        }
+        return key;
+
+       qDebug() << query.executedQuery();
 
     }
 

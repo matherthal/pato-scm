@@ -18,7 +18,7 @@ class PATOFSSHARED_EXPORT BDPatoFS
 private:
     BDPatoFS();
     virtual ~BDPatoFS();
-    QSqlDatabase db;
+
 
 public:
 
@@ -48,6 +48,7 @@ private:
 
     //singleton´s pattern variable
     static BDPatoFS *bdPato;
+    QSqlDatabase db;
 
     //CppSQLite3DB dataBase;
 };
