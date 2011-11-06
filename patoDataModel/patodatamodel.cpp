@@ -30,7 +30,7 @@ bool PatoDataModel::initBD()
 }
 
 //repositoy operations >
-bool PatoDataModel::checkIn(std::vector<std::string>& filePath, std::string& project, std::string loginUser, std::string& message)
+bool PatoDataModel::checkIn(std::map<std::string, int>& filePath, std::string& project, std::string& loginUser, std::string& message)
 {
     bd::BDPatoDataModel* dataBase = bd::BDPatoDataModel::getInstance();
     qDebug()<< "inicio";
@@ -39,11 +39,12 @@ bool PatoDataModel::checkIn(std::vector<std::string>& filePath, std::string& pro
 
     qDebug()<< "salvou transacao";
 
-    std::vector<std::string>::iterator itFilePath;
+    std::map<std::string, int>::iterator itFilePath;
     for( itFilePath = filePath.begin(); itFilePath != filePath.end(); itFilePath++ )
     {
         std::string previousElement;
-        if ( !saveProjectElement((*itFilePath), previousElement, project))
+        std::string path = itFilePath->first;
+        if ( !saveProjectElement(path, itFilePath->second, project, previousElement))
                 return false;
     }
 
@@ -52,7 +53,7 @@ bool PatoDataModel::checkIn(std::vector<std::string>& filePath, std::string& pro
     return true;
 }
 
-bool PatoDataModel::saveProjectElement(std::string& filePath, std::string& previousElement, std::string& project)
+bool PatoDataModel::saveProjectElement(std::string& filePath, int idFile, std::string& project, std::string& previousElement)
 {
     if ( filePath.empty() )
             return true;
@@ -75,14 +76,14 @@ bool PatoDataModel::saveProjectElement(std::string& filePath, std::string& previ
 
     if ( bFile )
     {
-        if ( !dataBase->insertFile(element, project) )
+        if ( !dataBase->insertFile(element, project, idFile) )
                 return false;
     }
     else
     {
-        if ( !dataBase->hasFolderInsert(element, project) )
-                if ( !dataBase->insertFolder(element, project) )
-                        return false;
+        //if ( !dataBase->hasFolderInsert(element, project) )
+        if ( !dataBase->insertFolder(element, project) )
+            return false;
     }
 
     dataBase->insertRelationElement(project, element, previousElement);
@@ -92,11 +93,11 @@ bool PatoDataModel::saveProjectElement(std::string& filePath, std::string& previ
     else
         filePath.erase(0, posTokenPath+1);
 
-    saveProjectElement(filePath, element, project);
+    saveProjectElement(filePath, idFile, project, element);
     return true;
 }
 
-bool PatoDataModel::checkOut(std::string& loginUser, std::string& password, std::string& project, int version, std::vector<std::string>& filePath)
+bool PatoDataModel::checkOut(std::string& loginUser, std::string& password, std::string& project, int version, std::map<std::string, int>& filePath)
 {
     if ( !validateUserProject(loginUser, password, project) )
             return false;

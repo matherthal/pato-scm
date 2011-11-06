@@ -34,7 +34,10 @@ public:
     bool saveProjectElement(std::string& filePath, std::string& previousElement);
     int getLastAvailableVersion();
 
-    bool getFilePath(std::string& project, int version, std::vector<std::string>& filePath);
+    std::string getNameConfigItem(int idItemConfig, std::string& project);
+    int getFileIdStored(std::string& nameFile);
+    void getCompletePath(int idItemConfig, std::string& project, std::string& completePath);
+    bool getFilePath(std::string& project, int version, std::map<std::string, int>& filePath);
     bool getLog(std::string& project, int version, std::vector<std::string>&  filePath);
     //<
 
@@ -51,6 +54,7 @@ public:
     //<
 
     //IC operations>
+    std::string getFolderInserted(std::string& folderToInsert, std::string& project);
     bool insertProjectElement(std::string& filePath, std::string& project);
     bool insertRelationElement(std::string& project, std::string& element, std::string& previousElement);
     int  getLastElement( std::string& project, std::string& element );
@@ -58,10 +62,13 @@ public:
     //<
 
     //file operations>
-    bool insertFile(std::string& filePath, std::string& project);
+    bool isFile(std::string& path);
+    bool insertFile(std::string& filePath, std::string& project, int idFile);
+    void createMapFile(std::vector<std::string>& _mergedPath, std::vector<int>& _mergedIdFile, std::map<std::string,int>& _filePath);
     //<
 
     //folder operations>
+    std::string getLastFolder(std::string& path);
     bool hasFolderInsert(std::string& folder, std::string& project);
     bool insertFolder(std::string& filePath, std::string& project);
     //<
@@ -71,6 +78,10 @@ public:
     bool insertRelationProjectTransaction(const std::string& sqlInsert);
     //<
 
+    //>String operations
+    void removeToken(std::string& path, char token);
+    //<
+
 private:
 
     //singleton´s pattern variable
@@ -78,6 +89,9 @@ private:
 
     QSqlDatabase db;
     //CppSQLite3DB dataBase;
+
+    std::vector<std::string> vecFilePath;
+    std::vector<int> vecIdFile;
 };
 
 }

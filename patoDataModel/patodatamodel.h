@@ -5,6 +5,7 @@
 
 #include <string>
 #include <vector>
+#include <map>
 
 using namespace std;
 
@@ -32,11 +33,11 @@ public:
     //<
 
     //repositoy operations >
-    bool checkIn(std::vector<std::string>& filePath, std::string& project, std::string loginUser, std::string& message);
-    bool saveProjectElement(std::string& filePath, std::string& previousElement, std::string& project);
+    bool checkIn(std::map<std::string, int>& filePath, std::string& project, std::string& loginUser, std::string& message);
+    bool saveProjectElement(std::string& filePath, int idFile, std::string& project, std::string& previousElement);
     bool insertRelationProjectElementTransaction();
 
-    bool checkOut(std::string& loginUser, std::string& password, std::string& project, int version, std::vector<std::string>& filePath);
+    bool checkOut(std::string& loginUser, std::string& password, std::string& project, int version, std::map<std::string, int>& filePath);
     bool showLog(std::string& loginUser, std::string& password, std::string& project, int version, std::vector<std::string>& filePath);
     //<
 

@@ -12,7 +12,7 @@ public:
 private Q_SLOTS:
     void testCaseCheckin();
     void testCaseCheckout();
-    void testCaseShowLog();
+  //  void testCaseShowLog();
 };
 
 PatoDataModelTest::PatoDataModelTest()
@@ -25,10 +25,17 @@ void PatoDataModelTest::testCaseCheckin()
     std::string pass= "123";
     std::string project = "pato";
 
-    std::vector<std::string> filePath;
-    filePath.push_back("pato\\A.CPP");
-    filePath.push_back("pato\\B.CPP");
-    filePath.push_back("pato\\C.CPP");
+    std::map<std::string, int> filePath;
+    /*filePath.insert(std::make_pair<std::string,int>("pato\\A.CPP",1));
+    filePath.insert(std::make_pair<std::string,int>("pato\\B.CPP",2));
+    filePath.insert(std::make_pair<std::string,int>("pato\\C.CPP",3));
+    filePath.insert(std::make_pair<std::string,int>("pato\\D.CPP",4));
+    filePath.insert(std::make_pair<std::string,int>("pato\\BD\\D.CPP",5));
+    filePath.insert(std::make_pair<std::string,int>("pato\\BD\\E.CPP",6));
+    filePath.insert(std::make_pair<std::string,int>("pato\\BD\\F.CPP",7));
+    filePath.insert(std::make_pair<std::string,int>("pato\\BD\\TESTE\\IVISON\\F.CPP",8));
+    filePath.insert(std::make_pair<std::string,int>("pato\\BD\\TESTE\\IVISON\\RAFAEL",0));*/
+    filePath.insert(std::make_pair<std::string,int>("pato\\AMARO\\VIRGINIA\\MARIANA\\RAFAEL\\JULIA.DOC",0));
 
     std::string message = "Primeiro Commit";
     bool bValid = PatoDataModel::getInstance()->checkIn(filePath, project, login, message);
@@ -42,7 +49,7 @@ void PatoDataModelTest::testCaseCheckout()
     std::string pass= "123";
     std::string project = "pato";
 
-    std::vector<std::string> filePath2;
+    std::map<std::string, int> filePath2;
     PatoDataModel::getInstance()->checkOut(login, pass, project, -1, filePath2);
 
     bool bValid = false;
@@ -50,15 +57,16 @@ void PatoDataModelTest::testCaseCheckout()
     if ( !filePath2.empty() )
     {
         bValid = true;
-        for(unsigned int i = 0; i < filePath2.size(); i++)
+        std::map<std::string, int>::iterator itMap;
+        for(itMap = filePath2.begin(); itMap != filePath2.end(); itMap++)
         {
-            qDebug()<< filePath2[i].c_str();
+            qDebug()<< itMap->first.c_str() << " | " << itMap->second;
         }
     }
 
     QVERIFY2(bValid, "Failure");
 }
-
+/*
 void PatoDataModelTest::testCaseShowLog()
 {
     std::string login = "Rafael";
@@ -81,7 +89,7 @@ void PatoDataModelTest::testCaseShowLog()
     QVERIFY2(bValid, "Failure");
 }
 
-
+*/
 QTEST_APPLESS_MAIN(PatoDataModelTest);
 
 #include "tst_patodatamodeltest.moc"
