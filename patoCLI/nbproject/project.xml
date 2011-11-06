@@ -11,6 +11,8 @@
             <make-dep-projects/>
             <sourceRootList>
                 <sourceRootElem>../patoClientAPI</sourceRootElem>
+                <sourceRootElem>../patoWorkspace</sourceRootElem>
+                <sourceRootElem>../patoBase</sourceRootElem>
             </sourceRootList>
             <confList>
                 <confElem>

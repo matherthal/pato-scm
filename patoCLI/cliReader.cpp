@@ -34,8 +34,6 @@ void cliReader::reader(int argc, char** argv) {
     updateCLI* up;
     addCLI* add;
     
-        cout<<"está compilando"<<endl;
-
     
     if (argc <= 1) {
         cout << "Please specify a command" << endl;

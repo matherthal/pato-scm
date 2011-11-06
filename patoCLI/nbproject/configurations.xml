@@ -56,6 +56,8 @@
   </logicalFolder>
   <sourceRootList>
     <Elem>../patoClientAPI</Elem>
+    <Elem>../patoWorkspace</Elem>
+    <Elem>../patoBase</Elem>
   </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
@@ -70,11 +72,14 @@
             <pElem>../../../QtSDK/Desktop/Qt/474/gcc/include</pElem>
             <pElem>../../../QtSDK/Madde/targets/harmattan-nokia-meego-api/bin</pElem>
             <pElem>../../../QtSDK/Simulator/Qt/gcc/bin</pElem>
+            <pElem>../../../QtSDK/Desktop/Qt/474/gcc/bin</pElem>
+            <pElem>../../../QtSDK/Simulator/Qt/gcc/include/QtCore</pElem>
           </incDir>
         </ccTool>
         <linkerTool>
           <linkerAddLib>
             <pElem>../../../QtSDK/Desktop/Qt/474/gcc/lib</pElem>
+            <pElem>../../../QtSDK/Simulator/Qt/gcc/include/QtCore</pElem>
           </linkerAddLib>
           <linkerLibItems>
             <linkerLibLibItem>QtCore</linkerLibLibItem>
