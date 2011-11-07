@@ -24,6 +24,8 @@ public:
     int getToB();
     char* getLineA(int);
     char* getLineB(int);
+    int getLineALength(int _num_line);
+    int getLineBLength(int _num_line);
 };
 
 #endif // DIFFITEM_H

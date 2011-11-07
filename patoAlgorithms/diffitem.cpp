@@ -24,6 +24,14 @@ char* DiffItem::getLineB(int _num_line){
     return htableB[_num_line]->line;
 }
 
+int DiffItem::getLineALength(int _num_line){
+    return htableA[_num_line]->length;
+}
+
+int DiffItem::getLineBLength(int _num_line){
+    return htableB[_num_line]->length;
+}
+
 int DiffItem::getType(){
     return type;
 }
