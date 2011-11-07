@@ -11,10 +11,12 @@ TEMPLATE = lib
 
 DEFINES += PATOCLIENTAPI_LIBRARY
 
-SOURCES += patoclientapi.cpp
+SOURCES += patoclientapi.cpp \
+    PatoClientException.cpp
 
 HEADERS += patoclientapi.h\
-        PatoClientApi_global.h
+        PatoClientApi_global.h \
+    PatoClientException.h
 
 symbian {
     MMP_RULES += EXPORTUNFROZEN

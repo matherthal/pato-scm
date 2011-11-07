@@ -21,7 +21,8 @@ SOURCES += main.cpp \
     cliReader.cpp \
     checkoutCLI.cpp \
     checkinCLI.cpp \
-    addCLI.cpp
+    addCLI.cpp \
+    utils.cpp
 
 HEADERS += \
     updateCLI.h \
@@ -29,6 +30,7 @@ HEADERS += \
     cliReader.h \
     checkoutCLI.h \
     checkinCLI.h \
-    addCLI.h
+    addCLI.h \
+    utils.h
 
 LIBS += -L../output  -lPatoClientApi
