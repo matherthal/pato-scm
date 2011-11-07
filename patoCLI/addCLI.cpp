@@ -49,7 +49,6 @@ void addCLI::command(int argc, char** argv) {
         clientAPI->add(workspace, files);
     } catch (PatoClientException& t) {
         qout<<t.Message()<<endl;
-        qout<<t.what()<<endl;
     }
 }
 
