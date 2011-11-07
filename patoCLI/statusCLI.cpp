@@ -50,7 +50,10 @@ void statusCLI::command(int argc, char** argv) {
 
     }
 
-
-    clientAPI->status(workspace);
+    try {
+        clientAPI->status(workspace);
+    } catch (PatoClientException& t) {
+        qout << t.Message() << endl;
+    }
 
 }

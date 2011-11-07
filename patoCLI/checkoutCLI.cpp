@@ -10,10 +10,13 @@
 #include<stdlib.h>
 #include <string.h>
 #include<iostream>
+#include<QtCore/QTextStream>
 using namespace std;
 
 void checkoutCLI::command(int argc, char** argv) {
     //treating cases that argc > 1
+
+    QTextStream qout(stdout);
 
     PatoClientApi* clientAPI;
     clientAPI = new PatoClientApi();
@@ -37,11 +40,16 @@ void checkoutCLI::command(int argc, char** argv) {
             return;
         }
     }
-    
+
     clientAPI = new PatoClientApi();
-    
-    clientAPI->checkout(revision, address, username, password, workspace);
-    
+
+    try {
+        clientAPI->checkout(revision, address, username, password, workspace);
+    } catch (PatoClientException& t) {
+        
+        qout <<t.Message() << endl;
+    }
+
 
 
 }
@@ -85,8 +93,6 @@ void checkoutCLI::setRevision(int revision) {
 int checkoutCLI::getRevision() const {
     return revision;
 }
-
-
 
 checkoutCLI::checkoutCLI() {
     revision = -1;

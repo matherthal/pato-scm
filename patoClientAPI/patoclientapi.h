@@ -9,13 +9,13 @@
 
 class PatoClientApi {
 public:
-    void checkout(int revision, QString adress, QString username, QString password, QString workspace);
-    void checkin(QString address, QString username, QString password, QString workspace);
-    void status(QString workspace);
+    void checkout(int revision, QString adress, QString username, QString password, QString workspace) throw(PatoClientException);
+    void checkin(QString address, QString username, QString password, QString workspace)throw(PatoClientException);
+    void status(QString workspace) throw(PatoClientException);
     void add(QString workspace, QList<QString> files) throw(PatoClientException);
-    void update(QString revision, QString adress, QString username, QString password, QString workspace);
-    void merge(QString path1, int revision1, QString path2, int revision2, QString workspace);
-    void diff(QString path1, int revision1, QString path2, int revision2);
+    void update(QString revision, QString adress, QString username, QString password, QString workspace) throw(PatoClientException);
+    void merge(QString path1, int revision1, QString path2, int revision2, QString workspace) throw(PatoClientException);
+    void diff(QString path1, int revision1, QString path2, int revision2) throw(PatoClientException);
     
     PatoClientApi();
 //    void setPworkSpace(PatoWorkspace pworkSpace);
