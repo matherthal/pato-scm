@@ -3,10 +3,12 @@
 
 Merge::Merge(const char* _fileNameBase,const char* _fileNameA, const char* _fileNameB){
     diff = new Diff(_fileNameA,_fileNameB);
-
+    conflict = false;
     lcs_fileA_base = new Lcs(_fileNameA,_fileNameBase);
     lcs_fileB_base = new Lcs(_fileNameB,_fileNameBase);
     diff = new Diff(_fileNameA,_fileNameB);
+
+    mergeFile.open("merge.txt");
     doMerge();
 }
 
@@ -38,9 +40,8 @@ void Merge::doMerge(){
 
 void Merge::insertLines(Lcs* item, int from,int to){
     for(int i=from;i<=to;i++){
-        printf("%s\n",item->getLineA(i));
-       // mergeFile->write(item->getLineA(i),sizeof(char)*strlen(item->getLineA(i)));
-       // mergeFile->write("\n",sizeof(char));
+       printf("%s\n",item->getLineA(i));
+       mergeFile << item->getLineA(i) <<endl;
     }
 }
 
@@ -55,8 +56,10 @@ void Merge::doAdd(DiffItem* item){
         indexB++;
     }
     if(!is_in){
-        for(int i=item->getFromB();i<=item->getToB();i++)
+        for(int i=item->getFromB();i<=item->getToB();i++){
             printf("%s\n",item->getLineB(i));
+            mergeFile << item->getLineB(i) <<endl;
+        }
     }
 }
 
@@ -74,8 +77,10 @@ void Merge::doDeletion(DiffItem* item){
         indexA++;
     }
     if(!is_in){
-        for(int i=item->getFromA();i<=item->getToA();i++)
+        for(int i=item->getFromA();i<=item->getToA();i++){
             printf("%s\n",item->getLineA(i));
+            mergeFile << item->getLineA(i) <<endl;
+        }
     }
 }
 
@@ -108,22 +113,30 @@ void Merge::doChange(DiffItem* item){
     if(is_outA==0 && is_inB==0){
         for(int i=item->getFromB();i<=item->getToB();i++){
             printf("%s\n",item->getLineB(i));
+            mergeFile << item->getLineB(i) <<endl;
         }
     }else if(is_inA==0 && is_outB==0){
         for(int i=item->getFromB();i<=item->getToB();i++){
             printf("%s\n",item->getLineB(i));
+            mergeFile << item->getLineB(i) <<endl;
         }
     }else{
+        conflict = true;
         printf("<<<<<< A\n");
         for(int i=item->getFromA();i<=item->getToA();i++){
             printf("%s\n",item->getLineA(i));
+            mergeFile << item->getLineA(i) <<endl;
         }
         printf("========\n");
         for(int i=item->getFromB();i<=item->getToB();i++){
             printf("%s\n",item->getLineB(i));
+            mergeFile << item->getLineB(i) <<endl;
         }
         printf(">>>>>> B\n");
     }
+}
+bool Merge::has_conflict(){
+    return conflict;
 }
 
 bool Merge::is_in_lcs(int index,t_lcs *lcs){
@@ -136,12 +149,12 @@ bool Merge::is_in_lcs(int index,t_lcs *lcs){
 }
 
 Merge::~Merge(){
-    if(mergeFile!=NULL)mergeFile->close();
+    if(mergeFile.is_open())mergeFile.close();
     delete lcs_fileA_base;
     delete lcs_fileB_base;
     delete diff;
 }
 
-ofstream* Merge::getFile(){
+fstream Merge::getFile(){
     return mergeFile;
 }
