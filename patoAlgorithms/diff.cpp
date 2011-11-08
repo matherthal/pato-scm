@@ -11,7 +11,7 @@ Diff::Diff(const char *fileNameA,const char *fileNameB)
     calculateDiff(lcs);
 }
 
-Diff::~Diff(){	
+Diff::~Diff(){
     freeDiffItems(diff);
 }
 
@@ -116,14 +116,14 @@ void Diff::generateDiff(Lcs *lcs){
 }
 
 fstream* Diff::getFile(char* _file_name){
-    fstream st;
-    st.open(_file_name);
+    fstream arq;
+    arq.open(_file_name);
     t_diff *p = first_diff;
     while(p!=NULL){
-        st<<p->diffItem->to_string();
+        arq<<p->diffItem->to_string();
         p = p->next;
     }
-    return &st;
+    return &arq;
 }
 
 bool Diff::isEmpty(){

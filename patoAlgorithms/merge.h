@@ -1,5 +1,6 @@
 #ifndef MERGE_H
 #define MERGE_H
+#include <fstream>
 #include "diff.h"
 
 using namespace std;

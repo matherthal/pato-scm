@@ -149,7 +149,6 @@ int main(int argc, char *argv[]){
     delete diff4;
 
 
-
     printf("=============== MERGE ==============\n");
     printf("##### TESTE 1 #####\n");
     Merge *merge1 = new Merge("fixtures/base.txt","fixtures/fileA.txt","fixtures/fileB.txt");

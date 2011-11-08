@@ -33,3 +33,7 @@ QString PatoClientException::GetMessage() const {
     return message;
 }
 
+QString PatoClientException::Message(){
+    return message;
+}
+
