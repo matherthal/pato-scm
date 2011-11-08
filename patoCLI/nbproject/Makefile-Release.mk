@@ -34,11 +34,14 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/_ext/684244108/patochangeset.o \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/checkinCLI.o \
+	${OBJECTDIR}/_ext/684244108/patobase.o \
 	${OBJECTDIR}/checkoutCLI.o \
 	${OBJECTDIR}/_ext/764798604/PatoClientException.o \
 	${OBJECTDIR}/statusCLI.o \
+	${OBJECTDIR}/_ext/684244108/patofilestatus.o \
 	${OBJECTDIR}/updateCLI.o \
 	${OBJECTDIR}/cliReader.o \
 	${OBJECTDIR}/utils.o \
@@ -70,6 +73,11 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/patocli: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/patocli ${OBJECTFILES} ${LDLIBSOPTIONS} 
 
+${OBJECTDIR}/_ext/684244108/patochangeset.o: ../patoBase/patochangeset.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/684244108
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/684244108/patochangeset.o ../patoBase/patochangeset.cpp
+
 ${OBJECTDIR}/main.o: main.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
@@ -79,6 +87,11 @@ ${OBJECTDIR}/checkinCLI.o: checkinCLI.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/checkinCLI.o checkinCLI.cpp
+
+${OBJECTDIR}/_ext/684244108/patobase.o: ../patoBase/patobase.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/684244108
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/684244108/patobase.o ../patoBase/patobase.cpp
 
 ${OBJECTDIR}/checkoutCLI.o: checkoutCLI.cpp 
 	${MKDIR} -p ${OBJECTDIR}
@@ -94,6 +107,11 @@ ${OBJECTDIR}/statusCLI.o: statusCLI.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/statusCLI.o statusCLI.cpp
+
+${OBJECTDIR}/_ext/684244108/patofilestatus.o: ../patoBase/patofilestatus.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/684244108
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/684244108/patofilestatus.o ../patoBase/patofilestatus.cpp
 
 ${OBJECTDIR}/updateCLI.o: updateCLI.cpp 
 	${MKDIR} -p ${OBJECTDIR}

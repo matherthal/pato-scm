@@ -15,6 +15,20 @@
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
                    projectFiles="true">
+      <logicalFolder name="patoBase" displayName="patoBase" projectFiles="true">
+        <itemPath>../patoBase/PatoBase.pro</itemPath>
+        <itemPath>../patoBase/patobase.cpp</itemPath>
+        <itemPath>../patoBase/patobase.h</itemPath>
+        <itemPath>../patoBase/patobase.h.gch</itemPath>
+        <itemPath>../patoBase/patochangeset.cpp</itemPath>
+        <itemPath>../patoBase/patochangeset.h</itemPath>
+        <itemPath>../patoBase/patochangeset.h.gch</itemPath>
+        <itemPath>../patoBase/patofilestatus.cpp</itemPath>
+        <itemPath>../patoBase/patofilestatus.h</itemPath>
+        <itemPath>../patoBase/patofilestatus.h.gch</itemPath>
+        <itemPath>../patoBase/patotypes.h</itemPath>
+        <itemPath>../patoBase/patotypes.h.gch</itemPath>
+      </logicalFolder>
       <logicalFolder name="patoClientAPI"
                      displayName="patoClientAPI"
                      projectFiles="true">
@@ -56,6 +70,8 @@
   </logicalFolder>
   <sourceRootList>
     <Elem>../patoClientAPI</Elem>
+    <Elem>../patoWorkspace</Elem>
+    <Elem>../patoBase</Elem>
   </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
@@ -70,11 +86,14 @@
             <pElem>../../../QtSDK/Desktop/Qt/474/gcc/include</pElem>
             <pElem>../../../QtSDK/Madde/targets/harmattan-nokia-meego-api/bin</pElem>
             <pElem>../../../QtSDK/Simulator/Qt/gcc/bin</pElem>
+            <pElem>../../../QtSDK/Desktop/Qt/474/gcc/bin</pElem>
+            <pElem>../../../QtSDK/Simulator/Qt/gcc/include/QtCore</pElem>
           </incDir>
         </ccTool>
         <linkerTool>
           <linkerAddLib>
             <pElem>../../../QtSDK/Desktop/Qt/474/gcc/lib</pElem>
+            <pElem>../../../QtSDK/Simulator/Qt/gcc/include/QtCore</pElem>
           </linkerAddLib>
           <linkerLibItems>
             <linkerLibLibItem>QtCore</linkerLibLibItem>
