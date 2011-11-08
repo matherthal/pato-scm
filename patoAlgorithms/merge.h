@@ -1,6 +1,5 @@
 #ifndef MERGE_H
 #define MERGE_H
-#include <fstream>
 #include "diff.h"
 
 using namespace std;
@@ -22,7 +21,7 @@ private:
 public:
     Merge(const char* _fileBase,const char* _fileA,const char* _fileB);
     ~Merge();
-    fstream getFile();
+    fstream* getFile();
     bool has_conflict();
 };
 
