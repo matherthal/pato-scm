@@ -13,6 +13,8 @@
                 <sourceRootElem>../patoClientAPI</sourceRootElem>
                 <sourceRootElem>../patoWorkspace</sourceRootElem>
                 <sourceRootElem>../patoBase</sourceRootElem>
+                <sourceRootElem>../patoAlgorithms</sourceRootElem>
+                <sourceRootElem>../patoCommunication</sourceRootElem>
             </sourceRootList>
             <confList>
                 <confElem>
