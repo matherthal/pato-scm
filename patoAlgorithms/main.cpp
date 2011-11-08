@@ -28,7 +28,7 @@ void Tempo_CPU_Sistema(double *seg_CPU_total, double *seg_sistema_total)
 
 int main(int argc, char *argv[]){
     double s_CPU_inicial, s_CPU_final, s_total_inicial, s_total_final,t;
-/*
+
     printf("##### TESTE 1 #####\n");
     Tempo_CPU_Sistema(&s_CPU_inicial, &s_total_inicial);
 
@@ -58,6 +58,7 @@ int main(int argc, char *argv[]){
     correct = correct && diff->getDiffItem(3) == NULL;
 
     diff->print();
+    diff->getFile("diff1.txt");
     if(!correct)
         printf("ERRADO!\n\nTempo: %lf\n\n",t);
     else
@@ -70,6 +71,7 @@ int main(int argc, char *argv[]){
 
     Diff *diff2 = new Diff("fixtures/arq1.txt","fixtures/arq1.txt");
     diff2->print();
+    diff2->getFile("diff2.txt");
     Tempo_CPU_Sistema(&s_CPU_final, &s_total_final);
     t = s_CPU_final - s_CPU_inicial;
 
@@ -86,6 +88,7 @@ int main(int argc, char *argv[]){
 
     Diff *diff3 = new Diff("fixtures/boa.txt","fixtures/boa2.txt");
     diff3->print();
+    diff3->getFile("diff3.txt");
     Tempo_CPU_Sistema(&s_CPU_final, &s_total_final);
     t = s_CPU_final - s_CPU_inicial;
 
@@ -124,6 +127,7 @@ int main(int argc, char *argv[]){
 
     Diff *diff4 = new Diff("fixtures/grande.txt","fixtures/grande2.txt");
     diff4->print();
+    diff4->getFile("diff4.txt");
     Tempo_CPU_Sistema(&s_CPU_final, &s_total_final);
     t = s_CPU_final - s_CPU_inicial;
 
@@ -144,7 +148,7 @@ int main(int argc, char *argv[]){
         printf("Resultado: CORRETO!\nTempo: %lf\n\n",t);
     delete diff4;
 
-*/
+
 
     printf("=============== MERGE ==============\n");
     printf("##### TESTE 1 #####\n");

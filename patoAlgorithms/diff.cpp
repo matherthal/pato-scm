@@ -115,6 +115,17 @@ void Diff::generateDiff(Lcs *lcs){
 
 }
 
+fstream* Diff::getFile(char* _file_name){
+    fstream st;
+    st.open(_file_name);
+    t_diff *p = first_diff;
+    while(p!=NULL){
+        st<<p->diffItem->to_string();
+        p = p->next;
+    }
+    return &st;
+}
+
 bool Diff::isEmpty(){
     return empty;
 }
