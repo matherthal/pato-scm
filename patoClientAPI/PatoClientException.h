@@ -20,6 +20,9 @@ public:
     ~PatoClientException()throw();
     void SetMessage(QString message);
     QString GetMessage() const;
+    QString Message();
+    
+    
 private:
     QString message;
     
