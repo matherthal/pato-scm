@@ -2,7 +2,7 @@
 #include <unistd.h>
 #include <iostream>
 //#include <sys/resource.h>
-#include "diff.h"
+#include "merge.h"
 
 using namespace std;
 
@@ -28,7 +28,7 @@ void Tempo_CPU_Sistema(double *seg_CPU_total, double *seg_sistema_total)
 
 int main(int argc, char *argv[]){
     double s_CPU_inicial, s_CPU_final, s_total_inicial, s_total_final,t;
-
+/*
     printf("##### TESTE 1 #####\n");
     Tempo_CPU_Sistema(&s_CPU_inicial, &s_total_inicial);
 
@@ -143,6 +143,22 @@ int main(int argc, char *argv[]){
     else
         printf("Resultado: CORRETO!\nTempo: %lf\n\n",t);
     delete diff4;
+
+*/
+
+    printf("=============== MERGE ==============\n");
+    printf("##### TESTE 1 #####\n");
+    Merge *merge1 = new Merge("fixtures/base.txt","fixtures/fileA.txt","fixtures/fileB.txt");
+    delete merge1;
+    printf("\n##### TESTE 2 #####\n");
+    Merge *merge2 = new Merge("fixtures/base.txt","fixtures/fileA2.txt","fixtures/fileB2.txt");
+    delete merge2;
+    printf("\n##### TESTE 3 #####\n");
+    Merge *merge3 = new Merge("fixtures/base.txt","fixtures/fileA3.txt","fixtures/fileB3.txt");
+    delete merge3;
+    printf("\n##### TESTE 4 #####\n");
+    Merge *merge4 = new Merge("fixtures/base.txt","fixtures/fileA4.txt","fixtures/fileB4.txt");
+    delete merge4;
 
     return 0;
 }
