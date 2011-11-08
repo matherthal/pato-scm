@@ -32,6 +32,7 @@ public:
     bool isEmpty();
     void print();
     DiffItem* getDiffItem(int _pos);
+    fstream* getFile(char* _file_name);
 };
 
 #endif // DIFF_H
