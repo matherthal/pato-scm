@@ -6,49 +6,71 @@
 #include<QtCore/QTextStream>
 
 
-
 PatoServerApi::PatoServerApi()
 {
 
     dataModel = PatoDataModel::getInstance();
+    storage = PatoFS::getInstance();
 }
 
-void PatoServerApi::checkout(int revision, QString path, QString username, QString password) {
+map<string, string>* PatoServerApi::checkout(int revision, QString path, QString username, QString password) {
 
     if (!dataModel->validateProject(path.toStdString()))
-        return;
+        return NULL;
 
     if (!dataModel->validateUser(username.toStdString(),password.toStdString()))
-        return;
+        return NULL;
 
     if (!dataModel->validateUserProject(username.toStdString(),password.toStdString(),path.toStdString()))
-        return;
+        return NULL;
 
     string strUsername = username.toStdString();
     string strPassword = password.toStdString();
     string strPath = path.toStdString();
 
-    //last parameter is incompatible!
-    //TODO out << dataModel->checkOut(strUsername,strPassword,strPath,revision,filePath) << endl;
+    if (!dataModel->checkOut(strUsername,strPassword,strPath,revision,filePath))
+            return NULL;
+
+    vector<int> key;
+    vector<string> content;
+
+    map<string, int>::iterator it;
+    for ( it=filePath.begin() ; it != filePath.end(); it++ ) {
+        key.push_back((*it).second);
+    }
+
+   if (!storage->loadData(key, content))
+       return NULL;
+
+   vector<string>::iterator cit;
+   for ( it = filePath.begin(), cit = content.begin() ; it != filePath.end(); it++, cit++ ) {
+
+       file[(*it).first] = (*cit);
+   }
+
+   return &file;
+
 }
 
-void PatoServerApi::checkin(QString path, QString username, QString password) {
+bool PatoServerApi::checkin(QString path, QString username, QString password) {
 
     if (!dataModel->validateProject(path.toStdString()))
-        return;
+        return false;
 
     if (!dataModel->validateUser(username.toStdString(),password.toStdString()))
-        return;
+        return false;
 
     if (!dataModel->validateUserProject(username.toStdString(),password.toStdString(),path.toStdString()))
-        return;
+        return false;
 
     string message = NULL;
     string strUsername = username.toStdString();
     string strPath = path.toStdString();
 
-    //first parameter is incompatible!
-    //TODO cout << dataModel->checkIn(filePath,strPath,strUsername,message) << endl;
+    if (!dataModel->checkIn(filePath, strPath, strUsername,message))
+        return false;
+
+    return true;
 }
 
 
