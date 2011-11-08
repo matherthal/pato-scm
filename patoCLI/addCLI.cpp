@@ -32,12 +32,10 @@ void addCLI::command(int argc, char** argv) {
     for (int i = 2; i < argc;) {
         parameter = argv[i];
 
-        qout<<"for"<<endl;
         if (parameter == "--workspace") {
             workspace = argv[i + 1];
             i += 2;
         } else {
-            qout << "fkjfdl" << endl;
             workspace = utils::returnPath();
             qout << workspace << endl;
         }
@@ -49,9 +47,8 @@ void addCLI::command(int argc, char** argv) {
     }
     try {
         clientAPI->add(workspace, files);
-    } catch (PatoClientException t) {
-        qout<<t.GetMessage()<<endl;
-        qout<<t.what()<<endl;
+    } catch (PatoClientException& t) {
+        qout<<t.Message()<<endl;
     }
 }
 

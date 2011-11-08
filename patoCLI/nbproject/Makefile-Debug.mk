@@ -34,11 +34,14 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/_ext/684244108/patochangeset.o \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/checkinCLI.o \
+	${OBJECTDIR}/_ext/684244108/patobase.o \
 	${OBJECTDIR}/checkoutCLI.o \
 	${OBJECTDIR}/_ext/764798604/PatoClientException.o \
 	${OBJECTDIR}/statusCLI.o \
+	${OBJECTDIR}/_ext/684244108/patofilestatus.o \
 	${OBJECTDIR}/updateCLI.o \
 	${OBJECTDIR}/cliReader.o \
 	${OBJECTDIR}/utils.o \
@@ -60,7 +63,7 @@ FFLAGS=
 ASFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=-L../../../QtSDK/Desktop/Qt/474/gcc/lib -lQtCore
+LDLIBSOPTIONS=-L../../../QtSDK/Desktop/Qt/474/gcc/lib -L../../../QtSDK/Simulator/Qt/gcc/include/QtCore -lQtCore
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
@@ -70,55 +73,70 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/patocli: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/patocli ${OBJECTFILES} ${LDLIBSOPTIONS} 
 
+${OBJECTDIR}/_ext/684244108/patochangeset.o: ../patoBase/patochangeset.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/684244108
+	${RM} $@.d
+	$(COMPILE.cc) -g -I../../../QtSDK/Desktop/Qt/474/gcc/include -I../../../QtSDK/Madde/targets/harmattan-nokia-meego-api/bin -I../../../QtSDK/Simulator/Qt/gcc/bin -I../../../QtSDK/Desktop/Qt/474/gcc/bin -I../../../QtSDK/Simulator/Qt/gcc/include/QtCore -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/684244108/patochangeset.o ../patoBase/patochangeset.cpp
+
 ${OBJECTDIR}/main.o: main.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -g -I../../../QtSDK/Desktop/Qt/474/gcc/include -I../../../QtSDK/Madde/targets/harmattan-nokia-meego-api/bin -I../../../QtSDK/Simulator/Qt/gcc/bin -MMD -MP -MF $@.d -o ${OBJECTDIR}/main.o main.cpp
+	$(COMPILE.cc) -g -I../../../QtSDK/Desktop/Qt/474/gcc/include -I../../../QtSDK/Madde/targets/harmattan-nokia-meego-api/bin -I../../../QtSDK/Simulator/Qt/gcc/bin -I../../../QtSDK/Desktop/Qt/474/gcc/bin -I../../../QtSDK/Simulator/Qt/gcc/include/QtCore -MMD -MP -MF $@.d -o ${OBJECTDIR}/main.o main.cpp
 
 ${OBJECTDIR}/checkinCLI.o: checkinCLI.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -g -I../../../QtSDK/Desktop/Qt/474/gcc/include -I../../../QtSDK/Madde/targets/harmattan-nokia-meego-api/bin -I../../../QtSDK/Simulator/Qt/gcc/bin -MMD -MP -MF $@.d -o ${OBJECTDIR}/checkinCLI.o checkinCLI.cpp
+	$(COMPILE.cc) -g -I../../../QtSDK/Desktop/Qt/474/gcc/include -I../../../QtSDK/Madde/targets/harmattan-nokia-meego-api/bin -I../../../QtSDK/Simulator/Qt/gcc/bin -I../../../QtSDK/Desktop/Qt/474/gcc/bin -I../../../QtSDK/Simulator/Qt/gcc/include/QtCore -MMD -MP -MF $@.d -o ${OBJECTDIR}/checkinCLI.o checkinCLI.cpp
+
+${OBJECTDIR}/_ext/684244108/patobase.o: ../patoBase/patobase.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/684244108
+	${RM} $@.d
+	$(COMPILE.cc) -g -I../../../QtSDK/Desktop/Qt/474/gcc/include -I../../../QtSDK/Madde/targets/harmattan-nokia-meego-api/bin -I../../../QtSDK/Simulator/Qt/gcc/bin -I../../../QtSDK/Desktop/Qt/474/gcc/bin -I../../../QtSDK/Simulator/Qt/gcc/include/QtCore -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/684244108/patobase.o ../patoBase/patobase.cpp
 
 ${OBJECTDIR}/checkoutCLI.o: checkoutCLI.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -g -I../../../QtSDK/Desktop/Qt/474/gcc/include -I../../../QtSDK/Madde/targets/harmattan-nokia-meego-api/bin -I../../../QtSDK/Simulator/Qt/gcc/bin -MMD -MP -MF $@.d -o ${OBJECTDIR}/checkoutCLI.o checkoutCLI.cpp
+	$(COMPILE.cc) -g -I../../../QtSDK/Desktop/Qt/474/gcc/include -I../../../QtSDK/Madde/targets/harmattan-nokia-meego-api/bin -I../../../QtSDK/Simulator/Qt/gcc/bin -I../../../QtSDK/Desktop/Qt/474/gcc/bin -I../../../QtSDK/Simulator/Qt/gcc/include/QtCore -MMD -MP -MF $@.d -o ${OBJECTDIR}/checkoutCLI.o checkoutCLI.cpp
 
 ${OBJECTDIR}/_ext/764798604/PatoClientException.o: ../patoClientAPI/PatoClientException.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/764798604
 	${RM} $@.d
-	$(COMPILE.cc) -g -I../../../QtSDK/Desktop/Qt/474/gcc/include -I../../../QtSDK/Madde/targets/harmattan-nokia-meego-api/bin -I../../../QtSDK/Simulator/Qt/gcc/bin -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/764798604/PatoClientException.o ../patoClientAPI/PatoClientException.cpp
+	$(COMPILE.cc) -g -I../../../QtSDK/Desktop/Qt/474/gcc/include -I../../../QtSDK/Madde/targets/harmattan-nokia-meego-api/bin -I../../../QtSDK/Simulator/Qt/gcc/bin -I../../../QtSDK/Desktop/Qt/474/gcc/bin -I../../../QtSDK/Simulator/Qt/gcc/include/QtCore -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/764798604/PatoClientException.o ../patoClientAPI/PatoClientException.cpp
 
 ${OBJECTDIR}/statusCLI.o: statusCLI.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -g -I../../../QtSDK/Desktop/Qt/474/gcc/include -I../../../QtSDK/Madde/targets/harmattan-nokia-meego-api/bin -I../../../QtSDK/Simulator/Qt/gcc/bin -MMD -MP -MF $@.d -o ${OBJECTDIR}/statusCLI.o statusCLI.cpp
+	$(COMPILE.cc) -g -I../../../QtSDK/Desktop/Qt/474/gcc/include -I../../../QtSDK/Madde/targets/harmattan-nokia-meego-api/bin -I../../../QtSDK/Simulator/Qt/gcc/bin -I../../../QtSDK/Desktop/Qt/474/gcc/bin -I../../../QtSDK/Simulator/Qt/gcc/include/QtCore -MMD -MP -MF $@.d -o ${OBJECTDIR}/statusCLI.o statusCLI.cpp
+
+${OBJECTDIR}/_ext/684244108/patofilestatus.o: ../patoBase/patofilestatus.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/684244108
+	${RM} $@.d
+	$(COMPILE.cc) -g -I../../../QtSDK/Desktop/Qt/474/gcc/include -I../../../QtSDK/Madde/targets/harmattan-nokia-meego-api/bin -I../../../QtSDK/Simulator/Qt/gcc/bin -I../../../QtSDK/Desktop/Qt/474/gcc/bin -I../../../QtSDK/Simulator/Qt/gcc/include/QtCore -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/684244108/patofilestatus.o ../patoBase/patofilestatus.cpp
 
 ${OBJECTDIR}/updateCLI.o: updateCLI.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -g -I../../../QtSDK/Desktop/Qt/474/gcc/include -I../../../QtSDK/Madde/targets/harmattan-nokia-meego-api/bin -I../../../QtSDK/Simulator/Qt/gcc/bin -MMD -MP -MF $@.d -o ${OBJECTDIR}/updateCLI.o updateCLI.cpp
+	$(COMPILE.cc) -g -I../../../QtSDK/Desktop/Qt/474/gcc/include -I../../../QtSDK/Madde/targets/harmattan-nokia-meego-api/bin -I../../../QtSDK/Simulator/Qt/gcc/bin -I../../../QtSDK/Desktop/Qt/474/gcc/bin -I../../../QtSDK/Simulator/Qt/gcc/include/QtCore -MMD -MP -MF $@.d -o ${OBJECTDIR}/updateCLI.o updateCLI.cpp
 
 ${OBJECTDIR}/cliReader.o: cliReader.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -g -I../../../QtSDK/Desktop/Qt/474/gcc/include -I../../../QtSDK/Madde/targets/harmattan-nokia-meego-api/bin -I../../../QtSDK/Simulator/Qt/gcc/bin -MMD -MP -MF $@.d -o ${OBJECTDIR}/cliReader.o cliReader.cpp
+	$(COMPILE.cc) -g -I../../../QtSDK/Desktop/Qt/474/gcc/include -I../../../QtSDK/Madde/targets/harmattan-nokia-meego-api/bin -I../../../QtSDK/Simulator/Qt/gcc/bin -I../../../QtSDK/Desktop/Qt/474/gcc/bin -I../../../QtSDK/Simulator/Qt/gcc/include/QtCore -MMD -MP -MF $@.d -o ${OBJECTDIR}/cliReader.o cliReader.cpp
 
 ${OBJECTDIR}/utils.o: utils.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -g -I../../../QtSDK/Desktop/Qt/474/gcc/include -I../../../QtSDK/Madde/targets/harmattan-nokia-meego-api/bin -I../../../QtSDK/Simulator/Qt/gcc/bin -MMD -MP -MF $@.d -o ${OBJECTDIR}/utils.o utils.cpp
+	$(COMPILE.cc) -g -I../../../QtSDK/Desktop/Qt/474/gcc/include -I../../../QtSDK/Madde/targets/harmattan-nokia-meego-api/bin -I../../../QtSDK/Simulator/Qt/gcc/bin -I../../../QtSDK/Desktop/Qt/474/gcc/bin -I../../../QtSDK/Simulator/Qt/gcc/include/QtCore -MMD -MP -MF $@.d -o ${OBJECTDIR}/utils.o utils.cpp
 
 ${OBJECTDIR}/addCLI.o: addCLI.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -g -I../../../QtSDK/Desktop/Qt/474/gcc/include -I../../../QtSDK/Madde/targets/harmattan-nokia-meego-api/bin -I../../../QtSDK/Simulator/Qt/gcc/bin -MMD -MP -MF $@.d -o ${OBJECTDIR}/addCLI.o addCLI.cpp
+	$(COMPILE.cc) -g -I../../../QtSDK/Desktop/Qt/474/gcc/include -I../../../QtSDK/Madde/targets/harmattan-nokia-meego-api/bin -I../../../QtSDK/Simulator/Qt/gcc/bin -I../../../QtSDK/Desktop/Qt/474/gcc/bin -I../../../QtSDK/Simulator/Qt/gcc/include/QtCore -MMD -MP -MF $@.d -o ${OBJECTDIR}/addCLI.o addCLI.cpp
 
 ${OBJECTDIR}/_ext/764798604/patoclientapi.o: ../patoClientAPI/patoclientapi.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/764798604
 	${RM} $@.d
-	$(COMPILE.cc) -g -I../../../QtSDK/Desktop/Qt/474/gcc/include -I../../../QtSDK/Madde/targets/harmattan-nokia-meego-api/bin -I../../../QtSDK/Simulator/Qt/gcc/bin -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/764798604/patoclientapi.o ../patoClientAPI/patoclientapi.cpp
+	$(COMPILE.cc) -g -I../../../QtSDK/Desktop/Qt/474/gcc/include -I../../../QtSDK/Madde/targets/harmattan-nokia-meego-api/bin -I../../../QtSDK/Simulator/Qt/gcc/bin -I../../../QtSDK/Desktop/Qt/474/gcc/bin -I../../../QtSDK/Simulator/Qt/gcc/include/QtCore -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/764798604/patoclientapi.o ../patoClientAPI/patoclientapi.cpp
 
 # Subprojects
 .build-subprojects:

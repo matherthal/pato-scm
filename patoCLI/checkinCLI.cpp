@@ -10,24 +10,25 @@
 #include "../patoClientAPI/patoclientapi.h"
 #include<string.h>
 #include<iostream>
+#include<QTextStream>;
 using namespace std;
 
 checkinCLI::checkinCLI() {
-    
+
     address = "";
     username = "";
     password = "";
     workspace = "";
 }
 
-
-void checkinCLI::command(int argc, char** argv){
+void checkinCLI::command(int argc, char** argv) {
     //treating cases that argc > 1
 
     PatoClientApi* clientAPI;
     clientAPI = new PatoClientApi();
     char* parameter;
-
+    QTextStream qout(stdout);
+    
     for (int i = 2; i < argc; i += 2) {
         parameter = argv[i];
 
@@ -39,15 +40,18 @@ void checkinCLI::command(int argc, char** argv){
             address = argv[i + 1];
         } else if (strcmp(parameter, "--workspace") == 0) {
             workspace = argv[i + 1];
-        }else{
-            cout<<"[ERROR] "<<parameter<<" don't exist."<<endl;
+        } else {
+            cout << "[ERROR] " << parameter << " don't exist." << endl;
             return;
         }
     }
-    
-    
-    clientAPI->checkin(address, username, password, workspace);
-    
+
+    try {
+        clientAPI->checkin(address, username, password, workspace);
+    } catch (PatoClientException& t) {
+        qout << t.Message() << endl;
+    }
+
 }
 
 void checkinCLI::setPassword(QString password) {
@@ -81,7 +85,6 @@ void checkinCLI::setWorkspace(QString workspace) {
 QString checkinCLI::getWorkspace() const {
     return workspace;
 }
-
 
 checkinCLI::checkinCLI(const checkinCLI& orig) {
 }
