@@ -55,7 +55,6 @@ namespace bd {
 
     //sqls
 
-    //nao entendi pra que essa funcao...
     //saving data
     int BDPatoFS::saveData(const std::string& data)
     {
@@ -76,6 +75,9 @@ namespace bd {
             if ( query.next() )
                 key = query.value(0).toInt();
         }
+
+        //using hash key
+        QCryptographicHash::hash((data),QCryptographicHash::Md5).toHex();
 
         return key;
 
