@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created: Tue 25. Oct 22:52:54 2011
+** Created: Wed 9. Nov 22:42:48 2011
 **      by: Qt User Interface Compiler version 4.7.4
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -38,6 +38,7 @@ public:
     QAction *actionAdd_File_Dir;
     QAction *actionRemove_File_Dir;
     QAction *actionUpdate;
+    QAction *actionOpen;
     QWidget *centralWidget;
     QTreeView *treeViewWorkspace;
     QLabel *labelWorkspace;
@@ -46,6 +47,7 @@ public:
     QMenu *menuPato_SCM;
     QMenu *menuHelp;
     QMenu *menuWorkspace;
+    QMenu *menuPato_Diff_Tool;
     QStatusBar *statusBar;
     QToolBar *mainToolBar;
     QToolBar *workspaceToolBar;
@@ -115,6 +117,8 @@ public:
         QIcon icon8;
         icon8.addFile(QString::fromUtf8(":/new/icons/update"), QSize(), QIcon::Normal, QIcon::Off);
         actionUpdate->setIcon(icon8);
+        actionOpen = new QAction(MainWindow);
+        actionOpen->setObjectName(QString::fromUtf8("actionOpen"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         treeViewWorkspace = new QTreeView(centralWidget);
@@ -159,6 +163,8 @@ public:
         menuWorkspace = new QMenu(menuBar);
         menuWorkspace->setObjectName(QString::fromUtf8("menuWorkspace"));
         menuWorkspace->setEnabled(false);
+        menuPato_Diff_Tool = new QMenu(menuBar);
+        menuPato_Diff_Tool->setObjectName(QString::fromUtf8("menuPato_Diff_Tool"));
         MainWindow->setMenuBar(menuBar);
         statusBar = new QStatusBar(MainWindow);
         statusBar->setObjectName(QString::fromUtf8("statusBar"));
@@ -178,6 +184,7 @@ public:
 
         menuBar->addAction(menuPato_SCM->menuAction());
         menuBar->addAction(menuWorkspace->menuAction());
+        menuBar->addAction(menuPato_Diff_Tool->menuAction());
         menuBar->addAction(menuHelp->menuAction());
         menuPato_SCM->addAction(actionEnvironment_Settings);
         menuPato_SCM->addSeparator();
@@ -191,6 +198,7 @@ public:
         menuWorkspace->addAction(actionRemove_File_Dir);
         menuWorkspace->addSeparator();
         menuWorkspace->addAction(actionUpdate);
+        menuPato_Diff_Tool->addAction(actionOpen);
         mainToolBar->addAction(actionEnvironment_Settings);
         mainToolBar->addSeparator();
         mainToolBar->addAction(actionCheckin);
@@ -199,6 +207,8 @@ public:
         mainToolBar->addAction(actionExport);
         workspaceToolBar->addAction(actionAdd_File_Dir);
         workspaceToolBar->addAction(actionRemove_File_Dir);
+        workspaceToolBar->addSeparator();
+        workspaceToolBar->addAction(actionUpdate);
         helpToolBar->addAction(actionHelp);
 
         retranslateUi(MainWindow);
@@ -218,11 +228,13 @@ public:
         actionAdd_File_Dir->setText(QApplication::translate("MainWindow", "Add File/Dir", 0, QApplication::UnicodeUTF8));
         actionRemove_File_Dir->setText(QApplication::translate("MainWindow", "Remove File/Dir", 0, QApplication::UnicodeUTF8));
         actionUpdate->setText(QApplication::translate("MainWindow", "Update", 0, QApplication::UnicodeUTF8));
+        actionOpen->setText(QApplication::translate("MainWindow", "Open", 0, QApplication::UnicodeUTF8));
         labelWorkspace->setText(QApplication::translate("MainWindow", "Workspace:", 0, QApplication::UnicodeUTF8));
         labelWorkspacePath->setText(QApplication::translate("MainWindow", "TextLabel", 0, QApplication::UnicodeUTF8));
         menuPato_SCM->setTitle(QApplication::translate("MainWindow", "Pato-SCM", 0, QApplication::UnicodeUTF8));
         menuHelp->setTitle(QApplication::translate("MainWindow", "Help", 0, QApplication::UnicodeUTF8));
         menuWorkspace->setTitle(QApplication::translate("MainWindow", "Workspace", 0, QApplication::UnicodeUTF8));
+        menuPato_Diff_Tool->setTitle(QApplication::translate("MainWindow", "Pato-Diff Tool", 0, QApplication::UnicodeUTF8));
         mainToolBar->setWindowTitle(QApplication::translate("MainWindow", "toolBar", 0, QApplication::UnicodeUTF8));
         workspaceToolBar->setWindowTitle(QApplication::translate("MainWindow", "toolBar", 0, QApplication::UnicodeUTF8));
         helpToolBar->setWindowTitle(QApplication::translate("MainWindow", "toolBar", 0, QApplication::UnicodeUTF8));

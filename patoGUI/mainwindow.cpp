@@ -4,6 +4,7 @@
 #include "checkindialog.h"
 #include "checkoutdialog.h"
 #include "exportdialog.h"
+#include "difftool.h"
 #include <QtGui>
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -20,6 +21,7 @@ MainWindow::MainWindow(QWidget *parent) :
     CheckinDialog *checkinDialog = new CheckinDialog;
     CheckoutDialog *checkoutDialog = new CheckoutDialog;
     ExportDialog *exportDialog = new ExportDialog;
+    DiffTool *diffToolWindow = new DiffTool;
 
 
     //Actions
@@ -40,6 +42,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(checkinDialog, SIGNAL(showEnvironmentSettings()), environmentSettingsDialog, SLOT(show()));
     connect(checkoutDialog, SIGNAL(showEnvironmentSettings()), environmentSettingsDialog, SLOT(show()));
     connect(ui->actionEnvironment_Settings, SIGNAL(triggered()), environmentSettingsDialog, SLOT(show()));
+
+    connect(ui->actionOpen, SIGNAL(triggered()), diffToolWindow, SLOT(show()));
 
     //Window properties
     setWindowTitle(tr("Pato-SCM"));

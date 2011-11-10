@@ -15,24 +15,30 @@ SOURCES += main.cpp\
     checkindialog.cpp \
     environmentsettingsdialog.cpp \
     checkoutdialog.cpp \
-    exportdialog.cpp
+    exportdialog.cpp \
+    difftool.cpp
 
 HEADERS  += mainwindow.h \
     checkindialog.h \
     environmentsettingsdialog.h \
     checkoutdialog.h \
-    exportdialog.h
+    exportdialog.h \
+    difftool.h
 
 FORMS    += mainwindow.ui \
     checkindialog.ui \
     environmentsettingsdialog.ui \
     checkoutdialog.ui \
-    exportdialog.ui
+    exportdialog.ui \
+    difftool.ui
 
 OTHER_FILES +=
 
 RESOURCES += \
     mainwindow.qrc
+
+
+
 
 
 

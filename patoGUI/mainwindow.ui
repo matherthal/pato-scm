@@ -125,8 +125,15 @@
     <addaction name="separator"/>
     <addaction name="actionUpdate"/>
    </widget>
+   <widget class="QMenu" name="menuPato_Diff_Tool">
+    <property name="title">
+     <string>Pato-Diff Tool</string>
+    </property>
+    <addaction name="actionOpen"/>
+   </widget>
    <addaction name="menuPato_SCM"/>
    <addaction name="menuWorkspace"/>
+   <addaction name="menuPato_Diff_Tool"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
@@ -309,6 +316,11 @@
    </property>
    <property name="text">
     <string>Update</string>
+   </property>
+  </action>
+  <action name="actionOpen">
+   <property name="text">
+    <string>Open</string>
    </property>
   </action>
  </widget>
