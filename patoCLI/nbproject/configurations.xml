@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="79">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <logicalFolder name="HeaderFiles"
+                   displayName="Header Files"
+                   projectFiles="true">
+      <itemPath>addCLI.h</itemPath>
+      <itemPath>checkinCLI.h</itemPath>
+      <itemPath>checkoutCLI.h</itemPath>
+      <itemPath>cliReader.h</itemPath>
+      <itemPath>../patoClientAPI/logCLI.cpp</itemPath>
+      <itemPath>../patoClientAPI/logCLI.h</itemPath>
+      <itemPath>statusCLI.h</itemPath>
+      <itemPath>updateCLI.h</itemPath>
+      <itemPath>utils.h</itemPath>
+    </logicalFolder>
+    <logicalFolder name="ResourceFiles"
+                   displayName="Resource Files"
+                   projectFiles="true">
+      <logicalFolder name="patoAlgorithms"
+                     displayName="patoAlgorithms"
+                     projectFiles="true">
+        <logicalFolder name="fixtures" displayName="fixtures" projectFiles="true">
+          <itemPath>../patoAlgorithms/fixtures/arq1.txt</itemPath>
+          <itemPath>../patoAlgorithms/fixtures/arq1.txt.1</itemPath>
+          <itemPath>../patoAlgorithms/fixtures/arq2.txt</itemPath>
+          <itemPath>../patoAlgorithms/fixtures/boa.txt</itemPath>
+          <itemPath>../patoAlgorithms/fixtures/boa2.txt</itemPath>
+          <itemPath>../patoAlgorithms/fixtures/grande.txt</itemPath>
+          <itemPath>../patoAlgorithms/fixtures/grande2.txt</itemPath>
+        </logicalFolder>
+        <itemPath>../patoAlgorithms/Makefile</itemPath>
+        <itemPath>../patoAlgorithms/PatoAlgorithms.pro</itemPath>
+        <itemPath>../patoAlgorithms/PatoAlgorithms_global.h</itemPath>
+        <itemPath>../patoAlgorithms/diff.cpp</itemPath>
+        <itemPath>../patoAlgorithms/diff.h</itemPath>
+        <itemPath>../patoAlgorithms/diffitem.cpp</itemPath>
+        <itemPath>../patoAlgorithms/diffitem.h</itemPath>
+        <itemPath>../patoAlgorithms/lcs.cpp</itemPath>
+        <itemPath>../patoAlgorithms/lcs.h</itemPath>
+        <itemPath>../patoAlgorithms/main.cpp</itemPath>
+        <itemPath>../patoAlgorithms/merge.cpp</itemPath>
+        <itemPath>../patoAlgorithms/merge.h</itemPath>
+        <itemPath>../patoAlgorithms/patoalgorithms.cpp</itemPath>
+        <itemPath>../patoAlgorithms/patoalgorithms.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="patoClientAPI"
+                     displayName="patoClientAPI"
+                     projectFiles="true">
+        <logicalFolder name="docs" displayName="docs" projectFiles="true">
+          <itemPath>../patoClientAPI/docs/SCV - inicial.pptx</itemPath>
+        </logicalFolder>
+        <itemPath>../patoClientAPI/PatoClientApi.pro</itemPath>
+        <itemPath>../patoClientAPI/PatoClientApi_global.h</itemPath>
+        <itemPath>../patoClientAPI/PatoClientException.cpp</itemPath>
+        <itemPath>../patoClientAPI/PatoClientException.h</itemPath>
+        <itemPath>../patoClientAPI/addOutput.cpp</itemPath>
+        <itemPath>../patoClientAPI/addOutput.h</itemPath>
+        <itemPath>../patoClientAPI/checkinOutput.cpp</itemPath>
+        <itemPath>../patoClientAPI/checkinOutput.h</itemPath>
+        <itemPath>../patoClientAPI/checkoutOutput.cpp</itemPath>
+        <itemPath>../patoClientAPI/checkoutOutput.h</itemPath>
+        <itemPath>../patoClientAPI/diffOutput.cpp</itemPath>
+        <itemPath>../patoClientAPI/diffOutput.h</itemPath>
+        <itemPath>../patoClientAPI/logOutput.cpp</itemPath>
+        <itemPath>../patoClientAPI/logOutput.h</itemPath>
+        <itemPath>../patoClientAPI/patoclientapi.cpp</itemPath>
+        <itemPath>../patoClientAPI/patoclientapi.h</itemPath>
+        <itemPath>../patoClientAPI/statusOutput.cpp</itemPath>
+        <itemPath>../patoClientAPI/statusOutput.h</itemPath>
+        <itemPath>../patoClientAPI/updateOutput.cpp</itemPath>
+        <itemPath>../patoClientAPI/updateOutput.h</itemPath>
+      </logicalFolder>
+    </logicalFolder>
+    <logicalFolder name="SourceFiles"
+                   displayName="Source Files"
+                   projectFiles="true">
+      <itemPath>addCLI.cpp</itemPath>
+      <itemPath>checkinCLI.cpp</itemPath>
+      <itemPath>checkoutCLI.cpp</itemPath>
+      <itemPath>cliReader.cpp</itemPath>
+      <itemPath>main.cpp</itemPath>
+      <itemPath>statusCLI.cpp</itemPath>
+      <itemPath>updateCLI.cpp</itemPath>
+      <itemPath>utils.cpp</itemPath>
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+    <itemPath>Makefile</itemPath>
+  </logicalFolder>
+  <sourceRootList>
+    <Elem>../patoClientAPI</Elem>
+    <Elem>../patoWorkspace</Elem>
+    <Elem>../patoBase</Elem>
+    <Elem>../patoAlgorithms</Elem>
+    <Elem>../patoCommunication</Elem>
+  </sourceRootList>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Debug" type="1">
+      <toolsSet>
+        <remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
+        <compilerSet>default</compilerSet>
+      </toolsSet>
+      <compileType>
+        <ccTool>
+          <incDir>
+            <pElem>../../../QtSDK/Desktop/Qt/474/gcc/include</pElem>
+            <pElem>../../../QtSDK/Madde/targets/harmattan-nokia-meego-api/bin</pElem>
+            <pElem>../../../QtSDK/Simulator/Qt/gcc/bin</pElem>
+            <pElem>../../../QtSDK/Desktop/Qt/474/gcc/bin</pElem>
+            <pElem>../../../QtSDK/Simulator/Qt/gcc/include/QtCore</pElem>
+          </incDir>
+        </ccTool>
+        <linkerTool>
+          <linkerAddLib>
+            <pElem>../../../QtSDK/Desktop/Qt/474/gcc/lib</pElem>
+            <pElem>../../../QtSDK/Simulator/Qt/gcc/include/QtCore</pElem>
+          </linkerAddLib>
+          <linkerLibItems>
+            <linkerLibLibItem>QtCore</linkerLibLibItem>
+          </linkerLibItems>
+        </linkerTool>
+      </compileType>
+    </conf>
+    <conf name="Release" type="1">
+      <toolsSet>
+        <remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
+        <compilerSet>default</compilerSet>
+      </toolsSet>
+      <compileType>
+        <cTool>
+          <developmentMode>5</developmentMode>
+        </cTool>
+        <ccTool>
+          <developmentMode>5</developmentMode>
+        </ccTool>
+        <fortranCompilerTool>
+          <developmentMode>5</developmentMode>
+        </fortranCompilerTool>
+        <asmTool>
+          <developmentMode>5</developmentMode>
+        </asmTool>
+      </compileType>
+    </conf>
+  </confs>
+</configurationDescriptor>
