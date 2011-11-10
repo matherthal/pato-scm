@@ -73,7 +73,7 @@ bool PatoWorkspace::create(QString sourceDir, QStringList files, QString repoAdd
     defaultPath = repoAddress;
     revKey  = revision;
 
-    timespamp = QDateTime::currentDateTime();
+    timestamp = QDateTime::currentDateTime();
 
     for (int i=0; i < files.size(); i++)
     {
@@ -143,12 +143,12 @@ QList< PatoFileStatus > PatoWorkspace::status(PatoFileStatus::FileStatus statusF
         {
             QFileInfo fileInfo( workPath + "/" + versionedFiles[i] );
 
-            if ( (statusFilter & PatoFileStatus::MODIFIED) && (fileInfo.lastModified() > timespamp ) )
+            if ( (statusFilter & PatoFileStatus::MODIFIED) && (fileInfo.lastModified() > timestamp ) )
             {
                 statusList.append( PatoFileStatus( versionedFiles[i], PatoFileStatus::MODIFIED ) );
             }
 
-            if ( (statusFilter & PatoFileStatus::CLEAN) && (fileInfo.lastModified() <= timespamp) )
+            if ( (statusFilter & PatoFileStatus::CLEAN) && (fileInfo.lastModified() <= timestamp) )
             {
                 statusList.append( PatoFileStatus( versionedFiles[i], PatoFileStatus::CLEAN ) );
             }
@@ -242,8 +242,9 @@ void PatoWorkspace::writeMetadata(MetadataType types)
         {
             QTextStream textStream(&file);
 
-            textStream << "Revision: " << revKey << endl;
-            textStream << "Default Repository: " << defaultPath << endl;
+            textStream << revKey << endl;
+            textStream << defaultPath << endl;
+            textStream << timestamp.toString() << endl;
 
             for (int i=0; i < versionedFiles.size(); i++)
             {
@@ -310,6 +311,7 @@ void PatoWorkspace::readMetadata(MetadataType types)
             QTextStream textStream(&file);
             revKey = textStream.readLine().toInt();
             defaultPath = textStream.readLine();
+            timestamp.fromString( textStream.readLine() );
 
             while (!textStream.atEnd())
             {
