@@ -7,6 +7,7 @@
 QT       += network
 
 QT       -= gui
+QT       += sql
 
 TARGET = ../output/PatoCommunication
 TEMPLATE = lib

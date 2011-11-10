@@ -77,7 +77,7 @@ namespace bd {
         }
 
         //using hash key
-        QCryptographicHash::hash((data),QCryptographicHash::Md5).toHex();
+        QCryptographicHash::hash( data.c_str(),QCryptographicHash::Md5).toHex();
 
         return key;
 
