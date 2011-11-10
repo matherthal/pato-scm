@@ -10,11 +10,14 @@ using namespace std;
 
 class PATOSERVERAPISHARED_EXPORT PatoServerApi {
 private:
+    PatoServerApi();
     PatoDataModel* dataModel;
     PatoFS* storage;
     std::map<std::string, int> filePath;
     map<string, string> file;
     PatoServerApi();
+
+    static PatoServerApi* patoServerApi;
 
     static PatoServerApi* patoServerApi;
 

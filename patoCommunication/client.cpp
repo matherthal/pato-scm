@@ -1,4 +1,4 @@
-//#include "patocommunication.h"
+//#include "client.h"
 
 #include <cstdlib>
 #include <string>
@@ -8,6 +8,27 @@
 #include <xmlrpc-c/client_simple.hpp>
 
 using namespace std;
+
+map<string, string>* Client::checkout(int revision, QString path, QString username, QString password) {
+//--- Client side:
+//        QDataStream dataStream(&data, QIODevice::ReadWrite);
+//        qint32 size;
+//
+//        dataStream >> size;
+//        map<string, string> files;
+//        for (int i =0; i < size; i++)
+//        {
+//            QString first;
+//            QString second;
+//
+//            dataStream >> first;
+//            dataStream >> second;
+//
+//            files[first.toStdString()] = second.toStdString();
+//        }
+//QByteArray data;
+//data.fromRawData( char*, lenght);
+}
 
 int
 main(int argc, char **) {
