@@ -6,16 +6,30 @@
 
 QT       -= gui
 
-TARGET = ../output/PatoClientApi
+win32: TARGET = ../../output/PatoClientApi
+unix:  TARGET = ../output/patoclientapi
+
 TEMPLATE = lib
 
 DEFINES += PATOCLIENTAPI_LIBRARY
 
 SOURCES += patoclientapi.cpp \
+    PatoClientException.cpp \
+    updateOutput.cpp \
+    statusOutput.cpp \
+    logOutput.cpp \
+    checkoutOutput.cpp \
+    addOutput.cpp \
     PatoClientException.cpp
 
 HEADERS += patoclientapi.h\
         PatoClientApi_global.h \
+    PatoClientException.h \
+    updateOutput.h \
+    statusOutput.h \
+    logOutput.h \
+    checkoutOutput.h \
+    addOutput.h \
     PatoClientException.h
 
 symbian {
@@ -36,3 +50,7 @@ unix:!symbian {
     }
     INSTALLS += target
 }
+
+
+
+
