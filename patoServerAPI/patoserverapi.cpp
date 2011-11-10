@@ -5,12 +5,29 @@
 #include<QtCore/QString>
 #include<QtCore/QTextStream>
 
+PatoServerApi* PatoServerApi::patoServerApi = NULL;
 
 PatoServerApi::PatoServerApi()
 {
 
     dataModel = PatoDataModel::getInstance();
     storage = PatoFS::getInstance();
+}
+
+PatoServerApi* PatoServerApi::getInstance() {
+
+    if (patoServerApi == NULL)
+        patoServerApi = new PatoServerApi();
+
+    return patoServerApi;
+}
+
+void PatoServerApi::destroyInstance() {
+
+    if (patoServerApi != NULL) {
+        delete patoServerApi;
+        patoServerApi = NULL;
+    }
 }
 
 map<string, string>* PatoServerApi::checkout(int revision, QString path, QString username, QString password) {
