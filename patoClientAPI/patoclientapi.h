@@ -10,6 +10,7 @@
 #include"checkoutOutput.h"
 #include"checkinOutput.h"
 #include"updateOutput.h"
+#include"diffOutput.h"
 #include<QString>
 #include<QList>
 
@@ -22,8 +23,8 @@ public:
     QList<statusOutput> status(QString workspace) throw(PatoClientException);
     QList<addOutput> add(QString workspace, QList<QString> files) throw(PatoClientException);
     QList<updateOutput> update(QString revision, QString adress, QString username, QString password, QString workspace) throw(PatoClientException);
-    void merge(QString path1, int revision1, QString path2, int revision2, QString workspace) throw(PatoClientException);
-    void diff(QString path1, int revision1, QString path2, int revision2) throw(PatoClientException);
+    void merge(QString path1, QString revision1, QString path2, QString revision2, QString workspace) throw(PatoClientException);
+    QList<updateOutput> diff(QString path1, QString revision1, QString path2, QString revision2) throw(PatoClientException);
     
     PatoClientApi();
 

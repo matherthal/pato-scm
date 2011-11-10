@@ -21,6 +21,16 @@ checkinCLI::checkinCLI() {
     workspace = "";
 }
 
+QList<QString> messageErrorCI(){
+    QList<QString> error;
+
+    error.append("Checkin command is used to send changes from your workcopy to the repository.");
+    error.append("Usage: pato checkin --username USERNAME --password PASSWORD [--workspace WORKSPACE]");
+
+    return error;
+}
+
+
 void checkinCLI::command(int argc, char** argv) {
     //treating cases that argc > 1
 
@@ -49,7 +59,12 @@ void checkinCLI::command(int argc, char** argv) {
     try {
         clientAPI->checkin(address, username, password, workspace);
     } catch (PatoClientException& t) {
-        qout << t.Message() << endl;
+        QList<QString> ls = messageErrorCI();
+        for(int i = 0; i < ls.size(); i++){
+            qout<<ls.at(i)<<endl;
+        }
+
+        //qout << t.Message() << endl;
     }
 
 }

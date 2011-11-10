@@ -13,6 +13,16 @@
 #include<QtCore/QTextStream>
 using namespace std;
 
+QList<QString> messageErrorCO(){
+    QList<QString> error;
+
+    error.append("Checkout command is used to obtain one configuration from a repository.");
+    error.append("Usage: pato checkout --address ADDRESS --username USERNAME --password PASSWORD [--revision REVISION][--workspace WORKSPACE]");
+
+    return error;
+}
+
+
 void checkoutCLI::command(int argc, char** argv) {
     //treating cases that argc > 1
 
@@ -46,8 +56,12 @@ void checkoutCLI::command(int argc, char** argv) {
     try {
         clientAPI->checkout(revision, address, username, password, workspace);
     } catch (PatoClientException& t) {
-        
-        qout <<t.Message() << endl;
+        QList<QString> ls = messageErrorCO();
+        for(int i = 0; i < ls.size(); i++){
+            qout<<ls.at(i)<<endl;
+        }
+
+        //qout <<t.Message() << endl;
     }
 
 

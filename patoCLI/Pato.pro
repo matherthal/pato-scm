@@ -22,7 +22,10 @@ SOURCES += main.cpp \
     checkoutCLI.cpp \
     checkinCLI.cpp \
     addCLI.cpp \
-    utils.cpp
+    utils.cpp \
+    logCLI.cpp \
+    mergeCLI.cpp \
+    diffCLI.cpp
 
 HEADERS += \
     updateCLI.h \
@@ -31,6 +34,28 @@ HEADERS += \
     checkoutCLI.h \
     checkinCLI.h \
     addCLI.h \
-    utils.h
+    utils.h \
+    logCLI.h \
+    mergeCLI.h \
+    diffCLI.h
 
 LIBS += -L../output  -lPatoClientApi
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

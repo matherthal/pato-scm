@@ -7,6 +7,7 @@
 QT       -= gui
 
 TARGET = ../output/PatoBase
+
 TEMPLATE = lib
 CONFIG += staticlib
 
@@ -17,7 +18,7 @@ SOURCES += patobase.cpp \
 HEADERS += patobase.h \
     patofilestatus.h \
     patotypes.h \
-    patochangeset.h \
+    patochangeset.h
 
 unix:!symbian {
     maemo5 {
