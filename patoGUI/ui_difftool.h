@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'difftool.ui'
 **
-** Created: Wed 9. Nov 22:47:25 2011
+** Created: Wed 9. Nov 22:56:44 2011
 **      by: Qt User Interface Compiler version 4.7.4
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -31,8 +31,8 @@ class Ui_DiffTool
 public:
     QAction *actionLoad_File_1;
     QAction *actionLoad_File_2;
-    QAction *actionFile_1_Against_File_2;
-    QAction *actionFile_2_Against_File_1;
+    QAction *actionOneAgainstTwo;
+    QAction *actionTwoAgainstOne;
     QWidget *centralwidget;
     QTableWidget *fileOneTableWidget;
     QTableWidget *fileTwoTableWidget;
@@ -57,10 +57,10 @@ public:
         actionLoad_File_1->setObjectName(QString::fromUtf8("actionLoad_File_1"));
         actionLoad_File_2 = new QAction(DiffTool);
         actionLoad_File_2->setObjectName(QString::fromUtf8("actionLoad_File_2"));
-        actionFile_1_Against_File_2 = new QAction(DiffTool);
-        actionFile_1_Against_File_2->setObjectName(QString::fromUtf8("actionFile_1_Against_File_2"));
-        actionFile_2_Against_File_1 = new QAction(DiffTool);
-        actionFile_2_Against_File_1->setObjectName(QString::fromUtf8("actionFile_2_Against_File_1"));
+        actionOneAgainstTwo = new QAction(DiffTool);
+        actionOneAgainstTwo->setObjectName(QString::fromUtf8("actionOneAgainstTwo"));
+        actionTwoAgainstOne = new QAction(DiffTool);
+        actionTwoAgainstOne->setObjectName(QString::fromUtf8("actionTwoAgainstOne"));
         centralwidget = new QWidget(DiffTool);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         centralwidget->setEnabled(true);
@@ -123,8 +123,8 @@ public:
         menubar->addAction(menuShow_Differences->menuAction());
         menuFile->addAction(actionLoad_File_1);
         menuFile->addAction(actionLoad_File_2);
-        menuShow_Differences->addAction(actionFile_1_Against_File_2);
-        menuShow_Differences->addAction(actionFile_2_Against_File_1);
+        menuShow_Differences->addAction(actionOneAgainstTwo);
+        menuShow_Differences->addAction(actionTwoAgainstOne);
 
         retranslateUi(DiffTool);
 
@@ -136,8 +136,8 @@ public:
         DiffTool->setWindowTitle(QApplication::translate("DiffTool", "MainWindow", 0, QApplication::UnicodeUTF8));
         actionLoad_File_1->setText(QApplication::translate("DiffTool", "Load File 1", 0, QApplication::UnicodeUTF8));
         actionLoad_File_2->setText(QApplication::translate("DiffTool", "Load File 2", 0, QApplication::UnicodeUTF8));
-        actionFile_1_Against_File_2->setText(QApplication::translate("DiffTool", "File 1 Against File 2", 0, QApplication::UnicodeUTF8));
-        actionFile_2_Against_File_1->setText(QApplication::translate("DiffTool", "File 2 Against File 1", 0, QApplication::UnicodeUTF8));
+        actionOneAgainstTwo->setText(QApplication::translate("DiffTool", "File 1 Against File 2", 0, QApplication::UnicodeUTF8));
+        actionTwoAgainstOne->setText(QApplication::translate("DiffTool", "File 2 Against File 1", 0, QApplication::UnicodeUTF8));
         fileOneLabel->setText(QApplication::translate("DiffTool", "TextLabel", 0, QApplication::UnicodeUTF8));
         fileTwoLabel->setText(QApplication::translate("DiffTool", "TextLabel", 0, QApplication::UnicodeUTF8));
         menuFile->setTitle(QApplication::translate("DiffTool", "File", 0, QApplication::UnicodeUTF8));

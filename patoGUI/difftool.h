@@ -18,6 +18,7 @@ public:
 private slots:
     void loadFileOne();
     void loadFileTwo();
+    void showDiff();
 private:
     Ui::DiffTool *ui;
 };

@@ -37,10 +37,12 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionCheckin, SIGNAL(triggered()), checkinDialog, SLOT(show()));
 
     connect(environmentSettingsDialog, SIGNAL(setRepositoryPath(QString)), exportDialog, SLOT(setRepositoryPath(QString)));
+    connect(environmentSettingsDialog, SIGNAL(setWorkspacePath(QString)), exportDialog, SLOT(setWorkspacePath(QString)));
     connect(ui->actionExport, SIGNAL(triggered()), exportDialog, SLOT(show()));
 
     connect(checkinDialog, SIGNAL(showEnvironmentSettings()), environmentSettingsDialog, SLOT(show()));
     connect(checkoutDialog, SIGNAL(showEnvironmentSettings()), environmentSettingsDialog, SLOT(show()));
+    connect(exportDialog, SIGNAL(showEnvironmentSettings()), environmentSettingsDialog, SLOT(show()));
     connect(ui->actionEnvironment_Settings, SIGNAL(triggered()), environmentSettingsDialog, SLOT(show()));
 
     connect(ui->actionOpen, SIGNAL(triggered()), diffToolWindow, SLOT(show()));

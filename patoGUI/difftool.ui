@@ -179,8 +179,8 @@
     <property name="title">
      <string>Show Differences</string>
     </property>
-    <addaction name="actionFile_1_Against_File_2"/>
-    <addaction name="actionFile_2_Against_File_1"/>
+    <addaction name="actionOneAgainstTwo"/>
+    <addaction name="actionTwoAgainstOne"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuShow_Differences"/>
@@ -196,12 +196,12 @@
     <string>Load File 2</string>
    </property>
   </action>
-  <action name="actionFile_1_Against_File_2">
+  <action name="actionOneAgainstTwo">
    <property name="text">
     <string>File 1 Against File 2</string>
    </property>
   </action>
-  <action name="actionFile_2_Against_File_1">
+  <action name="actionTwoAgainstOne">
    <property name="text">
     <string>File 2 Against File 1</string>
    </property>
