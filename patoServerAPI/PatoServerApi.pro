@@ -7,7 +7,10 @@
 QT       -= gui
 QT       += sql
 
-TARGET = ../output/PatoServerApi
+
+win32: TARGET = ../../output/patoserverapi
+unix:  TARGET = ../output/patoserverapi
+
 TEMPLATE = lib
 
 DEFINES += PATOSERVERAPI_LIBRARY
@@ -37,3 +40,5 @@ unix:!symbian {
     }
     INSTALLS += target
 }
+
+LIBS += -L../output  -lpatofs -lpatodatamodel

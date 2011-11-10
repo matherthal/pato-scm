@@ -15,6 +15,9 @@ private:
     PatoFS* storage;
     std::map<std::string, int> filePath;
     map<string, string> file;
+    PatoServerApi();
+
+    static PatoServerApi* patoServerApi;
 
     static PatoServerApi* patoServerApi;
 
@@ -24,6 +27,8 @@ public:
 
     static PatoServerApi* getInstance();
     static void destroyInstance();
+
+
 };
 
 #endif // PATOSERVERAPI_H
