@@ -7,22 +7,24 @@
 QT       -= gui
 QT       += sql
 
-TARGET = ../output/PatoServerApi
+TARGET = ../output/Server
 TEMPLATE = lib
 
 DEFINES += PATOSERVERAPI_LIBRARY
 
-SOURCES += patoserverapi.cpp
+SOURCES += server.cpp
 
-HEADERS += patoserverapi.h\
-        PatoServerApi_global.h
+HEADERS += server.h\
+        Server_global.h
+
+LIBS += -L"./xmlrpc" -lxmlrpc_server_abyss++ -lxmlrpc_server++ -lxmlrpc_server_abyss -lxmlrpc_server -lxmlrpc_abyss -lpthread -lxmlrpc++ -lxmlrpc -lxmlrpc_xmlparse -lxmlrpc_xmltok -lxmlrpc_util
 
 symbian {
     MMP_RULES += EXPORTUNFROZEN
     TARGET.UID3 = 0xE1E60A81
     TARGET.CAPABILITY = 
     TARGET.EPOCALLOWDLLDATA = 1
-    addFiles.sources = PatoServerApi.dll
+    addFiles.sources = Server.dll
     addFiles.path = !:/sys/bin
     DEPLOYMENT += addFiles
 }
