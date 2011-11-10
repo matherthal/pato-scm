@@ -1,7 +1,7 @@
 #include "bdpatoFS.h"
 #include <iostream>
 
-#define PATH_BD "..\\patoDataModel\\BDPatoDataModel\\DataBase\\DataModelBD"
+#define PATH_BD "../patoDataModel/BDPatoDataModel/DataBase/DataModelBD"
 namespace bd {
 
     BDPatoFS* BDPatoFS::bdPato = NULL;
@@ -47,7 +47,8 @@ namespace bd {
         if ( db.connectionName().isEmpty() )
         {
             db = QSqlDatabase::addDatabase( "QSQLITE","ConnectionPatoFS" );
-            db.setDatabaseName(PATH_BD);
+            db.setDatabaseName(QDir::toNativeSeparators(PATH_BD));
+
             return db.open();
         }
         return true;
@@ -60,21 +61,31 @@ namespace bd {
     {
         //using hash key
         QString key = QString(QCryptographicHash::hash((data.c_str()),QCryptographicHash::Md5).toHex());
+        QSqlQuery query(db);
+
+        query.prepare("SELECT ARMA_CONTEUDO FROM ARMAZENAMENTO WHERE arma_id = :key");
+        query.bindValue(":key",key.toStdString().c_str());
+
+        query.exec();
+
+        if (query.next()) {
+            return key.toStdString();
+        }
+
 
         std::string sqlInsert = "INSERT INTO ARMAZENAMENTO (arma_id, arma_conteudo) VALUES ";
-        sqlInsert.append("(");
+        sqlInsert.append("('");
         sqlInsert.append(key.toStdString());
-        sqlInsert.append(",'");
+        sqlInsert.append("','");
         sqlInsert.append(data);
         sqlInsert.append("');");
-
-        QSqlQuery query(db);
 
         if (query.exec(sqlInsert.c_str())) {
             return key.toStdString();
         }
-        else
+        else {
             return "-1";
+        }
     }
 
     bool BDPatoFS::saveData(const std::vector<std::string>& data, std::vector<std::string>& vecIdFile)
