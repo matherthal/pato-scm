@@ -13,17 +13,14 @@ private:
     PatoServerApi();
     PatoDataModel* dataModel;
     PatoFS* storage;
-    std::map<std::string, int> filePath;
+    //std::map<std::string /*file name*/, std::string /*file key (hash code)*/> filePath;
     map<string, string> file;
-    PatoServerApi();
-
-    static PatoServerApi* patoServerApi;
 
     static PatoServerApi* patoServerApi;
 
 public:
     std::map<std::string, std::string>* checkout(int revision, QString path, QString username, QString password);
-    bool checkin(QString path, QString username, QString password);
+    bool checkin(QString path, QString username, QString password, QString message, vector<string>& fileContent, vector<string>& fileKey);
 
     static PatoServerApi* getInstance();
     static void destroyInstance();
