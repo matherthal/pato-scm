@@ -7,12 +7,19 @@ DiffTool::DiffTool(QWidget *parent) :
     ui(new Ui::DiffTool)
 {
     ui->setupUi(this);
-        ui->fileOneLabel->setVisible(false);
-        ui->fileTwoLabel->setVisible(false);
+    ui->fileOneLabel->setVisible(false);
+    ui->fileTwoLabel->setVisible(false);
 
-        //Actions
-        connect(ui->actionLoad_File_1, SIGNAL(triggered()), this, SLOT(loadFileOne()));
-        connect(ui->actionLoad_File_2, SIGNAL(triggered()), this, SLOT(loadFileTwo()));
+    //Actions
+    connect(ui->actionLoad_File_1, SIGNAL(triggered()), this, SLOT(loadFileOne()));
+    connect(ui->actionLoad_File_2, SIGNAL(triggered()), this, SLOT(loadFileTwo()));
+
+    connect(ui->actionOneAgainstTwo, SIGNAL(triggered()), this, SLOT(showDiff()));
+    connect(ui->actionTwoAgainstOne, SIGNAL(triggered()), this, SLOT(showDiff()));
+
+    //Window properties
+    setWindowTitle(tr("Pato-Diff Tool"));
+    setFixedSize(800,600);
 
 }
 
@@ -92,4 +99,8 @@ void DiffTool::loadFileTwo()
         }
         file.close();
     }
+}
+void DiffTool::showDiff()
+{
+    //vazio
 }
