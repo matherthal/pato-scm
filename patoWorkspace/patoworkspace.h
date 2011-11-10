@@ -68,7 +68,7 @@ private:
     QStringList removedFiles;
     QStringList addedFiles;
 
-    QDateTime timespamp;
+    QDateTime timestamp;
 
 
     QString lastError;
