@@ -109,6 +109,7 @@ QList<statusOutput> PatoClientApi::status(QString workspace) throw (PatoClientEx
 
     work->status();
 
+
     return output;
 }
 
