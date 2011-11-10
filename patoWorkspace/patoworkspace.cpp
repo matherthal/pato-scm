@@ -210,11 +210,26 @@ bool PatoWorkspace::setRevision( RevisionKey revision,  bool commiting  )
     return true;
 }
 
-bool PatoWorkspace::update( PatoChangeSet changeSet, RevisionKey revision)
+bool PatoWorkspace::update( PatoChangeSet changeSet, RevisionKey rev)
 {
+
+    PatoChangeSet localChanges = changes();
+
+    if (!localChanges.isEmpty())
+    {
+
+    }
+    else
+    {
+        Q_ASSERT (  changeSet.start() == revision() );
+        //copyRevision( backupPath(revision()), backupPath(changeSet.end()) );
+        //PatoAlgorithms::ApplyChangeSet( backupPath(changeSet.end()), changeSet); //a clean .end() version;
+        //PatoAlgorithms::Merge( backupPath(changeSet.end()), changeSet); //a clean .end() version;
+    }
+
     changeSet = changeSet; //PatoAlgorithms::ApplyChangeSet( workPath, changeSet);
     qWarning() << "Update workspace needs PatoAlgorithms::ApplyChangeSet( workPath, changeSet)";
-    revKey  = revision;
+    revKey  = rev;
 
     writeMetadata();
 
@@ -353,7 +368,13 @@ void PatoWorkspace::readMetadata(MetadataType types)
 
 PatoChangeSet  PatoWorkspace::changes() const
 {
-    return PatoChangeSet();
+    PatoChangeSet changeRet;
+    //changeRet = PatoAlgorithms::diff( backupPath(revKey), workPath + "/" );
+
+    //changeRet << addedFiles;
+    //changeRet << removedFiles;
+
+    return changeRet;
 }
 
 //////////////SEGUNDA FASE///////////////////////
