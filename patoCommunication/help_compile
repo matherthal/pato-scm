@@ -7,4 +7,4 @@ g++ -o patoserverapi patoserverapi.cpp libxmlrpc/libxmlrpc_server_abyss++.a libx
 
 cliente:
 
-g++ -o patocommunication patocommunication.cpp libxmlrpc/libxmlrpc_client++.a libxmlrpc/libxmlrpc_client.a libxmlrpc/libxmlrpc++.a libxmlrpc/libxmlrpc.a libxmlrpc/libxmlrpc_xmlparse.a libxmlrpc/libxmlrpc_xmltok.a libxmlrpc/libxmlrpc_util.a -lcurl libxmlrpc/libxmlrpc_packetsocket.a
+g++ -o client client.cpp libxmlrpc/libxmlrpc_client++.a libxmlrpc/libxmlrpc_client.a libxmlrpc/libxmlrpc++.a libxmlrpc/libxmlrpc.a libxmlrpc/libxmlrpc_xmlparse.a libxmlrpc/libxmlrpc_xmltok.a libxmlrpc/libxmlrpc_util.a -lcurl libxmlrpc/libxmlrpc_packetsocket.a
