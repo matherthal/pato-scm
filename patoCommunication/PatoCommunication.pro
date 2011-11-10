@@ -8,7 +8,9 @@ QT       += network
 
 QT       -= gui
 
-TARGET = ../output/PatoCommunication
+win32: TARGET = ../../output/patocommunication
+unix:  TARGET = ../output/patocommunication
+
 TEMPLATE = lib
 
 DEFINES += PATOCOMMUNICATION_LIBRARY
