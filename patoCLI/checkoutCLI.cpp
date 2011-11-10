@@ -86,11 +86,11 @@ QString checkoutCLI::getWorkspace() const {
     return workspace;
 }
 
-void checkoutCLI::setRevision(int revision) {
+void checkoutCLI::setRevision(RevisionKey  revision) {
     this->revision = revision;
 }
 
-int checkoutCLI::getRevision() const {
+RevisionKey  checkoutCLI::getRevision() const {
     return revision;
 }
 
