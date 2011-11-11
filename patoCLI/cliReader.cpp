@@ -39,7 +39,7 @@ void cliReader::reader(int argc, char** argv) {
     logCLI* log;
     diffCLI* diff;
     mergeCLI* merge;
-    
+
     if (argc <= 1) {
         cout << "Pato has the following commands:" << endl;
         cout << "add (a)" << endl;

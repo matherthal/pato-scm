@@ -21,7 +21,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="mainwindow.qrc">
-    <normaloff>:/new/icons/checkinincon</normaloff>:/new/icons/checkinincon</iconset>
+    <normaloff>:/new/icons/checkouticon</normaloff>:/new/icons/checkouticon</iconset>
   </property>
   <widget class="QGroupBox" name="groupBox">
    <property name="geometry">

@@ -3,20 +3,29 @@
 
 #include "PatoServerApi_global.h"
 #include "../patoDataModel/patodatamodel.h"
+#include "../patoFS/patofs.h"
 #include<QtCore/QString>
 
 using namespace std;
 
 class PATOSERVERAPISHARED_EXPORT PatoServerApi {
 private:
+    PatoServerApi();
     PatoDataModel* dataModel;
-    std::vector<std::string> filePath;
+    PatoFS* storage;
+    //std::map<std::string /*file name*/, std::string /*file key (hash code)*/> filePath;
+    map<string, string> file;
+
+    static PatoServerApi* patoServerApi;
 
 public:
-    void checkout(int revision, QString path, QString username, QString password);
-    void checkin(QString path, QString username, QString password);
+    std::map<std::string, std::string>* checkout(int revision, QString path, QString username, QString password);
+    bool checkin(QString path, QString username, QString password, QString message, vector<string>& fileContent, vector<string>& fileKey);
 
-    PatoServerApi();
+    static PatoServerApi* getInstance();
+    static void destroyInstance();
+
+
 };
 
 #endif // PATOSERVERAPI_H

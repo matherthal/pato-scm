@@ -1,5 +1,6 @@
-#include <string.h>
 #include "merge.h"
+#include <string.h>
+
 
 Merge::Merge(const char* _fileNameBase,const char* _fileNameA, const char* _fileNameB){
     diff = new Diff(_fileNameA,_fileNameB);
@@ -155,6 +156,6 @@ Merge::~Merge(){
     delete diff;
 }
 
-fstream Merge::getFile(){
-    return mergeFile;
+fstream* Merge::getFile(){
+    return &mergeFile;
 }

@@ -8,7 +8,9 @@ QT       += core
 
 QT       -= gui
 
-TARGET = ../output/pato
+win32: TARGET = ../../output/pato
+unix:  TARGET = ../output/pato
+
 CONFIG   += console
 CONFIG   -= app_bundle
 
@@ -23,8 +25,8 @@ SOURCES += main.cpp \
     checkinCLI.cpp \
     addCLI.cpp \
     utils.cpp \
-    logCLI.cpp \
     mergeCLI.cpp \
+    logCLI.cpp \
     diffCLI.cpp
 
 HEADERS += \
@@ -35,8 +37,8 @@ HEADERS += \
     checkinCLI.h \
     addCLI.h \
     utils.h \
-    logCLI.h \
     mergeCLI.h \
+    logCLI.h \
     diffCLI.h
 
 LIBS += -L../output  -lPatoClientApi

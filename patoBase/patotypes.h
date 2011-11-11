@@ -9,7 +9,7 @@
 #include <QDebug>
 #include <QTextStream>
 #include <QDateTime>
-typedef int RevisionKey;
+typedef QString RevisionKey;
 
 
 #include "patochangeset.h"

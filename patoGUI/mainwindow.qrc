@@ -11,5 +11,6 @@
         <file alias="remfile">images/removefile.png</file>
         <file alias="help">images/help.png</file>
         <file alias="update">images/update.png</file>
+        <file alias="diff">images/diff.png</file>
     </qresource>
 </RCC>

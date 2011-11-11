@@ -3,6 +3,8 @@
 
 //#include "PatoClientApi_global.h"
 #include"PatoClientApi_global.h"
+
+#include"../patoBase/patotypes.h"
 #include"PatoClientException.h"
 #include"logOutput.h"
 #include"statusOutput.h"
@@ -17,14 +19,14 @@
 
 class PatoClientApi {
 public:
-    QList<checkoutOutput> checkout(int revision, QString adress, QString username, QString password, QString workspace) throw(PatoClientException);
-    QList<logOutput> log(QString adress, QString username, QString password, QString initialRevision, QString finalRevision) throw(PatoClientException);
+    QList<checkoutOutput> checkout(RevisionKey revision, QString adress, QString username, QString password, QString workspace) throw(PatoClientException);
+    QList<logOutput> log(QString adress, QString username, QString password, RevisionKey initialRevision, RevisionKey finalRevision) throw(PatoClientException);
     QList<checkoutOutput> checkin(QString address, QString username, QString password, QString workspace)throw(PatoClientException);
     QList<statusOutput> status(QString workspace) throw(PatoClientException);
-    QList<addOutput> add(QString workspace, QList<QString> files) throw(PatoClientException);
-    QList<updateOutput> update(QString revision, QString adress, QString username, QString password, QString workspace) throw(PatoClientException);
-    void merge(QString path1, QString revision1, QString path2, QString revision2, QString workspace) throw(PatoClientException);
-    QList<updateOutput> diff(QString path1, QString revision1, QString path2, QString revision2) throw(PatoClientException);
+    QList<addOutput> add(QString workspace, QStringList files) throw(PatoClientException);
+    QList<updateOutput> update(RevisionKey revision, QString adress, QString username, QString password, QString workspace) throw(PatoClientException);
+    void merge(QString path1, RevisionKey revision1, QString path2, RevisionKey revision2, QString workspace) throw(PatoClientException);
+    void diff(QString path1, RevisionKey revision1, QString path2, RevisionKey revision2) throw(PatoClientException);
     
     PatoClientApi();
 
