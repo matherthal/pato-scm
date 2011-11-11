@@ -9,8 +9,18 @@
 #include <QDebug>
 #include <QTextStream>
 #include <QDateTime>
+
+#include "patofilestatus.h"
+
 typedef int RevisionKey;
 
+typedef struct _PatoDiffInfo
+{
+    PatoFileStatus::FileStatus status;
+    QByteArray diff;
+}PatoDiffInfo;
+
+typedef QMap<QString, PatoDiffInfo> PatoChangeSetMap;
 
 #include "patochangeset.h"
 #include "patofilestatus.h"

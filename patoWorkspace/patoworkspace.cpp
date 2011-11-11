@@ -1,5 +1,6 @@
 #include "patoworkspace.h"
 #include <QDir>
+#include "../patoBase/patofilestatus.h"
 
 PatoWorkspace* PatoWorkspace::sigleWorkspace = NULL;
 
@@ -369,10 +370,27 @@ void PatoWorkspace::readMetadata(MetadataType types)
 PatoChangeSet  PatoWorkspace::changes() const
 {
     PatoChangeSet changeRet;
-    //changeRet = PatoAlgorithms::diff( backupPath(revKey), workPath + "/" );
 
-    //changeRet << addedFiles;
-    //changeRet << removedFiles;
+    for (int i=0; i < versionedFiles.size(); i++)
+    {
+        Diff diff ( (workPath + "/" + versionedFiles[i]).toStdString().c_str(),
+                    (backupPath(revKey) + versionedFiles[i]).toStdString().c_str() );
+
+        if (!diff.isEmpty())
+        {
+            changeRet.add( versionedFiles[i], PatoFileStatus::MODIFIED , toByteArray(diff) );
+        }
+    }
+
+    for( int i=0; i < addedFiles.size(); i++)
+    {
+        changeRet.add( addedFiles[i], PatoFileStatus::ADDED, QByteArray());
+    }
+
+    for( int i=0; i < removedFiles.size(); i++)
+    {
+        changeRet.add(  removedFiles[i], PatoFileStatus::REMOVED, QByteArray());
+    }
 
     return changeRet;
 }
@@ -501,4 +519,10 @@ QString PatoWorkspace::metaFilePath(MetadataType type, bool fullPath) const
 
     return QString("%1/%2").arg( cWorkspaceControlFolder ).arg( strFile );
 
+}
+
+
+QByteArray PatoWorkspace::toByteArray(Diff&) const
+{
+    return QByteArray();
 }
