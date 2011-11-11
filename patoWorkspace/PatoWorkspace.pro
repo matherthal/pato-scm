@@ -18,7 +18,7 @@ SOURCES += patoworkspace.cpp
 HEADERS += patoworkspace.h\
         PatoWorkspace_global.h
 
-LIBS += -L"/home/marapao/doutorado/pato-scm-1/output" -lPatoBase
+LIBS += -L"../output" -lPatoBase
 
 symbian {
     MMP_RULES += EXPORTUNFROZEN
