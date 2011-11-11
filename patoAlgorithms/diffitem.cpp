@@ -67,28 +67,38 @@ int DiffItem::getToB(){
     return toB;
 }
 
-void DiffItem::print(){
-    if(fromA==toA)printf("%d",fromA+1);
-    else printf("%d,%d",fromA+1,toA+1);
-    if(type==Action_Add)printf("a");
-    else if(type==Action_Delete)printf("d");
-    else if(type==Action_Change)printf("c");
-    if(fromB==toB)printf("%d",fromB+1);
-    else printf("%d,%d",fromB+1,toB+1);
+string DiffItem::to_string(){
+    string ss("");
+    if(fromA==toA)ss+=(fromA+1);
+    else ss+=(fromA+1)+","+toA+1;
+    if(type==Action_Add)ss+=("a");
+    else if(type==Action_Delete)ss+=("d");
+    else if(type==Action_Change)ss+=("c");
+    if(fromB==toB)ss+=(fromB+1);
+    else ss+=(fromB+1)+","+(toB+1);
 
-    printf("\n");
+    ss+=("\n");
     if(type!=Action_Add){
         for(int i=fromA;i<=toA;i++){
-            printf("< %s\n",htableA[i]->line);
+            ss+="< ";
+            ss+=htableA[i]->line;
+            ss+="\n";
         }
     }
 
     if(type==Action_Change)
-        printf("--------\n");
+        ss+=("--------\n");
 
     if(type!=Action_Delete){
         for(int i=fromB;i<=toB;i++){
-            printf("> %s\n",htableB[i]->line);
+            ss+="> ";
+            ss+=htableB[i]->line;
+            ss+="\n";
         }
     }
+    return ss;
+}
+
+void DiffItem::print(){
+    cout << to_string();
 }

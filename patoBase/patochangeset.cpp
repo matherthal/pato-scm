@@ -15,3 +15,19 @@ const PatoChangeSet& PatoChangeSet::operator= (const PatoChangeSet& src)
 {
     return *this;
 }
+
+const bool PatoChangeSet::isEmpty() const
+{
+   return true;
+}
+
+
+RevisionKey PatoChangeSet::start() const
+{
+    return revStart;
+}
+
+RevisionKey PatoChangeSet::end() const
+{
+    return revEnd;
+}

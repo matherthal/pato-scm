@@ -1,4 +1,6 @@
 #include "patoclientapi.h"
+#include "../patoBase/patotypes.h"
+#include "../patoWorkspace/patoworkspace.h"
 #include "PatoClientException.h"
 #include "statusOutput.h"
 #include "updateOutput.h"
@@ -13,11 +15,11 @@ using namespace std;
 PatoClientApi::PatoClientApi() {
 }
 
-QList<checkoutOutput> PatoClientApi::checkout(int revision, QString address, QString username, QString password, QString workspace) throw (PatoClientException) {
+QList<checkoutOutput> PatoClientApi::checkout(RevisionKey revision, QString address, QString username, QString password, QString workspace) throw (PatoClientException) {
 
     QList<checkoutOutput> output;
 
-    //    if (revision < -1) {
+    if (revision == "") {
     //        throw (PatoClientException("Invalid revision number."));
     //    } else 
     if (address == "") {
@@ -34,7 +36,7 @@ QList<checkoutOutput> PatoClientApi::checkout(int revision, QString address, QSt
     return output;
 }
 
-QList<logOutput> PatoClientApi::log(QString address, QString username, QString password, QString initialRevision, QString finalRevision) throw (PatoClientException) {
+QList<logOutput> PatoClientApi::log(QString address, QString username, QString password, RevisionKey initialRevision, RevisionKey finalRevision) throw (PatoClientException) {
 
 
 
@@ -105,9 +107,10 @@ QList<checkoutOutput> PatoClientApi::checkin(QString address, QString username, 
     return output;
 }
 
-QList<addOutput> PatoClientApi::add(QString workspace, QList<QString> files) throw (PatoClientException) {
+QList<addOutput> PatoClientApi::add(QString workspace, QStringList files) throw (PatoClientException) {
 
     QList<addOutput> output;
+    PatoWorkspace* work = PatoWorkspace::instance();
 
     if (workspace == "") {
         throw (PatoClientException("The add command needs a workspace."));
@@ -115,21 +118,28 @@ QList<addOutput> PatoClientApi::add(QString workspace, QList<QString> files) thr
         throw (PatoClientException("The add command needs at least one file to add."));
     }
 
+
+    work->add(workspace, files);
+
+
     return output;
 }
 
 QList<statusOutput> PatoClientApi::status(QString workspace) throw (PatoClientException) {
 
     QList<statusOutput> output;
+    PatoWorkspace* work = PatoWorkspace::instance();
 
     if (workspace == "") {
         throw (PatoClientException("The status command needs a workspace."));
     }
 
+    work->status();
+
     return output;
 }
 
-QList<updateOutput> PatoClientApi::update(QString revision, QString address, QString username, QString password, QString workspace) throw (PatoClientException) {
+QList<updateOutput> PatoClientApi::update(RevisionKey revision, QString address, QString username, QString password, QString workspace) throw (PatoClientException) {
 
 
     QList<updateOutput> output;
@@ -163,7 +173,7 @@ QList<updateOutput> PatoClientApi::update(QString revision, QString address, QSt
     return output;
 }
 
-void PatoClientApi::merge(QString path1, QString revision1, QString path2, QString revision2, QString workspace) throw (PatoClientException) {
+void PatoClientApi::merge(QString path1, RevisionKey  revision1, QString path2, RevisionKey revision2, QString workspace) throw (PatoClientException) {
     if (path1 == "") {
         throw (PatoClientException("The merge command needs a path."));
     } else if (path2 == "") {
@@ -178,7 +188,7 @@ void PatoClientApi::merge(QString path1, QString revision1, QString path2, QStri
 
 }
 
-QList<updateOutput> PatoClientApi::diff(QString path1, QString revision1, QString path2, QString revision2) throw (PatoClientException) {
+void PatoClientApi::diff(QString path1, RevisionKey  revision1, QString path2, RevisionKey  revision2) throw (PatoClientException) {
 
     QList<updateOutput> output;
 
