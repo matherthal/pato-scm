@@ -72,11 +72,11 @@
   <valuemap type="QVariantMap">
    <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString">Debug</value>
    <valuelist key="abstractProcess.Environment" type="QVariantList">
-    <value type="QString">DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-YToxkFskur,guid=4bdbfd87b45be26eeb646b7a4ebbf86b</value>
+    <value type="QString">DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-Pq3sUdcZJk,guid=13d13ccfb4b2b1f1448c76de4ebd1e27</value>
     <value type="QString">DESKTOP_SESSION=default</value>
     <value type="QString">DISPLAY=:0.0</value>
     <value type="QString">DM_CONTROL=/var/run/xdmctl</value>
-    <value type="QString">GPG_AGENT_INFO=/tmp/gpg-cF4rrW/S.gpg-agent:1765:1</value>
+    <value type="QString">GPG_AGENT_INFO=/tmp/gpg-IsrpJX/S.gpg-agent:1639:1</value>
     <value type="QString">GS_LIB=/home/matheus/.fonts</value>
     <value type="QString">GTK2_RC_FILES=/etc/gtk-2.0/gtkrc:/home/matheus/.gtkrc-2.0:/home/matheus/.gtkrc-2.0-kde4:/home/matheus/.kde/share/config/gtkrc-2.0</value>
     <value type="QString">GTK_MODULES=canberra-gtk-module</value>
@@ -94,16 +94,16 @@
     <value type="QString">PWD=/home/matheus/Documents</value>
     <value type="QString">QTDIR=/usr/share/qt4</value>
     <value type="QString">QT_PLUGIN_PATH=/home/matheus/.kde/lib/kde4/plugins/:/usr/lib/kde4/plugins/</value>
-    <value type="QString">SESSION_MANAGER=local/MATHMOB:@/tmp/.ICE-unix/1906,unix/MATHMOB:/tmp/.ICE-unix/1906</value>
+    <value type="QString">SESSION_MANAGER=local/MATHMOB:@/tmp/.ICE-unix/1782,unix/MATHMOB:/tmp/.ICE-unix/1782</value>
     <value type="QString">SHELL=/bin/bash</value>
     <value type="QString">SHLVL=0</value>
-    <value type="QString">SSH_AGENT_PID=1764</value>
-    <value type="QString">SSH_AUTH_SOCK=/tmp/ssh-rAvbPu1719/agent.1719</value>
+    <value type="QString">SSH_AGENT_PID=1638</value>
+    <value type="QString">SSH_AUTH_SOCK=/tmp/ssh-OwJjsA1593/agent.1593</value>
     <value type="QString">USER=matheus</value>
     <value type="QString">WINDOWPATH=7</value>
     <value type="QString">XCURSOR_THEME=oxy-white</value>
     <value type="QString">XDG_DATA_DIRS=/usr/share:/usr/share:/usr/local/share</value>
-    <value type="QString">XDG_SESSION_COOKIE=50360e9bd89e48b3425a768f4bc6629b-1320941675.615051-1624089121</value>
+    <value type="QString">XDG_SESSION_COOKIE=50360e9bd89e48b3425a768f4bc6629b-1321016870.955760-956743045</value>
     <value type="QString">XDM_MANAGED=method=classic</value>
    </valuelist>
    <valuelist key="abstractProcess.arguments" type="QVariantList">
@@ -123,11 +123,11 @@
   <valuemap type="QVariantMap">
    <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString">Debug</value>
    <valuelist key="abstractProcess.Environment" type="QVariantList">
-    <value type="QString">DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-YToxkFskur,guid=4bdbfd87b45be26eeb646b7a4ebbf86b</value>
+    <value type="QString">DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-Pq3sUdcZJk,guid=13d13ccfb4b2b1f1448c76de4ebd1e27</value>
     <value type="QString">DESKTOP_SESSION=default</value>
     <value type="QString">DISPLAY=:0.0</value>
     <value type="QString">DM_CONTROL=/var/run/xdmctl</value>
-    <value type="QString">GPG_AGENT_INFO=/tmp/gpg-cF4rrW/S.gpg-agent:1765:1</value>
+    <value type="QString">GPG_AGENT_INFO=/tmp/gpg-IsrpJX/S.gpg-agent:1639:1</value>
     <value type="QString">GS_LIB=/home/matheus/.fonts</value>
     <value type="QString">GTK2_RC_FILES=/etc/gtk-2.0/gtkrc:/home/matheus/.gtkrc-2.0:/home/matheus/.gtkrc-2.0-kde4:/home/matheus/.kde/share/config/gtkrc-2.0</value>
     <value type="QString">GTK_MODULES=canberra-gtk-module</value>
@@ -145,16 +145,16 @@
     <value type="QString">PWD=/home/matheus/Documents</value>
     <value type="QString">QTDIR=/usr/share/qt4</value>
     <value type="QString">QT_PLUGIN_PATH=/home/matheus/.kde/lib/kde4/plugins/:/usr/lib/kde4/plugins/</value>
-    <value type="QString">SESSION_MANAGER=local/MATHMOB:@/tmp/.ICE-unix/1906,unix/MATHMOB:/tmp/.ICE-unix/1906</value>
+    <value type="QString">SESSION_MANAGER=local/MATHMOB:@/tmp/.ICE-unix/1782,unix/MATHMOB:/tmp/.ICE-unix/1782</value>
     <value type="QString">SHELL=/bin/bash</value>
     <value type="QString">SHLVL=0</value>
-    <value type="QString">SSH_AGENT_PID=1764</value>
-    <value type="QString">SSH_AUTH_SOCK=/tmp/ssh-rAvbPu1719/agent.1719</value>
+    <value type="QString">SSH_AGENT_PID=1638</value>
+    <value type="QString">SSH_AUTH_SOCK=/tmp/ssh-OwJjsA1593/agent.1593</value>
     <value type="QString">USER=matheus</value>
     <value type="QString">WINDOWPATH=7</value>
     <value type="QString">XCURSOR_THEME=oxy-white</value>
     <value type="QString">XDG_DATA_DIRS=/usr/share:/usr/share:/usr/local/share</value>
-    <value type="QString">XDG_SESSION_COOKIE=50360e9bd89e48b3425a768f4bc6629b-1320941675.615051-1624089121</value>
+    <value type="QString">XDG_SESSION_COOKIE=50360e9bd89e48b3425a768f4bc6629b-1321016870.955760-956743045</value>
     <value type="QString">XDM_MANAGED=method=classic</value>
    </valuelist>
    <value key="abstractProcess.IgnoreReturnValue" type="bool">false</value>
@@ -171,11 +171,11 @@
   <valuemap type="QVariantMap">
    <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString">Debug</value>
    <valuelist key="abstractProcess.Environment" type="QVariantList">
-    <value type="QString">DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-YToxkFskur,guid=4bdbfd87b45be26eeb646b7a4ebbf86b</value>
+    <value type="QString">DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-Pq3sUdcZJk,guid=13d13ccfb4b2b1f1448c76de4ebd1e27</value>
     <value type="QString">DESKTOP_SESSION=default</value>
     <value type="QString">DISPLAY=:0.0</value>
     <value type="QString">DM_CONTROL=/var/run/xdmctl</value>
-    <value type="QString">GPG_AGENT_INFO=/tmp/gpg-cF4rrW/S.gpg-agent:1765:1</value>
+    <value type="QString">GPG_AGENT_INFO=/tmp/gpg-IsrpJX/S.gpg-agent:1639:1</value>
     <value type="QString">GS_LIB=/home/matheus/.fonts</value>
     <value type="QString">GTK2_RC_FILES=/etc/gtk-2.0/gtkrc:/home/matheus/.gtkrc-2.0:/home/matheus/.gtkrc-2.0-kde4:/home/matheus/.kde/share/config/gtkrc-2.0</value>
     <value type="QString">GTK_MODULES=canberra-gtk-module</value>
@@ -193,16 +193,16 @@
     <value type="QString">PWD=/home/matheus/Documents</value>
     <value type="QString">QTDIR=/usr/share/qt4</value>
     <value type="QString">QT_PLUGIN_PATH=/home/matheus/.kde/lib/kde4/plugins/:/usr/lib/kde4/plugins/</value>
-    <value type="QString">SESSION_MANAGER=local/MATHMOB:@/tmp/.ICE-unix/1906,unix/MATHMOB:/tmp/.ICE-unix/1906</value>
+    <value type="QString">SESSION_MANAGER=local/MATHMOB:@/tmp/.ICE-unix/1782,unix/MATHMOB:/tmp/.ICE-unix/1782</value>
     <value type="QString">SHELL=/bin/bash</value>
     <value type="QString">SHLVL=0</value>
-    <value type="QString">SSH_AGENT_PID=1764</value>
-    <value type="QString">SSH_AUTH_SOCK=/tmp/ssh-rAvbPu1719/agent.1719</value>
+    <value type="QString">SSH_AGENT_PID=1638</value>
+    <value type="QString">SSH_AUTH_SOCK=/tmp/ssh-OwJjsA1593/agent.1593</value>
     <value type="QString">USER=matheus</value>
     <value type="QString">WINDOWPATH=7</value>
     <value type="QString">XCURSOR_THEME=oxy-white</value>
     <value type="QString">XDG_DATA_DIRS=/usr/share:/usr/share:/usr/local/share</value>
-    <value type="QString">XDG_SESSION_COOKIE=50360e9bd89e48b3425a768f4bc6629b-1320941675.615051-1624089121</value>
+    <value type="QString">XDG_SESSION_COOKIE=50360e9bd89e48b3425a768f4bc6629b-1321016870.955760-956743045</value>
     <value type="QString">XDM_MANAGED=method=classic</value>
    </valuelist>
    <value key="abstractProcess.IgnoreReturnValue" type="bool">true</value>
