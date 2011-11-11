@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'difftool.ui'
 **
-** Created: Wed 9. Nov 22:56:44 2011
+** Created: Fri 11. Nov 17:08:01 2011
 **      by: Qt User Interface Compiler version 4.7.4
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -21,7 +21,6 @@
 #include <QtGui/QMenuBar>
 #include <QtGui/QStatusBar>
 #include <QtGui/QTableWidget>
-#include <QtGui/QTextEdit>
 #include <QtGui/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -38,7 +37,6 @@ public:
     QTableWidget *fileTwoTableWidget;
     QLabel *fileOneLabel;
     QLabel *fileTwoLabel;
-    QTextEdit *textEdit;
     QMenuBar *menubar;
     QMenu *menuFile;
     QMenu *menuShow_Differences;
@@ -53,6 +51,9 @@ public:
         QFont font;
         font.setPointSize(10);
         DiffTool->setFont(font);
+        QIcon icon;
+        icon.addFile(QString::fromUtf8(":/new/icons/diff"), QSize(), QIcon::Normal, QIcon::Off);
+        DiffTool->setWindowIcon(icon);
         actionLoad_File_1 = new QAction(DiffTool);
         actionLoad_File_1->setObjectName(QString::fromUtf8("actionLoad_File_1"));
         actionLoad_File_2 = new QAction(DiffTool);
@@ -67,7 +68,7 @@ public:
         fileOneTableWidget = new QTableWidget(centralwidget);
         fileOneTableWidget->setObjectName(QString::fromUtf8("fileOneTableWidget"));
         fileOneTableWidget->setEnabled(true);
-        fileOneTableWidget->setGeometry(QRect(10, 40, 381, 320));
+        fileOneTableWidget->setGeometry(QRect(10, 40, 381, 511));
         fileOneTableWidget->setShowGrid(false);
         fileOneTableWidget->setRowCount(0);
         fileOneTableWidget->setColumnCount(0);
@@ -81,7 +82,7 @@ public:
         fileTwoTableWidget = new QTableWidget(centralwidget);
         fileTwoTableWidget->setObjectName(QString::fromUtf8("fileTwoTableWidget"));
         fileTwoTableWidget->setEnabled(true);
-        fileTwoTableWidget->setGeometry(QRect(410, 40, 381, 320));
+        fileTwoTableWidget->setGeometry(QRect(410, 40, 381, 511));
         fileTwoTableWidget->setShowGrid(false);
         fileTwoTableWidget->setRowCount(0);
         fileTwoTableWidget->setColumnCount(0);
@@ -98,9 +99,6 @@ public:
         fileTwoLabel = new QLabel(centralwidget);
         fileTwoLabel->setObjectName(QString::fromUtf8("fileTwoLabel"));
         fileTwoLabel->setGeometry(QRect(410, 20, 381, 16));
-        textEdit = new QTextEdit(centralwidget);
-        textEdit->setObjectName(QString::fromUtf8("textEdit"));
-        textEdit->setGeometry(QRect(10, 370, 341, 171));
         DiffTool->setCentralWidget(centralwidget);
         menubar = new QMenuBar(DiffTool);
         menubar->setObjectName(QString::fromUtf8("menubar"));
@@ -133,7 +131,7 @@ public:
 
     void retranslateUi(QMainWindow *DiffTool)
     {
-        DiffTool->setWindowTitle(QApplication::translate("DiffTool", "MainWindow", 0, QApplication::UnicodeUTF8));
+        DiffTool->setWindowTitle(QApplication::translate("DiffTool", "Pato-Diff Tool", 0, QApplication::UnicodeUTF8));
         actionLoad_File_1->setText(QApplication::translate("DiffTool", "Load File 1", 0, QApplication::UnicodeUTF8));
         actionLoad_File_2->setText(QApplication::translate("DiffTool", "Load File 2", 0, QApplication::UnicodeUTF8));
         actionOneAgainstTwo->setText(QApplication::translate("DiffTool", "File 1 Against File 2", 0, QApplication::UnicodeUTF8));
