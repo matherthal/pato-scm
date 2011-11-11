@@ -9,6 +9,7 @@
 #define	UPDATECLI_H
 
 #include<QtCore/QString>
+#include<../patoBase/patotypes.h>
 
 class updateCLI {
 public:
@@ -22,13 +23,13 @@ public:
     QString GetPassword() const;
     void SetUsername(QString username);
     QString GetUsername() const;
-    void SetRevision(QString revision);
-    QString GetRevision() const;
+    void SetRevision(RevisionKey  revision);
+    RevisionKey GetRevision() const;
     void SetWorkspace(QString workspace);
     QString GetWorkspace() const;
 private:
     QString workspace;
-    QString revision;
+    RevisionKey revision;
     QString username;
     QString password;
     QString address;

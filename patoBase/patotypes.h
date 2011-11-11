@@ -9,10 +9,9 @@
 #include <QDebug>
 #include <QTextStream>
 #include <QDateTime>
-
+typedef QString RevisionKey;
 #include "patofilestatus.h"
 
-typedef int RevisionKey;
 
 typedef struct _PatoDiffInfo
 {

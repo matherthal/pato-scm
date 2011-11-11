@@ -22,6 +22,15 @@ addCLI::addCLI(const addCLI& orig) {
 addCLI::~addCLI() {
 }
 
+QList<QString> messageError(){
+    QList<QString> error;
+
+    error.append("Add command is used to include artifactcs or directories under version control.");
+    error.append("Usage: pato add PATH....");
+
+    return error;
+}
+
 void addCLI::command(int argc, char** argv) {
     PatoClientApi* clientAPI;
     clientAPI = new PatoClientApi();
@@ -48,7 +57,13 @@ void addCLI::command(int argc, char** argv) {
     try {
         clientAPI->add(workspace, files);
     } catch (PatoClientException& t) {
-        qout<<t.Message()<<endl;
+
+        QList<QString> ls = messageError();
+        for(int i = 0; i < ls.size(); i++){
+            qout<<ls.at(i)<<endl;
+        }
+
+
     }
 }
 
