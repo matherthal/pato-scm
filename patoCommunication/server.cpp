@@ -72,6 +72,11 @@ public:
         string const username(paramList.getString(2));
         string const password(paramList.getString(3));
 
+        cout << "revision " << revision;
+        cout << "path " << path;
+        cout << "username " << username;
+        cout << "password " << password;
+/*
         //Parameters as Qt vars
         QString qpath = QString::fromStdString(path);
         QString quser = QString::fromStdString(username);
@@ -106,7 +111,8 @@ public:
 
         // Make an XML-RPC array out of it        
         xmlrpc_c::value_array arrayLenDat(arrayData);
-        *retvalP = arrayLenDat;
+        *retvalP = arrayLenDat;*/
+        *retvalP = 0;
 
         // Sometimes, make it look hard (so client can see what it's like
         // to do an RPC that takes a while).
