@@ -19,12 +19,12 @@ public:
 
     bool initBD();
     //saving data
-    int saveData(const std::string& data);
-    bool saveData(const std::vector<std::string>& data, std::vector<int>& vecIdFile);
+    std::string saveData(const std::string& data);
+    bool saveData(const std::vector<std::string>& data, std::vector<std::string>& vecIdFile);
 
     //loading data
-    bool loadData(const int idFile, std::string& data);
-    bool loadData(const std::vector<int>& vecIdFile, std::vector<std::string>& vecData);
+    bool loadData(std::string&  idFile, std::string& data);
+    bool loadData(const std::vector<std::string>& vecIdFile, std::vector<std::string>& vecData);
 
 };
 

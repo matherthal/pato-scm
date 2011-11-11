@@ -7,7 +7,6 @@
 QT       += sql testlib
 
 QT       -= gui
-QT       += sql
 
 win32: TARGET = ../../output/TestPatoFS
 unix:  TARGET = ../output/TestPatoFS
