@@ -12,11 +12,11 @@
 diffCLI::diffCLI() {
 }
 
-void diffCLI::setRevision2(QString revision2) {
+void diffCLI::setRevision2(RevisionKey revision2) {
     this->revision2 = revision2;
 }
 
-QString diffCLI::getRevision2() const {
+RevisionKey diffCLI::getRevision2() const {
     return revision2;
 }
 
@@ -28,11 +28,11 @@ QString diffCLI::getPath2() const {
     return path2;
 }
 
-void diffCLI::setRevision1(QString revision1) {
+void diffCLI::setRevision1(RevisionKey revision1) {
     this->revision1 = revision1;
 }
 
-QString diffCLI::getRevision1() const {
+RevisionKey diffCLI::getRevision1() const {
     return revision1;
 }
 
