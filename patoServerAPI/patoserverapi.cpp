@@ -31,7 +31,7 @@ void PatoServerApi::destroyInstance() {
 }
 
 map<string, string>* PatoServerApi::checkout(int revision, QString path, QString username, QString password) {
-
+/*
     //validating project
     if (!dataModel->validateProject(path.toStdString()))
         return NULL;
@@ -81,10 +81,9 @@ map<string, string>* PatoServerApi::checkout(int revision, QString path, QString
        //if success, store in a map the file name (first) and file content (second)
        file[(*it).first] = (*cit);
    }
-
+*/
    //return the map containing file name and file content
    return &file;
-
 }
 
 bool PatoServerApi::checkin(QString path, QString username, QString password, QString message, vector<string>& fileContent, vector<string>& fileKey) {
@@ -93,7 +92,7 @@ bool PatoServerApi::checkin(QString path, QString username, QString password, QS
     string strUsername = username.toStdString();
     string strPath = path.toStdString();
     string strPw = password.toStdString();
-
+/*
     //validating project
     if (!dataModel->validateProject(strPath))
         return false;
@@ -110,7 +109,7 @@ bool PatoServerApi::checkin(QString path, QString username, QString password, QS
 
     if (!dataModel->checkIn(filePath, strPath, strUsername, msg))
         return false;
-
+*/
     return true;
 }
 
