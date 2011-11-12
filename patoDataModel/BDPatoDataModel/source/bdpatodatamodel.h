@@ -1,7 +1,8 @@
 #ifndef BDPATODATAMODEL_H
 #define BDPATODATAMODEL_H
 
-#include "../PatoDataModel_global.h"
+#include "../../PatoDataModel_global.h"
+#include "../../../patoBase/patotypes.h"
 
 #include "CppSQLite3.h"
 
@@ -34,10 +35,10 @@ public:
     bool saveProjectElement(std::string& filePath, std::string& previousElement);
     int getLastAvailableVersion();
 
-    std::string getNameConfigItem(int idItemConfig, std::string& project);
-    int getFileIdStored(std::string& nameFile);
-    void getCompletePath(int idItemConfig, std::string& project, std::string& completePath);
-    bool getFilePath(std::string& project, int version, std::map<std::string, int>& filePath);
+    std::string getNameConfigItem(StorageKey idItemConfig, std::string& project);
+    StorageKey getFileIdStored(std::string& nameFile);
+    void getCompletePath(StorageKey idItemConfig, std::string& project, std::string& completePath);
+    bool getFilePath(std::string& project, int version, std::map<std::string, StorageKey>& filePath);
     bool getLog(std::string& project, int version, std::vector<std::string>&  filePath);
     //<
 
@@ -63,8 +64,8 @@ public:
 
     //file operations>
     bool isFile(std::string& path);
-    bool insertFile(std::string& filePath, std::string& project, int idFile);
-    void createMapFile(std::vector<std::string>& _mergedPath, std::vector<int>& _mergedIdFile, std::map<std::string,int>& _filePath);
+    bool insertFile(std::string& filePath, std::string& project, StorageKey idFile);
+    void createMapFile(std::vector<std::string>& _mergedPath, std::vector<StorageKey>& _mergedIdFile, std::map<std::string,StorageKey>& _filePath);
     //<
 
     //folder operations>
@@ -91,7 +92,7 @@ private:
     //CppSQLite3DB dataBase;
 
     std::vector<std::string> vecFilePath;
-    std::vector<int> vecIdFile;
+    std::vector<StorageKey> vecIdFile;
 };
 
 }

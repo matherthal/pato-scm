@@ -123,7 +123,7 @@ namespace bd {
 
     }
 
-    std::string BDPatoDataModel::getNameConfigItem(int idItemConfig, std::string& project)
+    std::string BDPatoDataModel::getNameConfigItem(StorageKey idItemConfig, std::string& project)
     {
         int projectId = getProjectId(project);
         std::stringstream outProjectId;
@@ -150,24 +150,24 @@ namespace bd {
         return nameItemConfig;
     }
 
-    int BDPatoDataModel::getFileIdStored(std::string& nameFile)
+    StorageKey BDPatoDataModel::getFileIdStored(std::string& nameFile)
     {
         std::string sqlIdStoredFile = "select arqu_cd_armazenamento from arquivo a left join item_configuracao i on a.arqu_id = i.itco_id where  i.itco_nome like '";
         sqlIdStoredFile.append(nameFile);
         sqlIdStoredFile.append("';");
 
-        int idStoredFile = 0;
+        StorageKey idStoredFile = "";
         QSqlQuery query(db);
         if ( query.exec(sqlIdStoredFile.c_str()) )
         {
             if ( query.next() )
-                idStoredFile = query.value(0).toInt();
+                idStoredFile = query.value(0).toString().toStdString();
         }
 
         return idStoredFile;
     }
 
-    void BDPatoDataModel::getCompletePath(int idItemConfig, std::string& project, std::string& completePath)
+    void BDPatoDataModel::getCompletePath(StorageKey idItemConfig, std::string& project, std::string& completePath)
     {
         std::stringstream outIdItemConfig;
         outIdItemConfig << idItemConfig;
@@ -177,7 +177,7 @@ namespace bd {
         sqlFilePath.append(outIdItemConfig.str());
         sqlFilePath.append(";");
 
-        int idDiretorioItemConfig = -1;
+        StorageKey idDiretorioItemConfig = "-1";
         QSqlQuery query(db);
         if ( query.exec(sqlFilePath.c_str()) )
         {
@@ -185,7 +185,7 @@ namespace bd {
             while(query.next())
             {
                 bCompletou = false;
-                idDiretorioItemConfig = query.value(0).toInt();
+                idDiretorioItemConfig = query.value(0).toString().toStdString();
                 std::string pathNameTemp = getNameConfigItem(idDiretorioItemConfig, project);
                 if ( !pathNameTemp.empty() )
                 {
@@ -201,7 +201,7 @@ namespace bd {
                 if ( isFile(completePath) )
                 {
                     std::string nameFile = getLastFolder(completePath);
-                    int idStoredFile = getFileIdStored(nameFile);
+                    StorageKey idStoredFile = getFileIdStored(nameFile);
                     vecIdFile.push_back(idStoredFile);
                 }
                 else
@@ -219,7 +219,7 @@ namespace bd {
 
 
 
-    bool BDPatoDataModel::getFilePath(std::string& project, int version, std::map<std::string, int>& filePath)
+    bool BDPatoDataModel::getFilePath(std::string& project, int version, std::map<std::string, StorageKey>& filePath)
     {
         int projectId = getProjectId(project);
         std::stringstream outProjectId;
@@ -246,7 +246,7 @@ namespace bd {
         {
             while(query.next())
             {
-                int idItemConfig = query.value(0).toInt();
+                StorageKey idItemConfig = query.value(0).toString().toStdString();
                 std::string completePath;
                 completePath.append(getNameConfigItem(idItemConfig, project));
                 getCompletePath(idItemConfig, project, completePath);
@@ -805,7 +805,7 @@ namespace bd {
         return bFile;
     }
 
-    bool BDPatoDataModel::insertFile(std::string& filePath, std::string& project, int idFile)
+    bool BDPatoDataModel::insertFile(std::string& filePath, std::string& project, StorageKey idFile)
     {
         insertProjectElement(filePath, project);
 
@@ -847,11 +847,11 @@ namespace bd {
         return false;*/
     }
 
-    void BDPatoDataModel::createMapFile(std::vector<std::string>& _mergedPath, std::vector<int>& _mergedIdFile, std::map<std::string,int>& _filePath)
+    void BDPatoDataModel::createMapFile(std::vector<std::string>& _mergedPath, std::vector<StorageKey>& _mergedIdFile, std::map<std::string,StorageKey>& _filePath)
     {
         for( unsigned int i = 0; i < _mergedPath.size(); i++ )
         {
-                _filePath.insert(std::make_pair<std::string,int>(_mergedPath[i], _mergedIdFile[i]));
+                _filePath.insert(std::make_pair<std::string,StorageKey>(_mergedPath[i], _mergedIdFile[i]));
         }
     }
 
