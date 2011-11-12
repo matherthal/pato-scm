@@ -1,11 +1,12 @@
 #include "patodatamodel.h"
 #include "bdpatodatamodel.h"
+#include <algorithm>
 
 PatoDataModel* PatoDataModel::patoDataModel = NULL;
 
 PatoDataModel::PatoDataModel()
 {
-
+    iniciouTransacao = false;
 }
 
 PatoDataModel* PatoDataModel::getInstance() {
@@ -37,63 +38,54 @@ bool PatoDataModel::checkIn(std::map<std::string, int>& filePath, std::string& p
     if ( !dataBase->saveTransaction(message, loginUser) )
         return false;
 
+    iniciouTransacao = true;
     qDebug()<< "salvou transacao";
+
+    bd::BDPatoDataModel::getInstance()->getPathsLastVersion();
 
     std::map<std::string, int>::iterator itFilePath;
     for( itFilePath = filePath.begin(); itFilePath != filePath.end(); itFilePath++ )
     {
-        std::string previousElement;
         std::string path = itFilePath->first;
-        if ( !saveProjectElement(path, itFilePath->second, project, previousElement))
+        if ( !saveProjectElement(path, itFilePath->second, project))
                 return false;
     }
 
     dataBase->insertRelationProjectElementTransaction(project);
+    dataBase->clear();
+
+    iniciouTransacao = false;
+
+    listPath.clear();
 
     return true;
 }
 
-bool PatoDataModel::saveProjectElement(std::string& filePath, int idFile, std::string& project, std::string& previousElement)
+bool PatoDataModel::saveProjectElement(std::string& filePath, int idFile, std::string& project/*, std::string& previousElement*/)
 {
     if ( filePath.empty() )
             return true;
 
     bd::BDPatoDataModel* dataBase = bd::BDPatoDataModel::getInstance();
 
-    int posTokenPath = filePath.find("\\");
-    std::string element;
-    if( posTokenPath != -1)
-        element = filePath.substr(0, posTokenPath);
-    else
-        element = filePath;
+    std::string path = getPath(filePath);
 
+    std::string file = getFile(filePath);
 
-    int posTokenFile = element.find(".");
-    bool bFile = false;
-    if ( posTokenFile != -1 )
-        bFile = true;
-
-
-    if ( bFile )
+    std::list<std::string>::iterator itListPath = std::find(listPath.begin(), listPath.end(), path);
+    if ( iniciouTransacao && itListPath == listPath.end() )
     {
-        if ( !dataBase->insertFile(element, project, idFile) )
-                return false;
-    }
-    else
-    {
-        //if ( !dataBase->hasFolderInsert(element, project) )
-        if ( !dataBase->insertFolder(element, project) )
+        if ( !dataBase->insertFolder(path, project) )
             return false;
     }
 
-    dataBase->insertRelationElement(project, element, previousElement);
+    if ( !dataBase->insertFile(path, file/*, project*/, idFile) )
+        return false;
 
-    if (posTokenPath == -1)
-        filePath.erase(0, filePath.length());
-    else
-        filePath.erase(0, posTokenPath+1);
 
-    saveProjectElement(filePath, idFile, project, element);
+
+    dataBase->insertRelationElement(project, path, file);
+
     return true;
 }
 
@@ -132,6 +124,45 @@ bool PatoDataModel::validateProject( const string& projectName )
 {
     return bd::BDPatoDataModel::getInstance()->validateProject(projectName);
 }
+//<
+
+//File operations>
+std::string PatoDataModel::getPath( std::string& pathFile )
+{
+    int posLastBar = pathFile.rfind("\\");
+    std::string path;
+    if ( posLastBar > -1 )
+    {
+        path = pathFile.substr(0, posLastBar);
+    }
+
+    return path;
+}
+
+std::string PatoDataModel::getFile( std::string& pathFile )
+{
+    int posLastBar = pathFile.rfind("\\");
+    std::string file;
+    if ( posLastBar > -1 )
+    {
+        std::string temp = pathFile.substr(posLastBar, pathFile.length()-posLastBar);
+        if ( isFile(temp) )
+            file = temp;
+    }
+
+    return file;
+}
+
+bool PatoDataModel::isFile(std::string &path)
+{
+    int posTokenFile = path.find(".");
+    bool bFile = false;
+    if ( posTokenFile != -1 )
+        bFile = true;
+
+    return bFile;
+}
+
 //<
 
 
