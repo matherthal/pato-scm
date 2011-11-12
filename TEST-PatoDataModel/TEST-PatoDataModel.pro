@@ -20,10 +20,12 @@ TEMPLATE = app
 SOURCES += tst_patodatamodeltest.cpp
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
 
-symbian: LIBS += -lsqlite3
-else:
-unix: LIBS += -L"../output/" -L$$PWD/../patoDataModel/BDPatoDataModel/lib/ -lPatoDataModel -lsqlite3
-win32: LIBS += -L"../output/" -L$$PWD/../patoDataModel/BDPatoDataModel/lib/ -lPatoDataModel -lsqlite3
+#symbian: LIBS += -lsqlite3
+#else:
+#unix: LIBS += -L"../output/" -L$$PWD/../patoDataModel/BDPatoDataModel/lib/ -lPatoDataModel -lsqlite3
+unix: LIBS += -L"../output/" -lPatoDataModel
+#win32: LIBS += -L"../output/" -L$$PWD/../patoDataModel/BDPatoDataModel/lib/ -lPatoDataModel -lsqlite3
+win32: LIBS += -L"../output/" -lPatoDataModel
 
 INCLUDEPATH += $$PWD/../patoDataModel
 DEPENDPATH += $$PWD/../patoDataModel
