@@ -10,9 +10,9 @@ using namespace std;
 
 void Tempo_CPU_Sistema(double *seg_CPU_total, double *seg_sistema_total)
 {
-    *seg_CPU_total=0;
-    *seg_sistema_total=0;
-    /*
+/*    *seg_CPU_total=0;
+    *seg_sistema_to tal=0;
+
   long seg_CPU, seg_sistema, mseg_CPU, mseg_sistema;
   struct rusage ptempo;
 
@@ -25,21 +25,69 @@ void Tempo_CPU_Sistema(double *seg_CPU_total, double *seg_sistema_total)
 
  *seg_CPU_total     = (seg_CPU + 0.000001 * mseg_CPU);
  *seg_sistema_total = (seg_sistema + 0.000001 * mseg_sistema);
- */
+*/
 }
+
 
 int main(int argc, char *argv[]){
 
     char type[100];
-    if(argc>1)
-        strcpy(type,argv[1]);
-    else
+    char action[100];
+    if(argc>1){
+        strcpy(action,argv[1]);
+        if(strcmp(action,"test")==0){
+            if(argc>2)
+                strcpy(type,argv[2]);
+            else
+                strcpy(type,"all");
+        }else{
+            strcpy(action,"exec");
+            strcpy(type,argv[1]);
+            if(strcmp(type,"diff")==0){
+                if(argc>3){
+                    Diff *diffE = new Diff(argv[2],argv[3]);
+                    if(argc>4)
+                        diffE->getFile(argv[4]);
+                    else
+                        diffE->print();
+                    delete diffE;
+                }else{
+                    printf("Usage: diff <fileA> <fileB>\n");
+                    printf("       diff <fileA> <fileB> <delta_file_path>\n");
+                }
+                return 0;
+            }else if(strcmp(type,"merge")==0){
+                if(argc>4){
+                    Merge *mergeE = new Merge(argv[3],argv[2],argv[4]);
+                    if(mergeE->has_conflict()){
+                        printf("Warning: Conflict during the merge!\n");
+                    }
+                    mergeE->getFile(argv[2]);
+                    delete mergeE;
+                }else{
+                    printf("Usage: merge <fileA> <fileBase> <fileB>\n");
+                }
+                return 0;
+            }else if(strcmp(type,"patch")==0){
+                if(argc>3){
+                    Patch *patchE = new Patch(argv[2],argv[3]);
+                    patchE->print();
+                    delete patchE;
+                }else{
+                    printf("Usage: patch <delta> <fileA>\n");
+                }
+                return 0;
+            }
+        }
+    }else{
         strcpy(type,"all");
+        strcpy(action,"test");
+    }
 
     double s_CPU_inicial, s_CPU_final, s_total_inicial, s_total_final,t;
 
-    if(strcmp(type,"diff")==0 || strcmp(type,"diff")==0){
-        printf("======= DIFF ============\n");
+    if(strcmp(type,"diff")==0 || strcmp(type,"all")==0){
+        printf("=============== DIFF ===============\n");
         printf("##### TESTE 1 #####\n");
         Tempo_CPU_Sistema(&s_CPU_inicial, &s_total_inicial);
 
@@ -68,8 +116,7 @@ int main(int argc, char *argv[]){
 
         correct = correct && diff->getDiffItem(3) == NULL;
 
-        diff->print();
-        diff->getFile("diff1.txt");
+        diff->getFile("fixtures/diff1.txt");
         if(!correct)
             printf("ERRADO!\n\nTempo: %lf\n\n",t);
         else
@@ -81,8 +128,7 @@ int main(int argc, char *argv[]){
         Tempo_CPU_Sistema(&s_CPU_inicial, &s_total_inicial);
 
         Diff *diff2 = new Diff("fixtures/arq1.txt","fixtures/arq1.txt");
-        diff2->print();
-        diff2->getFile("diff2.txt");
+        diff2->getFile("fixtures/diff2.txt");
         Tempo_CPU_Sistema(&s_CPU_final, &s_total_final);
         t = s_CPU_final - s_CPU_inicial;
 
@@ -98,8 +144,7 @@ int main(int argc, char *argv[]){
         Tempo_CPU_Sistema(&s_CPU_inicial, &s_total_inicial);
 
         Diff *diff3 = new Diff("fixtures/boa.txt","fixtures/boa2.txt");
-        diff3->print();
-        diff3->getFile("diff3.txt");
+        diff3->getFile("fixtures/diff3.txt");
         Tempo_CPU_Sistema(&s_CPU_final, &s_total_final);
         t = s_CPU_final - s_CPU_inicial;
 
@@ -137,8 +182,7 @@ int main(int argc, char *argv[]){
         Tempo_CPU_Sistema(&s_CPU_inicial, &s_total_inicial);
 
         Diff *diff4 = new Diff("fixtures/grande.txt","fixtures/grande2.txt");
-        diff4->print();
-        diff4->getFile("diff4.txt");
+        diff4->getFile("fixtures/diff4.txt");
         Tempo_CPU_Sistema(&s_CPU_final, &s_total_final);
         t = s_CPU_final - s_CPU_inicial;
 
@@ -160,24 +204,51 @@ int main(int argc, char *argv[]){
         delete diff4;
     }
 
-    if(strcmp(type,"merge")==0 || strcmp(type,"diff")==0){
+    if(strcmp(type,"merge")==0 || strcmp(type,"all")==0){
         printf("=============== MERGE ==============\n");
         printf("##### TESTE 1 #####\n");
         Merge *merge1 = new Merge("fixtures/base.txt","fixtures/fileA.txt","fixtures/fileB.txt");
+        merge1->getFile("fixtures/fileMerge.txt");
         delete merge1;
-        printf("\n##### TESTE 2 #####\n");
+        Diff *diffM1 = new Diff("fixtures/fileMerge.txt","fixtures/fileMerge.txt.result");
+        if(!diffM1->isEmpty())
+            printf("Resultado: ERRADO!\n\n");
+        else
+            printf("Resultado: CORRETO!\n\n");
+
+        printf("##### TESTE 2 #####\n");
         Merge *merge2 = new Merge("fixtures/base.txt","fixtures/fileA2.txt","fixtures/fileB2.txt");
+        merge2->getFile("fixtures/fileMerge2.txt");
         delete merge2;
-        printf("\n##### TESTE 3 #####\n");
+        Diff *diffM2 = new Diff("fixtures/fileMerge2.txt","fixtures/fileA2.txt");
+        if(!diffM2->isEmpty())
+            printf("Resultado: ERRADO!\n\n");
+        else
+            printf("Resultado: CORRETO!\n\n");
+
+        printf("##### TESTE 3 #####\n");
         Merge *merge3 = new Merge("fixtures/base.txt","fixtures/fileA3.txt","fixtures/fileB3.txt");
+        merge3->getFile("fixtures/fileMerge3.txt");
         delete merge3;
-        printf("\n##### TESTE 4 #####\n");
+        Diff *diffM3 = new Diff("fixtures/fileMerge3.txt","fixtures/fileB3.txt");
+        if(!diffM3->isEmpty())
+            printf("Resultado: ERRADO!\n\n");
+        else
+            printf("Resultado: CORRETO!\n\n");
+
+        printf("##### TESTE 4 #####\n");
         Merge *merge4 = new Merge("fixtures/base.txt","fixtures/fileA4.txt","fixtures/fileB4.txt");
+        merge4->getFile("fixtures/fileMerge4.txt");
         delete merge4;
+        Diff *diffM4 = new Diff("fixtures/fileMerge4.txt","fixtures/fileB4.txt");
+        if(!diffM4->isEmpty())
+            printf("Resultado: ERRADO!\n\n");
+        else
+            printf("Resultado: CORRETO!\n\n");
     }
 
 
-    if(strcmp(type,"patch")==0 || strcmp(type,"diff")==0){
+    if(strcmp(type,"patch")==0 || strcmp(type,"all")==0){
         printf("=============== PATCH ==============\n");
         printf("##### TESTE 1 #####\n");
         Diff *diffP = new Diff("fixtures/arq1.txt","fixtures/arq2.txt");
