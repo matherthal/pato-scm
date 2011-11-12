@@ -2,10 +2,10 @@
 #define PATODATAMODEL_H
 
 #include "PatoDataModel_global.h"
-#include "../patoBase/patotypes.h"
 
 #include <string>
 #include <vector>
+#include <list>
 #include <map>
 
 using namespace std;
@@ -14,6 +14,9 @@ class PATODATAMODELSHARED_EXPORT PatoDataModel {
 private:
     PatoDataModel();
     static PatoDataModel* patoDataModel;
+
+    bool iniciouTransacao;
+    std::list<std::string> listPath;
 
 public:
 
@@ -34,11 +37,11 @@ public:
     //<
 
     //repositoy operations >
-    bool checkIn(std::map<std::string, StorageKey>& filePath, std::string& project, std::string& loginUser, std::string& message);
-    bool saveProjectElement(std::string& filePath, StorageKey idFile, std::string& project, std::string& previousElement);
+    bool checkIn(std::map<std::string, int>& filePath, std::string& project, std::string& loginUser, std::string& message);
+    bool saveProjectElement(std::string& filePath, int idFile, std::string& project/*, std::string& previousElement*/);
     bool insertRelationProjectElementTransaction();
 
-    bool checkOut(std::string& loginUser, std::string& password, std::string& project, int version, std::map<std::string, StorageKey>& filePath);
+    bool checkOut(std::string& loginUser, std::string& password, std::string& project, int version, std::map<std::string, int>& filePath);
     bool showLog(std::string& loginUser, std::string& password, std::string& project, int version, std::vector<std::string>& filePath);
     //<
 
@@ -49,6 +52,12 @@ public:
 
     //project operations>
     bool validateProject( const string& projectName );
+    //<
+
+    //fileoperations >
+    std::string getPath( std::string& pathFile );
+    std::string getFile( std::string& pathFile );
+    bool isFile(std::string& path);
     //<
 
 };

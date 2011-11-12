@@ -10,14 +10,16 @@ unix: TARGET = $$PWD/../output/PatoDataModel
 TEMPLATE = lib
 DEFINES += PATODATAMODEL_LIBRARY
 SOURCES += patodatamodel.cpp \
-#    BDPatoDataModel/source/CppSQLite3.cpp \
+    BDPatoDataModel/source/CppSQLite3.cpp \
     BDPatoDataModel/source/bdpatodatamodel.cpp
-HEADERS += BDPatoDataModel/source/bdpatodatamodel.h \
-#    BDPatoDataModel/source/sqlite3.h \
+HEADERS += BDPatoDataModel/source/CppSQLite3.h \
+    BDPatoDataModel/source/bdpatodatamodel.h \
+    BDPatoDataModel/source/sqlite3.h \
     patodatamodel.h \
     PatoDataModel_global.h \
-
-symbian {
+    BDPatoDataModel/source/CppSQLite3.h \
+    BDPatoDataModel/source/bdpatodatamodel.h
+symbian { 
     MMP_RULES += EXPORTUNFROZEN
     TARGET.UID3 = 0xE27423A1
     TARGET.CAPABILITY = 
@@ -32,8 +34,7 @@ unix:!symbian {
     INSTALLS += target
 }
 symbian:LIBS += -lsqlite3
-#else:
-#unix:LIBS += -L"BDPatoDataModel/lib" -lsqlite3
-#win32:LIBS += -L"$$PWD/BDPatoDataModel/lib" -lsqlite3
+else:unix|win32:LIBS += -L$$PWD/BDPatoDataModel/lib/ -L"$$PWD/../patoFS/BDPatoFS/lib" \
+    -lsqlite3
 INCLUDEPATH += $$PWD/BDPatoDataModel/source
 DEPENDPATH += $$PWD/BDPatoDataModel/source
