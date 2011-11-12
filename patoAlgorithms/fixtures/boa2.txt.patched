@@ -15,4 +15,3 @@ Diff::Diff(ifstream *fileA,ifstream *fileB)
     Diff::fileB = fileB;
     calculateDiff();
 }
-

@@ -31,7 +31,7 @@ INSTALL_FILE  = install -m 644 -p
 INSTALL_DIR   = $(COPY_DIR)
 INSTALL_PROGRAM = install -m 755 -p
 DEL_FILE      = rm -f
-DEL_OUTPUT    = rm -f ../output/PatoAlgorithms
+DEL_OUTPUT    = rm -f ../output/PatoAlgorithms algorithms
 DEL_OUTPUT2   = rm -rf ../output/fixtures
 SYMLINK       = ln -f -s
 DEL_DIR       = rmdir
@@ -83,6 +83,7 @@ DIST          = ../../../QtSDK/Desktop/Qt/474/gcc/mkspecs/common/g++.conf \
 QMAKE_TARGET  = PatoAlgorithms
 DESTDIR       = ../output/
 TARGET        = ../output/PatoAlgorithms
+TARGET2        = algorithms
 
 first: all
 ####### Implicit rules
@@ -106,11 +107,15 @@ first: all
 
 ####### Build rules
 
-all: Makefile $(TARGET)
+all: Makefile $(TARGET) $(TARGET2)
 
 $(TARGET):  $(OBJECTS)  
 	@$(CHK_DIR_EXISTS) ../output/ || $(MKDIR) ../output/ 
 	$(LINK) $(LFLAGS) -o $(TARGET) $(OBJECTS) $(OBJCOMP) $(LIBS)
+
+$(TARGET2):  $(OBJECTS)  
+	@$(CHK_DIR_EXISTS) ../output/ || $(MKDIR) ../output/ 
+	$(LINK) $(LFLAGS) -o $(TARGET2) $(OBJECTS) $(OBJCOMP) $(LIBS)
 
 Makefile: PatoAlgorithms.pro  ../../../QtSDK/Desktop/Qt/474/gcc/mkspecs/linux-g++-32/qmake.conf ../../../QtSDK/Desktop/Qt/474/gcc/mkspecs/common/g++.conf \
 		../../../QtSDK/Desktop/Qt/474/gcc/mkspecs/common/unix.conf \
@@ -171,7 +176,7 @@ clean:compiler_clean
 ####### Sub-libraries
 
 distclean: clean
-	-$(DEL_FILE) $(TARGET) 
+	-$(DEL_FILE) $(TARGET) $(TARGET2) 
 	-$(DEL_FILE) Makefile
 
 
