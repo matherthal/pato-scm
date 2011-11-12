@@ -8,8 +8,8 @@
 #ifndef UPDATECLI_H
 #define	UPDATECLI_H
 
-#include<QtCore/QString>
-#include<../patoBase/patotypes.h>
+#include <QtCore/QString>
+#include "../patoBase/patotypes.h"
 
 class updateCLI {
 public:
