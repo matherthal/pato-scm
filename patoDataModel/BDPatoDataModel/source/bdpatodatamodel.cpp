@@ -2,6 +2,7 @@
 #include <algorithm>
 
 #define PATH_BD "..\\patoDataModel\\BDPatoDataModel\\DataBase\\DataModelBD"
+
 namespace bd {
 
     BDPatoDataModel* BDPatoDataModel::bdPato = NULL;
@@ -44,6 +45,9 @@ namespace bd {
         {
             db = QSqlDatabase::addDatabase( "QSQLITE","Connection" );
             db.setDatabaseName(PATH_BD);
+
+            qDebug() << PATH_BD;
+            qDebug() << db.isOpen();
         }
 
         return db.open();
@@ -66,25 +70,12 @@ namespace bd {
         QSqlQuery query(db);
         if ( query.exec(sqlInsertTransaction.c_str()) )
         {
+            qDebug("Executo a query");
             db.commit();
             return true;
         }
 
         return false;
-
-        /*try{
-
-            dataBase.execDML(sqlInsertTransaction.c_str());
-            return true;
-
-        }
-        catch(CppSQLite3Exception& e)
-        {
-            //write the code error in file log
-            e.errorMessage();
-            return false;
-        }*/
-
     }
 
     int BDPatoDataModel::getLastAvailableVersion()
@@ -235,22 +226,22 @@ namespace bd {
         else
             outVersion << version;
 
-        std::string sqlFilePath = "select itco_id from item_configuracao where itco_id in (select itco_id from diretorio d left join proj_item_tran p ";
-        sqlFilePath.append(" on p.itco_id = d.dire_id where p.tran_id =");
-        sqlFilePath.append(" ");
+        std::string sqlFilePath = "select (select itco_nome from item_configuracao where itco_id = p.itco_id) || ";
+        sqlFilePath.append(" (select arqu_nome from arquivo where arqu_id = p.arqu_id ), ");
+        sqlFilePath.append("(select arqu_cd_armazenamento from arquivo where arqu_id = p.arqu_id) from proj_item_tran p where p.tran_id = ");
         sqlFilePath.append(outVersion.str());
-        sqlFilePath.append(" order by itco_id) ");
-        sqlFilePath.append(" and itco_nome like ((select t.proj_nome from projeto t where t.proj_id = proj_id) || '%%%');");
+        sqlFilePath.append(";");
+
+        vecFilePath.clear();
+        vecIdFile.clear();
 
         QSqlQuery query(db);
         if ( query.exec(sqlFilePath.c_str()) )
         {
             while(query.next())
             {
-                int idItemConfig = query.value(0).toInt();
-                std::string completePath;
-                completePath.append(getNameConfigItem(idItemConfig, project));
-                getCompletePath(idItemConfig, project, completePath);
+                vecFilePath.push_back(query.value(0).toString().toStdString());
+                vecIdFile.push_back(query.value(1).toInt());
             }
 
             createMapFile(vecFilePath   , vecIdFile, filePath);
@@ -258,30 +249,6 @@ namespace bd {
         }
 
         return false;
-
-        /*try{
-
-            CppSQLite3Query resultSet = dataBase.execQuery(sqlFilePath.c_str());
-            while ( !resultSet.eof() )
-            {
-                    std::string path = resultSet.getStringField(0);
-                    filePath.push_back(path);
-
-                    resultSet.nextRow();
-            }
-
-            return true;
-
-        }
-        catch(CppSQLite3Exception& e)
-        {
-            //write code error in file log
-            e.errorMessage();
-            return false;
-        }
-
-        return false;*/
-
     }
 
     bool BDPatoDataModel::getLog(std::string& project, int version, std::vector<std::string>&  filePath)
@@ -300,10 +267,7 @@ namespace bd {
         std::stringstream outProjectId;
         outProjectId << projectId;
 
-        std::string sqlLog = "select (select itco_nome from item_configuracao f where f.itco_id = d.itco_id) || '\\' || itco_nome , vers_id ";
-        sqlLog.append("from diretorio_item_config d, item_configuracao i, proj_item_tran p ");
-        sqlLog.append("where d.dire_id = i.itco_id and i.itco_id = p.itco_id  and p.tran_id = ");
-
+        std::string sqlLog = "select";
         sqlLog.append(outVersion.str());
         sqlLog.append(" and i.vers_id = ");
         sqlLog.append(outVersion.str());
@@ -324,29 +288,6 @@ namespace bd {
         }
 
         return false;
-
-        /*try{
-
-            CppSQLite3Query resultSet = dataBase.execQuery(sqlLog.c_str());
-            while ( !resultSet.eof() )
-            {
-                std::string path = resultSet.getStringField(0);
-                filePath.push_back(path);
-
-                resultSet.nextRow();
-            }
-
-            return true;
-
-        }
-        catch(CppSQLite3Exception& e)
-        {
-            e.errorMessage();
-            return false;
-        }
-
-        return false;*/
-
     }
 //<
 
@@ -465,6 +406,8 @@ namespace bd {
 
         int nUserId = -1;
         QSqlQuery query(db);
+        qDebug(sqlUser.c_str());
+        qDebug() << query.exec(sqlUser.c_str());
         if ( query.exec(sqlUser.c_str()) )
         {
             if ( query.next() )
@@ -472,25 +415,6 @@ namespace bd {
         }
 
         return nUserId;
-/*
-        try{
-
-            CppSQLite3Query resultSet = dataBase.execQuery(sqlUser.c_str());
-            if ( !resultSet.eof() )
-            {
-                int userId = resultSet.getIntField(0);
-                return userId;
-            }
-
-        }
-        catch(CppSQLite3Exception& e)
-        {
-            //write code error in file log
-            e.errorMessage();
-            return -1;
-        }
-
-        return -1;*/
     }
 
     //<
@@ -634,14 +558,15 @@ namespace bd {
         outLastVersionFolder << lastVersionFolder;
 
 
-        std::string sqlInsert = "insert into item_configuracao(itco_id, vers_id, itco_nome, itco_status, proj_id) ";
+        std::string sqlInsert = "insert into item_configuracao(itco_id, vers_id, itco_nome, proj_id, itco_status) ";
         sqlInsert.append("values (null, ");
         sqlInsert.append(outLastVersionFolder.str());
         sqlInsert.append(", '");
         sqlInsert.append(filePath);
         sqlInsert.append("', ");
-        sqlInsert.append(lastVersionFolder == 1 ? "'I', " : "'M', ");
         sqlInsert.append(outProjectId.str());
+        sqlInsert.append(", ");
+        sqlInsert.append(lastVersionFolder == 1 ? "'I', " : "'M'");
         sqlInsert.append(");");
 
         QSqlQuery query(db);
@@ -652,21 +577,6 @@ namespace bd {
         }
 
         return false;
-
-        /*try{
-
-            dataBase.execDML(sqlInsert.c_str());
-            return true;
-
-        }
-        catch(CppSQLite3Exception& e)
-        {
-            //write code error in file log
-            e.errorMessage();
-            return false;
-        }
-
-        return false;*/
     }
 
     int BDPatoDataModel::getLastVersionFolder(std::string& filePath)
@@ -892,7 +802,7 @@ namespace bd {
         else
             strStatus = "I";
 
-        std::string sqlInsertFile = "insert into arquivo( arqu_id, arqu_cd_armazenamento, arqu_nome, vers_id, arqu_status ) ";
+        std::string sqlInsertFile = "insert into arquivo( arqu_id, arqu_cd_armazenamento, arqu_nome, arqu_removido, vers_id, arqu_status ) ";
         sqlInsertFile.append("values (null, ");
 
         std::stringstream outIdFile;
@@ -915,6 +825,13 @@ namespace bd {
         sqlInsertFile.append(", '");
         sqlInsertFile.append(file);
         sqlInsertFile.append("', ");
+
+        int removido = 0;
+        std::stringstream outRemovido;
+        outRemovido << removido;
+
+        sqlInsertFile.append(outRemovido.str());
+        sqlInsertFile.append(", ");
         sqlInsertFile.append(outVersionFile.str());
         sqlInsertFile.append(", '");
         sqlInsertFile.append(strStatus);

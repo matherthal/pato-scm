@@ -1,7 +1,7 @@
 #ifndef BDPATODATAMODEL_H
 #define BDPATODATAMODEL_H
 
-#include "PatoDataModel_global.h"
+#include "..\..\PatoDataModel_global.h"
 
 #include "CppSQLite3.h"
 
