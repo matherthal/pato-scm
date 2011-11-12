@@ -28,6 +28,7 @@ public:
     int getLineALength(int _num_line);
     int getLineBLength(int _num_line);
     string to_string();
+    string to_string_short();
 };
 
 #endif // DIFFITEM_H

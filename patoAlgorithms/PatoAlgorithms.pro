@@ -16,14 +16,16 @@ SOURCES += patoalgorithms.cpp \
     diff.cpp \
     diffitem.cpp \
     merge.cpp \
-    lcs.cpp
+    lcs.cpp \
+    patch.cpp
 
 HEADERS += patoalgorithms.h\
         PatoAlgorithms_global.h \
     diff.h \
     diffitem.h \
     lcs.h \
-    merge.h
+    merge.h \
+    patch.h
 
 MAKEFILE =
 
@@ -47,6 +49,8 @@ unix:!symbian {
 }
 
 OTHER_FILES +=
+
+
 
 
 

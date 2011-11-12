@@ -1,6 +1,7 @@
 #include "diffitem.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <sstream>
 
 DiffItem::DiffItem(int _type,int _fromA,int _toA,int _fromB,int _toB,hashtable** _htableA,hashtable** _htableB)
 {
@@ -68,14 +69,33 @@ int DiffItem::getToB(){
 }
 
 string DiffItem::to_string(){
+    std::stringstream out,out2;
     string ss("");
-    if(fromA==toA)ss+=(fromA+1);
-    else ss+=(fromA+1)+","+toA+1;
+    if(fromA==toA){
+        out<<fromA+1;
+        ss+=out.str();
+    }else{
+        out<<fromA+1;
+        ss+=out.str();
+        ss+=",";
+        out2<<(toA+1);
+        ss+=out2.str();
+    }
     if(type==Action_Add)ss+=("a");
     else if(type==Action_Delete)ss+=("d");
     else if(type==Action_Change)ss+=("c");
-    if(fromB==toB)ss+=(fromB+1);
-    else ss+=(fromB+1)+","+(toB+1);
+
+    std::stringstream out3,out4;
+    if(fromB==toB){
+        out3<<(fromB+1);
+        ss+=out3.str();
+    }else{
+        out3<<fromB+1;
+        ss+=out3.str();
+        ss+=",";
+        out4<<(toB+1);
+        ss+=out4.str();
+    }
 
     ss+=("\n");
     if(type!=Action_Add){
@@ -92,6 +112,52 @@ string DiffItem::to_string(){
     if(type!=Action_Delete){
         for(int i=fromB;i<=toB;i++){
             ss+="> ";
+            ss+=htableB[i]->line;
+            ss+="\n";
+        }
+    }
+    return ss;
+}
+
+string DiffItem::to_string_short(){
+    std::stringstream out,out2;
+    string ss("");
+    if(fromA==toA){
+        out<<fromA+1;
+        ss+=out.str();
+    }else{
+        out<<fromA+1;
+        ss+=out.str();
+        ss+=",";
+        out2<<(toA+1);
+        ss+=out2.str();
+    }
+    if(type==Action_Add)ss+=("a");
+    else if(type==Action_Delete)ss+=("d");
+    else if(type==Action_Change)ss+=("c");
+
+    std::stringstream out3,out4;
+    if(fromB==toB){
+        out3<<(fromB+1);
+        ss+=out3.str();
+    }else{
+        out3<<fromB+1;
+        ss+=out3.str();
+        ss+=",";
+        out4<<(toB+1);
+        ss+=out4.str();
+    }
+
+    ss+=("\n");
+    if(type!=Action_Add){
+        for(int i=fromA;i<=toA;i++){
+            ss+=htableA[i]->line;
+            ss+="\n";
+        }
+    }
+
+    if(type!=Action_Delete){
+        for(int i=fromB;i<=toB;i++){
             ss+=htableB[i]->line;
             ss+="\n";
         }

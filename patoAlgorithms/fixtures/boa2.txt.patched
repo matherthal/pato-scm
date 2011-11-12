@@ -1,0 +1,18 @@
+#include "diff.h"
+#include <sys/types.h>
+#include <string.h>
+#include <stdlib.h>
+
+Diff::Diff(ifstream *fileA,ifstream *fileB)
+{
+    Diff::fileA = fileA;
+    Diff::fileB = fileB;
+    calculateDiff();
+}
+Diff::Diff(ifstream *fileA,ifstream *fileB)
+{
+    Diff::fileA = fileA;
+    Diff::fileB = fileB;
+    calculateDiff();
+}
+
