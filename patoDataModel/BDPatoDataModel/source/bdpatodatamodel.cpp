@@ -1,6 +1,6 @@
 #include "bdpatodatamodel.h"
 
-#define PATH_BD "..\\patoDataModel\\BDPatoDataModel\\DataBase\\DataModelBD"
+#define PATH_BD "../patoDataModel/BDPatoDataModel/DataBase/DataModelBD"
 namespace bd {
 
     BDPatoDataModel* BDPatoDataModel::bdPato = NULL;
@@ -42,7 +42,7 @@ namespace bd {
         if ( db.connectionName().isEmpty() )
         {
             db = QSqlDatabase::addDatabase( "QSQLITE","Connection" );
-            db.setDatabaseName(PATH_BD);
+            db.setDatabaseName(QDir::convertSeparators(PATH_BD));
         }
 
         return db.open();
@@ -417,9 +417,13 @@ namespace bd {
         sqlUserProject.append(password);
         sqlUserProject.append("');");
 
+        qDebug(sqlUserProject.c_str());
+
         QSqlQuery query(db);
         if ( query.exec(sqlUserProject.c_str()) )
         {
+            qDebug(query.lastError().text().toStdString().c_str());
+
             if ( query.next() )
             {
                 int nCountUserProject = query.value(0).toInt();
@@ -429,6 +433,8 @@ namespace bd {
                 return false;
             }
         }
+
+        qDebug(query.lastError().text().toStdString().c_str());
 
         return false;
 
