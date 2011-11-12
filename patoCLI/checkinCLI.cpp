@@ -5,12 +5,12 @@
  * Created on October 3, 2011, 9:02 PM
  */
 
-#include<QtCore/QString>
+#include <QtCore/QString>
 #include "checkinCLI.h"
 #include "../patoClientAPI/patoclientapi.h"
-#include<string.h>
-#include<iostream>
-#include<QTextStream>;
+#include <string.h>
+#include <iostream>
+#include <QTextStream>
 using namespace std;
 
 checkinCLI::checkinCLI() {
