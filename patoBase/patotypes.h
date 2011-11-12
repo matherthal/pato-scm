@@ -10,6 +10,7 @@
 #include <QTextStream>
 #include <QDateTime>
 typedef QString RevisionKey;
+typedef std::string StorageKey;
 #include "patofilestatus.h"
 
 
