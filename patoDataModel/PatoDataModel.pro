@@ -34,7 +34,6 @@ unix:!symbian {
     INSTALLS += target
 }
 symbian:LIBS += -lsqlite3
-else:unix|win32:LIBS += -L$$PWD/BDPatoDataModel/lib/ -L"$$PWD/../patoFS/BDPatoFS/lib" \
-    -lsqlite3
+else:unix|win32:LIBS += -L$$PWD/BDPatoDataModel/lib/ -lsqlite3
 INCLUDEPATH += $$PWD/BDPatoDataModel/source
 DEPENDPATH += $$PWD/BDPatoDataModel/source

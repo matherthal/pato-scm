@@ -24,7 +24,7 @@ DEFINES += SRCDIR=\\\"$$PWD/\\\"
 
 symbian: LIBS += -lPatoFS
 else:
-unix: LIBS += -L"../output/" -L$$PWD/../patoDataModel/BDPatoDataModel/lib/ -lPatoFS -lsqlite3
+unix: LIBS += -L"../output" -lPatoFS -L"../../patoDataModel/BDPatoDataModel/lib/" -lsqlite3
 win32: LIBS += -L"../output/" -L"../patoDataModel/BDPatoDataModel/lib/" -lPatoFS -lsqlite3
 
 INCLUDEPATH += $$PWD/../patoFS
