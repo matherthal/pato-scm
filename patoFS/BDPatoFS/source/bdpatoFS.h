@@ -2,6 +2,7 @@
 #define BDPatoFS_H
 
 #include "../../PatoFS_global.h"
+#include "../../../patoBase/patotypes.h"
 
 //#include "CppSQLite3.h"
 
@@ -32,14 +33,14 @@ public:
 
     //saving data
     std::string saveData(const std::string& data);
-    bool saveData(const std::vector<std::string>& data, std::vector<std::string>& vecIdFile);
+    bool saveData(const std::vector<std::string>& data, std::vector<StorageKey>& vecIdFile);
 
     //loading data
     bool loadData(std::string& idFile, std::string& data);
-    bool loadData(const std::vector<std::string>& vecIdFile, std::vector<std::string>& vecData);
+    bool loadData(const std::vector<StorageKey>& vecIdFile, std::vector<std::string>& vecData);
 
     //delete data
-    bool deleteData(const std::vector<std::string>& idFile);
+    bool deleteData(const std::vector<StorageKey>& idFile);
 
 private:
 
