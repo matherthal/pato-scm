@@ -123,3 +123,7 @@ void Patch::getFile(char* _file_name){
     arq<<result;
     arq.close();
 }
+
+void Patch::print(){
+    cout << result;
+}

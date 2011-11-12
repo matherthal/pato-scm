@@ -15,6 +15,7 @@ private:
 public:
     Patch(char* _delta_file_name,char* _file_name);
     void getFile(char* _file_name);
+    void print();
 };
 
 #endif // PATCH_H
