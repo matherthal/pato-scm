@@ -49,6 +49,5 @@ unix:!symbian {
     INSTALLS += target
 }
 
-
-
+LIBS += -L"../output" -lPatoWorkspace
 
