@@ -7,7 +7,8 @@
 QT       -= gui
 
 TARGET = ../output/PatoAlgorithms
-TEMPLATE = app
+
+TEMPLATE = lib
 
 DEFINES += PATOALGORITHMS_LIBRARY
 
