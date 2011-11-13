@@ -22,12 +22,22 @@ updateCLI::updateCLI(const updateCLI& orig) {
 updateCLI::~updateCLI() {
 }
 
+QList<QString> messageErrorUP() {
+    QList<QString> error;
+
+    error.append("Update command bring changes from the repository.");
+    error.append("Usage: pato update --address ADDRESS --username USERNAME --password PASSWORD [--revision REVISION ] [--workspace WORKSPACE]");
+
+    return error;
+}
+
 void updateCLI::command(int argc, char** argv) {
     QString parameter;
     PatoClientApi* clientAPI;
 
     QTextStream qout(stdout);
-    
+
+
     for (int i = 2; i < argc; i += 2) {
         parameter = argv[i];
 
@@ -43,13 +53,28 @@ void updateCLI::command(int argc, char** argv) {
             workspace = argv[i + 1];
         } else {
             qout << "[ERROR] " << parameter << " don't exist." << endl;
-            return;
+
+            QList<QString> ls = messageErrorUP();
+            for (int i = 0; i < ls.size(); i++) {
+                qout << ls.at(i) << endl;
+            }
+
         }
     }
 
     clientAPI = new PatoClientApi();
 
-    clientAPI->update(revision, address, username, password, workspace);
+    try {
+        clientAPI->update(revision, address, username, password, workspace);
+    } catch (PatoClientException& t) {
+        QList<QString> ls = messageErrorUP();
+        for (int i = 0; i < ls.size(); i++) {
+            qout << ls.at(i) << endl;
+        }
+
+        //qout << t.Message() << endl;
+    }
+
 }
 
 void updateCLI::SetAddress(QString address) {

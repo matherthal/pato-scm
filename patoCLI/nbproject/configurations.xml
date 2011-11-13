@@ -8,8 +8,9 @@
       <itemPath>checkinCLI.h</itemPath>
       <itemPath>checkoutCLI.h</itemPath>
       <itemPath>cliReader.h</itemPath>
-      <itemPath>../patoClientAPI/logCLI.cpp</itemPath>
-      <itemPath>../patoClientAPI/logCLI.h</itemPath>
+      <itemPath>../patoClientAPI/diffCLI.h</itemPath>
+      <itemPath>logCLI.h</itemPath>
+      <itemPath>../patoClientAPI/mergeCLI.h</itemPath>
       <itemPath>statusCLI.h</itemPath>
       <itemPath>updateCLI.h</itemPath>
       <itemPath>utils.h</itemPath>
@@ -17,33 +18,6 @@
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
                    projectFiles="true">
-      <logicalFolder name="patoAlgorithms"
-                     displayName="patoAlgorithms"
-                     projectFiles="true">
-        <logicalFolder name="fixtures" displayName="fixtures" projectFiles="true">
-          <itemPath>../patoAlgorithms/fixtures/arq1.txt</itemPath>
-          <itemPath>../patoAlgorithms/fixtures/arq1.txt.1</itemPath>
-          <itemPath>../patoAlgorithms/fixtures/arq2.txt</itemPath>
-          <itemPath>../patoAlgorithms/fixtures/boa.txt</itemPath>
-          <itemPath>../patoAlgorithms/fixtures/boa2.txt</itemPath>
-          <itemPath>../patoAlgorithms/fixtures/grande.txt</itemPath>
-          <itemPath>../patoAlgorithms/fixtures/grande2.txt</itemPath>
-        </logicalFolder>
-        <itemPath>../patoAlgorithms/Makefile</itemPath>
-        <itemPath>../patoAlgorithms/PatoAlgorithms.pro</itemPath>
-        <itemPath>../patoAlgorithms/PatoAlgorithms_global.h</itemPath>
-        <itemPath>../patoAlgorithms/diff.cpp</itemPath>
-        <itemPath>../patoAlgorithms/diff.h</itemPath>
-        <itemPath>../patoAlgorithms/diffitem.cpp</itemPath>
-        <itemPath>../patoAlgorithms/diffitem.h</itemPath>
-        <itemPath>../patoAlgorithms/lcs.cpp</itemPath>
-        <itemPath>../patoAlgorithms/lcs.h</itemPath>
-        <itemPath>../patoAlgorithms/main.cpp</itemPath>
-        <itemPath>../patoAlgorithms/merge.cpp</itemPath>
-        <itemPath>../patoAlgorithms/merge.h</itemPath>
-        <itemPath>../patoAlgorithms/patoalgorithms.cpp</itemPath>
-        <itemPath>../patoAlgorithms/patoalgorithms.h</itemPath>
-      </logicalFolder>
       <logicalFolder name="patoClientAPI"
                      displayName="patoClientAPI"
                      projectFiles="true">
@@ -79,7 +53,10 @@
       <itemPath>checkinCLI.cpp</itemPath>
       <itemPath>checkoutCLI.cpp</itemPath>
       <itemPath>cliReader.cpp</itemPath>
+      <itemPath>../patoClientAPI/diffCLI.cpp</itemPath>
+      <itemPath>logCLI.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
+      <itemPath>../patoClientAPI/mergeCLI.cpp</itemPath>
       <itemPath>statusCLI.cpp</itemPath>
       <itemPath>updateCLI.cpp</itemPath>
       <itemPath>utils.cpp</itemPath>
@@ -103,6 +80,8 @@
     <Elem>../patoBase</Elem>
     <Elem>../patoAlgorithms</Elem>
     <Elem>../patoCommunication</Elem>
+    <Elem>../patoServerAPI</Elem>
+    <Elem>../patoDataModel</Elem>
   </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>

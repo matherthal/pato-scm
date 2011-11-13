@@ -34,20 +34,18 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/_ext/640542881/merge.o \
+	${OBJECTDIR}/logCLI.o \
 	${OBJECTDIR}/_ext/764798604/diffOutput.o \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/checkinCLI.o \
 	${OBJECTDIR}/_ext/764798604/addOutput.o \
-	${OBJECTDIR}/_ext/640542881/patoalgorithms.o \
+	${OBJECTDIR}/_ext/764798604/mergeCLI.o \
 	${OBJECTDIR}/checkoutCLI.o \
 	${OBJECTDIR}/_ext/764798604/logOutput.o \
 	${OBJECTDIR}/_ext/764798604/statusOutput.o \
 	${OBJECTDIR}/_ext/764798604/PatoClientException.o \
-	${OBJECTDIR}/_ext/640542881/main.o \
-	${OBJECTDIR}/_ext/764798604/logCLI.o \
 	${OBJECTDIR}/statusCLI.o \
-	${OBJECTDIR}/_ext/640542881/diffitem.o \
+	${OBJECTDIR}/_ext/764798604/diffCLI.o \
 	${OBJECTDIR}/updateCLI.o \
 	${OBJECTDIR}/cliReader.o \
 	${OBJECTDIR}/utils.o \
@@ -55,9 +53,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/_ext/764798604/patoclientapi.o \
 	${OBJECTDIR}/_ext/764798604/checkinOutput.o \
 	${OBJECTDIR}/_ext/764798604/updateOutput.o \
-	${OBJECTDIR}/_ext/764798604/checkoutOutput.o \
-	${OBJECTDIR}/_ext/640542881/lcs.o \
-	${OBJECTDIR}/_ext/640542881/diff.o
+	${OBJECTDIR}/_ext/764798604/checkoutOutput.o
 
 
 # C Compiler Flags
@@ -84,10 +80,10 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/patocli: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/patocli ${OBJECTFILES} ${LDLIBSOPTIONS} 
 
-${OBJECTDIR}/_ext/640542881/merge.o: ../patoAlgorithms/merge.cpp 
-	${MKDIR} -p ${OBJECTDIR}/_ext/640542881
+${OBJECTDIR}/logCLI.o: logCLI.cpp 
+	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/640542881/merge.o ../patoAlgorithms/merge.cpp
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/logCLI.o logCLI.cpp
 
 ${OBJECTDIR}/_ext/764798604/diffOutput.o: ../patoClientAPI/diffOutput.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/764798604
@@ -109,10 +105,10 @@ ${OBJECTDIR}/_ext/764798604/addOutput.o: ../patoClientAPI/addOutput.cpp
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/764798604/addOutput.o ../patoClientAPI/addOutput.cpp
 
-${OBJECTDIR}/_ext/640542881/patoalgorithms.o: ../patoAlgorithms/patoalgorithms.cpp 
-	${MKDIR} -p ${OBJECTDIR}/_ext/640542881
+${OBJECTDIR}/_ext/764798604/mergeCLI.o: ../patoClientAPI/mergeCLI.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/764798604
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/640542881/patoalgorithms.o ../patoAlgorithms/patoalgorithms.cpp
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/764798604/mergeCLI.o ../patoClientAPI/mergeCLI.cpp
 
 ${OBJECTDIR}/checkoutCLI.o: checkoutCLI.cpp 
 	${MKDIR} -p ${OBJECTDIR}
@@ -134,25 +130,15 @@ ${OBJECTDIR}/_ext/764798604/PatoClientException.o: ../patoClientAPI/PatoClientEx
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/764798604/PatoClientException.o ../patoClientAPI/PatoClientException.cpp
 
-${OBJECTDIR}/_ext/640542881/main.o: ../patoAlgorithms/main.cpp 
-	${MKDIR} -p ${OBJECTDIR}/_ext/640542881
-	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/640542881/main.o ../patoAlgorithms/main.cpp
-
-${OBJECTDIR}/_ext/764798604/logCLI.o: ../patoClientAPI/logCLI.cpp 
-	${MKDIR} -p ${OBJECTDIR}/_ext/764798604
-	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/764798604/logCLI.o ../patoClientAPI/logCLI.cpp
-
 ${OBJECTDIR}/statusCLI.o: statusCLI.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/statusCLI.o statusCLI.cpp
 
-${OBJECTDIR}/_ext/640542881/diffitem.o: ../patoAlgorithms/diffitem.cpp 
-	${MKDIR} -p ${OBJECTDIR}/_ext/640542881
+${OBJECTDIR}/_ext/764798604/diffCLI.o: ../patoClientAPI/diffCLI.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/764798604
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/640542881/diffitem.o ../patoAlgorithms/diffitem.cpp
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/764798604/diffCLI.o ../patoClientAPI/diffCLI.cpp
 
 ${OBJECTDIR}/updateCLI.o: updateCLI.cpp 
 	${MKDIR} -p ${OBJECTDIR}
@@ -193,16 +179,6 @@ ${OBJECTDIR}/_ext/764798604/checkoutOutput.o: ../patoClientAPI/checkoutOutput.cp
 	${MKDIR} -p ${OBJECTDIR}/_ext/764798604
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/764798604/checkoutOutput.o ../patoClientAPI/checkoutOutput.cpp
-
-${OBJECTDIR}/_ext/640542881/lcs.o: ../patoAlgorithms/lcs.cpp 
-	${MKDIR} -p ${OBJECTDIR}/_ext/640542881
-	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/640542881/lcs.o ../patoAlgorithms/lcs.cpp
-
-${OBJECTDIR}/_ext/640542881/diff.o: ../patoAlgorithms/diff.cpp 
-	${MKDIR} -p ${OBJECTDIR}/_ext/640542881
-	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/640542881/diff.o ../patoAlgorithms/diff.cpp
 
 # Subprojects
 .build-subprojects:

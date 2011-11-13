@@ -7,7 +7,6 @@
 QT       += sql testlib
 
 QT       -= gui
-QT       += sql
 
 win32: TARGET = ../../output/TestPatoFS
 unix:  TARGET = ../output/TestPatoFS
@@ -19,13 +18,13 @@ TEMPLATE = app
 
 
 SOURCES += tst_patofstest.cpp
-DEFINES += SRCDIR=\\\"$$PWD/\\\"
+#DEFINES += SRCDIR=\\\"$$PWD/\\\"
 
 
 
 symbian: LIBS += -lPatoFS
 else:
-unix: LIBS += -L"../output/" -L$$PWD/../patoDataModel/BDPatoDataModel/lib/ -lPatoFS -lsqlite3
+unix: LIBS += -L"../output" -lPatoFS
 win32: LIBS += -L"../output/" -L"../patoDataModel/BDPatoDataModel/lib/" -lPatoFS -lsqlite3
 
 INCLUDEPATH += $$PWD/../patoFS

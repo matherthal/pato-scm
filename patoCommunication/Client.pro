@@ -4,12 +4,11 @@
 #
 #-------------------------------------------------
 
-QT       += network
-
+QT       += network sql
 QT       -= gui
 
 TARGET = ../output/Client
-TEMPLATE = lib
+TEMPLATE = app
 
 DEFINES += PATOCOMMUNICATION_LIBRARY
 
@@ -18,7 +17,7 @@ SOURCES += client.cpp
 HEADERS += client.h\
         Client_global.h
 
-LIBS += -L"./xmlrpc" -lxmlrpc_client++ -lxmlrpc_client -lxmlrpc++ -lxmlrpc -lxmlrpc_xmlparse -lxmlrpc_xmltok -lxmlrpc_util -lcurl -lxmlrpc_packetsocket
+LIBS += -L"./libxmlrpc" -lxmlrpc_client++ -lxmlrpc_client -lxmlrpc++ -lxmlrpc -lxmlrpc_xmlparse -lxmlrpc_xmltok -lxmlrpc_util -lcurl -lxmlrpc_packetsocket
 
 symbian {
     MMP_RULES += EXPORTUNFROZEN
