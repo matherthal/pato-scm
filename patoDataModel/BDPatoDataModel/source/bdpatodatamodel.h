@@ -39,7 +39,7 @@ public:
     int getFileIdStored(std::string& nameFile);
     void getCompletePath(int idItemConfig, std::string& project, std::string& completePath);
     bool getFilePath(std::string& project, int version, std::map<std::string, int>& filePath);
-    bool getLog(std::string& project, int version, std::vector<std::string>&  filePath);
+    bool getLog(std::string& project, int version, std::map<std::string, int>&  filePath);
     //<
 
 
@@ -82,6 +82,7 @@ public:
     //Relation Project version with elements>
     bool insertRelationProjectElementTransaction(std::string& project);
     bool insertRelationProjectTransaction(const std::string& sqlInsert);
+    void removePathPreviousTransaction(std::string path);
     //<
 
     //>String operations
