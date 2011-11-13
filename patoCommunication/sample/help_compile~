@@ -1,6 +1,6 @@
 server:
 
-g++ -o xmlrpc_sample_add_server xmlrpc_sample_add_server.o libxmlrpc/libxmlrpc_server_abyss++.a libxmlrpc/libxmlrpc_server++.a libxmlrpc/libxmlrpc_server_abyss.a libxmlrpc/libxmlrpc_server.a libxmlrpc/libxmlrpc_abyss.a -lpthread libxmlrpc/libxmlrpc++.a libxmlrpc/libxmlrpc.a libxmlrpc/libxmlrpc_xmlparse.a libxmlrpc/libxmlrpc_xmltok.a libxmlrpc/libxmlrpc_util.a
+g++ -o libxmlrpc/xmlrpc_sample_add_server xmlrpc_sample_add_server.o libxmlrpc/libxmlrpc_server_abyss++.a libxmlrpc/libxmlrpc_server++.a libxmlrpc/libxmlrpc_server_abyss.a libxmlrpc/libxmlrpc_server.a libxmlrpc/libxmlrpc_abyss.a -lpthread libxmlrpc/libxmlrpc++.a libxmlrpc/libxmlrpc.a libxmlrpc/libxmlrpc_xmlparse.a libxmlrpc/libxmlrpc_xmltok.a libxmlrpc_util.a
 
 
 
