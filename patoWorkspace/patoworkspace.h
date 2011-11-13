@@ -27,7 +27,7 @@ public:
     bool create( QString sourceDir, QStringList files, QString repoAddress, RevisionKey revision); //create an initial workspace
     bool update( PatoChangeSet changeSet, RevisionKey revision); //apply a changeset and update revision number
     bool setRevision( RevisionKey revision, bool commiting = true ); //update revision number
-    bool add( QString sourceDir, QStringList path ); //add files and/or directories
+    QList< PatoFileStatus > add( QString sourceDir, QStringList path ); //add files and/or directories
     QString defaultRepositoryAddress() const; // return the source repository
     RevisionKey revision() const; //get current revision
     QList< PatoFileStatus > status(PatoFileStatus::FileStatus = PatoFileStatus::ALL) const; // return a list of file status

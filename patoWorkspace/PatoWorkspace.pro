@@ -19,7 +19,7 @@ SOURCES += patoworkspace.cpp
 HEADERS += patoworkspace.h\
         PatoWorkspace_global.h
 
-LIBS += -L"../output" -lPatoBase
+LIBS += -L"../output" -lPatoBase -lPatoAlgorithms
 
 symbian {
     MMP_RULES += EXPORTUNFROZEN

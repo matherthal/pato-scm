@@ -14,7 +14,9 @@ public:
         REMOVED,
         CLEAN,
         MISSING,
+        VERSIONED,
         UNVERSIONED,
+        ERROR,
         ALL
     };
 

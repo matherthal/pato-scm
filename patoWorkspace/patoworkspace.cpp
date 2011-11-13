@@ -112,8 +112,10 @@ bool PatoWorkspace::setPath(QString directory, bool createDir)
     return true;
 }
 
-bool PatoWorkspace::add( QString sourceDir, QStringList paths )
+QList< PatoFileStatus > PatoWorkspace::add( QString sourceDir, QStringList paths )
 {
+    QList< PatoFileStatus > ret;
+
     for (int i = 0; i < paths.size(); i++)
     {
         if (!versionedFiles.contains( paths[i] ))
@@ -122,16 +124,18 @@ bool PatoWorkspace::add( QString sourceDir, QStringList paths )
                 addedFiles.append(paths[i]);
 
             copyFile(sourceDir, workPath, paths[i] );
+
+            ret << PatoFileStatus( paths[i], PatoFileStatus::ADDED);
         }
         else
         {
-            qWarning() << QString("%1 - Already Versioned!!!").arg(paths[i]);
+            ret << PatoFileStatus( paths[i], PatoFileStatus::VERSIONED);
         }
     }
 
     writeMetadata();
 
-    return true;
+    return ret;
 }
 
 QList< PatoFileStatus > PatoWorkspace::status(PatoFileStatus::FileStatus statusFilter) const

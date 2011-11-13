@@ -65,9 +65,8 @@ QList<checkoutOutput> PatoClientApi::checkin(QString address, QString username, 
     return output;
 }
 
-QList<addOutput> PatoClientApi::add(QString workspace, QStringList files) throw (PatoClientException) {
-
-    QList<addOutput> output;
+QList< PatoFileStatus > PatoClientApi::add(QString workspace, QStringList files) throw (PatoClientException)
+{
     PatoWorkspace* work = PatoWorkspace::instance();
 
     if (workspace == "") {
@@ -77,10 +76,7 @@ QList<addOutput> PatoClientApi::add(QString workspace, QStringList files) throw 
     }
 
 
-    work->add(workspace, files);
-
-
-    return output;
+   return work->add(workspace, files);
 }
 
 QList<statusOutput> PatoClientApi::status(QString workspace) throw (PatoClientException) {
