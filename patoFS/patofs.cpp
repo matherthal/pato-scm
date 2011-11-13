@@ -35,23 +35,23 @@ bool PatoFS::initBD()
 }
 
 //saving data
-std::string PatoFS::saveData(const std::string& data)
+StorageKey PatoFS::saveData(const std::string& data)
 {
     return bd::BDPatoFS::getInstance()->saveData(data);
 }
 
-bool PatoFS::saveData(const std::vector<std::string>& data, std::vector<std::string>& vecIdFile)
+bool PatoFS::saveData(const std::vector<std::string>& data, std::vector<StorageKey>& vecIdFile)
 {
     return bd::BDPatoFS::getInstance()->saveData(data, vecIdFile);
 }
 
 //loading data
-bool PatoFS::loadData(std::string& idFile, std::string& data)
+bool PatoFS::loadData(StorageKey& idFile, std::string& data)
 {
     return bd::BDPatoFS::getInstance()->loadData(idFile, data);
 }
 
-bool PatoFS::loadData(const std::vector<std::string>& vecIdFile, std::vector<std::string>& vecData)
+bool PatoFS::loadData(const std::vector<StorageKey>& vecIdFile, std::vector<std::string>& vecData)
 {
     return bd::BDPatoFS::getInstance()->loadData(vecIdFile, vecData);
 }

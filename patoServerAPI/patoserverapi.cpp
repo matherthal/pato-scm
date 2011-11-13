@@ -4,6 +4,7 @@
 #include <string.h>
 #include<QtCore/QString>
 #include<QtCore/QTextStream>
+#include "../patoBase/patotypes.h"
 
 PatoServerApi* PatoServerApi::patoServerApi = NULL;
 
@@ -31,7 +32,7 @@ void PatoServerApi::destroyInstance() {
 }
 
 map<string, string>* PatoServerApi::checkout(int revision, QString path, QString username, QString password) {
-/*
+
     //validating project
     if (!dataModel->validateProject(path.toStdString()))
         return NULL;
@@ -49,14 +50,14 @@ map<string, string>* PatoServerApi::checkout(int revision, QString path, QString
     string strPath = path.toStdString();
 
     //this map will be filled with file names and file keys (hash code)
-    map<string, string> filePath;
+    map<string, StorageKey> filePath;
 
     //filePath is a map that contains file name and its keys (hash code)
-    if (!dataModel->checkOut(strUsername,strPassword,strPath,revision,filePath))
+    if (!dataModel->checkOut(strUsername, strPassword, strPath,revision, filePath))
             return NULL;
 
     //file key (hash code)
-    vector<string> key;
+    vector<StorageKey> key;
     //files content
     vector<string> content;
 
@@ -81,20 +82,21 @@ map<string, string>* PatoServerApi::checkout(int revision, QString path, QString
        //if success, store in a map the file name (first) and file content (second)
        file[(*it).first] = (*cit);
    }
-*/
+
    //return the map containing file name and file content
    return &file;
+
 }
 
-bool PatoServerApi::checkin(QString path, QString username, QString password, QString message, vector<string>& fileContent, vector<string>& fileKey) {
+bool PatoServerApi::checkin(QString project, vector<string>& filePath, vector<string>& fileContent, QString username, QString password, QString message) {
 
     string msg = message.toStdString();
     string strUsername = username.toStdString();
-    string strPath = path.toStdString();
     string strPw = password.toStdString();
-/*
+    string strProj = project.toStdString();
+
     //validating project
-    if (!dataModel->validateProject(strPath))
+    if (!dataModel->validateProject(strProj))
         return false;
 
     //validating user
@@ -102,14 +104,25 @@ bool PatoServerApi::checkin(QString path, QString username, QString password, QS
         return false;
 
     //test if a user is authorized
-    if (!dataModel->validateUserProject(strUsername, strPw, strPath))
+    if (!dataModel->validateUserProject(strUsername, strPw, strProj))
         return false;
 
+    //this function will fill the fileKey vector with all file keys
+    vector<StorageKey> fileKey;
     storage->saveData(fileContent, fileKey);
 
-    if (!dataModel->checkIn(filePath, strPath, strUsername, msg))
+    //filling the map with file names (path) and keys to pass to checkIn function
+    map<string, StorageKey> filePathKey;
+
+    vector<string>::iterator itPath;
+    vector<StorageKey>::iterator itKey;
+    for (itPath = filePath.begin(), itKey = fileKey.begin() ; itPath != filePath.end(); ++itPath, ++itKey) {
+        filePathKey[(*itPath)] = (*itKey);
+    }
+
+    if (!dataModel->checkIn(filePathKey, strProj, strUsername, msg))
         return false;
-*/
+
     return true;
 }
 
