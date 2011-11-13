@@ -1,7 +1,8 @@
 #include "bdpatoFS.h"
 #include <iostream>
 
-#define PATH_BD "../patoDataModel/BDPatoDataModel/DataBase/DataModelBD"
+//#define PATH_BD "../patoDataModel/BDPatoDataModel/DataBase/DataModelBD"
+#define PATH_BD "DataModelBD.sqlite"
 namespace bd {
 
     BDPatoFS* BDPatoFS::bdPato = NULL;
@@ -63,15 +64,16 @@ namespace bd {
         QString key = QString(QCryptographicHash::hash((data.c_str()),QCryptographicHash::Md5).toHex());
         QSqlQuery query(db);
 
-        query.prepare("SELECT ARMA_CONTEUDO FROM ARMAZENAMENTO WHERE arma_id = :key");
-        query.bindValue(":key",key.toStdString().c_str());
+        std::string sqlFileInserted = "SELECT ARMA_CONTEUDO FROM ARMAZENAMENTO WHERE arma_id like '";
+        sqlFileInserted.append(key.toStdString());
+        sqlFileInserted.append("';");
 
-        query.exec();
-
-        if (query.next()) {
-            return key.toStdString();
+        if ( query.exec() )
+        {
+            if (query.next()) {
+                return key.toStdString();
+            }
         }
-
 
         std::string sqlInsert = "INSERT INTO ARMAZENAMENTO (arma_id, arma_conteudo) VALUES ";
         sqlInsert.append("('");
@@ -80,10 +82,13 @@ namespace bd {
         sqlInsert.append(data);
         sqlInsert.append("');");
 
-        if (query.exec(sqlInsert.c_str())) {
+        QSqlQuery queryInsert(db);
+        if (queryInsert.exec(sqlInsert.c_str()))
+        {
             return key.toStdString();
         }
         else {
+
             return "-1";
         }
     }
@@ -96,7 +101,7 @@ namespace bd {
         {
             std::string idFile = saveData((*itData));
 
-            if ( idFile.compare("-1") )
+            if ( idFile == "-1" )
             {
                 deleteData(vecIdFile);
                 return false;
@@ -133,27 +138,24 @@ namespace bd {
     bool BDPatoFS::loadData(const std::vector<StorageKey>& vecIdFile, std::vector<std::string>& vecData)
     {
         QSqlQuery query(db);
-        QString sqlLoadData = "SELECT arma_conteudo FROM ARMAZENAMENTO WHERE arma_id IN (";
+        std::string sqlLoadData = "select arma_conteudo from armazenamento where ";
+        sqlLoadData.append("arma_id in('");
 
         std::vector<std::string>::const_iterator itIdFile;
         for( itIdFile = vecIdFile.begin(); itIdFile != vecIdFile.end(); itIdFile++ )
         {
             if ( itIdFile != vecIdFile.begin() )
-                sqlLoadData.append(", ");
+                sqlLoadData.append("', '");
 
-            std::stringstream OutId;
-            OutId << (*itIdFile);
-
-            sqlLoadData.append(OutId.str().c_str());
+            sqlLoadData.append((*itIdFile));
         }
 
-        sqlLoadData.append(");");
+        sqlLoadData.append("');");
 
-        if (query.exec(sqlLoadData)) {
+        if (query.exec(sqlLoadData.c_str())) {
 
             while(query.next()) {
-                QString s = query.value(0).toString();
-
+                QString s = query.value(1).toString();
                 vecData.push_back(s.toStdString());
             }
 
@@ -167,6 +169,9 @@ namespace bd {
     //delete data
     bool BDPatoFS::deleteData(const std::vector<StorageKey>& idFile)
     {
+        if (idFile.empty())
+            return false;
+
         QSqlQuery query(db);
         QString sqlDelete = "delete from armazenamento where arma_id in (";
 

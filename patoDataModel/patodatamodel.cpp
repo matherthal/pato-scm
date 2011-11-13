@@ -1,6 +1,7 @@
 #include "patodatamodel.h"
 #include "bdpatodatamodel.h"
 #include <algorithm>
+#include "../patoBase/patotypes.h"
 
 PatoDataModel* PatoDataModel::patoDataModel = NULL;
 
@@ -31,19 +32,17 @@ bool PatoDataModel::initBD()
 }
 
 //repositoy operations >
-bool PatoDataModel::checkIn(std::map<std::string, int>& filePath, std::string& project, std::string& loginUser, std::string& message)
+bool PatoDataModel::checkIn(std::map<std::string, std::string>& filePath, std::string& project, std::string& loginUser, std::string& message)
 {
     bd::BDPatoDataModel* dataBase = bd::BDPatoDataModel::getInstance();
-    qDebug()<< "inicio";
     if ( !dataBase->saveTransaction(message, loginUser) )
         return false;
 
     iniciouTransacao = true;
-    qDebug()<< "salvou transacao";
 
     bd::BDPatoDataModel::getInstance()->getPathsLastVersion();
 
-    std::map<std::string, int>::iterator itFilePath;
+    std::map<std::string, std::string>::iterator itFilePath;
     for( itFilePath = filePath.begin(); itFilePath != filePath.end(); itFilePath++ )
     {
         std::string path = itFilePath->first;
@@ -61,7 +60,7 @@ bool PatoDataModel::checkIn(std::map<std::string, int>& filePath, std::string& p
     return true;
 }
 
-bool PatoDataModel::saveProjectElement(std::string& filePath, int idFile, std::string& project/*, std::string& previousElement*/)
+bool PatoDataModel::saveProjectElement(std::string& filePath, std::string& idFile, std::string& project/*, std::string& previousElement*/)
 {
     if ( filePath.empty() )
             return true;
@@ -86,14 +85,12 @@ bool PatoDataModel::saveProjectElement(std::string& filePath, int idFile, std::s
     if ( !dataBase->insertFile(path, file/*, project*/, idFile) )
         return false;
 
-
-
     dataBase->insertRelationElement(project, path, file);
 
     return true;
 }
 
-bool PatoDataModel::checkOut(std::string& loginUser, std::string& password, std::string& project, int version, std::map<std::string, int>& filePath)
+bool PatoDataModel::checkOut(std::string& loginUser, std::string& password, std::string& project, int version, std::map<std::string, std::string>& filePath)
 {
     if ( !validateUserProject(loginUser, password, project) )
             return false;
@@ -101,12 +98,17 @@ bool PatoDataModel::checkOut(std::string& loginUser, std::string& password, std:
     return bd::BDPatoDataModel::getInstance()->getFilePath(project, version, filePath);
 }
 
-bool PatoDataModel::showLog(std::string& loginUser, std::string& password, std::string& project, int version, std::map<std::string, int>& filePath)
+bool PatoDataModel::showLog(std::string& loginUser, std::string& password, std::string& project, int version, std::map<std::string, std::string>& filePath)
 {
     if ( !validateUserProject(loginUser, password, project) )
             return false;
 
     return bd::BDPatoDataModel::getInstance()->getLog(project, version, filePath);
+}
+
+std::string PatoDataModel::getLogMessage(int version)
+{
+    return bd::BDPatoDataModel::getInstance()->getLogMessage(version);
 }
 
 //<
