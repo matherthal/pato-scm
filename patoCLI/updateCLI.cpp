@@ -65,7 +65,7 @@ void updateCLI::command(int argc, char** argv) {
     clientAPI = new PatoClientApi();
 
     try {
-        clientAPI->update(revision, address, username, password, workspace);
+        clientAPI->update(revision, address, username, password, workspace, true);//true = ignorelocalchanges
     } catch (PatoClientException& t) {
         QList<QString> ls = messageErrorUP();
         for (int i = 0; i < ls.size(); i++) {

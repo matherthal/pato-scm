@@ -21,11 +21,22 @@ public://STATICS
     static PatoWorkspace* instance();
     static void free();
 
+    static bool exists( QString path );
+
 public:
     //////////////PRIMEIRA FASE//////////////////////
     bool setPath(QString,bool createDir = false); //set workspace directory
+
+    bool clearWorkspace();
+    bool makeBackup();
+
+    bool create(PatoVersionReturn params);
     bool create( QString sourceDir, QStringList files, QString repoAddress, RevisionKey revision); //create an initial workspace
-    bool update( PatoChangeSet changeSet, RevisionKey revision); //apply a changeset and update revision number
+
+    bool cleanCopy(PatoVersionReturn params, bool backup = false);
+    bool cleanCopy( QString sourceDir, QStringList files, QString repoAddress, RevisionKey revision, bool backup = false);
+
+    bool update( PatoChangeSet changeSet,  bool clear ); //apply a changeset
     bool setRevision( RevisionKey revision, bool commiting = true ); //update revision number
     QList< PatoFileStatus > add( QString sourceDir, QStringList path ); //add files and/or directories
     QString defaultRepositoryAddress() const; // return the source repository

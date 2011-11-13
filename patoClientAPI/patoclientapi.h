@@ -19,15 +19,19 @@
 
 class PatoClientApi {
 public:
-    QList<checkoutOutput> checkout(RevisionKey revision, QString adress, QString username, QString password, QString workspace) throw(PatoClientException);
+
     QList<logOutput> log(QString adress, QString username, QString password, RevisionKey initialRevision, RevisionKey finalRevision) throw(PatoClientException);
-    QList<checkoutOutput> checkin(QString address, QString username, QString password, QString workspace)throw(PatoClientException);
-    QList< PatoFileStatus > status(QString workspace) throw(PatoClientException);
-    QList<PatoFileStatus> add(QString workspace, QStringList files) throw(PatoClientException);
-    QList<updateOutput> update(RevisionKey revision, QString adress, QString username, QString password, QString workspace) throw(PatoClientException);
+
+
     void merge(QString path1, RevisionKey revision1, QString path2, RevisionKey revision2, QString workspace) throw(PatoClientException);
     void diff(QString path1, RevisionKey revision1, QString path2, RevisionKey revision2) throw(PatoClientException);
-    
+
+    QList<checkoutOutput> checkout(RevisionKey revision, QString adress, QString username, QString password, QString workspace) throw(PatoClientException);
+    QList<PatoFileStatus> update(RevisionKey revision, QString adress, QString username, QString password, QString workspace, bool ignoreLocalChanges) throw(PatoClientException);
+    QList<PatoFileStatus> checkin(QString address, QString username, QString password, QString workspace)throw(PatoClientException);
+    QList<PatoFileStatus> status(QString workspace) throw(PatoClientException);
+    QList<PatoFileStatus> add(QString workspace, QStringList files) throw(PatoClientException);
+
     PatoClientApi();
 
 private:

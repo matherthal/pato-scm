@@ -46,6 +46,11 @@ void PatoWorkspace::free()
     }
 }
 
+bool PatoWorkspace::exists( QString path )
+{
+    return QFile( QString("%1/%2/%3").arg(path).arg(cWorkspaceControlFolder).arg(cWorkspaceMetadata) ).exists();
+}
+
 PatoWorkspace::PatoWorkspace()
 {
     ready = false;
@@ -56,6 +61,38 @@ PatoWorkspace::~PatoWorkspace()
 }
 
 //////////////PRIMEIRA FASE//////////////////////
+
+bool PatoWorkspace::makeBackup()
+{
+    return true;
+}
+
+bool PatoWorkspace::clearWorkspace()
+{
+    return true;
+}
+
+bool PatoWorkspace::cleanCopy(PatoVersionReturn params,  bool backup)
+{
+    return cleanCopy(params.path, params.files, params.address, params.revision, backup);
+}
+
+bool PatoWorkspace::cleanCopy( QString sourceDir, QStringList files, QString repoAddress, RevisionKey revision, bool backup)
+{
+    if (backup)
+    {
+        makeBackup();
+    }
+
+    clearWorkspace();
+    return create(sourceDir, files, repoAddress, revision);
+}
+
+bool PatoWorkspace::create(PatoVersionReturn params)
+{
+    return create(params.path, params.files, params.address, params.revision);
+}
+
 bool PatoWorkspace::create(QString sourceDir, QStringList files, QString repoAddress, RevisionKey revision )
 {
     if ( workPath.isEmpty())
@@ -215,7 +252,7 @@ bool PatoWorkspace::setRevision( RevisionKey revision,  bool commiting  )
     return true;
 }
 
-bool PatoWorkspace::update( PatoChangeSet changeSet, RevisionKey rev)
+bool PatoWorkspace::update( PatoChangeSet changeSet, bool clear )
 {
 
     PatoChangeSet localChanges = changes();
@@ -234,7 +271,7 @@ bool PatoWorkspace::update( PatoChangeSet changeSet, RevisionKey rev)
 
     changeSet = changeSet; //PatoAlgorithms::ApplyChangeSet( workPath, changeSet);
     qWarning() << "Update workspace needs PatoAlgorithms::ApplyChangeSet( workPath, changeSet)";
-    revKey  = rev;
+    revKey  = changeSet.end();
 
     writeMetadata();
 
