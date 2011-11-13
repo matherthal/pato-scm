@@ -4,15 +4,18 @@
 #include <string.h>
 #include<QtCore/QString>
 #include<QtCore/QTextStream>
-#include "../patoBase/patotypes.h"
+
 
 PatoServerApi* PatoServerApi::patoServerApi = NULL;
 
 PatoServerApi::PatoServerApi()
 {
 
-    dataModel = PatoDataModel::getInstance();
-    storage = PatoFS::getInstance();
+}
+
+PatoServerApi::~PatoServerApi()
+{
+    PatoServerApi::destroyInstance();
 }
 
 PatoServerApi* PatoServerApi::getInstance() {
@@ -26,40 +29,48 @@ PatoServerApi* PatoServerApi::getInstance() {
 void PatoServerApi::destroyInstance() {
 
     if (patoServerApi != NULL) {
+
+        PatoDataModel::destroyInstance();
+        PatoFS::destroyInstance();
+
         delete patoServerApi;
         patoServerApi = NULL;
     }
 }
 
-map<string, string>* PatoServerApi::checkout(int revision, QString path, QString username, QString password) {
+bool PatoServerApi::checkOut(QString path, QString username, QString password, int revision,
+                             std::map<std::string, std::string>& filesCheckOut)
+{
 
     //validating project
-    if (!dataModel->validateProject(path.toStdString()))
-        return NULL;
+    if (!PatoDataModel::getInstance()->validateProject(path.toStdString()))
+        return false;
 
     //validating user
-    if (!dataModel->validateUser(username.toStdString(),password.toStdString()))
-        return NULL;
+    if (!PatoDataModel::getInstance()->validateUser(username.toStdString(),password.toStdString()))
+        return false;
 
     //test if the user is authorized
-    if (!dataModel->validateUserProject(username.toStdString(),password.toStdString(),path.toStdString()))
-        return NULL;
+    if (!PatoDataModel::getInstance()->validateUserProject(username.toStdString(),password.toStdString(),path.toStdString()))
+        return false;
 
     string strUsername = username.toStdString();
     string strPassword = password.toStdString();
     string strPath = path.toStdString();
 
+    //clear content of checkout´s map
+    filesCheckOut.clear();
+
     //this map will be filled with file names and file keys (hash code)
     map<string, StorageKey> filePath;
 
     //filePath is a map that contains file name and its keys (hash code)
-    if (!dataModel->checkOut(strUsername, strPassword, strPath,revision, filePath))
-            return NULL;
+    if (!PatoDataModel::getInstance()->checkOut(strUsername, strPassword, strPath,revision, filePath))
+        return false;
 
     //file key (hash code)
     vector<StorageKey> key;
     //files content
-    vector<string> content;
 
     //this map contains file names and its content
     map<string, string>::iterator it;
@@ -70,25 +81,29 @@ map<string, string>* PatoServerApi::checkout(int revision, QString path, QString
     }
 
    //trying to storage dat
-    if (!storage->loadData(key, content)) {
+    std::vector<std::string> content;
+    if (!PatoFS::getInstance()->loadData(key, content)) {
 
        //if an error occurs, return a null pointer
-       return NULL;
+       return false;
    }
 
    vector<string>::iterator cit;
-   for ( it = filePath.begin(), cit = content.begin() ; it != filePath.end(); it++, cit++ ) {
+   for ( it = filePath.begin(), cit = key.begin() ; it != filePath.end(); it++, cit++ ) {
 
        //if success, store in a map the file name (first) and file content (second)
-       file[(*it).first] = (*cit);
+       std::string conteudo;
+       PatoFS::getInstance()->loadData(it->second, conteudo);
+       filesCheckOut[(*it).first] = conteudo;
    }
 
-   //return the map containing file name and file content
-   return &file;
+   return true;
 
 }
 
-bool PatoServerApi::checkin(QString project, vector<string>& filePath, vector<string>& fileContent, QString username, QString password, QString message) {
+bool PatoServerApi::checkIn(QString project, QString username, QString password, QString message,
+                            std::map<std::string, std::string>& filesCheckIn)
+{
 
     string msg = message.toStdString();
     string strUsername = username.toStdString();
@@ -96,34 +111,58 @@ bool PatoServerApi::checkin(QString project, vector<string>& filePath, vector<st
     string strProj = project.toStdString();
 
     //validating project
-    if (!dataModel->validateProject(strProj))
+    if (!PatoDataModel::getInstance()->validateProject(strProj))
         return false;
 
     //validating user
-    if (!dataModel->validateUser(strUsername, strPw))
+    if (!PatoDataModel::getInstance()->validateUser(strUsername, strPw))
         return false;
 
     //test if a user is authorized
-    if (!dataModel->validateUserProject(strUsername, strPw, strProj))
+    if (!PatoDataModel::getInstance()->validateUserProject(strUsername, strPw, strProj))
         return false;
 
     //this function will fill the fileKey vector with all file keys
     vector<StorageKey> fileKey;
-    storage->saveData(fileContent, fileKey);
+    std::vector<std::string> fileContent;
+    std::map<std::string, std::string>::iterator itMap;
+
+    for( itMap = filesCheckIn.begin(); itMap != filesCheckIn.end(); itMap++ )
+    {
+        fileContent.push_back(itMap->second);
+    }
+
+    PatoFS::getInstance()->saveData(fileContent, fileKey);
+
+    vector<StorageKey>::iterator itFileKey;
+    if ( fileKey.empty() )
+        return false;
 
     //filling the map with file names (path) and keys to pass to checkIn function
     map<string, StorageKey> filePathKey;
 
-    vector<string>::iterator itPath;
+    std::map<std::string, std::string>::iterator itPath;
     vector<StorageKey>::iterator itKey;
-    for (itPath = filePath.begin(), itKey = fileKey.begin() ; itPath != filePath.end(); ++itPath, ++itKey) {
-        filePathKey[(*itPath)] = (*itKey);
+    for (itPath = filesCheckIn.begin(), itKey = fileKey.begin() ; itPath != filesCheckIn.end(); ++itPath, ++itKey) {
+        filePathKey[itPath->first] = (*itKey);
     }
 
-    if (!dataModel->checkIn(filePathKey, strProj, strUsername, msg))
+    if (!PatoDataModel::getInstance()->checkIn(filePathKey, strProj, strUsername, msg))
         return false;
 
     return true;
+}
+
+bool PatoServerApi::showLog(QString project, QString username, QString password, QString& message, int version,
+             std::map<std::string, std::string>& filesLog)
+{
+    string strUsername = username.toStdString();
+    string strPw = password.toStdString();
+    string strProj = project.toStdString();
+
+    message = PatoDataModel::getInstance()->getLogMessage(version).c_str();
+
+    return PatoDataModel::getInstance()->showLog(strUsername, strPw, strProj, version, filesLog );
 }
 
 
