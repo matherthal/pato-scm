@@ -36,10 +36,11 @@ public:
     int getLastAvailableVersion();
 
     std::string getNameConfigItem(int idItemConfig, std::string& project);
-    int getFileIdStored(std::string& nameFile);
+    std::string getFileIdStored(std::string& nameFile);
     void getCompletePath(int idItemConfig, std::string& project, std::string& completePath);
-    bool getFilePath(std::string& project, int version, std::map<std::string, int>& filePath);
-    bool getLog(std::string& project, int version, std::map<std::string, int>&  filePath);
+    bool getFilePath(std::string& project, int version, std::map<std::string, std::string>& filePath);
+    bool getLog(std::string& project, int version, std::map<std::string, std::string>&  filePath);
+    std::string getLogMessage(int version);
     //<
 
 
@@ -67,9 +68,9 @@ public:
     bool getPathsLastVersion();
     bool findPathLastVersion(std::string& path);
     int getLastVersionFile(std::string& file);
-    bool insertFile(std::string& path, std::string& file, /*std::string& project,*/ int idFile);
+    bool insertFile(std::string& path, std::string& file, /*std::string& project,*/ std::string& idFile);
     int getIdLastFile(std::string& file);
-    void createMapFile(std::vector<std::string>& _mergedPath, std::vector<int>& _mergedIdFile, std::map<std::string,int>& _filePath);
+    void createMapFile(std::vector<std::string>& _mergedPath, std::vector<std::string>& _mergedIdFile, std::map<std::string,std::string>& _filePath);
     //<
 
     //folder operations>
@@ -101,7 +102,7 @@ private:
 
 
     std::vector<std::string> vecFilePath;
-    std::vector<int> vecIdFile;
+    std::vector<std::string> vecIdFile;
 
     std::list<std::string> listPathLastVersion;
 };

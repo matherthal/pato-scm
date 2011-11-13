@@ -6,21 +6,29 @@
 #include "../patoFS/patofs.h"
 #include<QtCore/QString>
 
+#include "../patoBase/patotypes.h"
+
 using namespace std;
 
 class PATOSERVERAPISHARED_EXPORT PatoServerApi {
 private:
     PatoServerApi();
-    PatoDataModel* dataModel;
-    PatoFS* storage;
+    ~PatoServerApi();
     //std::map<std::string /*file name*/, std::string /*file key (hash code)*/> filePath;
     map<string, string> file;
 
     static PatoServerApi* patoServerApi;
 
 public:
-    std::map<std::string, std::string>* checkout(int revision, QString path, QString username, QString password);
-    bool checkin(QString project, vector<string>& filePath, vector<string>& fileContent, QString username, QString password, QString message);
+
+    bool checkOut(QString path, QString username, QString password, int revision,
+                  std::map<std::string, std::string>& filesCheckOut);
+
+    bool checkIn(QString project, QString username, QString password, QString message,
+                  std::map<std::string, std::string>& filesCheckIn);
+
+    bool showLog(QString project, QString username, QString password, QString& message, int version,
+                 std::map<std::string, std::string>& filesLog);
 
     static PatoServerApi* getInstance();
     static void destroyInstance();
