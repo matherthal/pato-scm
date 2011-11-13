@@ -26,10 +26,11 @@ public:
 #endif // PATOSERVERAPI_H
 */
 
-class PatoServerApi : public xmlrpc_c  {
+/*class PatoServerApi : public xmlrpc_c  {
 private:
 public:
     void checkout(int revision, int test);
 
     PatoServerApi();
 };
+*/
