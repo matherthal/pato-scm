@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += network
+QT       += network sql
 QT       -= gui
 
 TARGET = ../output/Client

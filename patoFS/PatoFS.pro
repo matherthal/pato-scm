@@ -15,12 +15,12 @@ TEMPLATE = lib
 DEFINES += PATOFS_LIBRARY
 
 SOURCES += patofs.cpp \
-    BDPatoFS/source/CppSQLite3.cpp \
+#    BDPatoFS/source/CppSQLite3.cpp \
     BDPatoFS/source/bdpatoFS.cpp
 
 HEADERS += patofs.h\
         PatoFS_global.h \
-    BDPatoFS/source/CppSQLite3.h \
+#    BDPatoFS/source/CppSQLite3.h \
     BDPatoFS/source/bdpatoFS.h
 
 symbian {
@@ -45,7 +45,7 @@ unix:!symbian {
 
 
 symbian: LIBS += -lsqlite3
-else:unix|win32: LIBS += -L"$$PWD/../patoFS/BDPatoFS/lib" -lsqlite3
+#else:unix|win32: LIBS += -L"../output" -lsqlite3
 
 INCLUDEPATH += $$PWD/BDPatoFS/source
 DEPENDPATH += $$PWD/BDPatoFS
