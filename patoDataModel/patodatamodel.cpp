@@ -72,11 +72,15 @@ bool PatoDataModel::saveProjectElement(std::string& filePath, int idFile, std::s
 
     std::string file = getFile(filePath);
 
+    qDebug() << "\n\nInserindo caminho: " << filePath.c_str();
+
     std::list<std::string>::iterator itListPath = std::find(listPath.begin(), listPath.end(), path);
     if ( iniciouTransacao && itListPath == listPath.end() )
     {
         if ( !dataBase->insertFolder(path, project) )
             return false;
+
+        listPath.push_back(path);
     }
 
     if ( !dataBase->insertFile(path, file/*, project*/, idFile) )
@@ -97,7 +101,7 @@ bool PatoDataModel::checkOut(std::string& loginUser, std::string& password, std:
     return bd::BDPatoDataModel::getInstance()->getFilePath(project, version, filePath);
 }
 
-bool PatoDataModel::showLog(std::string& loginUser, std::string& password, std::string& project, int version, std::vector<std::string>& filePath)
+bool PatoDataModel::showLog(std::string& loginUser, std::string& password, std::string& project, int version, std::map<std::string, int>& filePath)
 {
     if ( !validateUserProject(loginUser, password, project) )
             return false;
@@ -133,7 +137,7 @@ std::string PatoDataModel::getPath( std::string& pathFile )
     std::string path;
     if ( posLastBar > -1 )
     {
-        path = pathFile.substr(0, posLastBar);
+        path = pathFile.substr(0, posLastBar+1);
     }
 
     return path;
@@ -145,7 +149,7 @@ std::string PatoDataModel::getFile( std::string& pathFile )
     std::string file;
     if ( posLastBar > -1 )
     {
-        std::string temp = pathFile.substr(posLastBar, pathFile.length()-posLastBar);
+        std::string temp = pathFile.substr(posLastBar+1, pathFile.length()-posLastBar);
         if ( isFile(temp) )
             file = temp;
     }
