@@ -5,6 +5,7 @@
 #include <QSqlDatabase>
 #include <vector>
 #include <string>
+#include "../patoBase/patotypes.h"
 
 class PATOFSSHARED_EXPORT PatoFS {
 
@@ -19,12 +20,12 @@ public:
 
     bool initBD();
     //saving data
-    int saveData(const std::string& data);
-    bool saveData(const std::vector<std::string>& data, std::vector<int>& vecIdFile);
+    std::string saveData(const std::string& data);
+    bool saveData(const std::vector<std::string>& data, std::vector<StorageKey>& vecIdFile);
 
     //loading data
-    bool loadData(const int idFile, std::string& data);
-    bool loadData(const std::vector<int>& vecIdFile, std::vector<std::string>& vecData);
+    bool loadData(StorageKey&  idFile, std::string& data);
+    bool loadData(const std::vector<StorageKey>& vecIdFile, std::vector<std::string>& vecData);
 
 };
 

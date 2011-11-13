@@ -60,6 +60,8 @@ map<string, string>* Client::checkout(int revision, QString path, QString userna
 int
 main(int argc, char **) {
 
+    checkout(1, "http://my.place/project", "matheus", "123123123");
+        /*
     if (argc-1 > 0) {
         cerr << "This program has no arguments" << endl;
         exit(1);
@@ -83,7 +85,7 @@ main(int argc, char **) {
         cerr << "Client threw error: " << e.what() << endl;
     } catch (...) {
         cerr << "Client threw unexpected error." << endl;
-    }
+    }*/
 
     return 0;
 }

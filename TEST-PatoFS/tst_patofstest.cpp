@@ -8,6 +8,7 @@ class PatoFSTest : public QObject
 
 public:
     PatoFSTest();
+    std::string key;
 
 private Q_SLOTS:
     void initTestCase();
@@ -16,6 +17,7 @@ private Q_SLOTS:
     void testCaseSaveData2();
     void testCaseLoadData();
     void testCaseLoadData2();
+
 };
 
 PatoFSTest::PatoFSTest()
@@ -35,7 +37,8 @@ void PatoFSTest::testCaseSaveData()
     std::string data = "abc";
 
     qDebug(data.c_str());
-    PatoFS::getInstance()->saveData(data);
+    key = PatoFS::getInstance()->saveData(data);
+    qDebug(key.c_str());
 
     QVERIFY2(true, "Failure");
 }
@@ -47,7 +50,7 @@ void PatoFSTest::testCaseSaveData2()
     std::vector<std::string> vecData;
     vecData.push_back("abc");
 
-    std::vector<int> vecIdFile;
+    std::vector<std::string> vecIdFile;
     PatoFS::getInstance()->saveData(vecData, vecIdFile);
 
     QVERIFY2(!vecIdFile.empty(), "Failure");
@@ -55,8 +58,8 @@ void PatoFSTest::testCaseSaveData2()
 
 void PatoFSTest::testCaseLoadData()
 {
-    std::vector<int> vecIdFile;
-    vecIdFile.push_back(1);
+    std::vector<std::string> vecIdFile;
+    vecIdFile.push_back(key);
     std::vector<std::string> vecData;
 
     PatoFS::getInstance()->loadData(vecIdFile, vecData);
@@ -66,7 +69,7 @@ void PatoFSTest::testCaseLoadData()
 
 void PatoFSTest::testCaseLoadData2()
 {
-    int idFile = 1;
+    std::string idFile = key;
     std::string data;
     PatoFS::getInstance()->loadData(idFile, data);
 
