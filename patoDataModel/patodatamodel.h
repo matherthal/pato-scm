@@ -37,12 +37,13 @@ public:
     //<
 
     //repositoy operations >
-    bool checkIn(std::map<std::string, int>& filePath, std::string& project, std::string& loginUser, std::string& message);
-    bool saveProjectElement(std::string& filePath, int idFile, std::string& project/*, std::string& previousElement*/);
+    bool checkIn(std::map<std::string, std::string>& filePath, std::string& project, std::string& loginUser, std::string& message);
+    bool saveProjectElement(std::string& filePath, std::string& idFile, std::string& project/*, std::string& previousElement*/);
     bool insertRelationProjectElementTransaction();
 
-    bool checkOut(std::string& loginUser, std::string& password, std::string& project, int version, std::map<std::string, int>& filePath);
-    bool showLog(std::string& loginUser, std::string& password, std::string& project, int version, std::map<std::string, int>& filePath);
+    bool checkOut(std::string& loginUser, std::string& password, std::string& project, int version, std::map<std::string, std::string>& filePath);
+    bool showLog(std::string& loginUser, std::string& password, std::string& project, int version, std::map<std::string, std::string>& filePath);
+    std::string getLogMessage(int version);
     //<
 
     //user operations >

@@ -1,10 +1,10 @@
 server:
 
-g++ -o xmlrpc_sample_add_server xmlrpc_sample_add_server.cpp libxmlrpc/libxmlrpc_server_abyss++.a libxmlrpc/libxmlrpc_server++.a libxmlrpc/libxmlrpc_server_abyss.a libxmlrpc/libxmlrpc_server.a libxmlrpc/libxmlrpc_abyss.a -lpthread libxmlrpc/libxmlrpc++.a libxmlrpc/libxmlrpc.a libxmlrpc/libxmlrpc_xmlparse.a libxmlrpc/libxmlrpc_xmltok.a libxmlrpc/libxmlrpc_util.a
+g++ -o libxmlrpc/xmlrpc_sample_add_server xmlrpc_sample_add_server.o libxmlrpc/libxmlrpc_server_abyss++.a libxmlrpc/libxmlrpc_server++.a libxmlrpc/libxmlrpc_server_abyss.a libxmlrpc/libxmlrpc_server.a libxmlrpc/libxmlrpc_abyss.a -lpthread libxmlrpc/libxmlrpc++.a libxmlrpc/libxmlrpc.a libxmlrpc/libxmlrpc_xmlparse.a libxmlrpc/libxmlrpc_xmltok.a libxmlrpc/libxmlrpc_util.a
 
 
 
 
 cliente:
 
-g++ -o xmlrpc_sample_add_client xmlrpc_sample_add_client.cpp libxmlrpc/libxmlrpc_client++.a libxmlrpc/libxmlrpc_client.a libxmlrpc/libxmlrpc++.a libxmlrpc/libxmlrpc.a libxmlrpc/libxmlrpc_xmlparse.a libxmlrpc/libxmlrpc_xmltok.a libxmlrpc/libxmlrpc_util.a -lcurl libxmlrpc/libxmlrpc_packetsocket.a
+g++ -o xmlrpc_sample_add_client xmlrpc_sample_add_client.o libxmlrpc/libxmlrpc_client++.a libxmlrpc/libxmlrpc_client.a libxmlrpc/libxmlrpc++.a libxmlrpc/libxmlrpc.a libxmlrpc/libxmlrpc_xmlparse.a libxmlrpc/libxmlrpc_xmltok.a libxmlrpc/libxmlrpc_util.a -lcurl libxmlrpc/libxmlrpc_packetsocket.a

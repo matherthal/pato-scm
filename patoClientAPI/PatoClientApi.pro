@@ -37,6 +37,5 @@ unix: LIBS += -L"../output/"
 LIBS += -lPatoWorkspace
 
 
-
-
+LIBS += -L"../output" -lPatoWorkspace
 

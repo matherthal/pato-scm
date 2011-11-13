@@ -6,7 +6,8 @@
 
 QT       -= gui
 
-TARGET = ../output/PatoAlgorithms
+win32: TARGET = ../../output/PatoAlgorithms
+unix:  TARGET = ../output/PatoAlgorithms
 
 TEMPLATE = lib
 
@@ -17,16 +18,16 @@ SOURCES += patoalgorithms.cpp \
     diff.cpp \
     diffitem.cpp \
     merge.cpp \
-    lcs.cpp
+    lcs.cpp \
+    patch.cpp
 
 HEADERS += patoalgorithms.h\
         PatoAlgorithms_global.h \
     diff.h \
     diffitem.h \
     lcs.h \
-    merge.h
-
-MAKEFILE =
+    merge.h \
+    patch.h
 
 symbian {
     MMP_RULES += EXPORTUNFROZEN
@@ -47,7 +48,8 @@ unix:!symbian {
     INSTALLS += target
 }
 
-OTHER_FILES +=
+
+
 
 
 

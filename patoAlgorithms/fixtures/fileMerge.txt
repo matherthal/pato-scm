@@ -46,8 +46,6 @@ void Merge::insertLines(Lcs* item, int from,int to){
 }
 
 void Merge::doAdd(DiffItem* item){
-	 /* Realiza a acao de Adicao
-       No arquivo em questao */
     t_lcs *lcsB = lcs_fileB_base->get_lcs();
     int is_in=1;
     int indexB = item->getFromB();
@@ -56,7 +54,6 @@ void Merge::doAdd(DiffItem* item){
             is_in = 0;
         lcsB = lcsB->next;
         indexB++;
-		  if(1==1)cout<< "Hello Hello ..." <<endl;
     }
     if(!is_in){
         for(int i=item->getFromB();i<=item->getToB();i++){
@@ -67,8 +64,6 @@ void Merge::doAdd(DiffItem* item){
 }
 
 void Merge::doDeletion(DiffItem* item){
-	 /* Realiza a acao de deletar
-       No arquivo em questao */
     t_lcs *lcsA = lcs_fileA_base->get_lcs();
     int is_in=0;
     int indexA = item->getFromA();
@@ -84,8 +79,12 @@ void Merge::doDeletion(DiffItem* item){
     if(!is_in){
         for(int i=item->getFromA();i<=item->getToA();i++){
             printf("%s\n",item->getLineA(i));
-            merge+= item->getLineA(i);
-            merge+="\n";
+<<<<<<< fixtures/fileA.txt
+            merge+= item->getLineB(i);
+            merge+="\0\n";
+=======
+            merge << item->getLineA(i) << endl;
+>>>>>>> fixtures/fileB.txt
         }
     }
 }
@@ -159,9 +158,15 @@ bool Merge::is_in_lcs(int index,t_lcs *lcs){
 }
 
 Merge::~Merge(){
-    delete lcs_fileA_base;
-    delete lcs_fileB_base;
-    delete diff;
+<<<<<<< fixtures/fileA.txt
+    delete lcs_fileA;
+    delete lcs_fileB;
+    delete diff_me;
+=======
+    delete lcs_only;
+    delete lcs_only;
+    delete all;
+>>>>>>> fixtures/fileB.txt
 }
 
 void Merge::getFile(char* _file_name){
