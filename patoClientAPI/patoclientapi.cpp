@@ -79,19 +79,16 @@ QList< PatoFileStatus > PatoClientApi::add(QString workspace, QStringList files)
    return work->add(workspace, files);
 }
 
-QList<statusOutput> PatoClientApi::status(QString workspace) throw (PatoClientException) {
+QList< PatoFileStatus > PatoClientApi::status(QString workspace) throw (PatoClientException) {
 
-    QList<statusOutput> output;
     PatoWorkspace* work = PatoWorkspace::instance();
 
-    if (workspace == "") {
+    if (workspace == "")
+    {
         throw (PatoClientException("The status command needs a workspace."));
     }
 
-    work->status();
-
-
-    return output;
+   return work->status();
 }
 
 QList<updateOutput> PatoClientApi::update(RevisionKey revision, QString address, QString username, QString password, QString workspace) throw (PatoClientException) {
