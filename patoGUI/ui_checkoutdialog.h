@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'checkoutdialog.ui'
 **
-** Created: Tue 25. Oct 19:20:42 2011
+** Created: Thu 10. Nov 12:09:04 2011
 **      by: Qt User Interface Compiler version 4.7.4
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -49,7 +49,7 @@ public:
         sizePolicy.setHeightForWidth(CheckoutDialog->sizePolicy().hasHeightForWidth());
         CheckoutDialog->setSizePolicy(sizePolicy);
         QIcon icon;
-        icon.addFile(QString::fromUtf8(":/new/icons/checkinincon"), QSize(), QIcon::Normal, QIcon::Off);
+        icon.addFile(QString::fromUtf8(":/new/icons/checkouticon"), QSize(), QIcon::Normal, QIcon::Off);
         CheckoutDialog->setWindowIcon(icon);
         groupBox = new QGroupBox(CheckoutDialog);
         groupBox->setObjectName(QString::fromUtf8("groupBox"));
@@ -88,9 +88,7 @@ public:
         buttonCheckout = new QPushButton(CheckoutDialog);
         buttonCheckout->setObjectName(QString::fromUtf8("buttonCheckout"));
         buttonCheckout->setGeometry(QRect(330, 220, 75, 23));
-        QIcon icon2;
-        icon2.addFile(QString::fromUtf8(":/new/icons/checkouticon"), QSize(), QIcon::Normal, QIcon::Off);
-        buttonCheckout->setIcon(icon2);
+        buttonCheckout->setIcon(icon);
 
         retranslateUi(CheckoutDialog);
 

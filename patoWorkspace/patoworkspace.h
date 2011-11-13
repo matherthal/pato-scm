@@ -3,13 +3,14 @@
 
 #include <QList>
 #include "PatoWorkspace_global.h"
-
 #include "../patoBase/patotypes.h"
+#include "../patoAlgorithms/diff.h"
 
 enum MetadataType
 {
     META_ADDED = 0x00000001,
     META_CONTROL = 0x00000002,
+    META_REMOVED = 0x00000004,
     META_ALL = 0xFFFFFFFF
 };
 
@@ -30,14 +31,12 @@ public:
     QString defaultRepositoryAddress() const; // return the source repository
     RevisionKey revision() const; //get current revision
     QList< PatoFileStatus > status(PatoFileStatus::FileStatus = PatoFileStatus::ALL) const; // return a list of file status
-    QList< PatoFileStatus > changes() const; // return a list of file status
+    PatoChangeSet changes() const; // return a list of file status
     /////////////////////////////////////////////////
 
     //////////////SEGUNDA FASE///////////////////////
-    void revert(/*path*/);
-    void currentFile(/*path*/);// File
-    void originalFile(/*path*/);// File
-    void remove(/*path*/);
+    void revert(QStringList files = QStringList());
+    void remove(QStringList files);
     void copy(/*originalPath, destinationPath*/);
     /////////////////////////////////////////////////
 
@@ -51,6 +50,15 @@ private:
     void writeMetadata(MetadataType = META_ALL);
     void readMetadata(MetadataType = META_ALL);
 
+    void copyRevision(RevisionKey) const;
+    void removeRevision(RevisionKey) const;
+    QString backupPath(RevisionKey) const;
+
+    QString metaFilePath(MetadataType, bool fullPath = false) const;
+
+
+    QByteArray toByteArray(Diff&) const;
+
 private:
     static PatoWorkspace* sigleWorkspace;
 
@@ -62,7 +70,7 @@ private:
     QStringList removedFiles;
     QStringList addedFiles;
 
-    QDateTime timespamp;
+    QDateTime timestamp;
 
 
     QString lastError;

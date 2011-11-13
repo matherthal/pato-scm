@@ -17,6 +17,7 @@ public:
 private slots:
     void setWorkspaceModel(const QString &str);
     void enableActions();
+    void help();
 private:
     Ui::MainWindow *ui;
 };

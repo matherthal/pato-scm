@@ -1,6 +1,7 @@
 #include <QtCore/QString>
 #include <QtTest/QtTest>
 #include <patodatamodel.h>
+#include "../patoBase/patotypes.h"
 
 class PatoDataModelTest : public QObject
 {
@@ -25,17 +26,17 @@ void PatoDataModelTest::testCaseCheckin()
     std::string pass= "123";
     std::string project = "pato";
 
-    std::map<std::string, int> filePath;
-    /*filePath.insert(std::make_pair<std::string,int>("pato\\A.CPP",1));
-    filePath.insert(std::make_pair<std::string,int>("pato\\B.CPP",2));
-    filePath.insert(std::make_pair<std::string,int>("pato\\C.CPP",3));
-    filePath.insert(std::make_pair<std::string,int>("pato\\D.CPP",4));
-    filePath.insert(std::make_pair<std::string,int>("pato\\BD\\D.CPP",5));
+    std::map<std::string, StorageKey> filePath;
+    filePath.insert(std::make_pair<std::string,StorageKey>("pato\\A.CPP","1"));
+    filePath.insert(std::make_pair<std::string,StorageKey>("pato\\B.CPP","2"));
+    filePath.insert(std::make_pair<std::string,StorageKey>("pato\\C.CPP","3"));
+    filePath.insert(std::make_pair<std::string,StorageKey>("pato\\D.CPP","4"));
+    /*filePath.insert(std::make_pair<std::string,int>("pato\\BD\\D.CPP",5));
     filePath.insert(std::make_pair<std::string,int>("pato\\BD\\E.CPP",6));
     filePath.insert(std::make_pair<std::string,int>("pato\\BD\\F.CPP",7));
     filePath.insert(std::make_pair<std::string,int>("pato\\BD\\TESTE\\IVISON\\F.CPP",8));
     filePath.insert(std::make_pair<std::string,int>("pato\\BD\\TESTE\\IVISON\\RAFAEL",0));*/
-    filePath.insert(std::make_pair<std::string,int>("pato\\AMARO\\VIRGINIA\\MARIANA\\RAFAEL\\JULIA.DOC",0));
+    //filePath.insert(std::make_pair<std::string,StorageKey>("pato\\AMARO\\VIRGINIA\\MARIANA\\RAFAEL\\JULIA.DOC","0"));
 
     std::string message = "Primeiro Commit";
     bool bValid = PatoDataModel::getInstance()->checkIn(filePath, project, login, message);
@@ -49,7 +50,7 @@ void PatoDataModelTest::testCaseCheckout()
     std::string pass= "123";
     std::string project = "pato";
 
-    std::map<std::string, int> filePath2;
+    std::map<std::string, StorageKey> filePath2;
     PatoDataModel::getInstance()->checkOut(login, pass, project, -1, filePath2);
 
     bool bValid = false;
@@ -57,10 +58,10 @@ void PatoDataModelTest::testCaseCheckout()
     if ( !filePath2.empty() )
     {
         bValid = true;
-        std::map<std::string, int>::iterator itMap;
+        std::map<std::string, StorageKey>::iterator itMap;
         for(itMap = filePath2.begin(); itMap != filePath2.end(); itMap++)
         {
-            qDebug()<< itMap->first.c_str() << " | " << itMap->second;
+            qDebug()<< itMap->first.c_str() << " | " << QString::fromStdString(itMap->second);
         }
     }
 

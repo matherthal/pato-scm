@@ -4,6 +4,8 @@
  *
  * Created on October 3, 2011, 8:19 PM
  */
+
+#include "../patoBase/patotypes.h"
 #include<string>
 #include<QtCore/QString>
 using namespace std;
@@ -27,11 +29,11 @@ public:
     QString getAddress() const;
     void setWorkspace(QString workspace);
     QString getWorkspace() const;
-    void setRevision(int revision);
-    int getRevision() const;
+    void setRevision(RevisionKey  revision);
+    RevisionKey getRevision() const;
     
 private:
-    int revision;
+    RevisionKey revision;
     QString workspace;
     QString address;
     QString username;

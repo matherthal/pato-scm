@@ -8,6 +8,7 @@ EnvironmentSettingsDialog::EnvironmentSettingsDialog(QWidget *parent) :
     ui(new Ui::EnvironmentSettingsDialog)
 {
     ui->setupUi(this);
+    ui->lineEditUserPassword->setEchoMode(QLineEdit::Password);
 
     //Connections
     connect(ui->pushButtonCancel, SIGNAL(clicked()),this, SLOT(close()));
