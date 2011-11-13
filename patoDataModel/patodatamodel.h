@@ -6,6 +6,7 @@
 
 #include <string>
 #include <vector>
+#include <list>
 #include <map>
 
 using namespace std;
@@ -14,6 +15,9 @@ class PATODATAMODELSHARED_EXPORT PatoDataModel {
 private:
     PatoDataModel();
     static PatoDataModel* patoDataModel;
+
+    bool iniciouTransacao;
+    std::list<std::string> listPath;
 
 public:
 
@@ -49,6 +53,12 @@ public:
 
     //project operations>
     bool validateProject( const string& projectName );
+    //<
+
+    //fileoperations >
+    std::string getPath( std::string& pathFile );
+    std::string getFile( std::string& pathFile );
+    bool isFile(std::string& path);
     //<
 
 };

@@ -9,6 +9,7 @@ QT       -= gui
 win32: TARGET = ../../output/patoworkspace
 unix:  TARGET = ../output/PatoWorkspace
 
+
 TEMPLATE = lib
 
 DEFINES += PATOWORKSPACE_LIBRARY
