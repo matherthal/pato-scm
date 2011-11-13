@@ -3,8 +3,8 @@
 
 #include <QList>
 #include "PatoWorkspace_global.h"
-
 #include "../patoBase/patotypes.h"
+#include "../patoAlgorithms/diff.h"
 
 enum MetadataType
 {
@@ -56,6 +56,8 @@ private:
 
     QString metaFilePath(MetadataType, bool fullPath = false) const;
 
+
+    QByteArray toByteArray(Diff&) const;
 
 private:
     static PatoWorkspace* sigleWorkspace;

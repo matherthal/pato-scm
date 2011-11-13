@@ -5,12 +5,12 @@
  * Created on October 3, 2011, 9:02 PM
  */
 
-#include<QtCore/QString>
+#include <QtCore/QString>
 #include "checkinCLI.h"
 #include "../patoClientAPI/patoclientapi.h"
-#include<string.h>
-#include<iostream>
-#include<QTextStream>;
+#include <string.h>
+#include <iostream>
+#include <QTextStream>
 using namespace std;
 
 checkinCLI::checkinCLI() {
@@ -20,6 +20,16 @@ checkinCLI::checkinCLI() {
     password = "";
     workspace = "";
 }
+
+QList<QString> messageErrorCI(){
+    QList<QString> error;
+
+    error.append("Checkin command is used to send changes from your workcopy to the repository.");
+    error.append("Usage: pato checkin --username USERNAME --password PASSWORD [--workspace WORKSPACE]");
+
+    return error;
+}
+
 
 void checkinCLI::command(int argc, char** argv) {
     //treating cases that argc > 1
@@ -49,7 +59,12 @@ void checkinCLI::command(int argc, char** argv) {
     try {
         clientAPI->checkin(address, username, password, workspace);
     } catch (PatoClientException& t) {
-        qout << t.Message() << endl;
+        QList<QString> ls = messageErrorCI();
+        for(int i = 0; i < ls.size(); i++){
+            qout<<ls.at(i)<<endl;
+        }
+
+        //qout << t.Message() << endl;
     }
 
 }
