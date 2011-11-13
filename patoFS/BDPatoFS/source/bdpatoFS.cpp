@@ -57,7 +57,7 @@ namespace bd {
     //sqls
 
     //saving data - return a hash key
-    std::string BDPatoFS::saveData(const std::string& data)
+    StorageKey BDPatoFS::saveData(const std::string& data)
     {
         //using hash key
         QString key = QString(QCryptographicHash::hash((data.c_str()),QCryptographicHash::Md5).toHex());
@@ -88,7 +88,7 @@ namespace bd {
         }
     }
 
-    bool BDPatoFS::saveData(const std::vector<std::string>& data, std::vector<std::string>& vecIdFile)
+    bool BDPatoFS::saveData(const std::vector<std::string>& data, std::vector<StorageKey>& vecIdFile)
     {
 
         std::vector<std::string>::const_iterator itData;
@@ -111,7 +111,7 @@ namespace bd {
     }
 
     //loading data
-    bool BDPatoFS::loadData(std::string& idFile, std::string& data)
+    bool BDPatoFS::loadData(StorageKey& idFile, std::string& data)
     {
         QString file;
         QSqlQuery query(db);
@@ -130,7 +130,7 @@ namespace bd {
         return true;
 
     }
-    bool BDPatoFS::loadData(const std::vector<std::string>& vecIdFile, std::vector<std::string>& vecData)
+    bool BDPatoFS::loadData(const std::vector<StorageKey>& vecIdFile, std::vector<std::string>& vecData)
     {
         QSqlQuery query(db);
         QString sqlLoadData = "SELECT arma_conteudo FROM ARMAZENAMENTO WHERE arma_id IN (";
@@ -165,7 +165,7 @@ namespace bd {
     }
 
     //delete data
-    bool BDPatoFS::deleteData(const std::vector<std::string>& idFile)
+    bool BDPatoFS::deleteData(const std::vector<StorageKey>& idFile)
     {
         QSqlQuery query(db);
         QString sqlDelete = "delete from armazenamento where arma_id in (";

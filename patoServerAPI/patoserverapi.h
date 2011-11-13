@@ -20,7 +20,7 @@ private:
 
 public:
     std::map<std::string, std::string>* checkout(int revision, QString path, QString username, QString password);
-    bool checkin(QString path, QString username, QString password, QString message, vector<string>& fileContent, vector<string>& fileKey);
+    bool checkin(QString project, vector<string>& filePath, vector<string>& fileContent, QString username, QString password, QString message);
 
     static PatoServerApi* getInstance();
     static void destroyInstance();

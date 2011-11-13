@@ -42,7 +42,7 @@ public:
     bool insertRelationProjectElementTransaction();
 
     bool checkOut(std::string& loginUser, std::string& password, std::string& project, int version, std::map<std::string, int>& filePath);
-    bool showLog(std::string& loginUser, std::string& password, std::string& project, int version, std::vector<std::string>& filePath);
+    bool showLog(std::string& loginUser, std::string& password, std::string& project, int version, std::map<std::string, int>& filePath);
     //<
 
     //user operations >
