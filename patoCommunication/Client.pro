@@ -2,21 +2,22 @@
 #
 # Project created by QtCreator 2011-08-25T11:41:17
 #
-#---------------------------------------------------
+#-------------------------------------------------
 
 QT       += network
-
 QT       -= gui
 
-TARGET = ../output/PatoCommunication
-TEMPLATE = lib
+TARGET = ../output/Client
+TEMPLATE = app
 
 DEFINES += PATOCOMMUNICATION_LIBRARY
 
-SOURCES += patocommunication.cpp
+SOURCES += client.cpp
 
-HEADERS += patocommunication.h\
-        PatoCommunication_global.h
+HEADERS += client.h\
+        Client_global.h
+
+LIBS += -L"./libxmlrpc" -lxmlrpc_client++ -lxmlrpc_client -lxmlrpc++ -lxmlrpc -lxmlrpc_xmlparse -lxmlrpc_xmltok -lxmlrpc_util -lcurl -lxmlrpc_packetsocket
 
 symbian {
     MMP_RULES += EXPORTUNFROZEN

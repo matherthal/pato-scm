@@ -7,7 +7,7 @@
 QT       -= gui
 
 win32: TARGET = ../../output/PatoClientApi
-unix:  TARGET = ../output/patoclientapi
+unix:  TARGET = ../output/PatoClientApi
 
 TEMPLATE = lib
 
@@ -19,8 +19,7 @@ SOURCES += patoclientapi.cpp \
     statusOutput.cpp \
     logOutput.cpp \
     checkoutOutput.cpp \
-    addOutput.cpp \
-    PatoClientException.cpp
+    addOutput.cpp
 
 HEADERS += patoclientapi.h\
         PatoClientApi_global.h \
@@ -29,8 +28,7 @@ HEADERS += patoclientapi.h\
     statusOutput.h \
     logOutput.h \
     checkoutOutput.h \
-    addOutput.h \
-    PatoClientException.h
+    addOutput.h
 
 symbian {
     MMP_RULES += EXPORTUNFROZEN

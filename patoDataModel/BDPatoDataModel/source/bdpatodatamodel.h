@@ -1,7 +1,7 @@
 #ifndef BDPATODATAMODEL_H
 #define BDPATODATAMODEL_H
 
-#include "..\..\PatoDataModel_global.h"
+#include "PatoDataModel_global.h"
 
 #include "CppSQLite3.h"
 
@@ -22,7 +22,7 @@ private:
 
 public:
 
-    //singleton´s pattern functions>
+    //singletonï¿½s pattern functions>
     static BDPatoDataModel* getInstance();
     static void destroyInstance();
      //<
@@ -91,7 +91,7 @@ public:
     bool clear();
 private:
 
-    //singleton´s pattern variable
+    //singletonï¿½s pattern variable
     static BDPatoDataModel *bdPato;
 
     QSqlDatabase db;

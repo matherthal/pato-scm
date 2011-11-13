@@ -31,7 +31,7 @@ bool PatoDataModel::initBD()
 }
 
 //repositoy operations >
-bool PatoDataModel::checkIn(std::map<std::string, int>& filePath, std::string& project, std::string& loginUser, std::string& message)
+bool PatoDataModel::checkIn(std::map<std::string, StorageKey>& filePath, std::string& project, std::string& loginUser, std::string& message)
 {
     bd::BDPatoDataModel* dataBase = bd::BDPatoDataModel::getInstance();
     qDebug()<< "inicio";
@@ -89,7 +89,7 @@ bool PatoDataModel::saveProjectElement(std::string& filePath, int idFile, std::s
     return true;
 }
 
-bool PatoDataModel::checkOut(std::string& loginUser, std::string& password, std::string& project, int version, std::map<std::string, int>& filePath)
+bool PatoDataModel::checkOut(std::string& loginUser, std::string& password, std::string& project, int version, std::map<std::string, StorageKey>& filePath)
 {
     if ( !validateUserProject(loginUser, password, project) )
             return false;
