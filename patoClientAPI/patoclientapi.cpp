@@ -95,6 +95,8 @@ QList< PatoFileStatus > PatoClientApi::status(QString workspace) throw (PatoClie
 
     PatoWorkspace* work = PatoWorkspace::instance();
 
+    work->setPath(workspace);
+
     if (workspace == "")
     {
         throw (PatoClientException("The status command needs a workspace."));
