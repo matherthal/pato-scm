@@ -1,4 +1,4 @@
-#include "client.h"
+//#include "client.h"
 
 #include <cstdlib>
 #include <string>
@@ -6,67 +6,91 @@
 #include <xmlrpc-c/girerr.hpp>
 #include <xmlrpc-c/base.hpp>
 #include <xmlrpc-c/client_simple.hpp>
+#include<QtCore/QString>
+#include <QDataStream>
 
 using namespace std;
 
-map<string, string>* Client::checkout(int revision, QString path, QString username, QString password) {
-    try {
-        string const methodName("checkout");
+class Client {
+public:
 
-        xmlrpc_c::clientSimple myClient;
-        xmlrpc_c::value result;
+    //void checkout(int revision, QString path, QString username, QString password) {
+    void checkout(int revision, std::string path, std::string username, std::string password) {
+        try {
+            string const methodName("checkout");
+            string const serverUrl = "http://localhost:8080/RPC2";
 
-        myClient.call(serverUrl, methodName, &result, revision, path.toStdString(), username.toStdString(), password.toStdString());
+            xmlrpc_c::clientSimple myClient;
+            xmlrpc_c::value result;
+            xmlrpc_c::paramList methodParams;
 
-        //Get returned data as vector (for so it was sent)
-        xmlrpc_c::value_array const arrayLenDat = xmlrpc_c::value_array(result);
-        vector<xmlrpc_c::value> const param(arrayLenDat.vectorValueValue());
+            methodParams.add(xmlrpc_c::value_int(revision));
+            methodParams.add(xmlrpc_c::value_string(path));
+            methodParams.add(xmlrpc_c::value_string(username));
+            methodParams.add(xmlrpc_c::value_string(password));
+            cout << "Vai chamar call";
+            //myClient.call(serverUrl, methodName, "ii", &result, revision, path.unicode(), username.unicode(), password.unicode());
+            //myClient.call(serverUrl, methodName, "ii", revision, path, username, password, &result);
+            myClient.call(serverUrl, methodName, methodParams, &result);
 
-        /*
-        //Transform data received into the format returned (map<string, string>*)
-        QByteArray data;
-        data.fromRawData(char*, lenght);
-        QDataStream dataStream(&data, QIODevice::ReadWrite);
-        //First param is size of data
-        qint32 paramsize = (qint32)param[0];
-        //Second param is the data, where the files are into
-        char* paramdata = (char*)param[1];
+            cout << "Chamou";
+            int const ret = xmlrpc_c::value_int(result);
+            //Get returned data as vector (for so it was sent)
+            cout << "numero " << ret;
+            //xmlrpc_c::value_array const arrayLenDat = xmlrpc_c::value_array(result);
+            //vector<xmlrpc_c::value> const param(arrayLenDat.vectorValueValue());
 
-        //Need to iterate over data to get each of the files
-        dataStream >> size;
-        map<string, string> files; //Repository to files, it will be returned by the method
-        for (int i =0; i < size; i++)
-        {
-            //Name and the file
-            QString first;
-            QString second;
+            /*
+            //Transform data received into the format returned (map<string, string>*)
+            QByteArray data;
+            data.fromRawData(char*, lenght);
+            QDataStream dataStream(&data, QIODevice::ReadWrite);
+            //First param is size of data
+            qint32 paramsize = (qint32)param[0];
+            //Second param is the data, where the files are into
+            char* paramdata = (char*)param[1];
 
-            dataStream >> first;
-            dataStream >> second;
+            //Need to iterate over data to get each of the files
+            dataStream >> size;
+            map<string, string> files; //Repository to files, it will be returned by the method
+            for (int i =0; i < size; i++)
+            {
+                //Name and the file
+                QString first;
+                QString second;
 
-            files[first.toStdString()] = second.toStdString();
+                dataStream >> first;
+                dataStream >> second;
+
+                files[first.toStdString()] = second.toStdString();
+            }
+            //files[first.toStdString()] = second.toStdString();
+
+                */
+
+            //cout << "lenght = " << (qint32)param[0];
+            //cout << "lenght = " << param.data();
+            //cout << "data = " << (char*)param[1];
+            //cout << "data = " << param[1];
+            //return map<string, string>;
+            return;
+        } catch (...) {
+            cerr << "Client threw unexpected error." << endl;
         }
-        //files[first.toStdString()] = second.toStdString();
-
-            */:
-        cout << "lenght = " << (qint32)param[0];
-        cout << "data = " << (char*)param[1];
-        return map<string, string>;
-    } catch (...) {
-        cerr << "Client threw unexpected error." << endl;
     }
-}
+};
 
 int
 main(int argc, char **) {
+    Client* client = new Client();
+    client->checkout(1, "http://my.place/project", "matheus", "123123123");
 
-    checkout(1, "http://my.place/project", "matheus", "123123123");
-        /*
+
     if (argc-1 > 0) {
         cerr << "This program has no arguments" << endl;
         exit(1);
     }
-
+/*
     try {
         string const methodName("checkout");
 

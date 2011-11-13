@@ -63,11 +63,11 @@
   <valuemap type="QVariantMap">
    <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString">Debug</value>
    <valuelist key="abstractProcess.Environment" type="QVariantList">
-    <value type="QString">DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-szB8FRry3S,guid=e3000ea589f279a4669dba324ebdc4c8</value>
+    <value type="QString">DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-TmtDFvTex0,guid=5c8ce000b2ec88da9ee6b1974ebfd2ea</value>
     <value type="QString">DESKTOP_SESSION=default</value>
     <value type="QString">DISPLAY=:0.0</value>
     <value type="QString">DM_CONTROL=/var/run/xdmctl</value>
-    <value type="QString">GPG_AGENT_INFO=/tmp/gpg-RNFd2Z/S.gpg-agent:1727:1</value>
+    <value type="QString">GPG_AGENT_INFO=/tmp/gpg-224wTi/S.gpg-agent:1602:1</value>
     <value type="QString">GS_LIB=/home/matheus/.fonts</value>
     <value type="QString">GTK2_RC_FILES=/etc/gtk-2.0/gtkrc:/home/matheus/.gtkrc-2.0:/home/matheus/.gtkrc-2.0-kde4:/home/matheus/.kde/share/config/gtkrc-2.0</value>
     <value type="QString">GTK_MODULES=canberra-gtk-module</value>
@@ -85,28 +85,28 @@
     <value type="QString">PWD=/home/matheus/Documents</value>
     <value type="QString">QTDIR=/usr/share/qt4</value>
     <value type="QString">QT_PLUGIN_PATH=/home/matheus/.kde/lib/kde4/plugins/:/usr/lib/kde4/plugins/</value>
-    <value type="QString">SESSION_MANAGER=local/MATHMOB:@/tmp/.ICE-unix/1870,unix/MATHMOB:/tmp/.ICE-unix/1870</value>
+    <value type="QString">SESSION_MANAGER=local/MATHMOB:@/tmp/.ICE-unix/1745,unix/MATHMOB:/tmp/.ICE-unix/1745</value>
     <value type="QString">SHELL=/bin/bash</value>
     <value type="QString">SHLVL=0</value>
-    <value type="QString">SSH_AGENT_PID=1726</value>
-    <value type="QString">SSH_AUTH_SOCK=/tmp/ssh-bTmanl1681/agent.1681</value>
+    <value type="QString">SSH_AGENT_PID=1601</value>
+    <value type="QString">SSH_AUTH_SOCK=/tmp/ssh-jAKfjU1556/agent.1556</value>
     <value type="QString">USER=matheus</value>
     <value type="QString">WINDOWPATH=7</value>
     <value type="QString">XCURSOR_THEME=oxy-white</value>
     <value type="QString">XDG_DATA_DIRS=/usr/share:/usr/share:/usr/local/share</value>
-    <value type="QString">XDG_SESSION_COOKIE=50360e9bd89e48b3425a768f4bc6629b-1321059527.904120-374233670</value>
+    <value type="QString">XDG_SESSION_COOKIE=50360e9bd89e48b3425a768f4bc6629b-1321194218.290828-1038519952</value>
     <value type="QString">XDM_MANAGED=method=classic</value>
    </valuelist>
    <valuelist key="abstractProcess.arguments" type="QVariantList">
-    <value type="QString">/home/matheus/workspace/pato-scm/patoCommunication/Client.pro</value>
+    <value type="QString">/home/matheus/workspace/pato-scm2/patoCommunication/Client.pro</value>
     <value type="QString">-spec</value>
     <value type="QString">linux-g++</value>
     <value type="QString">-r</value>
     <value type="QString">CONFIG+=debug</value>
    </valuelist>
    <value key="abstractProcess.command" type="QString">/usr/bin/qmake-qt4</value>
-   <value key="abstractProcess.enabled" type="bool">false</value>
-   <value key="abstractProcess.workingDirectory" type="QString">/home/matheus/workspace/pato-scm/patoCommunication</value>
+   <value key="abstractProcess.enabled" type="bool">true</value>
+   <value key="abstractProcess.workingDirectory" type="QString">/home/matheus/workspace/pato-scm2/patoCommunication</value>
   </valuemap>
  </data>
  <data>
@@ -114,11 +114,11 @@
   <valuemap type="QVariantMap">
    <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString">Debug</value>
    <valuelist key="abstractProcess.Environment" type="QVariantList">
-    <value type="QString">DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-szB8FRry3S,guid=e3000ea589f279a4669dba324ebdc4c8</value>
+    <value type="QString">DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-TmtDFvTex0,guid=5c8ce000b2ec88da9ee6b1974ebfd2ea</value>
     <value type="QString">DESKTOP_SESSION=default</value>
     <value type="QString">DISPLAY=:0.0</value>
     <value type="QString">DM_CONTROL=/var/run/xdmctl</value>
-    <value type="QString">GPG_AGENT_INFO=/tmp/gpg-RNFd2Z/S.gpg-agent:1727:1</value>
+    <value type="QString">GPG_AGENT_INFO=/tmp/gpg-224wTi/S.gpg-agent:1602:1</value>
     <value type="QString">GS_LIB=/home/matheus/.fonts</value>
     <value type="QString">GTK2_RC_FILES=/etc/gtk-2.0/gtkrc:/home/matheus/.gtkrc-2.0:/home/matheus/.gtkrc-2.0-kde4:/home/matheus/.kde/share/config/gtkrc-2.0</value>
     <value type="QString">GTK_MODULES=canberra-gtk-module</value>
@@ -136,16 +136,16 @@
     <value type="QString">PWD=/home/matheus/Documents</value>
     <value type="QString">QTDIR=/usr/share/qt4</value>
     <value type="QString">QT_PLUGIN_PATH=/home/matheus/.kde/lib/kde4/plugins/:/usr/lib/kde4/plugins/</value>
-    <value type="QString">SESSION_MANAGER=local/MATHMOB:@/tmp/.ICE-unix/1870,unix/MATHMOB:/tmp/.ICE-unix/1870</value>
+    <value type="QString">SESSION_MANAGER=local/MATHMOB:@/tmp/.ICE-unix/1745,unix/MATHMOB:/tmp/.ICE-unix/1745</value>
     <value type="QString">SHELL=/bin/bash</value>
     <value type="QString">SHLVL=0</value>
-    <value type="QString">SSH_AGENT_PID=1726</value>
-    <value type="QString">SSH_AUTH_SOCK=/tmp/ssh-bTmanl1681/agent.1681</value>
+    <value type="QString">SSH_AGENT_PID=1601</value>
+    <value type="QString">SSH_AUTH_SOCK=/tmp/ssh-jAKfjU1556/agent.1556</value>
     <value type="QString">USER=matheus</value>
     <value type="QString">WINDOWPATH=7</value>
     <value type="QString">XCURSOR_THEME=oxy-white</value>
     <value type="QString">XDG_DATA_DIRS=/usr/share:/usr/share:/usr/local/share</value>
-    <value type="QString">XDG_SESSION_COOKIE=50360e9bd89e48b3425a768f4bc6629b-1321059527.904120-374233670</value>
+    <value type="QString">XDG_SESSION_COOKIE=50360e9bd89e48b3425a768f4bc6629b-1321194218.290828-1038519952</value>
     <value type="QString">XDM_MANAGED=method=classic</value>
    </valuelist>
    <value key="abstractProcess.IgnoreReturnValue" type="bool">false</value>
@@ -154,7 +154,7 @@
    </valuelist>
    <value key="abstractProcess.command" type="QString">/usr/bin/make</value>
    <value key="abstractProcess.enabled" type="bool">true</value>
-   <value key="abstractProcess.workingDirectory" type="QString">/home/matheus/workspace/pato-scm/patoCommunication</value>
+   <value key="abstractProcess.workingDirectory" type="QString">/home/matheus/workspace/pato-scm2/patoCommunication</value>
   </valuemap>
  </data>
  <data>

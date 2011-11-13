@@ -7,15 +7,16 @@
 QT       += network sql
 QT       -= gui
 
-TARGET = ../output/Client
+#TARGET = ../output/Client
+TARGET = ./output/Client
 TEMPLATE = app
 
 DEFINES += PATOCOMMUNICATION_LIBRARY
 
 SOURCES += client.cpp
 
-HEADERS += client.h\
-        Client_global.h
+#HEADERS += client.h\
+#        Client_global.h
 
 LIBS += -L"./libxmlrpc" -lxmlrpc_client++ -lxmlrpc_client -lxmlrpc++ -lxmlrpc -lxmlrpc_xmlparse -lxmlrpc_xmltok -lxmlrpc_util -lcurl -lxmlrpc_packetsocket
 

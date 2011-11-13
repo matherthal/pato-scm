@@ -1,24 +1,28 @@
-#ifndef PATOCOMMUNICATION_H
-#define PATOCOMMUNICATION_H
+/*#ifndef PATOCLIENT_H
+#define PATOCLIENT_H
 
-//#include "PatoCommunication_global.h"
+#include "Client_global.h"
 #include "../patoClientAPI/patoclientapi.h"
 #include "../patoServerAPI/patoserverapi.h"
 
-class PATOCOMMUNICATIONSHARED_EXPORT PatoCommunication {
+class PATOCLIENTSHARED_EXPORT Client {*/
+#include <string>
+
+class Client {
 private:
-    PatoClientApi* patoClient;
-    PatoServerApi* patoServer;
+    //PatoClientApi* patoClient;
+    //PatoServerApi* patoServer;
 
-    QString getPath(QString adress);
+    //QString getPath(QString adress);
 
-    string const serverUrl = "http://localhost:8080/RPC2";
+    //string const serverUrl = "http://localhost:8080/RPC2";
 
 public:
-    void checkout(int revision, QString adress, QString username, QString password);
-    void checkin(QString address, QString username, QString password);
-
-    PatoCommunication();
+    //map<string, string>* Client::checkout(int revision, QString path, QString username, QString password);
+    //int main(int argc, char **);
+    //void checkout(int revision, QString adress, QString username, QString password);
+    //void checkin(QString address, QString username, QString password);
 };
-
-#endif // PATOCOMMUNICATION_H
+/*
+#endif // PATOCLIENT_H
+*/
