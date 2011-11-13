@@ -17,6 +17,12 @@
    <iconset resource="mainwindow.qrc">
     <normaloff>:/new/icons/icon</normaloff>:/new/icons/icon</iconset>
   </property>
+  <property name="toolTip">
+   <string>Pato-SCM</string>
+  </property>
+  <property name="statusTip">
+   <string>Ready</string>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="QTreeView" name="treeViewWorkspace">
     <property name="geometry">
@@ -32,6 +38,9 @@
       <horstretch>0</horstretch>
       <verstretch>0</verstretch>
      </sizepolicy>
+    </property>
+    <property name="toolTip">
+     <string>Workspace View</string>
     </property>
     <property name="styleSheet">
      <string notr="true"/>
@@ -53,6 +62,9 @@
       <bold>true</bold>
      </font>
     </property>
+    <property name="toolTip">
+     <string>Workspace Path</string>
+    </property>
     <property name="text">
      <string>Workspace:</string>
     </property>
@@ -71,6 +83,9 @@
       <pointsize>10</pointsize>
       <italic>false</italic>
      </font>
+    </property>
+    <property name="toolTip">
+     <string>Workspace Path</string>
     </property>
     <property name="text">
      <string>TextLabel</string>
@@ -96,6 +111,9 @@
     </font>
    </property>
    <widget class="QMenu" name="menuPato_SCM">
+    <property name="toolTip">
+     <string/>
+    </property>
     <property name="title">
      <string>Pato-SCM</string>
     </property>
@@ -125,11 +143,22 @@
     <addaction name="separator"/>
     <addaction name="actionUpdate"/>
    </widget>
+   <widget class="QMenu" name="menuPato_Diff_Tool">
+    <property name="title">
+     <string>Pato-Diff Tool</string>
+    </property>
+    <addaction name="actionOpen"/>
+   </widget>
    <addaction name="menuPato_SCM"/>
    <addaction name="menuWorkspace"/>
+   <addaction name="menuPato_Diff_Tool"/>
    <addaction name="menuHelp"/>
   </widget>
-  <widget class="QStatusBar" name="statusBar"/>
+  <widget class="QStatusBar" name="statusBar">
+   <property name="statusTip">
+    <string>Ready</string>
+   </property>
+  </widget>
   <widget class="QToolBar" name="mainToolBar">
    <property name="windowTitle">
     <string>toolBar</string>
@@ -168,18 +197,24 @@
    <addaction name="separator"/>
    <addaction name="actionUpdate"/>
   </widget>
+  <widget class="QToolBar" name="diffToolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionOpen"/>
+  </widget>
   <widget class="QToolBar" name="helpToolBar">
    <property name="windowTitle">
     <string>toolBar</string>
    </property>
    <property name="layoutDirection">
     <enum>Qt::RightToLeft</enum>
-   </property>
-   <property name="iconSize">
-    <size>
-     <width>18</width>
-     <height>18</height>
-    </size>
    </property>
    <attribute name="toolBarArea">
     <enum>TopToolBarArea</enum>
@@ -200,6 +235,9 @@
    <property name="text">
     <string>Check-out</string>
    </property>
+   <property name="statusTip">
+    <string>Get revisions from the repository to the workspace</string>
+   </property>
    <property name="font">
     <font>
      <pointsize>9</pointsize>
@@ -217,6 +255,9 @@
    <property name="text">
     <string>Check-in</string>
    </property>
+   <property name="statusTip">
+    <string>Send the local changes to the repository</string>
+   </property>
    <property name="font">
     <font>
      <pointsize>9</pointsize>
@@ -230,6 +271,9 @@
    </property>
    <property name="text">
     <string>Environment Settings</string>
+   </property>
+   <property name="statusTip">
+    <string>Pato-SCM environment settings</string>
    </property>
    <property name="font">
     <font>
@@ -245,6 +289,9 @@
    <property name="text">
     <string>Export</string>
    </property>
+   <property name="statusTip">
+    <string>Export project from the workspace or repository</string>
+   </property>
    <property name="font">
     <font>
      <pointsize>9</pointsize>
@@ -259,6 +306,9 @@
    <property name="text">
     <string>Help</string>
    </property>
+   <property name="statusTip">
+    <string>Help</string>
+   </property>
    <property name="iconVisibleInMenu">
     <bool>true</bool>
    </property>
@@ -269,6 +319,9 @@
      <normaloff>:/new/icons/icon</normaloff>:/new/icons/icon</iconset>
    </property>
    <property name="text">
+    <string>About Pato-SCM</string>
+   </property>
+   <property name="statusTip">
     <string>About Pato-SCM</string>
    </property>
    <property name="iconVisibleInMenu">
@@ -286,6 +339,9 @@
    <property name="text">
     <string>Add File/Dir</string>
    </property>
+   <property name="statusTip">
+    <string>Start to control the selected file or dir</string>
+   </property>
   </action>
   <action name="actionRemove_File_Dir">
    <property name="enabled">
@@ -298,6 +354,9 @@
    <property name="text">
     <string>Remove File/Dir</string>
    </property>
+   <property name="statusTip">
+    <string>Stop controlling the selected file or dir</string>
+   </property>
   </action>
   <action name="actionUpdate">
    <property name="enabled">
@@ -309,6 +368,24 @@
    </property>
    <property name="text">
     <string>Update</string>
+   </property>
+   <property name="statusTip">
+    <string>Update the workspace with the new repository changes (Alert: Discart the local changes)</string>
+   </property>
+  </action>
+  <action name="actionOpen">
+   <property name="icon">
+    <iconset resource="mainwindow.qrc">
+     <normaloff>:/new/icons/diff</normaloff>:/new/icons/diff</iconset>
+   </property>
+   <property name="text">
+    <string>Open</string>
+   </property>
+   <property name="toolTip">
+    <string>Open Pato-Diff Tool</string>
+   </property>
+   <property name="statusTip">
+    <string>Open Pato-Diff Tool</string>
    </property>
   </action>
  </widget>
