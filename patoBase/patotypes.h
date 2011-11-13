@@ -20,6 +20,14 @@ typedef struct _PatoDiffInfo
     QByteArray diff;
 }PatoDiffInfo;
 
+typedef struct _PatoVersionReturn
+{
+    QString address;
+    QString path;
+    RevisionKey revision;
+    QStringList files;
+}PatoVersionReturn;
+
 typedef QMap<QString, PatoDiffInfo> PatoChangeSetMap;
 
 #include "patochangeset.h"

@@ -18,16 +18,25 @@ PatoClientApi::PatoClientApi() {
 QList<checkoutOutput> PatoClientApi::checkout(RevisionKey revision, QString address, QString username, QString password, QString workspace) throw (PatoClientException) {
 
     QList<checkoutOutput> output;
-
-    //if (revision == "") {
-    //        throw (PatoClientException("Invalid revision number."));
-    //    } else 
     if (address == "") {
         throw (PatoClientException("The checkout command needs an address."));
     } else if (username == "") {
         throw (PatoClientException("The checkout command needs an username."));
     } else if (password == "") {
         throw (PatoClientException("The checkout command needs a password."));
+    }
+
+    PatoVersionReturn versionParams;// = communication->checkout( address, username, password, revision);
+
+    PatoWorkspace* work = PatoWorkspace::instance();
+
+    if ( PatoWorkspace::exists(workspace) )
+    {
+        work->cleanCopy( versionParams, false);
+    }
+    else
+    {
+        work->create( versionParams );
     }
 
     return output;
@@ -52,17 +61,20 @@ QList<logOutput> PatoClientApi::log(QString address, QString username, QString p
     return output;
 }
 
-QList<checkoutOutput> PatoClientApi::checkin(QString address, QString username, QString password, QString workspace) throw (PatoClientException) {
-
-    QList<checkoutOutput> output;
-
+QList< PatoFileStatus > PatoClientApi::checkin(QString address, QString username, QString password, QString workspace) throw (PatoClientException)
+{
     if (username == "") {
         throw (PatoClientException("The checkin command needs an username."));
     } else if (password == "") {
         throw (PatoClientException("The checkin command needs a password."));
     }
 
-    return output;
+    PatoWorkspace* work = PatoWorkspace::instance();
+    PatoChangeSet myChanges = work->changes();
+
+    //RevisionKey newRev = communication->checkin(address, username, password, myChanges);
+    //work->setRevision( newRev ); //set new revision as commiting.
+    return myChanges.status();
 }
 
 QList< PatoFileStatus > PatoClientApi::add(QString workspace, QStringList files) throw (PatoClientException)
@@ -91,7 +103,7 @@ QList< PatoFileStatus > PatoClientApi::status(QString workspace) throw (PatoClie
    return work->status();
 }
 
-QList<updateOutput> PatoClientApi::update(RevisionKey revision, QString address, QString username, QString password, QString workspace) throw (PatoClientException) {
+QList< PatoFileStatus > PatoClientApi::update(RevisionKey revision, QString address, QString username, QString password, QString workspace, bool ignoreLocalChanges) throw (PatoClientException) {
 
 
     QList<updateOutput> output;
@@ -104,9 +116,12 @@ QList<updateOutput> PatoClientApi::update(RevisionKey revision, QString address,
     } else if (password == "") {
         throw (PatoClientException("The update command needs a password."));
     }
-    
 
-    return output;
+    PatoWorkspace* work = PatoWorkspace::instance();
+    PatoChangeSet changes;// = communication->getChangeSet( work->revision(), revision );
+    work->update( changes, ignoreLocalChanges );
+
+    return changes.status();
 }
 
 void PatoClientApi::merge(QString path1, RevisionKey  revision1, QString path2, RevisionKey revision2, QString workspace) throw (PatoClientException) {

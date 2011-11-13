@@ -19,6 +19,7 @@ public:
     const PatoChangeSet& operator= (const PatoChangeSet&);
 
     void add( QString, PatoFileStatus::FileStatus, QByteArray);
+    QList< PatoFileStatus > status() const;
 
     bool isEmpty() const;
 

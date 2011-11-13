@@ -28,6 +28,20 @@ void PatoChangeSet::add( QString file, PatoFileStatus::FileStatus status, QByteA
 
 }
 
+QList< PatoFileStatus > PatoChangeSet::status() const
+{
+    QList< PatoFileStatus > ret;
+
+    PatoChangeSetMap::ConstIterator it;
+
+    for (it = myDiffs.constBegin(); it != myDiffs.constEnd(); it++)
+    {
+        ret << PatoFileStatus( it.key(), it.value().status );
+    }
+
+    return ret;
+}
+
 PatoChangeSetMap PatoChangeSet::changes() const
 {
     return myDiffs;
