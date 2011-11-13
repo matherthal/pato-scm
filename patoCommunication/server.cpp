@@ -3,8 +3,9 @@
 #include <iostream>
 #include<stdlib.h>
 #include <string.h>
-//#include<QtCore/QString>
+#include<QtCore/QString>
 //#include<QtCore/QTextStream>
+#include <QDataStream>
 
 #include <cassert>
 #include <stdexcept>
@@ -26,8 +27,12 @@ using namespace std;
   #define SLEEP(seconds) sleep(seconds);
 #endif
 
+//Including patoserverapi
+#include "../patoServerAPI/patoserverapi.h"
 
-class PatoServerApi : public xmlrpc_c::method {
+typedef std::vector<xmlrpc_c::value> carray;
+
+class Server : public xmlrpc_c::method {
 public:
     /*PatoServerApi() {
         // signature and help strings are documentation -- the client
@@ -57,29 +62,62 @@ public:
 
 class checkout : public xmlrpc_c::method {
 public:
-    /*PatoServerApi() {
-        // signature and help strings are documentation -- the client
-        // can query this information with a system.methodSignature and
-        // system.methodHelp RPC.
-        this->_signature = "i:ii";
-            // method's result and two arguments are integers
-        this->_help = "This method adds two integers together";
-    }*/
     void
     execute(xmlrpc_c::paramList const& paramList,
             xmlrpc_c::value *   const  retvalP) {
 
-        int const addend(paramList.getInt(0));
-        int const adder(paramList.getInt(1));
+        //Parameters of checkout on ServerAPI
+        int const revision(paramList.getInt(0));
+        string const path(paramList.getString(1));
+        string const username(paramList.getString(2));
+        string const password(paramList.getString(3));
 
-        paramList.verifyEnd(2);
+        cout << "revision " << revision;
+        cout << "path " << path;
+        cout << "username " << username;
+        cout << "password " << password;
+/*
+        //Parameters as Qt vars
+        QString qpath = QString::fromStdString(path);
+        QString quser = QString::fromStdString(username);
+        QString qpw = QString::fromStdString(password);
 
-        *retvalP = xmlrpc_c::value_int(addend + adder + adder);
+        //---Given a revision get file names and its content---
+        //Instancianting PatoServerAPI
+        PatoServerApi* serverAPI = PatoServerApi::getInstance();        
+        map<string, string>* files;
+        //Calling checkout from PatoServerAPI
+        files = serverAPI->checkout(revision, qpath, quser, qpw);
+
+        //Creating Iterator to files
+        map<string, string>::iterator it;
+
+        //The files will be stored to "data" to be sent
+        QByteArray data;
+        QDataStream dataStream(&data, QIODevice::ReadWrite);
+        //Size of data is stored to "data" too
+        dataStream << (qint32)files->size();
+        for ( it = files->begin(); it != files->end(); it++)
+        {
+            //Get the name and data of files
+            dataStream << QString::fromStdString(it->first);
+            dataStream << QString::fromStdString(it->second);
+        }
+
+        // Make the vector value 'arrayData'
+        vector<xmlrpc_c::value> arrayData;
+        arrayData.push_back(xmlrpc_c::value_int(data.length()));
+        arrayData.push_back(xmlrpc_c::value_string(data.data()));
+
+        // Make an XML-RPC array out of it        
+        xmlrpc_c::value_array arrayLenDat(arrayData);
+        *retvalP = arrayLenDat;*/
+        *retvalP = 0;
 
         // Sometimes, make it look hard (so client can see what it's like
         // to do an RPC that takes a while).
-        if (adder == 1)
-            SLEEP(2);
+        //if (adder == 1)
+        //    SLEEP(2);
     }
 };
 
@@ -118,11 +156,11 @@ main(int           const,
     try {
         xmlrpc_c::registry myRegistry;
 
-        xmlrpc_c::methodPtr const PatoServerApiP(new PatoServerApi);
+        //xmlrpc_c::methodPtr const ServerP(new Server);
         xmlrpc_c::methodPtr const checkoutP(new checkout);
         xmlrpc_c::methodPtr const checkinP(new checkin);
 
-        myRegistry.addMethod("PatoServerApi", PatoServerApiP);
+        //myRegistry.addMethod("PatoServerApi", PatoServerApiP);
         myRegistry.addMethod("checkout", checkoutP);
         myRegistry.addMethod("checkin", checkinP);
 
@@ -134,9 +172,13 @@ main(int           const,
         myAbyssServer.run();
         // xmlrpc_c::serverAbyss.run() never returns
         assert(false);
+
     } catch (exception const& e) {
         cerr << "Something failed.  " << e.what() << endl;
     }
+
+
+
     return 0;
 }
 

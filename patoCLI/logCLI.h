@@ -10,28 +10,30 @@
 
 #include<QString>
 #include<QList>
+#include"../patoBase/patotypes.h"
 
 class logCLI {
 public:
     logCLI();
     logCLI(const logCLI& orig);
     virtual ~logCLI();
+    void command(int argc, char** argv);
     void SetPassword(QString password);
     QString GetPassword() const;
     void SetUsername(QString username);
     QString GetUsername() const;
-    void SetFinalRevision(QString finalRevision);
-    QString GetFinalRevision() const;
-    void SetInitialRevision(QString initialRevision);
-    QString GetInitialRevision() const;
+    void SetFinalRevision(RevisionKey  finalRevision);
+    RevisionKey GetFinalRevision() const;
+    void SetInitialRevision(RevisionKey  initialRevision);
+    RevisionKey  GetInitialRevision() const;
     void SetAddress(QString address);
     QString GetAddress() const;
     void SetParameters(QList<QString> parameters);
     QList<QString> GetParameters() const;
 private:
     QString address;
-    QString initialRevision;
-    QString finalRevision;
+    RevisionKey initialRevision;
+    RevisionKey finalRevision;
     QString username;
     QString password;
     QList<QString> parameters;

@@ -7,9 +7,10 @@
 QT       += network
 
 QT       -= gui
+QT       += sql
 
 win32: TARGET = ../../output/patocommunication
-unix:  TARGET = ../output/patocommunication
+unix:  TARGET = ../output/PatoCommunication
 
 TEMPLATE = lib
 

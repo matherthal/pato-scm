@@ -1,7 +1,7 @@
 #ifndef PATOCOMMUNICATION_H
 #define PATOCOMMUNICATION_H
 
-#include "PatoCommunication_global.h"
+//#include "PatoCommunication_global.h"
 #include "../patoClientAPI/patoclientapi.h"
 #include "../patoServerAPI/patoserverapi.h"
 
@@ -12,8 +12,9 @@ private:
 
     QString getPath(QString adress);
 
-public:
+    string const serverUrl = "http://localhost:8080/RPC2";
 
+public:
     void checkout(int revision, QString adress, QString username, QString password);
     void checkin(QString address, QString username, QString password);
 

@@ -1,5 +1,7 @@
 #include "patoworkspace.h"
 #include <QDir>
+#include "../patoBase/patofilestatus.h"
+#include "../patoAlgorithms/diff.h"
 
 PatoWorkspace* PatoWorkspace::sigleWorkspace = NULL;
 
@@ -107,6 +109,11 @@ bool PatoWorkspace::setPath(QString directory, bool createDir)
     {
         readMetadata();
     }
+    else
+    {
+        lastError = "The given directory does not contain a pato repository.";
+        return false;
+    }
 
     return true;
 }
@@ -171,16 +178,12 @@ QList< PatoFileStatus > PatoWorkspace::status(PatoFileStatus::FileStatus statusF
         }
     }
 
-    qDebug() << "warning: status returns only modified and added files";
-
     return statusList;
 }
 
-bool PatoWorkspace::setRevision( RevisionKey revision,  bool commiting  )
+bool PatoWorkspace::setRevision(RevisionKey revision,  bool commiting )
 {
     qDebug() << QString("Old Revision: %1 -> New Revision: %2").arg(revKey).arg(revision);
-
-
 
     if (commiting)
     {
@@ -188,12 +191,15 @@ bool PatoWorkspace::setRevision( RevisionKey revision,  bool commiting  )
 
         for ( int i=0; i < removedFiles.size(); i++ ) //removed files should be removed.
         {
-            QFile( workPath + "/" + removedFiles[i]).remove();
+            bool bRemoved = QFile( workPath + "/" + removedFiles[i]).remove();
+            if (!bRemoved)
+                qWarning() << QString("There was a problem removing the following file: %1").arg(removedFiles[i]);
         }
     }
 
     addedFiles.clear();
     removedFiles.clear();
+
 
     writeMetadata();
 
@@ -212,7 +218,6 @@ bool PatoWorkspace::setRevision( RevisionKey revision,  bool commiting  )
 
 bool PatoWorkspace::update( PatoChangeSet changeSet, RevisionKey rev)
 {
-
     PatoChangeSet localChanges = changes();
 
     if (!localChanges.isEmpty())
@@ -368,13 +373,30 @@ void PatoWorkspace::readMetadata(MetadataType types)
 
 PatoChangeSet  PatoWorkspace::changes() const
 {
-    PatoChangeSet changeRet;
-    //changeRet = PatoAlgorithms::diff( backupPath(revKey), workPath + "/" );
+    PatoChangeSet changeSet;
 
-    //changeRet << addedFiles;
-    //changeRet << removedFiles;
+    for (int i=0; i < versionedFiles.size(); i++)
+    {
+        Diff diff ( (workPath + "/" + versionedFiles[i]).toStdString().c_str(),
+                    (backupPath(revKey) + versionedFiles[i]).toStdString().c_str() );
 
-    return changeRet;
+        if (!diff.isEmpty())
+        {
+            changeSet.add( versionedFiles[i], PatoFileStatus::MODIFIED , toByteArray(diff) );
+        }
+    }
+
+    for( int i=0; i < addedFiles.size(); i++)
+    {
+        changeSet.add( addedFiles[i], PatoFileStatus::ADDED, QByteArray());
+    }
+
+    for( int i=0; i < removedFiles.size(); i++)
+    {
+        changeSet.add(  removedFiles[i], PatoFileStatus::REMOVED, QByteArray());
+    }
+
+    return changeSet;
 }
 
 //////////////SEGUNDA FASE///////////////////////
@@ -501,4 +523,10 @@ QString PatoWorkspace::metaFilePath(MetadataType type, bool fullPath) const
 
     return QString("%1/%2").arg( cWorkspaceControlFolder ).arg( strFile );
 
+}
+
+
+QByteArray PatoWorkspace::toByteArray(Diff&) const
+{
+    return QByteArray();
 }

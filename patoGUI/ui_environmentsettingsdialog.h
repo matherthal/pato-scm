@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'environmentsettingsdialog.ui'
 **
-** Created: Tue 25. Oct 17:47:42 2011
+** Created: Wed 9. Nov 22:42:48 2011
 **      by: Qt User Interface Compiler version 4.7.4
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
