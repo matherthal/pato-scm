@@ -8,7 +8,7 @@ QT       -= gui
 QT       += sql
 
 #TARGET = ../output/Server
-TEMPLATE = lib
+#TEMPLATE = lib
 
 DEFINES += PATOSERVERAPI_LIBRARY
 
