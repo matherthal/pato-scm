@@ -1,4 +1,5 @@
 #include "patoserverapi.h"
+#include "../patoDataModel/patodatamodel.h"
 #include <iostream>
 #include<stdlib.h>
 #include <string.h>

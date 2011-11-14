@@ -13,7 +13,6 @@ typedef QString RevisionKey;
 typedef std::string StorageKey;
 #include "patofilestatus.h"
 
-
 typedef struct _PatoDiffInfo
 {
     PatoFileStatus::FileStatus status;
@@ -29,8 +28,5 @@ typedef struct _PatoVersionReturn
 }PatoVersionReturn;
 
 typedef QMap<QString, PatoDiffInfo> PatoChangeSetMap;
-
-#include "patochangeset.h"
-#include "patofilestatus.h"
 
 #endif // PATOTYPES_H

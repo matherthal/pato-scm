@@ -879,7 +879,8 @@ namespace bd {
     bool BDPatoDataModel::insertFile(std::string& path, std::string& file, /*std::string& project,*/ std::string& idFile)
     {
         std::string strStatus;
-        if ( findPathLastVersion(path+file) )
+        std::string filePath = path+file;
+        if ( findPathLastVersion(filePath))
             strStatus = "M";
         else
             strStatus = "I";

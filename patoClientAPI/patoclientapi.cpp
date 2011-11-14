@@ -87,8 +87,7 @@ QList< PatoFileStatus > PatoClientApi::add(QString workspace, QStringList files)
         throw (PatoClientException("The add command needs at least one file to add."));
     }
 
-
-   return work->add(workspace, files);
+    return work->add(workspace, files);
 }
 
 QList< PatoFileStatus > PatoClientApi::status(QString workspace) throw (PatoClientException) {
@@ -138,7 +137,6 @@ void PatoClientApi::merge(QString path1, RevisionKey  revision1, QString path2, 
     } else if (revision2 == "") {
         throw (PatoClientException("The merge command needs a revision."));
     }
-
 }
 
 void PatoClientApi::diff(QString path1, RevisionKey  revision1, QString path2, RevisionKey  revision2) throw (PatoClientException) {
@@ -153,6 +151,4 @@ void PatoClientApi::diff(QString path1, RevisionKey  revision1, QString path2, R
     } else if (revision2 == "") {
         throw (PatoClientException("The diff command needs a revision."));
     }
-
-
 }

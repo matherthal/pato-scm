@@ -42,4 +42,4 @@ unix:!symbian {
     INSTALLS += target
 }
 
-LIBS += -L../output  -lpatofs -lpatodatamodel
+LIBS += -L../output  -lpatofs -lPatoDataModel
