@@ -59,7 +59,7 @@ bool PatoServerApi::checkOut(QString path, QString username, QString password, i
     string strPassword = password.toStdString();
     string strPath = path.toStdString();
 
-    //clear content of checkout´s map
+    //clear content of checkoutï¿½s map
     filesCheckOut.clear();
 
     //this map will be filled with file names and file keys (hash code)
@@ -165,5 +165,4 @@ bool PatoServerApi::showLog(QString project, QString username, QString password,
 
     return PatoDataModel::getInstance()->showLog(strUsername, strPw, strProj, version, filesLog );
 }
-
 
