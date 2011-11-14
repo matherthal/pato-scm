@@ -14,29 +14,54 @@ using namespace std;
 class Client {
 public:
 
-    //void checkout(int revision, QString path, QString username, QString password) {
-    void checkout(int revision, std::string path, std::string username, std::string password) {
+    void checkout(int revision, QString path, QString username, QString password) {
         try {
             string const methodName("checkout");
             string const serverUrl = "http://localhost:8080/RPC2";
+            xmlrpc_env env;
+            xmlrpc_env_init(&env);
 
             xmlrpc_c::clientSimple myClient;
+            //const xmlrpc_c::value result;
+            //xmlrpc_value * const result = xmlrpc_build_value(&env, "s", "");
             xmlrpc_c::value result;
+            //xmlrpc_value * const resultP = xmlrpc_build_value(&env, "s", "");
             xmlrpc_c::paramList methodParams;
 
             methodParams.add(xmlrpc_c::value_int(revision));
-            methodParams.add(xmlrpc_c::value_string(path));
-            methodParams.add(xmlrpc_c::value_string(username));
-            methodParams.add(xmlrpc_c::value_string(password));
-            cout << "Vai chamar call";
+            methodParams.add(xmlrpc_c::value_string(path.toStdString()));
+            methodParams.add(xmlrpc_c::value_string(username.toStdString()));
+            methodParams.add(xmlrpc_c::value_string(password.toStdString()));
+
             //myClient.call(serverUrl, methodName, "ii", &result, revision, path.unicode(), username.unicode(), password.unicode());
             //myClient.call(serverUrl, methodName, "ii", revision, path, username, password, &result);
             myClient.call(serverUrl, methodName, methodParams, &result);
 
-            cout << "Chamou";
-            int const ret = xmlrpc_c::value_int(result);
+            xmlrpc_value * const resultP = result.cValueP;
+            const char* res = {0};
+            xmlrpc_read_string(&env, resultP, &res);
+            cout << "result= " << res << "\n";
+
+            /* Get our state name and print it out. */
+            //char* const res = {0};
+            //xmlrpc_parse_value(&env, result, "s", res);
+            //die_if_fault_occurred(&env);
+            //printf("The sum  is %s\n", *res);
+
+            /*
+
+            //int const ret = xmlrpc_c::value_int(result);
+            xmlrpc_c::value xrval = xmlrpc_c::value(result);
+            //xmlrpc_c::value val;
+            xmlrpc_value *const valP = NULL;
+
+            xrval.instantiate(valP);
+*/
+            //xmlrpc_decompose_value(&env, result, "s", val);
             //Get returned data as vector (for so it was sent)
-            cout << "numero " << ret;
+            //xrval.value(valP);
+            //cout << "numero " << static_cast<string>(xrval) << "\n";
+            //cout << "numero " << valP << "\n";
             //xmlrpc_c::value_array const arrayLenDat = xmlrpc_c::value_array(result);
             //vector<xmlrpc_c::value> const param(arrayLenDat.vectorValueValue());
 
