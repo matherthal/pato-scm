@@ -4,6 +4,7 @@
 #include <QList>
 #include "PatoWorkspace_global.h"
 #include "../patoBase/patotypes.h"
+#include "../patoBase/patochangeset.h"
 #include "../patoAlgorithms/diff.h"
 
 enum MetadataType

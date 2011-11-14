@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'difftool.ui'
 **
-** Created: Wed 9. Nov 22:56:44 2011
+** Created: Sun Nov 13 23:03:06 2011
 **      by: Qt User Interface Compiler version 4.7.4
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!

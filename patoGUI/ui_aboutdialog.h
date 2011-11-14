@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'aboutdialog.ui'
 **
-** Created: Thu 10. Nov 21:15:08 2011
+** Created: Sun Nov 13 23:03:06 2011
 **      by: Qt User Interface Compiler version 4.7.4
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -52,14 +52,14 @@ public:
         pushButton->setIconSize(QSize(100, 100));
         label_2 = new QLabel(AboutDialog);
         label_2->setObjectName(QString::fromUtf8("label_2"));
-        label_2->setGeometry(QRect(150, 30, 221, 101));
+        label_2->setGeometry(QRect(150, 30, 221, 91));
         QFont font1;
         font1.setPointSize(12);
         label_2->setFont(font1);
         label_2->setWordWrap(true);
         label_3 = new QLabel(AboutDialog);
         label_3->setObjectName(QString::fromUtf8("label_3"));
-        label_3->setGeometry(QRect(150, 130, 211, 21));
+        label_3->setGeometry(QRect(150, 120, 211, 31));
         label_3->setWordWrap(true);
 
         retranslateUi(AboutDialog);
