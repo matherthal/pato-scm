@@ -13,7 +13,6 @@ using namespace std;
 
 class Client {
 public:
-
     void checkout(int revision, QString path, QString username, QString password) {
         try {
             //Declaring important variables to the connection
@@ -77,13 +76,77 @@ public:
             cerr << "Client threw unexpected error." << endl;
         }
     }
+
+    void checkin(QString project, QString username, QString password, QString message) {
+        try {
+            //Declaring important variables to the connection
+            string const methodName("checkout");
+            string const serverUrl = "http://localhost:8080/RPC2";
+            xmlrpc_env env;
+            xmlrpc_env_init(&env);
+            xmlrpc_c::clientSimple myClient;
+            xmlrpc_c::value result;
+            xmlrpc_c::paramList methodParams;
+
+            //Adding parameter to paramList
+            methodParams.add(xmlrpc_c::value_string(project.toStdString()));
+            methodParams.add(xmlrpc_c::value_string(username.toStdString()));
+            methodParams.add(xmlrpc_c::value_string(password.toStdString()));
+            methodParams.add(xmlrpc_c::value_string(message.toStdString()));
+
+            //Calling method through the URL, passing params and receiving the result
+            myClient.call(serverUrl, methodName, methodParams, &result);
+
+            //Reading string from the resultZ
+            xmlrpc_value * const resultP = result.cValueP;
+            const char* res = {0};
+            xmlrpc_read_string(&env, resultP, &res);
+
+            //Printing the method return
+            cout << "result= " << res << "\n";
+
+
+            /*
+            //Transform data received into the format returned (map<string, string>*)
+            QByteArray data;
+            data.fromRawData(char*, lenght);
+            QDataStream dataStream(&data, QIODevice::ReadWrite);
+            //First param is size of data
+            qint32 paramsize = (qint32)param[0];
+            //Second param is the data, where the files are into
+            char* paramdata = (char*)param[1];
+
+            //Need to iterate over data to get each of the files
+            dataStream >> size;
+            map<string, string> files; //Repository to files, it will be returned by the method
+            for (int i =0; i < size; i++)
+            {
+                //Name and the file
+                QString first;
+                QString second;
+
+                dataStream >> first;
+                dataStream >> second;
+
+                files[first.toStdString()] = second.toStdString();
+            }
+            //files[first.toStdString()] = second.toStdString();
+
+                */
+
+            //return map<string, string>;
+            return;
+        } catch (...) {
+            cerr << "Client threw unexpected error." << endl;
+        }
+    }
 };
+
 
 int
 main(int argc, char **) {
     Client* client = new Client();
     client->checkout(1, "http://my.place/project", "matheus", "123123123");
-
 
     if (argc-1 > 0) {
         cerr << "This program has no arguments" << endl;
