@@ -56,6 +56,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(environmentSettingsDialog, SIGNAL(setWorkspacePath(QString)), exportDialog, SLOT(setWorkspacePath(QString)));
     connect(ui->actionExport, SIGNAL(triggered()), exportDialog, SLOT(show()));
 
+    //connect(ui->actionLog, SIGNAL(triggered()), logDialog, SLOT(log()));
     connect(ui->actionLog, SIGNAL(triggered()), logDialog, SLOT(show()));
     connect(ui->actionRepLog, SIGNAL(triggered()), repLogDialog, SLOT(show()));
 
@@ -73,6 +74,10 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(diffToolWindow, SIGNAL(stringDiffFile(QString)), diffFileDialog, SLOT(setDiffFile(QString)));
     connect(diffToolWindow, SIGNAL(stringFile1(QString)), diffFileDialog, SLOT(setDiffFile1(QString)));
     connect(diffToolWindow, SIGNAL(stringFile2(QString)), diffFileDialog, SLOT(setDiffFile2(QString)));
+
+    //connect(ui->actionAdd_File_Dir, SIGNAL(triggered()), this, SLOT(addFile()));
+    //connect(ui->actionUpdate, SIGNAL(triggered()), this, SLOT(update()));
+
 
     connect(ui->actionHelp, SIGNAL(triggered()), this, SLOT(help()));
     connect(ui->actionAbout_Pato_SCM, SIGNAL(triggered()), aboutDialog, SLOT(show()));
@@ -93,18 +98,18 @@ void MainWindow::setWorkspaceModel(const QString &str)
     workspaceModel->setRootPath(str);
 
     //Workspace in Tree View
-//    ui->treeViewWorkspace->setModel(workspaceModel);
-//    ui->treeViewWorkspace->setRootIndex(workspaceModel->index(str));
-//    ui->treeViewWorkspace->setVisible(true);
+    ui->treeViewWorkspace->setModel(workspaceModel);
+    ui->treeViewWorkspace->setRootIndex(workspaceModel->index(str));
+    ui->treeViewWorkspace->setVisible(true);
 
-    //Workspace in Table View
-    ui->tableView->setModel(workspaceModel);
-    ui->tableView->setRootIndex(workspaceModel->index(str));
-    ui->tableView->setVisible(true);
-    ui->tableView->setShowGrid(false);
-    ui->labelWorkspace->setVisible(true);
-    ui->labelWorkspacePath->setText(str);
-    ui->labelWorkspacePath->setVisible(true);
+//    //Workspace in Table View
+//    ui->tableView->setModel(workspaceModel);
+//    ui->tableView->setRootIndex(workspaceModel->index(str));
+//    ui->tableView->setVisible(true);
+//    ui->tableView->setShowGrid(false);
+//    ui->labelWorkspace->setVisible(true);
+//    ui->labelWorkspacePath->setText(str);
+//    ui->labelWorkspacePath->setVisible(true);
 }
 void MainWindow::enableActions()
 {
@@ -129,6 +134,40 @@ void MainWindow::help()
 //{
 //    try {
 //        clientAPI->checkout(revision, address, username, password, workspace);
+//    } catch (PatoClientException& t) {
+//        int msgBox = QMessageBox::warning(this, tr("Error"),
+//                                          tr("Something has gone wrong..."),
+//                                          QMessageBox::Ok);
+
+//    }
+//}
+//void MainWindow::addFile()
+//{
+//    QString *file = ui->treeViewWorkspace->currentIndex();
+//    try {
+//        clientAPI->add(workspace, file);
+//    } catch (PatoClientException& t) {
+//        int msgBox = QMessageBox::warning(this, tr("Error"),
+//                                          tr("Something has gone wrong..."),
+//                                          QMessageBox::Ok);
+
+//    }
+//}
+//void MainWindow::update()
+//{
+//    try {
+//        clientAPI->update(revision, address, username, password, workspace, true);//true = ignorelocalchanges
+//    } catch (PatoClientException& t) {
+//        int msgBox = QMessageBox::warning(this, tr("Error"),
+//                                          tr("Something has gone wrong..."),
+//                                          QMessageBox::Ok);
+
+//    }
+//}
+//void MainWindow::log()
+//{
+//    try {
+//        clientAPI->log(address, username, password, initialRevision, finalRevision);
 //    } catch (PatoClientException& t) {
 //        int msgBox = QMessageBox::warning(this, tr("Error"),
 //                                          tr("Something has gone wrong..."),
