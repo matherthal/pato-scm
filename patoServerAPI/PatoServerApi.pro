@@ -20,8 +20,7 @@ SOURCES += patoserverapi.cpp
 HEADERS += patoserverapi.h\
         PatoServerApi_global.h
 
-LIBS += -L"../patoCommunication/libxmlrpc"  -lxmlrpc_client++ -lxmlrpc_client -lxmlrpc++ -lxmlrpc \
-                                            -lxmlrpc_xmlparse -lxmlrpc_xmltok -lxmlrpc_util -lxmlrpc_packetsocket
+#LIBS += -L"./xmlrpc" -lxmlrpc_client++ -lxmlrpc_client -lxmlrpc++ -lxmlrpc -lxmlrpc_xmlparse -lxmlrpc_xmltok -lxmlrpc_util -lcurl -lxmlrpc_packetsocket
 
 symbian {
     MMP_RULES += EXPORTUNFROZEN
@@ -42,4 +41,4 @@ unix:!symbian {
     INSTALLS += target
 }
 
-LIBS += -L../output  -lpatofs -lPatoDataModel
+LIBS += -L"../output"  -lPatoFS -lPatoDataModel

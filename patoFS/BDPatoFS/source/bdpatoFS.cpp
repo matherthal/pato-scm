@@ -1,7 +1,7 @@
 #include "bdpatoFS.h"
 #include <iostream>
 
-#define PATH_BD "../patoDataModel/BDPatoDataModel/DataBase/DataModelBD"
+#define PATH_BD "../patoDataModel/BDPatoDataModel/DataBase/DataModelBD.sqlite"
 //#define PATH_BD "DataModelBD.sqlite"
 namespace bd {
 

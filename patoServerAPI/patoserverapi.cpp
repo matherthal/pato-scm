@@ -41,10 +41,6 @@ void PatoServerApi::destroyInstance() {
 bool PatoServerApi::checkOut(QString path, QString username, QString password, int revision,
                              std::map<std::string, std::string>& filesCheckOut)
 {
-    //insert the element into the map
-    filesCheckOut["hello"] = "world";
-    std::cout << m_mapStrtoStr["hello"] << "\n";
-/*
     //validating project
     if (!PatoDataModel::getInstance()->validateProject(path.toStdString()))
         return false;
@@ -99,7 +95,7 @@ bool PatoServerApi::checkOut(QString path, QString username, QString password, i
        PatoFS::getInstance()->loadData(it->second, conteudo);
        filesCheckOut[(*it).first] = conteudo;
     }
-*/
+
     return true;
 }
 
