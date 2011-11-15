@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created: Tue 15. Nov 16:26:00 2011
+** Created: Tue 15. Nov 19:12:58 2011
 **      by: Qt User Interface Compiler version 4.7.4
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -20,7 +20,6 @@
 #include <QtGui/QMenu>
 #include <QtGui/QMenuBar>
 #include <QtGui/QStatusBar>
-#include <QtGui/QTableView>
 #include <QtGui/QToolBar>
 #include <QtGui/QTreeView>
 #include <QtGui/QWidget>
@@ -47,7 +46,6 @@ public:
     QTreeView *treeViewWorkspace;
     QLabel *labelWorkspace;
     QLabel *labelWorkspacePath;
-    QTableView *tableView;
     QMenuBar *menuBar;
     QMenu *menuPato_SCM;
     QMenu *menuHelp;
@@ -173,10 +171,6 @@ public:
         font2.setPointSize(10);
         font2.setItalic(false);
         labelWorkspacePath->setFont(font2);
-        tableView = new QTableView(centralWidget);
-        tableView->setObjectName(QString::fromUtf8("tableView"));
-        tableView->setGeometry(QRect(10, 19, 781, 406));
-        tableView->verticalHeader()->setVisible(false);
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
