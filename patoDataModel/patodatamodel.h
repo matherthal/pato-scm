@@ -44,6 +44,7 @@ public:
     bool checkOut(std::string& loginUser, std::string& password, std::string& project, int version, std::map<std::string, std::string>& filePath);
     bool showLog(std::string& loginUser, std::string& password, std::string& project, int version, std::map<std::string, std::string>& filePath);
     std::string getLogMessage(int version);
+    bool showLogPathFile(std::string& path, std::vector<QString>& message);
     //<
 
     //user operations >

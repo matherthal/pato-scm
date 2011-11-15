@@ -1,7 +1,7 @@
 #ifndef BDPATODATAMODEL_H
 #define BDPATODATAMODEL_H
 
-#include "../PatoDataModel_global.h"
+#include "../../PatoDataModel_global.h"
 
 #include "CppSQLite3.h"
 
@@ -22,7 +22,7 @@ private:
 
 public:
 
-    //singletonï¿½s pattern functions>
+    //singleton´s pattern functions>
     static BDPatoDataModel* getInstance();
     static void destroyInstance();
      //<
@@ -41,6 +41,8 @@ public:
     bool getFilePath(std::string& project, int version, std::map<std::string, std::string>& filePath);
     bool getLog(std::string& project, int version, std::map<std::string, std::string>&  filePath);
     std::string getLogMessage(int version);
+
+    bool getLogPathFile(std::string& path, std::vector<QString>& message);
     //<
 
 
@@ -93,7 +95,7 @@ public:
     bool clear();
 private:
 
-    //singletonï¿½s pattern variable
+    //singleton´s pattern variable
     static BDPatoDataModel *bdPato;
 
     QSqlDatabase db;

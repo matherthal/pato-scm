@@ -1,8 +1,8 @@
 #include "bdpatoFS.h"
 #include <iostream>
 
-//#define PATH_BD "../patoDataModel/BDPatoDataModel/DataBase/DataModelBD"
-#define PATH_BD "DataModelBD.sqlite"
+#define PATH_BD "../patoDataModel/BDPatoDataModel/DataBase/DataModelBD"
+//#define PATH_BD "DataModelBD.sqlite"
 namespace bd {
 
     BDPatoFS* BDPatoFS::bdPato = NULL;
@@ -64,12 +64,13 @@ namespace bd {
         QString key = QString(QCryptographicHash::hash((data.c_str()),QCryptographicHash::Md5).toHex());
         QSqlQuery query(db);
 
-        std::string sqlFileInserted = "SELECT ARMA_CONTEUDO FROM ARMAZENAMENTO WHERE arma_id like '";
+        std::string sqlFileInserted = "SELECT ARMA_CONTEUDO FROM ARMAZENAMENTO WHERE upper(arma_id) like upper('";
         sqlFileInserted.append(key.toStdString());
-        sqlFileInserted.append("';");
+        sqlFileInserted.append("');");
 
-        if ( query.exec() )
+        if ( query.exec(sqlFileInserted.c_str()) )
         {
+            qDebug("rodou query");
             if (query.next()) {
                 return key.toStdString();
             }
@@ -82,13 +83,13 @@ namespace bd {
         sqlInsert.append(data);
         sqlInsert.append("');");
 
+        qDebug(sqlInsert.c_str());
         QSqlQuery queryInsert(db);
         if (queryInsert.exec(sqlInsert.c_str()))
         {
             return key.toStdString();
         }
         else {
-
             return "-1";
         }
     }

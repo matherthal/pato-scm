@@ -111,6 +111,11 @@ std::string PatoDataModel::getLogMessage(int version)
     return bd::BDPatoDataModel::getInstance()->getLogMessage(version);
 }
 
+bool PatoDataModel::showLogPathFile(std::string& path, std::vector<QString> &message)
+{
+    return bd::BDPatoDataModel::getInstance()->getLogPathFile(path, message);
+}
+
 //<
 
 //user operations >
