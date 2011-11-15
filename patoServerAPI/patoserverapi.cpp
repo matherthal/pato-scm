@@ -41,7 +41,10 @@ void PatoServerApi::destroyInstance() {
 bool PatoServerApi::checkOut(QString path, QString username, QString password, int revision,
                              std::map<std::string, std::string>& filesCheckOut)
 {
-
+    //insert the element into the map
+    filesCheckOut["hello"] = "world";
+    std::cout << m_mapStrtoStr["hello"] << "\n";
+/*
     //validating project
     if (!PatoDataModel::getInstance()->validateProject(path.toStdString()))
         return false;
@@ -58,7 +61,7 @@ bool PatoServerApi::checkOut(QString path, QString username, QString password, i
     string strPassword = password.toStdString();
     string strPath = path.toStdString();
 
-    //clear content of checkout´s map
+    //clear content of checkout's map
     filesCheckOut.clear();
 
     //this map will be filled with file names and file keys (hash code)
@@ -80,25 +83,24 @@ bool PatoServerApi::checkOut(QString path, QString username, QString password, i
         key.push_back((*it).second);
     }
 
-   //trying to storage dat
+    //trying to storage dat
     std::vector<std::string> content;
     if (!PatoFS::getInstance()->loadData(key, content)) {
 
        //if an error occurs, return a null pointer
        return false;
-   }
+    }
 
-   vector<string>::iterator cit;
-   for ( it = filePath.begin(), cit = key.begin() ; it != filePath.end(); it++, cit++ ) {
+    vector<string>::iterator cit;
+    for ( it = filePath.begin(), cit = key.begin() ; it != filePath.end(); it++, cit++ ) {
 
        //if success, store in a map the file name (first) and file content (second)
        std::string conteudo;
        PatoFS::getInstance()->loadData(it->second, conteudo);
        filesCheckOut[(*it).first] = conteudo;
-   }
-
-   return true;
-
+    }
+*/
+    return true;
 }
 
 bool PatoServerApi::checkIn(QString project, QString username, QString password, QString message,
