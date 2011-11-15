@@ -1,4 +1,4 @@
-//#include "server.h"
+#include "server.h"
 
 #include <iostream>
 #include <stdlib.h>
@@ -30,7 +30,7 @@ using namespace std;
 #endif
 
 //Including patoserverapi
-#include "../patoServerAPI/patoserverapi.h"
+//#include "../patoServerAPI/patoserverapi.h"
 
 typedef std::vector<xmlrpc_c::value> carray;
 
@@ -70,7 +70,7 @@ public:
         xmlrpc_env env;
         xmlrpc_env_init(&env);
 
-        cout << "in checkout";
+        cout << "DEBUG: in checkout";
         //Parameters of checkout on ServerAPI
         int revision(paramList.getInt(0));
         string path(paramList.getString(1));
@@ -91,15 +91,18 @@ public:
 
         //---Given a revision get file names and its content---
         //Instancianting PatoServerAPI
-        PatoServerApi* serverApiP = PatoServerApi::getInstance();
         std::map<std::string, std::string> files;
+        files.insert(std::make_pair<std::string, std::string>("./client.cpp", "teste abc"));        
+        bool ok = true;//PatoServerApi::getInstance()->checkOut(qpath, quser, qpw, revision, files);
+        
         //Calling checkout from PatoServerAPI
-        serverApiP->getInstance();
-        bool ok = false;
-        ok = serverApiP->checkOut(qpath, quser, qpw, revision, files);
+        //bool ok = false;
+        //ok = serverApiP->checkOut(qpath, quser, qpw, revision, files);
         if (!ok) {
             cout << "Cannot to checkout";
+            return;
         }
+        //Data received, now it must be disassembled and read
 
         //Creating Iterator to files
         map<string, string>::iterator it;
@@ -117,9 +120,9 @@ public:
         }
 
         // Build our parameter array.
-        XmlRpcValue param_array = XmlRpcValue::makeArray();
-        param_array.arrayAppendItem(XmlRpcValue::makeString(data.data()));
-        param_array.arrayAppendItem(XmlRpcValue::makeInt(3));
+        //XmlRpcValue param_array = XmlRpcValue::makeArray();
+        //param_array.arrayAppendItem(XmlRpcValue::makeString(data.data()));
+        //param_array.arrayAppendItem(XmlRpcValue::makeInt(3));
         // *retvalP = XmlRpcValue::makeString(data.data(), data.length());
 
         *retvalP = xmlrpc_string_new(&env, data.data());
@@ -158,12 +161,55 @@ public:
         //    SLEEP(2);
     }
 };
-
+/*
 class checkin : public xmlrpc_c::method {
 public:
     void
     execute(xmlrpc_c::paramList const& paramList,
             xmlrpc_c::value *   const  retvalP) {
+
+        cout << "DEBUG: in checkout";
+        //Parameters of checkout on ServerAPI
+        string project(paramList.getString(0));
+        string username(paramList.getString(1));
+        string password(paramList.getString(2));
+        string message(paramList.getString(3));
+
+        //Files to be sent
+        //TODO: the files (and their name) should be put in a vector e received here through the paramList?
+        //or should be put in a map? Or anything else???
+        //Anyway, they must be read here, and be passed to serverApiP->checkIn
+        //std::map<std::string, std::string> files;
+        
+        //Printing params for Debug
+        cout << "project " << project << "\n";
+        cout << "username " << username << "\n";
+        cout << "password " << password << "\n";
+        cout << "message " << message << "\n";
+        cerr << "";
+
+        //Parameters as Qt vars
+        QString qproj = QString::fromStdString(project);
+        QString quser = QString::fromStdString(username);
+        QString qpw = QString::fromStdString(password);
+        QString qmsg = QString::fromStdString(message);
+
+        //---Given a revision get file names and its content---
+        //Instancianting PatoServerAPI
+        PatoServerApi* serverApiP = PatoServerApi::getInstance();
+        //std::map<std::string, std::string> files;
+        std::map<std::string, std::string> files;
+        files.insert(std::make_pair<std::string,std::string>("client.cpp","teste abc"));
+        //Calling checkout from PatoServerAPI
+        bool ok = false;
+        //ok = serverApiP->checkIn(qproj, quser, qpw, qmsg, files);
+        ok = serverApiP->checkIn(qproj, quser, qpw, qmsg, files);
+        if (!ok) {
+            cout << "Cannot to checkout";
+            *retvalP = xmlrpc_c::value_boolean(false);
+            return;
+        }
+        *retvalP = xmlrpc_c::value_boolean(true);
     }
 };
 
@@ -182,7 +228,7 @@ public:
             xmlrpc_c::value *   const  retvalP) {
     }
 };
-
+*/
 int
 main(int           const,
      const char ** const) {
@@ -192,15 +238,15 @@ main(int           const,
 
         //xmlrpc_c::methodPtr const ServerP(new Server);
         xmlrpc_c::methodPtr const checkoutP(new checkout);
-        xmlrpc_c::methodPtr const checkinP(new checkin);
+        /*xmlrpc_c::methodPtr const checkinP(new checkin);
         xmlrpc_c::methodPtr const statusP(new status);
-        xmlrpc_c::methodPtr const logP(new log);
+        xmlrpc_c::methodPtr const logP(new log);*/
 
         //myRegistry.addMethod("PatoServerApi", PatoServerApiP);
         myRegistry.addMethod("checkout", checkoutP);
-        myRegistry.addMethod("checkin", checkinP);
+        /*myRegistry.addMethod("checkin", checkinP);
         myRegistry.addMethod("status", statusP);
-        myRegistry.addMethod("log", logP);
+        myRegistry.addMethod("log", logP);*/
 
         /*xmlrpc_c::serverAbyss myAbyssServer(
             xmlrpc_c::serverAbyss::constrOpt()
