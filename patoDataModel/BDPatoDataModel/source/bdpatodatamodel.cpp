@@ -1,8 +1,8 @@
 #include "bdpatodatamodel.h"
 #include <algorithm>
 
-//#define PATH_BD "..\\patoDataModel\\BDPatoDataModel\\DataBase\\DataModelBD.sqlite"
-#define PATH_BD "DataModelBD.sqlite"
+#define PATH_BD "..\\patoDataModel\\BDPatoDataModel\\DataBase\\DataModelBD.sqlite"
+//#define PATH_BD "DataModelBD.sqlite"
 namespace bd {
 
     BDPatoDataModel* BDPatoDataModel::bdPato = NULL;
@@ -209,7 +209,7 @@ namespace bd {
                 else
                      vecIdFile.push_back(0);
 
-                removeToken(completePath, '§');
+                removeToken(completePath, '\t');
                 vecFilePath.push_back(completePath);
             }
 
@@ -294,7 +294,7 @@ namespace bd {
             while ( query.next() )
             {
                 std::string path = query.value(0).toString().toStdString();
-                path.append("§");
+                path.append("\t");
                 path.append(query.value(2).toString().toStdString());
                 vecFilePath.push_back(path);
                 vecIdFile.push_back(query.value(1).toString().toStdString());
@@ -302,6 +302,34 @@ namespace bd {
 
             createMapFile(vecFilePath, vecIdFile, filePath);
 
+            return true;
+        }
+
+        return false;
+    }
+
+    bool BDPatoDataModel::getLogPathFile(std::string& path, std::vector<QString>& message)
+    {
+        std::string strSqlLogPathFile = "SELECT * FROM (SELECT ( SELECT ITCO_NOME FROM ITEM_CONFIGURACAO ";
+        strSqlLogPathFile.append("WHERE ITCO_ID = P.ITCO_ID) || (SELECT ARQU_NOME FROM ARQUIVO WHERE ");
+        strSqlLogPathFile.append("ARQU_ID = P.ARQU_ID) AS PATH, (SELECT ARQU_STATUS FROM ARQUIVO WHERE ");
+        strSqlLogPathFile.append("ARQU_ID = P.ARQU_ID) || '\t' || P.TRAN_ID || '\t' || (SELECT (SELECT USUA_NOME FROM USUARIO ");
+        strSqlLogPathFile.append("WHERE USUA_ID = T.USUA_ID) || '\t' || T.TRAN_DATA || '\t' || T.TRAN_MSG ");
+        strSqlLogPathFile.append("FROM TRANSACAO T WHERE T.TRAN_ID = P.TRAN_ID) FROM PROJ_ITEM_TRAN P WHERE ");
+        strSqlLogPathFile.append("P.PRIT_IN_TRANSACTION = 1) T1 WHERE UPPER(T1.PATH) LIKE UPPER('");
+        strSqlLogPathFile.append(path);
+        strSqlLogPathFile.append("');");
+
+        QSqlQuery query(db);
+        if ( query.exec(strSqlLogPathFile.c_str()) )
+        {
+            while ( query.next())
+            {
+                std::string strTempMessage = path;
+                strTempMessage.append("\t");
+                strTempMessage.append(query.value(1).toString().toStdString());
+                message.push_back(strTempMessage.c_str());
+            }
             return true;
         }
 
@@ -879,8 +907,7 @@ namespace bd {
     bool BDPatoDataModel::insertFile(std::string& path, std::string& file, /*std::string& project,*/ std::string& idFile)
     {
         std::string strStatus;
-        std::string filePath = path+file;
-        if ( findPathLastVersion(filePath))
+        if ( findPathLastVersion(path+file) )
             strStatus = "M";
         else
             strStatus = "I";

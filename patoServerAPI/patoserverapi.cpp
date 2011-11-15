@@ -1,5 +1,4 @@
 #include "patoserverapi.h"
-#include "../patoDataModel/patodatamodel.h"
 #include <iostream>
 #include<stdlib.h>
 #include <string.h>
@@ -59,7 +58,7 @@ bool PatoServerApi::checkOut(QString path, QString username, QString password, i
     string strPassword = password.toStdString();
     string strPath = path.toStdString();
 
-    //clear content of checkoutï¿½s map
+    //clear content of checkout´s map
     filesCheckOut.clear();
 
     //this map will be filled with file names and file keys (hash code)
@@ -165,4 +164,11 @@ bool PatoServerApi::showLog(QString project, QString username, QString password,
 
     return PatoDataModel::getInstance()->showLog(strUsername, strPw, strProj, version, filesLog );
 }
+
+bool PatoServerApi::showLogPathFile(QString &path, std::vector<QString>& message)
+{
+    string strPath = path.toStdString();
+    return PatoDataModel::getInstance()->showLogPathFile(strPath, message);
+}
+
 
