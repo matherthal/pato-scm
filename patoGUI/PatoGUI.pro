@@ -17,7 +17,14 @@ SOURCES += main.cpp\
     checkoutdialog.cpp \
     exportdialog.cpp \
     difftool.cpp \
-    aboutdialog.cpp
+    aboutdialog.cpp \
+    lcs.cpp \
+    diffitem.cpp \
+    diff.cpp \
+    logdialog.cpp \
+    replogdialog.cpp \
+    browserepdialog.cpp \
+    difffiledialog.cpp
 
 HEADERS  += mainwindow.h \
     checkindialog.h \
@@ -25,7 +32,14 @@ HEADERS  += mainwindow.h \
     checkoutdialog.h \
     exportdialog.h \
     difftool.h \
-    aboutdialog.h
+    aboutdialog.h \
+    lcs.h \
+    diffitem.h \
+    diff.h \
+    logdialog.h \
+    replogdialog.h \
+    browserepdialog.h \
+    difffiledialog.h
 
 FORMS    += mainwindow.ui \
     checkindialog.ui \
@@ -33,12 +47,36 @@ FORMS    += mainwindow.ui \
     checkoutdialog.ui \
     exportdialog.ui \
     difftool.ui \
-    aboutdialog.ui
+    aboutdialog.ui \
+    logdialog.ui \
+    replogdialog.ui \
+    browserepdialog.ui \
+    difffiledialog.ui
 
 OTHER_FILES +=
 
 RESOURCES += \
     mainwindow.qrc
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

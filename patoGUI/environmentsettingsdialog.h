@@ -23,7 +23,7 @@ signals:
     void setUserName(const QString &str);
     void setUserPassword(const QString &str);
 private slots:
-    void getRepositoryPath();
+//    void getRepositoryPath();
     void getWorkspacePath();
     void apply();
 };
