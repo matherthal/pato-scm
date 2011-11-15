@@ -12,5 +12,7 @@
         <file alias="help">images/help.png</file>
         <file alias="update">images/update.png</file>
         <file alias="diff">images/diff.png</file>
+        <file alias="log">images/log.png</file>
+        <file alias="browse">images/browse.png</file>
     </qresource>
 </RCC>
