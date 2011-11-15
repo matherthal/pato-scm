@@ -1,4 +1,6 @@
 #include "patoclientapi.h"
+#include "../patoBase/patotypes.h"
+#include "../patoWorkspace/patoworkspace.h"
 #include "PatoClientException.h"
 #include "statusOutput.h"
 #include "updateOutput.h"
@@ -7,80 +9,77 @@
 #include <string.h>
 #include<QString>
 #include<QList>
-#include<QDebug>
+#include<QTextStream>
 using namespace std;
 
 PatoClientApi::PatoClientApi() {
 }
 
-QList<checkoutOutput> PatoClientApi::checkout(int revision, QString address, QString username, QString password, QString workspace) throw (PatoClientException) {
+QList<checkoutOutput> PatoClientApi::checkout(RevisionKey revision, QString address, QString username, QString password, QString workspace) throw (PatoClientException) {
 
     QList<checkoutOutput> output;
-
-    if (revision < -1) {
-        throw (PatoClientException("Invalid revision number."));
-    } else if (address == "") {
+    if (address == "") {
         throw (PatoClientException("The checkout command needs an address."));
     } else if (username == "") {
         throw (PatoClientException("The checkout command needs an username."));
     } else if (password == "") {
         throw (PatoClientException("The checkout command needs a password."));
-    } else if (workspace == "") {
-        throw (PatoClientException("The checkout command needs a workspace."));
+    }
+
+    PatoVersionReturn versionParams;// = communication->checkout( address, username, password, revision);
+
+    PatoWorkspace* work = PatoWorkspace::instance();
+
+    if ( PatoWorkspace::exists(workspace) )
+    {
+        work->cleanCopy( versionParams, false);
+    }
+    else
+    {
+        work->create( versionParams );
     }
 
     return output;
 }
 
-QList<logOutput> PatoClientApi::log(QString address, QString username, QString password, QString initialRevision, QString finalRevision) throw (PatoClientException) {
-
+QList<logOutput> PatoClientApi::log(QString address, QString username, QString password, RevisionKey initialRevision, RevisionKey finalRevision) throw (PatoClientException) {
 
     QList<logOutput> output;
 
-    bool* initial;
-    bool* final;
 
-
-    int initialInt = initialRevision.toInt(initial, 10);
-    int finalInt = finalRevision.toInt(final, 10);
-
-
-
-    if (address == "") {
-        throw (PatoClientException("The log command needs an address."));
-    } else if (username == "") {
+    if (username == "") {
         throw (PatoClientException("The log command needs an username."));
     } else if (password == "") {
         throw (PatoClientException("The log command needs a password."));
-    } else if (initialInt < -1) {
-        throw (PatoClientException("Invalid initial revision number."));
-    } else if (finalInt < -1 || finalInt < initialInt) {
+        //    } else if (initialInt < -1) {
+        //        throw (PatoClientException("Invalid initial revision number."));
+    }
+    /*else if (finalInt < -1 || finalInt < initialInt) {
         throw (PatoClientException("Invalid initial revision number."));
     }
-
+    */
     return output;
 }
 
-QList<checkoutOutput> PatoClientApi::checkin(QString address, QString username, QString password, QString workspace) throw (PatoClientException) {
-
-    QList<checkoutOutput> output;
-
-    if (address == "") {
-        throw (PatoClientException("The checkin command needs an address."));
-    } else if (username == "") {
+QList< PatoFileStatus > PatoClientApi::checkin(QString address, QString username, QString password, QString workspace) throw (PatoClientException)
+{
+    if (username == "") {
         throw (PatoClientException("The checkin command needs an username."));
     } else if (password == "") {
         throw (PatoClientException("The checkin command needs a password."));
-    } else if (workspace == "") {
-        throw (PatoClientException("The checkin command needs a workspace."));
     }
 
-    return output;
+    PatoWorkspace* work = PatoWorkspace::instance();
+    PatoChangeSet myChanges = work->changes();
+
+    //RevisionKey newRev = communication->checkin(address, username, password, myChanges);
+    //work->setRevision( newRev ); //set new revision as commiting.
+    return myChanges.status();
 }
 
-QList<addOutput> PatoClientApi::add(QString workspace, QList<QString> files) throw (PatoClientException) {
-
-    QList<addOutput> output;
+QList< PatoFileStatus > PatoClientApi::add(QString workspace, QStringList files) throw (PatoClientException)
+{
+    PatoWorkspace* work = PatoWorkspace::instance();
 
     if (workspace == "") {
         throw (PatoClientException("The add command needs a workspace."));
@@ -88,74 +87,68 @@ QList<addOutput> PatoClientApi::add(QString workspace, QList<QString> files) thr
         throw (PatoClientException("The add command needs at least one file to add."));
     }
 
-    return output;
+    return work->add(workspace, files);
 }
 
-QList<statusOutput> PatoClientApi::status(QString workspace) throw (PatoClientException) {
+QList< PatoFileStatus > PatoClientApi::status(QString workspace) throw (PatoClientException) {
 
-    QList<statusOutput> output;
+    PatoWorkspace* work = PatoWorkspace::instance();
 
-    if (workspace == "") {
+    work->setPath(workspace);
+
+    if (workspace == "")
+    {
         throw (PatoClientException("The status command needs a workspace."));
     }
 
-    return output;
+   return work->status();
 }
 
-QList<updateOutput> PatoClientApi::update(QString revision, QString address, QString username, QString password, QString workspace) throw (PatoClientException) {
+QList< PatoFileStatus > PatoClientApi::update(RevisionKey revision, QString address, QString username, QString password, QString workspace, bool ignoreLocalChanges) throw (PatoClientException) {
 
 
     QList<updateOutput> output;
 
-    bool* conversao;
-    int revisionInt = revision.toInt(conversao, 10);
 
-
-
-    if (revision == revision.null) {
-        throw (PatoClientException("revision is null!!!"));
-    }
-
-    if (revisionInt < -1) {
-        throw (PatoClientException("Invalid revision number."));
-    } else if (address == "") {
+    if (address == "") {
         throw (PatoClientException("The update command needs an address."));
     } else if (username == "") {
         throw (PatoClientException("The update command needs an username."));
     } else if (password == "") {
         throw (PatoClientException("The update command needs a password."));
-    } else if (workspace == "") {
-        throw (PatoClientException("The update command needs a workspace."));
     }
 
-    return output;
+    PatoWorkspace* work = PatoWorkspace::instance();
+    PatoChangeSet changes;// = communication->getChangeSet( work->revision(), revision );
+    work->update( changes, ignoreLocalChanges );
+
+    return changes.status();
 }
 
-void PatoClientApi::merge(QString path1, int revision1, QString path2, int revision2, QString workspace) throw (PatoClientException) {
+void PatoClientApi::merge(QString path1, RevisionKey  revision1, QString path2, RevisionKey revision2, QString workspace) throw (PatoClientException) {
     if (path1 == "") {
         throw (PatoClientException("The merge command needs a path."));
     } else if (path2 == "") {
         throw (PatoClientException("The merge command needs a path."));
     } else if (workspace == "") {
         throw (PatoClientException("The merge command needs a workspace."));
-    } else if (revision1 >= 0) {
+    } else if (revision1 == "") {
         throw (PatoClientException("The merge command needs a revision."));
-    } else if (revision2 >= 0) {
+    } else if (revision2 == "") {
         throw (PatoClientException("The merge command needs a revision."));
     }
-
 }
 
-void PatoClientApi::diff(QString path1, int revision1, QString path2, int revision2) throw (PatoClientException) {
+void PatoClientApi::diff(QString path1, RevisionKey  revision1, QString path2, RevisionKey  revision2) throw (PatoClientException) {
+
 
     if (path1 == "") {
         throw (PatoClientException("The diff command needs a path."));
     } else if (path2 == "") {
         throw (PatoClientException("The diff command needs a path."));
-    } else if (revision1 >= 0) {
+    } else if (revision1 == "") {
         throw (PatoClientException("The diff command needs a revision."));
-    } else if (revision2 >= 0) {
+    } else if (revision2 == "") {
         throw (PatoClientException("The diff command needs a revision."));
     }
-
 }

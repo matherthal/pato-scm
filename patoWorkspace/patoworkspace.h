@@ -3,8 +3,9 @@
 
 #include <QList>
 #include "PatoWorkspace_global.h"
-
 #include "../patoBase/patotypes.h"
+#include "../patoBase/patochangeset.h"
+#include "../patoAlgorithms/diff.h"
 
 enum MetadataType
 {
@@ -21,13 +22,24 @@ public://STATICS
     static PatoWorkspace* instance();
     static void free();
 
+    static bool exists( QString path );
+
 public:
     //////////////PRIMEIRA FASE//////////////////////
     bool setPath(QString,bool createDir = false); //set workspace directory
+
+    bool clearWorkspace();
+    bool makeBackup();
+
+    bool create(PatoVersionReturn params);
     bool create( QString sourceDir, QStringList files, QString repoAddress, RevisionKey revision); //create an initial workspace
-    bool update( PatoChangeSet changeSet, RevisionKey revision); //apply a changeset and update revision number
+
+    bool cleanCopy(PatoVersionReturn params, bool backup = false);
+    bool cleanCopy( QString sourceDir, QStringList files, QString repoAddress, RevisionKey revision, bool backup = false);
+
+    bool update( PatoChangeSet changeSet,  bool clear ); //apply a changeset
     bool setRevision( RevisionKey revision, bool commiting = true ); //update revision number
-    bool add( QString sourceDir, QStringList path ); //add files and/or directories
+    QList< PatoFileStatus > add( QString sourceDir, QStringList path ); //add files and/or directories
     QString defaultRepositoryAddress() const; // return the source repository
     RevisionKey revision() const; //get current revision
     QList< PatoFileStatus > status(PatoFileStatus::FileStatus = PatoFileStatus::ALL) const; // return a list of file status
@@ -56,6 +68,8 @@ private:
 
     QString metaFilePath(MetadataType, bool fullPath = false) const;
 
+
+    QByteArray toByteArray(Diff&) const;
 
 private:
     static PatoWorkspace* sigleWorkspace;

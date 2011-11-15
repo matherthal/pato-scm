@@ -7,17 +7,18 @@
 QT       -= gui
 QT       += sql
 
-TARGET = ../output/Server
-TEMPLATE = lib
+TARGET = ./output/Server
+TEMPLATE = app
 
 DEFINES += PATOSERVERAPI_LIBRARY
 
 SOURCES += server.cpp
 
-HEADERS += server.h\
-        Server_global.h
+#HEADERS += server.h\
+#        Server_global.h
 
-LIBS += -L"./xmlrpc" -lxmlrpc_server_abyss++ -lxmlrpc_server++ -lxmlrpc_server_abyss -lxmlrpc_server -lxmlrpc_abyss -lpthread -lxmlrpc++ -lxmlrpc -lxmlrpc_xmlparse -lxmlrpc_xmltok -lxmlrpc_util
+LIBS += -L"./libxmlrpc" -lxmlrpc_server_abyss++ -lxmlrpc_server++ -lxmlrpc_server_abyss -lxmlrpc_server -lxmlrpc_abyss -lpthread -lxmlrpc++ -lxmlrpc -lxmlrpc_xmlparse -lxmlrpc_xmltok -lxmlrpc_util
+
 
 symbian {
     MMP_RULES += EXPORTUNFROZEN

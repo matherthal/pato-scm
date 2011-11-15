@@ -3,15 +3,15 @@
 #include <cstdlib>
 #include <string>
 #include <iostream>
-#include <xmlrpc-c/girerr.hpp>
-#include <xmlrpc-c/base.hpp>
-#include <xmlrpc-c/client_simple.hpp>
+//#include <xmlrpc-c/girerr.hpp>
+//#include <xmlrpc-c/base.hpp>
+//#include <xmlrpc-c/client_simple.hpp>
 
 using namespace std;
 
 int
 main(int argc, char **) {
-
+/*
     if (argc-1 > 0) {
         cerr << "This program has no arguments" << endl;
         exit(1);
@@ -36,7 +36,7 @@ main(int argc, char **) {
     } catch (...) {
         cerr << "Client threw unexpected error." << endl;
     }
-
+*/
     return 0;
 }
 

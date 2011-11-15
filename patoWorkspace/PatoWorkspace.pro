@@ -7,7 +7,8 @@
 QT       -= gui
 
 win32: TARGET = ../../output/patoworkspace
-unix:  TARGET = ../output/patoworkspace
+unix:  TARGET = ../output/PatoWorkspace
+
 
 TEMPLATE = lib
 
@@ -18,8 +19,7 @@ SOURCES += patoworkspace.cpp
 HEADERS += patoworkspace.h\
         PatoWorkspace_global.h
 
-LIBS += -L../output\
-         -lPatoBase
+LIBS += -L"../output" -lPatoBase -lPatoAlgorithms
 
 symbian {
     MMP_RULES += EXPORTUNFROZEN

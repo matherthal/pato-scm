@@ -25,7 +25,9 @@ SOURCES += main.cpp \
     checkinCLI.cpp \
     addCLI.cpp \
     utils.cpp \
-    ../patoClientAPI/PatoClientException.cpp
+    mergeCLI.cpp \
+    logCLI.cpp \
+    diffCLI.cpp
 
 HEADERS += \
     updateCLI.h \
@@ -35,8 +37,27 @@ HEADERS += \
     checkinCLI.h \
     addCLI.h \
     utils.h \
-    ../patoClientAPI/PatoClientException.h
+    mergeCLI.h \
+    logCLI.h \
+    diffCLI.h
 
-LIBS += -L../output  -lPatoClientApi
+LIBS += -L"../output"  -lPatoClientApi -lPatoWorkspace -lPatoAlgorithms -lPatoBase
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

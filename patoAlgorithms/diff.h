@@ -2,6 +2,7 @@
 #define DIFF_H
 #include "lcs.h"
 #include "diffitem.h"
+#include "PatoAlgorithms_global.h"
 
 using namespace std;
 
@@ -13,7 +14,7 @@ struct t_diff{
 };
 typedef struct t_diff t_diff;
 
-class Diff
+class PATOALGORITHMSSHARED_EXPORT Diff
 {
 private:
     t_diff *diff;
@@ -32,7 +33,7 @@ public:
     bool isEmpty();
     void print();
     DiffItem* getDiffItem(int _pos);
-    fstream* getFile(char* _file_name);
+    void getFile(char* _file_name);
 };
 
 #endif // DIFF_H

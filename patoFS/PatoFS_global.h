@@ -3,7 +3,7 @@
 
 #include <QtCore/qglobal.h>
 
-#include porcaria.h
+//#include porcaria.h
 
 #if defined(PATOFS_LIBRARY)
 #  define PATOFSSHARED_EXPORT Q_DECL_EXPORT

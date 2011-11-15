@@ -3,6 +3,8 @@
 
 //#include "PatoClientApi_global.h"
 #include"PatoClientApi_global.h"
+
+#include"../patoBase/patotypes.h"
 #include"PatoClientException.h"
 #include"logOutput.h"
 #include"statusOutput.h"
@@ -10,21 +12,26 @@
 #include"checkoutOutput.h"
 #include"checkinOutput.h"
 #include"updateOutput.h"
+#include"diffOutput.h"
 #include<QString>
 #include<QList>
 
 
 class PatoClientApi {
 public:
-    QList<checkoutOutput> checkout(int revision, QString adress, QString username, QString password, QString workspace) throw(PatoClientException);
-    QList<logOutput> log(QString adress, QString username, QString password, QString initialRevision, QString finalRevision) throw(PatoClientException);
-    QList<checkoutOutput> checkin(QString address, QString username, QString password, QString workspace)throw(PatoClientException);
-    QList<statusOutput> status(QString workspace) throw(PatoClientException);
-    QList<addOutput> add(QString workspace, QList<QString> files) throw(PatoClientException);
-    QList<updateOutput> update(QString revision, QString adress, QString username, QString password, QString workspace) throw(PatoClientException);
-    void merge(QString path1, int revision1, QString path2, int revision2, QString workspace) throw(PatoClientException);
-    void diff(QString path1, int revision1, QString path2, int revision2) throw(PatoClientException);
-    
+
+    QList<logOutput> log(QString adress, QString username, QString password, RevisionKey initialRevision, RevisionKey finalRevision) throw(PatoClientException);
+
+
+    void merge(QString path1, RevisionKey revision1, QString path2, RevisionKey revision2, QString workspace) throw(PatoClientException);
+    void diff(QString path1, RevisionKey revision1, QString path2, RevisionKey revision2) throw(PatoClientException);
+
+    QList<checkoutOutput> checkout(RevisionKey revision, QString adress, QString username, QString password, QString workspace) throw(PatoClientException);
+    QList<PatoFileStatus> update(RevisionKey revision, QString adress, QString username, QString password, QString workspace, bool ignoreLocalChanges) throw(PatoClientException);
+    QList<PatoFileStatus> checkin(QString address, QString username, QString password, QString workspace)throw(PatoClientException);
+    QList<PatoFileStatus> status(QString workspace) throw(PatoClientException);
+    QList<PatoFileStatus> add(QString workspace, QStringList files) throw(PatoClientException);
+
     PatoClientApi();
 
 private:
