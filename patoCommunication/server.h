@@ -1,30 +1,27 @@
-/*#ifndef PATOSERVERAPI_H
-#define PATOSERVERAPI_H
+#ifndef PATOSERVER_H
+#define PATOSERVER_H
 
-#include "PatoServerApi_global.h"
-#include "../patoDataModel/patodatamodel.h"
-#include "../patoFS/patofs.h"
+#include "Server_global.h"
+#include "../patoServerAPI/PatoServerApi_global.h"
+#include "../patoServerAPI/patoserverapi.h"
 #include<QtCore/QString>
 
 using namespace std;
 
-class PATOSERVERAPISHARED_EXPORT PatoServerApi {
-class PatoServerApi {
+/*class PATOSERVERSHARED_EXPORT PatoServer {
 private:
-    PatoDataModel* dataModel;
-    PatoFS* storage;
-    std::map<std::string, int> filePath;
-    map<string, string> file;
+    //std::map<std::string, int> filePath;
+    //map<string, string> file;
 
 public:
-    std::map<std::string, std::string>* checkout(int revision, QString path, QString username, QString password);
-    bool checkin(QString path, QString username, QString password);
+    //std::map<std::string, std::string>* checkout(int revision, QString path, QString username, QString password);
+    //bool checkin(QString path, QString username, QString password);
 
-    PatoServerApi();
-};
+    //PatoServerApi();
+};*/
 
-#endif // PATOSERVERAPI_H
-*/
+#endif // PATOSERVER_H
+
 
 /*class PatoServerApi : public xmlrpc_c  {
 private:
