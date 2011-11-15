@@ -60,7 +60,7 @@ namespace bd {
         std::string sqlInsertTransaction = "insert into transacao (tran_id, tran_tipo, usua_id, tran_data, tran_msg) ";
         sqlInsertTransaction.append("values (null, 1, ");
         sqlInsertTransaction.append(outUserId.str());
-        sqlInsertTransaction.append(", (SELECT date('now')), '");
+        sqlInsertTransaction.append(", (SELECT datetime('now')), '");
         sqlInsertTransaction.append(message);
         sqlInsertTransaction.append("');");
 
@@ -347,8 +347,8 @@ namespace bd {
         else
             outVersion << version;
 
-        std::string sqlTransaction = "select (select usua_nome from usuario where usua_id = t.usua_id) || ' ' || ";
-        sqlTransaction.append("t.tran_data || ' ' || t.tran_msg from transacao t where t.tran_id = " );
+        std::string sqlTransaction = "select (select usua_nome from usuario where usua_id = t.usua_id) || '\t' || ";
+        sqlTransaction.append("t.tran_data || '\t' || t.tran_msg from transacao t where t.tran_id = " );
         sqlTransaction.append(outVersion.str());
         sqlTransaction.append(";");
 
