@@ -5,6 +5,9 @@
 #include "checkoutdialog.h"
 #include "exportdialog.h"
 #include "aboutdialog.h"
+#include "logdialog.h"
+#include "replogdialog.h"
+#include "browserepdialog.h"
 #include "difftool.h"
 #include <QtGui>
 #include <QDesktopServices>
@@ -25,6 +28,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ExportDialog *exportDialog = new ExportDialog;
     DiffTool *diffToolWindow = new DiffTool;
     AboutDialog *aboutDialog = new AboutDialog;
+    LogDialog *logDialog = new LogDialog;
+    RepLogDialog *repLogDialog = new RepLogDialog;
+    BrowseRepDialog *browseDialog = new BrowseRepDialog;
 
 
     //Actions
@@ -42,6 +48,13 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(environmentSettingsDialog, SIGNAL(setRepositoryPath(QString)), exportDialog, SLOT(setRepositoryPath(QString)));
     connect(environmentSettingsDialog, SIGNAL(setWorkspacePath(QString)), exportDialog, SLOT(setWorkspacePath(QString)));
     connect(ui->actionExport, SIGNAL(triggered()), exportDialog, SLOT(show()));
+
+    connect(ui->actionLog, SIGNAL(triggered()), logDialog, SLOT(show()));
+    connect(ui->actionRepLog, SIGNAL(triggered()), repLogDialog, SLOT(show()));
+
+    connect(environmentSettingsDialog, SIGNAL(setRepositoryPath(QString)), browseDialog, SLOT(setRepositoryPath(QString)));
+    connect(environmentSettingsDialog, SIGNAL(setRepositoryPath(QString)), browseDialog, SLOT(setTitle(QString)));
+    connect(ui->actionBrowse, SIGNAL(triggered()), browseDialog, SLOT(show()));
 
     connect(checkinDialog, SIGNAL(showEnvironmentSettings()), environmentSettingsDialog, SLOT(show()));
     connect(checkoutDialog, SIGNAL(showEnvironmentSettings()), environmentSettingsDialog, SLOT(show()));
@@ -68,12 +81,17 @@ void MainWindow::setWorkspaceModel(const QString &str)
     QFileSystemModel *workspaceModel = new QFileSystemModel;
     workspaceModel->setRootPath(str);
 
-    ui->treeViewWorkspace->setModel(workspaceModel);
-    ui->treeViewWorkspace->setRootIndex(workspaceModel->index(str));
-    ui->treeViewWorkspace->setVisible(true);
+    //Workspace in Tree View
+//    ui->treeViewWorkspace->setModel(workspaceModel);
+//    ui->treeViewWorkspace->setRootIndex(workspaceModel->index(str));
+//    ui->treeViewWorkspace->setVisible(true);
 
+    //Workspace in Table View
+    ui->tableView->setModel(workspaceModel);
+    ui->tableView->setRootIndex(workspaceModel->index(str));
+    ui->tableView->setVisible(true);
+    ui->tableView->setShowGrid(false);
     ui->labelWorkspace->setVisible(true);
-
     ui->labelWorkspacePath->setText(str);
     ui->labelWorkspacePath->setVisible(true);
 }
@@ -85,6 +103,10 @@ void MainWindow::enableActions()
     ui->actionAdd_File_Dir->setEnabled(true);
     ui->actionRemove_File_Dir->setEnabled(true);
     ui->actionUpdate->setEnabled(true);
+    ui->actionLog->setEnabled(true);
+    ui->menuRepository->setEnabled(true);
+    ui->actionRepLog->setEnabled(true);
+    ui->actionBrowse->setEnabled(true);
 
 }
 void MainWindow::help()

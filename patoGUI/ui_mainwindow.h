@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created: Thu 10. Nov 12:30:15 2011
+** Created: Tue 15. Nov 15:25:12 2011
 **      by: Qt User Interface Compiler version 4.7.4
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -20,6 +20,7 @@
 #include <QtGui/QMenu>
 #include <QtGui/QMenuBar>
 #include <QtGui/QStatusBar>
+#include <QtGui/QTableView>
 #include <QtGui/QToolBar>
 #include <QtGui/QTreeView>
 #include <QtGui/QWidget>
@@ -39,15 +40,20 @@ public:
     QAction *actionRemove_File_Dir;
     QAction *actionUpdate;
     QAction *actionOpen;
+    QAction *actionBrowse;
+    QAction *actionRepLog;
+    QAction *actionLog;
     QWidget *centralWidget;
     QTreeView *treeViewWorkspace;
     QLabel *labelWorkspace;
     QLabel *labelWorkspacePath;
+    QTableView *tableView;
     QMenuBar *menuBar;
     QMenu *menuPato_SCM;
     QMenu *menuHelp;
     QMenu *menuWorkspace;
-    QMenu *menuPato_Diff_Tool;
+    QMenu *menuPatoOthers;
+    QMenu *menuRepository;
     QStatusBar *statusBar;
     QToolBar *mainToolBar;
     QToolBar *workspaceToolBar;
@@ -58,6 +64,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
+        MainWindow->setEnabled(true);
         MainWindow->resize(800, 500);
         QIcon icon;
         icon.addFile(QString::fromUtf8(":/new/icons/icon"), QSize(), QIcon::Normal, QIcon::Off);
@@ -123,6 +130,22 @@ public:
         QIcon icon9;
         icon9.addFile(QString::fromUtf8(":/new/icons/diff"), QSize(), QIcon::Normal, QIcon::Off);
         actionOpen->setIcon(icon9);
+        actionBrowse = new QAction(MainWindow);
+        actionBrowse->setObjectName(QString::fromUtf8("actionBrowse"));
+        actionBrowse->setEnabled(false);
+        QIcon icon10;
+        icon10.addFile(QString::fromUtf8(":/new/icons/browse"), QSize(), QIcon::Normal, QIcon::Off);
+        actionBrowse->setIcon(icon10);
+        actionRepLog = new QAction(MainWindow);
+        actionRepLog->setObjectName(QString::fromUtf8("actionRepLog"));
+        actionRepLog->setEnabled(false);
+        QIcon icon11;
+        icon11.addFile(QString::fromUtf8(":/new/icons/log"), QSize(), QIcon::Normal, QIcon::Off);
+        actionRepLog->setIcon(icon11);
+        actionLog = new QAction(MainWindow);
+        actionLog->setObjectName(QString::fromUtf8("actionLog"));
+        actionLog->setEnabled(false);
+        actionLog->setIcon(icon11);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         treeViewWorkspace = new QTreeView(centralWidget);
@@ -149,6 +172,10 @@ public:
         font2.setPointSize(10);
         font2.setItalic(false);
         labelWorkspacePath->setFont(font2);
+        tableView = new QTableView(centralWidget);
+        tableView->setObjectName(QString::fromUtf8("tableView"));
+        tableView->setGeometry(QRect(10, 19, 781, 406));
+        tableView->verticalHeader()->setVisible(false);
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
@@ -167,8 +194,11 @@ public:
         menuWorkspace = new QMenu(menuBar);
         menuWorkspace->setObjectName(QString::fromUtf8("menuWorkspace"));
         menuWorkspace->setEnabled(false);
-        menuPato_Diff_Tool = new QMenu(menuBar);
-        menuPato_Diff_Tool->setObjectName(QString::fromUtf8("menuPato_Diff_Tool"));
+        menuPatoOthers = new QMenu(menuBar);
+        menuPatoOthers->setObjectName(QString::fromUtf8("menuPatoOthers"));
+        menuRepository = new QMenu(menuBar);
+        menuRepository->setObjectName(QString::fromUtf8("menuRepository"));
+        menuRepository->setEnabled(false);
         MainWindow->setMenuBar(menuBar);
         statusBar = new QStatusBar(MainWindow);
         statusBar->setObjectName(QString::fromUtf8("statusBar"));
@@ -179,6 +209,7 @@ public:
         MainWindow->addToolBar(Qt::TopToolBarArea, mainToolBar);
         workspaceToolBar = new QToolBar(MainWindow);
         workspaceToolBar->setObjectName(QString::fromUtf8("workspaceToolBar"));
+        workspaceToolBar->setEnabled(true);
         MainWindow->addToolBar(Qt::TopToolBarArea, workspaceToolBar);
         diffToolBar = new QToolBar(MainWindow);
         diffToolBar->setObjectName(QString::fromUtf8("diffToolBar"));
@@ -190,7 +221,8 @@ public:
 
         menuBar->addAction(menuPato_SCM->menuAction());
         menuBar->addAction(menuWorkspace->menuAction());
-        menuBar->addAction(menuPato_Diff_Tool->menuAction());
+        menuBar->addAction(menuRepository->menuAction());
+        menuBar->addAction(menuPatoOthers->menuAction());
         menuBar->addAction(menuHelp->menuAction());
         menuPato_SCM->addAction(actionEnvironment_Settings);
         menuPato_SCM->addSeparator();
@@ -204,7 +236,10 @@ public:
         menuWorkspace->addAction(actionRemove_File_Dir);
         menuWorkspace->addSeparator();
         menuWorkspace->addAction(actionUpdate);
-        menuPato_Diff_Tool->addAction(actionOpen);
+        menuWorkspace->addAction(actionLog);
+        menuPatoOthers->addAction(actionOpen);
+        menuRepository->addAction(actionBrowse);
+        menuRepository->addAction(actionRepLog);
         mainToolBar->addAction(actionEnvironment_Settings);
         mainToolBar->addSeparator();
         mainToolBar->addAction(actionCheckin);
@@ -215,6 +250,8 @@ public:
         workspaceToolBar->addAction(actionRemove_File_Dir);
         workspaceToolBar->addSeparator();
         workspaceToolBar->addAction(actionUpdate);
+        workspaceToolBar->addAction(actionLog);
+        diffToolBar->addAction(actionBrowse);
         diffToolBar->addAction(actionOpen);
         helpToolBar->addAction(actionHelp);
 
@@ -275,6 +312,21 @@ public:
 #ifndef QT_NO_STATUSTIP
         actionOpen->setStatusTip(QApplication::translate("MainWindow", "Open Pato-Diff Tool", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_STATUSTIP
+        actionBrowse->setText(QApplication::translate("MainWindow", "Browse", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
+        actionBrowse->setToolTip(QApplication::translate("MainWindow", "Browse", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        actionBrowse->setStatusTip(QApplication::translate("MainWindow", "Browse project at repository", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+        actionRepLog->setText(QApplication::translate("MainWindow", "Repository Log", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_STATUSTIP
+        actionRepLog->setStatusTip(QApplication::translate("MainWindow", "See revisions log from repository", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+        actionLog->setText(QApplication::translate("MainWindow", "Log", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_STATUSTIP
+        actionLog->setStatusTip(QApplication::translate("MainWindow", "Show revisions log", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
 #ifndef QT_NO_TOOLTIP
         treeViewWorkspace->setToolTip(QApplication::translate("MainWindow", "Workspace View", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
@@ -292,7 +344,8 @@ public:
         menuPato_SCM->setTitle(QApplication::translate("MainWindow", "Pato-SCM", 0, QApplication::UnicodeUTF8));
         menuHelp->setTitle(QApplication::translate("MainWindow", "Help", 0, QApplication::UnicodeUTF8));
         menuWorkspace->setTitle(QApplication::translate("MainWindow", "Workspace", 0, QApplication::UnicodeUTF8));
-        menuPato_Diff_Tool->setTitle(QApplication::translate("MainWindow", "Pato-Diff Tool", 0, QApplication::UnicodeUTF8));
+        menuPatoOthers->setTitle(QApplication::translate("MainWindow", "Pato-Diff Tool", 0, QApplication::UnicodeUTF8));
+        menuRepository->setTitle(QApplication::translate("MainWindow", "Repository", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_STATUSTIP
         statusBar->setStatusTip(QApplication::translate("MainWindow", "Ready", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_STATUSTIP
