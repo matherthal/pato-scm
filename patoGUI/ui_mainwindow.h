@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created: Tue 15. Nov 15:25:12 2011
+** Created: Tue 15. Nov 16:26:00 2011
 **      by: Qt User Interface Compiler version 4.7.4
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -93,6 +93,7 @@ public:
         actionEnvironment_Settings->setFont(font);
         actionExport = new QAction(MainWindow);
         actionExport->setObjectName(QString::fromUtf8("actionExport"));
+        actionExport->setEnabled(false);
         QIcon icon4;
         icon4.addFile(QString::fromUtf8(":/new/icons/exporticon"), QSize(), QIcon::Normal, QIcon::Off);
         actionExport->setIcon(icon4);

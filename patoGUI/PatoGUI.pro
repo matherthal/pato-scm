@@ -23,7 +23,8 @@ SOURCES += main.cpp\
     diff.cpp \
     logdialog.cpp \
     replogdialog.cpp \
-    browserepdialog.cpp
+    browserepdialog.cpp \
+    difffiledialog.cpp
 
 HEADERS  += mainwindow.h \
     checkindialog.h \
@@ -37,7 +38,8 @@ HEADERS  += mainwindow.h \
     diff.h \
     logdialog.h \
     replogdialog.h \
-    browserepdialog.h
+    browserepdialog.h \
+    difffiledialog.h
 
 FORMS    += mainwindow.ui \
     checkindialog.ui \
@@ -48,12 +50,16 @@ FORMS    += mainwindow.ui \
     aboutdialog.ui \
     logdialog.ui \
     replogdialog.ui \
-    browserepdialog.ui
+    browserepdialog.ui \
+    difffiledialog.ui
 
 OTHER_FILES +=
 
 RESOURCES += \
     mainwindow.qrc
+
+
+
 
 
 

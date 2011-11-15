@@ -18,6 +18,7 @@ private slots:
     void setWorkspaceModel(const QString &str);
     void enableActions();
     void help();
+    //void executeCheckout();
 private:
     Ui::MainWindow *ui;
 };

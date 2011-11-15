@@ -6,7 +6,17 @@ ExportDialog::ExportDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::ExportDialog)
 {
+    //Start Configurations
     ui->setupUi(this);
+    ui->groupBox_2->setEnabled(false);
+    ui->labelRepositoryPath->setEnabled(false);
+    ui->labelWorkspacePath->setEnabled(false);
+    ui->buttonChangeRepository->setEnabled(false);
+    ui->buttonChangeWorkspace->setEnabled(false);
+    ui->radioButtonHEAD->setChecked(true);
+    ui->labelRevisionNumber->setEnabled(false);
+    ui->lineEditRevisionNumber->setEnabled(false);
+
     //Actions
     connect(ui->buttonChangeRepository, SIGNAL(clicked()), this, SLOT(changePath()));
     connect(ui->buttonChangeWorkspace, SIGNAL(clicked()), this, SLOT(changePath()));
@@ -21,15 +31,6 @@ ExportDialog::ExportDialog(QWidget *parent) :
 
     connect(ui->pushButtonChooseExportPath, SIGNAL(clicked()), this, SLOT(getExportPath()));
 
-    //Start Configurations
-    ui->groupBox_2->setEnabled(false);
-    ui->labelRepositoryPath->setEnabled(false);
-    ui->labelWorkspacePath->setEnabled(false);
-    ui->buttonChangeRepository->setEnabled(false);
-    ui->buttonChangeWorkspace->setEnabled(false);
-    ui->radioButtonHEAD->setChecked(true);
-    ui->labelRevisionNumber->setEnabled(false);
-    ui->lineEditRevisionNumber->setEnabled(false);
 
     //Window properties
     setFixedSize(500,430);

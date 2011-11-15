@@ -315,6 +315,9 @@
    </property>
   </action>
   <action name="actionExport">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="mainwindow.qrc">
      <normaloff>:/new/icons/exporticon</normaloff>:/new/icons/exporticon</iconset>
