@@ -81,7 +81,7 @@ public:
         cout << "revision " << revision << "\n";
         cout << "path " << path << "\n";
         cout << "username " << username << "\n";
-        cout << "password " << password << "\n";
+        cout << "password " << password << "\n\n";
         cerr << "";
 
         //Parameters as Qt vars
@@ -92,7 +92,8 @@ public:
         //---Given a revision get file names and its content---
         //Instancianting PatoServerAPI
         std::map<std::string, std::string> files;
-        files.insert(std::make_pair<std::string, std::string>("./client.cpp", "teste abc"));        
+        files.insert(std::make_pair<std::string, std::string>("./file1.cpp", "teste abc"));
+        files.insert(std::make_pair<std::string, std::string>("./file2.cpp", "codigo codigo codigo"));
         bool ok = true;//PatoServerApi::getInstance()->checkOut(qpath, quser, qpw, revision, files);
         
         //Calling checkout from PatoServerAPI
@@ -108,15 +109,22 @@ public:
         map<string, string>::iterator it;
 
         //The files will be stored to "data" to be sent
-        QByteArray data;
-        QDataStream dataStream(&data, QIODevice::ReadWrite);
+        QByteArray * data = new QByteArray();
+        //QDataStream dataStream(&data, QIODevice::ReadWrite);
         //Size of data is stored to "data" too
-        dataStream << (qint32)files.size();
+        //dataStream << (qint32)files.size();
+        //cout << "files size " << (qint32)files.size() << "\n";
+        //cout << "datastream status " << dataStream.status() << "\n";
         for ( it = files.begin(); it != files.end(); it++)
         {
             //Get the name and data of files
-            dataStream << QString::fromStdString(it->first);
-            dataStream << QString::fromStdString(it->second);
+            //dataStream << QString::fromStdString(it->first);
+            //cout << "files name writing " << data << "\n";
+            //dataStream << QString::fromStdString(it->second);
+            //cout << "files content writing " << it->second << "\n";
+            //cout << "datastream status " << dataStream.status() << "\n";
+            data->append(QString::fromStdString(it->first));
+            data->append(QString::fromStdString(it->second));
         }
 
         // Build our parameter array.
@@ -125,43 +133,23 @@ public:
         //param_array.arrayAppendItem(XmlRpcValue::makeInt(3));
         // *retvalP = XmlRpcValue::makeString(data.data(), data.length());
 
-        *retvalP = xmlrpc_string_new(&env, data.data());
+        //string s = data.data();
+        //cout << "data " << s.size() << "\n";
+        //*retvalP = xmlrpc_string_new(&env, data.data());
 
 
+        *retvalP = xmlrpc_string_new(&env, data->data());
 
+        //string s = "matheus";
+        //*retvalP = xmlrpc_string_new(&env, s.data());
 
-        //*retvalP = xmlrpc_string_new(&env, "");
-        //*retvalP = xmlrpc_build_value(&env, "s", "retorno");
-        //*retvalP = xmlrpc_c::value_int(13);
-
-        //xmlrpc_c::value * const ret;
-        //ret->instantiate();
-        //xmlrpc_parse_value(env, data.data(), "s", ret);
-        //*retvalP = ret;
-        //xmlrpc_c::value * const  valP;
-        //valP->cValue(data.data());
-        /* Parse our argument array. */
-        //xmlrpc_parse_value(env, param_array, "(ii)", &x, &y);
-        //*retvalP = xmlrpc_c::value(valP);
-
-        /*
-        // Make the vector value 'arrayData'
-        vector<xmlrpc_c::value> arrayData;
-        arrayData.push_back(xmlrpc_c::value_int(data.length()));
-        arrayData.push_back(xmlrpc_c::value_string(data.data()));
-
-        // Make an XML-RPC array out of it        
-        xmlrpc_c::value_array arrayLenDat(arrayData);
-        *retvalP = arrayLenDat;
-        *retvalP = xmlrpc_c::value_int(revision + 1);
-        */
         // Sometimes, make it look hard (so client can see what it's like
         // to do an RPC that takes a while).
         //if (adder == 1)
         //    SLEEP(2);
     }
 };
-/*
+
 class checkin : public xmlrpc_c::method {
 public:
     void
@@ -174,6 +162,7 @@ public:
         string username(paramList.getString(1));
         string password(paramList.getString(2));
         string message(paramList.getString(3));
+        string files(paramList.getString(4));
 
         //Files to be sent
         //TODO: the files (and their name) should be put in a vector e received here through the paramList?
@@ -186,6 +175,7 @@ public:
         cout << "username " << username << "\n";
         cout << "password " << password << "\n";
         cout << "message " << message << "\n";
+        cout << "files " << files << "\n\n";
         cerr << "";
 
         //Parameters as Qt vars
@@ -194,9 +184,11 @@ public:
         QString qpw = QString::fromStdString(password);
         QString qmsg = QString::fromStdString(message);
 
+
+        /*
         //---Given a revision get file names and its content---
         //Instancianting PatoServerAPI
-        PatoServerApi* serverApiP = PatoServerApi::getInstance();
+        //PatoServerApi* serverApiP = PatoServerApi::getInstance();
         //std::map<std::string, std::string> files;
         std::map<std::string, std::string> files;
         files.insert(std::make_pair<std::string,std::string>("client.cpp","teste abc"));
@@ -208,7 +200,7 @@ public:
             cout << "Cannot to checkout";
             *retvalP = xmlrpc_c::value_boolean(false);
             return;
-        }
+        }*/
         *retvalP = xmlrpc_c::value_boolean(true);
     }
 };
@@ -228,7 +220,7 @@ public:
             xmlrpc_c::value *   const  retvalP) {
     }
 };
-*/
+
 int
 main(int           const,
      const char ** const) {
@@ -238,15 +230,15 @@ main(int           const,
 
         //xmlrpc_c::methodPtr const ServerP(new Server);
         xmlrpc_c::methodPtr const checkoutP(new checkout);
-        /*xmlrpc_c::methodPtr const checkinP(new checkin);
+        xmlrpc_c::methodPtr const checkinP(new checkin);
         xmlrpc_c::methodPtr const statusP(new status);
-        xmlrpc_c::methodPtr const logP(new log);*/
+        xmlrpc_c::methodPtr const logP(new log);
 
         //myRegistry.addMethod("PatoServerApi", PatoServerApiP);
         myRegistry.addMethod("checkout", checkoutP);
-        /*myRegistry.addMethod("checkin", checkinP);
+        myRegistry.addMethod("checkin", checkinP);
         myRegistry.addMethod("status", statusP);
-        myRegistry.addMethod("log", logP);*/
+        myRegistry.addMethod("log", logP);
 
         /*xmlrpc_c::serverAbyss myAbyssServer(
             xmlrpc_c::serverAbyss::constrOpt()
@@ -256,7 +248,7 @@ main(int           const,
             myRegistry, //handler of methods
             8080,
             "xmlrpc_log"
-            );
+        );
 
         myAbyssServer.run();
         // xmlrpc_c::serverAbyss.run() never returns
