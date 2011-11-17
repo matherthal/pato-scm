@@ -152,7 +152,7 @@ std::string PatoDataModel::getPath( std::string& pathFile )
 
 std::string PatoDataModel::getFile( std::string& pathFile )
 {
-    int posLastBar = pathFile.rfind("\\");
+    int posLastBar = pathFile.rfind("/");
     std::string file;
     if ( posLastBar > -1 )
     {
