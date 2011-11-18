@@ -70,7 +70,7 @@ public:
         xmlrpc_env env;
         xmlrpc_env_init(&env);
 
-        cout << "DEBUG: in checkout";
+        cout << "Checkout" << "\n";
         //Parameters of checkout on ServerAPI
         int revision(paramList.getInt(0));
         string path(paramList.getString(1));
@@ -78,10 +78,10 @@ public:
         string password(paramList.getString(3));
 
         //Printing params for Debug
-        cout << "revision " << revision << "\n";
-        cout << "path " << path << "\n";
-        cout << "username " << username << "\n";
-        cout << "password " << password << "\n\n";
+        cout << "Revision: " << revision << "\n";
+        cout << "Path:     " << path << "\n";
+        cout << "Username: " << username << "\n";
+        cout << "Password: " << password << "\n\n";
         cerr << "";
 
         //Parameters as Qt vars
@@ -92,8 +92,8 @@ public:
         //---Given a revision get file names and its content---
         //Instancianting PatoServerAPI
         std::map<std::string, std::string> files;
-        files.insert(std::make_pair<std::string, std::string>("./file1.cpp", "teste abc"));
-        files.insert(std::make_pair<std::string, std::string>("./file2.cpp", "codigo codigo codigo"));
+        files.insert(std::make_pair<std::string, std::string>("./file1.cpp", "create { turtle };"));
+        files.insert(std::make_pair<std::string, std::string>("./file2.cpp", "access { turtle data };"));
         bool ok = true;//PatoServerApi::getInstance()->checkOut(qpath, quser, qpw, revision, files);
         
         //Calling checkout from PatoServerAPI
@@ -156,7 +156,7 @@ public:
     execute(xmlrpc_c::paramList const& paramList,
             xmlrpc_c::value *   const  retvalP) {
 
-        cout << "DEBUG: in checkout";
+        cout << "Checkin" << "\n";
         //Parameters of checkout on ServerAPI
         string project(paramList.getString(0));
         string username(paramList.getString(1));
@@ -171,11 +171,11 @@ public:
         //std::map<std::string, std::string> files;
         
         //Printing params for Debug
-        cout << "project " << project << "\n";
-        cout << "username " << username << "\n";
-        cout << "password " << password << "\n";
-        cout << "message " << message << "\n";
-        cout << "files " << files << "\n\n";
+        cout << "Project:  " << project << "\n";
+        cout << "Username: " << username << "\n";
+        cout << "Password: " << password << "\n";
+        cout << "Message:  " << message << "\n";
+        cout << "Files:    " << files << "\n\n";
         cerr << "";
 
         //Parameters as Qt vars
@@ -205,13 +205,6 @@ public:
     }
 };
 
-class status : public xmlrpc_c::method {
-public:
-    void
-    execute(xmlrpc_c::paramList const& paramList,
-            xmlrpc_c::value *   const  retvalP) {
-    }
-};
 
 class log : public xmlrpc_c::method {
 public:
@@ -231,13 +224,11 @@ main(int           const,
         //xmlrpc_c::methodPtr const ServerP(new Server);
         xmlrpc_c::methodPtr const checkoutP(new checkout);
         xmlrpc_c::methodPtr const checkinP(new checkin);
-        xmlrpc_c::methodPtr const statusP(new status);
         xmlrpc_c::methodPtr const logP(new log);
 
         //myRegistry.addMethod("PatoServerApi", PatoServerApiP);
         myRegistry.addMethod("checkout", checkoutP);
         myRegistry.addMethod("checkin", checkinP);
-        myRegistry.addMethod("status", statusP);
         myRegistry.addMethod("log", logP);
 
         /*xmlrpc_c::serverAbyss myAbyssServer(

@@ -39,9 +39,9 @@ public:
             xmlrpc_read_string(&env, resultP, &res);
 
             //Printing the method return
-            cout << "res " << res << "\n";
+            cout << "Result: " << res << "\n";
             string s = res;
-            cout << "size " << s.length() << "\n";
+            cout << "Size:   " << s.length() << "\n";
 
             //Transform data received into the format returned (map<string, string>*)
             QByteArray data;
@@ -166,15 +166,27 @@ public:
 
 int
 main(int argc, char **) {
-    cout << "Checkout Test!" << "\n";
+    string proj = "NinjaTurtlesApp";
+    string path = "http://my.place/";
+    cout << "Checkout project: " << proj << "\n";
     Client* client = new Client();
-    client->checkout(1, "http://my.place/project", "matheus", "123123123");
 
-    cout << "\nCheckin Test!" << "\n";
+    client->checkout(1, QString::fromStdString(path.append(proj)), "matheus", "123123123");
+    cout << "Done!" << "\n";
+
+    //Test Checkin
     std::map<std::string, std::string> files;
-    files.insert(std::make_pair<std::string, std::string>("./file1.cpp", "teste abc"));
-    files.insert(std::make_pair<std::string, std::string>("./file2.cpp", "codigo codigo codigo"));
+    files.insert(std::make_pair<std::string, std::string>("./file1.cpp", "create { turtle1 };"));
+    files.insert(std::make_pair<std::string, std::string>("./file2.cpp", "access { turtle data1 };"));
+
+    cout << "\nCheckin" << "\n";
+    //Printing files to checkin
+    map<string, string>::iterator it;
+    for (it = files.begin(); it != files.end(); it++)
+        cout << it->first << "\n";
+
     client->checkin("p1", "Muhammad Li", "123123", "my first commit", files);
+    cout << "Done!" << "\n";
 
     cout << "\n";
     if (argc-1 > 0) {
