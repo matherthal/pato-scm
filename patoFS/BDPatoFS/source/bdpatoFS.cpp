@@ -146,13 +146,16 @@ namespace bd {
         QString key = QString(QCryptographicHash::hash((data.c_str()),QCryptographicHash::Md5).toHex());
         QSqlQuery query(db);
 
+        Diff diff;
+
+        query.prepare("select arma_")
+
         std::string sqlFileInserted = "SELECT ARMA_CONTEUDO FROM ARMAZENAMENTO WHERE upper(arma_id) like upper('";
         sqlFileInserted.append(key.toStdString());
         sqlFileInserted.append("');");
 
         if ( query.exec(sqlFileInserted.c_str()) )
         {
-            qDebug("rodou query");
             if (query.next()) {
                 return key.toStdString();
             }
@@ -165,7 +168,7 @@ namespace bd {
         sqlInsert.append(data);
         sqlInsert.append("');");
 
-        qDebug(sqlInsert.c_str());
+        //qDebug(sqlInsert.c_str());
         QSqlQuery queryInsert(db);
         if (queryInsert.exec(sqlInsert.c_str()))
         {
@@ -176,6 +179,7 @@ namespace bd {
         }
     }
 
+    //i'll need another parameter in this function: a list with the files last version keys
     bool BDPatoFS::saveData(const std::vector<std::string>& data, std::vector<StorageKey>& vecIdFile)
     {
 
