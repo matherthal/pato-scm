@@ -5,6 +5,7 @@
 #-------------------------------------------------
 
 QT       -= gui
+QT       += sql
 
 win32: TARGET = ../../output/PatoClientApi
 unix:  TARGET = ../output/PatoClientApi

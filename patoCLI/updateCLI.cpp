@@ -42,7 +42,7 @@ void updateCLI::command(int argc, char** argv) {
         parameter = argv[i];
 
         if (parameter == "--revision") {
-            revision = argv[i + 1];
+            revision = atoi(argv[i + 1]);
         } else if (parameter == "--username") {
             username = argv[i + 1];
         } else if (parameter == "--password") {
@@ -101,11 +101,11 @@ QString updateCLI::GetUsername() const {
     return username;
 }
 
-void updateCLI::SetRevision(QString revision) {
+void updateCLI::SetRevision(RevisionKey revision) {
     this->revision = revision;
 }
 
-QString updateCLI::GetRevision() const {
+RevisionKey updateCLI::GetRevision() const {
     return revision;
 }
 

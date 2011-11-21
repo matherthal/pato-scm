@@ -9,7 +9,7 @@ QT       += sql
 
 
 win32: TARGET = ../../output/patoserverapi
-unix:  TARGET = ../output/patoserverapi
+unix:  TARGET = ../output/PatoServerApi
 
 TEMPLATE = lib
 

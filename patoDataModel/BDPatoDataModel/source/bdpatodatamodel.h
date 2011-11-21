@@ -68,7 +68,7 @@ public:
     //file operations>
     bool isFile(std::string& path);
     bool getPathsLastVersion();
-    bool findPathLastVersion(std::string& path);
+    bool findPathLastVersion(std::string path);
     int getLastVersionFile(std::string& file);
     bool insertFile(std::string& path, std::string& file, /*std::string& project,*/ std::string& idFile);
     int getIdLastFile(std::string& file);

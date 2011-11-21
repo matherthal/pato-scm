@@ -872,11 +872,12 @@ namespace bd {
         return !listPathLastVersion.empty();
     }
 
-    bool BDPatoDataModel::findPathLastVersion(std::string& path)
+    bool BDPatoDataModel::findPathLastVersion(std::string path)
     {
         if ( listPathLastVersion.empty() )
             return false;
 
+        //end isnt a valid position at stl maps\sets
         std::list<std::string>::iterator itPath = std::find(listPathLastVersion.begin(), listPathLastVersion.end(), path);
         if ( itPath == listPathLastVersion.end() )
             return false;
@@ -907,7 +908,8 @@ namespace bd {
     bool BDPatoDataModel::insertFile(std::string& path, std::string& file, /*std::string& project,*/ std::string& idFile)
     {
         std::string strStatus;
-        if ( findPathLastVersion(path+file) )
+
+        if ( findPathLastVersion( path+file ) )
             strStatus = "M";
         else
             strStatus = "I";
