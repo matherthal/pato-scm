@@ -2,6 +2,8 @@
 #include <iostream>
 
 #define PATH_BD "../patoDataModel/BDPatoDataModel/DataBase/DataModelBD.sqlite"
+#define PATO_TEMP_FOLDER "../output/pato_temp"
+
 //#define PATH_BD "DataModelBD.sqlite"
 namespace bd {
 
@@ -64,6 +66,7 @@ namespace bd {
         QString data;
         QString delta_tmp;
 
+        //query pega o conteudo e a chave para o delta do arquivo
         query.prepare("SELECT ARMA_CONTEUDO, ARMA_DELTA_ID FROM ARMAZENAMENTO WHERE arma_id = :key");
         query.bindValue(":key",key.toStdString().c_str());
 
@@ -76,49 +79,54 @@ namespace bd {
             }
         }
 
-        qDebug(key.toStdString().c_str());
-        qDebug(data.toStdString().c_str());
-        qDebug(delta_tmp.toStdString().c_str());
-
         if (delta_tmp.isEmpty()) {
 
             return data.toStdString();
-
         }
 
         else {
 
             //cria arquivo temporario contendo conteudo referente a chave passada
-            QString filePath = "./pato_temp/" + key + ".temp";
+            QString filePath = PATO_TEMP_FOLDER + key + ".temp";
             QFile completeFile(filePath);
 
             //abre o arquivo para escrita
             completeFile.open(QIODevice::WriteOnly | QIODevice::Text);
 
-            filePath = "./pato_temp/delta" + delta_tmp + ".temp";
+            //nome do arquivo temporario eh sua hash
+            filePath = PATO_TEMP_FOLDER + delta_tmp + ".temp";
             QFile deltaFile(filePath);
 
+            //stream para grava conteudo no arquivo
             QTextStream content1(&completeFile);
             QTextStream content2(&deltaFile);
 
+            //chama recursao, passando chave do arquivo delta
             std::string apply = applyPatch(delta_tmp);
 
+            //retorno da recursao eh uma string (arq completo), que sera gravado no fluxo p/ o arquivo
             content1 << apply.c_str();
+            //outro arquivo contera o conteudo do arquivo referenciado pela chave primaria
             content2 << data.toStdString().c_str();
 
+            //parametros para o patch
             char* deltaChar = (char*) QFileInfo(deltaFile).absoluteFilePath().toStdString().c_str();
             char* completeChar = (char*) QFileInfo(deltaFile).absoluteFilePath().toStdString().c_str();
 
+            //chama o algoritmo de patch, passando o arquivo delta e o arquivo completo
             Patch patch(deltaChar, completeChar);
 
-            filePath = "./pato_temp/build_file" + QString::number(ind++) + ".temp";
+            //arquivo para ser gravado o resultado do patch
+            filePath = PATO_TEMP_FOLDER + QString::number(ind++) + ".temp";
             QFile newFile(filePath.toStdString().c_str());
 
+            //pega referencia ao arquivo contendo o resultado do patch
             char* patchChar = (char*) QFileInfo(newFile).absoluteFilePath().toStdString().c_str();
             patch.getFile(patchChar);
 
             newFile.open(QIODevice::ReadOnly);
 
+            //le arquivo e retorna em forma de string
             QTextStream stream ( &newFile );
             QString buff;
             while( !stream.atEnd()) {
@@ -196,18 +204,17 @@ namespace bd {
         QString file;
         QSqlQuery query(db);
 
-        query.prepare("SELECT ARMA_DELTA_ID FROM ARMAZENAMENTO WHERE arma_id = :key");
-        query.bindValue(":key",idFile.c_str());
+        if (!QDir(PATO_TEMP_FOLDER).exists())
+            QDir().mkdir(PATO_TEMP_FOLDER);
 
-        query.exec();
+        //chama funcao recursiva que monta o um arquivo, buscando seus deltas e versao completa
+        data = applyPatch(QString::fromStdString(idFile));
 
-        QString delta_key;
-        while (query.next()) {
-            delta_key = query.value(0).toString();
+        QStringList lista = QDir(PATO_TEMP_FOLDER).entryList();
+        for (int i = 0; i < lista.size(); i++) {
+            QDir(PATO_TEMP_FOLDER).remove(lista.at(i));
         }
 
-        QDir().mkdir("pato_temp");
-        data = applyPatch(QString::fromStdString(idFile));
 
         /*
         query.prepare("SELECT ARMA_CONTEUDO FROM ARMAZENAMENTO WHERE arma_id = :key");
