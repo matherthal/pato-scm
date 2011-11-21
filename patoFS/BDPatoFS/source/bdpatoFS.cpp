@@ -55,6 +55,80 @@ namespace bd {
         return true;
     }
 
+    //apply the file delta recursively until reach a complete file
+    std::string BDPatoFS::applyPatch(QString key) {
+
+        QSqlQuery query(db);
+        static int ind = 0;
+
+        QString data;
+        QString delta_tmp;
+
+        query.prepare("SELECT ARMA_CONTEUDO, ARMA_DELTA_ID FROM ARMAZENAMENTO WHERE arma_id = :key");
+        query.bindValue(":key",key.toStdString().c_str());
+
+        if (query.exec()) {
+
+            while (query.next()) {
+
+                data = query.value(0).toString();
+                delta_tmp = query.value(1).toString();
+            }
+        }
+
+        qDebug(key.toStdString().c_str());
+        qDebug(data.toStdString().c_str());
+        qDebug(delta_tmp.toStdString().c_str());
+
+        if (delta_tmp.isEmpty()) {
+
+            return data.toStdString();
+
+        }
+
+        else {
+
+            //cria arquivo temporario contendo conteudo referente a chave passada
+            QString filePath = "./pato_temp/" + key + ".temp";
+            QFile completeFile(filePath);
+
+            //abre o arquivo para escrita
+            completeFile.open(QIODevice::WriteOnly | QIODevice::Text);
+
+            filePath = "./pato_temp/delta" + delta_tmp + ".temp";
+            QFile deltaFile(filePath);
+
+            QTextStream content1(&completeFile);
+            QTextStream content2(&deltaFile);
+
+            std::string apply = applyPatch(delta_tmp);
+
+            content1 << apply.c_str();
+            content2 << data.toStdString().c_str();
+
+            char* deltaChar = (char*) QFileInfo(deltaFile).absoluteFilePath().toStdString().c_str();
+            char* completeChar = (char*) QFileInfo(deltaFile).absoluteFilePath().toStdString().c_str();
+
+            Patch patch(deltaChar, completeChar);
+
+            filePath = "./pato_temp/build_file" + QString::number(ind++) + ".temp";
+            QFile newFile(filePath.toStdString().c_str());
+
+            char* patchChar = (char*) QFileInfo(newFile).absoluteFilePath().toStdString().c_str();
+            patch.getFile(patchChar);
+
+            newFile.open(QIODevice::ReadOnly);
+
+            QTextStream stream ( &newFile );
+            QString buff;
+            while( !stream.atEnd()) {
+                 buff.append(stream.readLine());
+            }
+
+            return buff.toStdString();
+        }
+    }
+
     //sqls
 
     //saving data - return a hash key
@@ -122,6 +196,20 @@ namespace bd {
         QString file;
         QSqlQuery query(db);
 
+        query.prepare("SELECT ARMA_DELTA_ID FROM ARMAZENAMENTO WHERE arma_id = :key");
+        query.bindValue(":key",idFile.c_str());
+
+        query.exec();
+
+        QString delta_key;
+        while (query.next()) {
+            delta_key = query.value(0).toString();
+        }
+
+        QDir().mkdir("pato_temp");
+        data = applyPatch(QString::fromStdString(idFile));
+
+        /*
         query.prepare("SELECT ARMA_CONTEUDO FROM ARMAZENAMENTO WHERE arma_id = :key");
         query.bindValue(":key",idFile.c_str());
 
@@ -133,13 +221,14 @@ namespace bd {
 
         data = file.toStdString();
 
+        */
         return true;
 
     }
     bool BDPatoFS::loadData(const std::vector<StorageKey>& vecIdFile, std::vector<std::string>& vecData)
     {
         QSqlQuery query(db);
-        std::string sqlLoadData = "select arma_conteudo from armazenamento where ";
+        std::string sqlLoadData = "select arma_conteudo, arma_delta_id from armazenamento where ";
         sqlLoadData.append("arma_id in('");
 
         std::vector<std::string>::const_iterator itIdFile;
@@ -153,11 +242,17 @@ namespace bd {
 
         sqlLoadData.append("');");
 
+        std::vector<StorageKey> vecDelta;
         if (query.exec(sqlLoadData.c_str())) {
 
             while(query.next()) {
-                QString s = query.value(1).toString();
+                QString s = query.value(0).toString();
                 vecData.push_back(s.toStdString());
+                QString keyDelta = query.value(1).toString();
+
+                qDebug(s.toStdString().c_str());
+                qDebug(keyDelta.toStdString().c_str());
+                vecDelta.push_back(keyDelta.toStdString());
             }
 
             return true;
