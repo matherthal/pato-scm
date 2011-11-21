@@ -392,6 +392,21 @@ int main(int argc, char *argv[]){
                 printf("Resultado: CORRETO!\n\n");
             delete diffPt5;
         }
+
+        if(num==6 || num==-1){
+            printf("##### TESTE 6 #####\n");
+            string dataA ("Teste do merge\nVamor testar o merge\nMas esse eh com o q?");
+            string dataB ("Teste do merge\nNao vamos testar o merge\nMas esse eh com string\ntah blz");
+            Diff *diffP6 = new Diff(dataA,dataB);
+            Patch *patch6 = new Patch(diffP6->to_delta_string(),dataB,Patch::APPLY_TO_B);
+
+            Diff *diffPt6 = new Diff(dataA,patch6->to_string());
+            if(!diffPt6->isEmpty())
+                printf("Resultado: ERRADO!\n\n");
+            else
+                printf("Resultado: CORRETO!\n\n");
+            delete diffPt6;
+        }
     }
     return 0;
 }
