@@ -293,6 +293,21 @@ int main(int argc, char *argv[]){
             else
                 printf("Resultado: CORRETO!\n\n");
         }
+
+        if(num==5 || num==-1){
+            printf("##### TESTE 5 #####\n");
+            string base  ("Teste do merge\nVamor testar o merge\nMas esse eh com string");
+            string dataA ("Teste do merge\nVamor testar o merge\nMas esse eh com o q?");
+            string dataB ("Teste do merge\nNao vamos testar o merge\nMas esse eh com string\ntah blz");
+            string result("Teste do merge\n<<<<<<< string A\nVamor testar o merge\nMas esse eh com o q?\n=======\nNao vamos testar o merge\nMas esse eh com string\ntah blz\n>>>>>>> string B");
+            Merge *merge5 = new Merge(base,dataA,dataB);
+            Diff *diffM5 = new Diff(result,merge5->to_string());
+            if(!diffM5->isEmpty())
+                printf("Resultado: ERRADO!\n\n");
+            else
+                printf("Resultado: CORRETO!\n\n");
+            delete merge5;
+        }
     }
 
 

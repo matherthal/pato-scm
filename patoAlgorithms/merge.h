@@ -23,9 +23,11 @@ private:
     bool is_in_lcs(int index,t_lcs *lcs);
     void print();
 public:
+    Merge(string base,string dataA, string dataB);
     Merge(const char* _fileBase,const char* _fileA,const char* _fileB);
     ~Merge();
     void getFile(char* _file_name);
+    string to_string();
     bool has_conflict();
 };
 
