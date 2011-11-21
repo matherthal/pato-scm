@@ -6,22 +6,34 @@ ExportDialog::ExportDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::ExportDialog)
 {
+    //Start Configurations
     ui->setupUi(this);
+    ui->groupBox_2->setEnabled(false);
+    ui->labelRepositoryPath->setEnabled(false);
+    ui->labelWorkspacePath->setEnabled(false);
+    ui->buttonChangeRepository->setEnabled(false);
+    ui->buttonChangeWorkspace->setEnabled(false);
+    ui->radioButtonHEAD->setChecked(true);
+    ui->labelRevisionNumber->setEnabled(false);
+    ui->lineEditRevisionNumber->setEnabled(false);
+
     //Actions
-    connect(ui->buttonChangeRepository, SIGNAL(clicked()), this, SLOT(changeRepository()));
+    connect(ui->buttonChangeRepository, SIGNAL(clicked()), this, SLOT(changePath()));
+    connect(ui->buttonChangeWorkspace, SIGNAL(clicked()), this, SLOT(changePath()));
     connect(ui->buttonCancel, SIGNAL(clicked()), this, SLOT(close()));
     connect(ui->buttonExport, SIGNAL(clicked()), this, SLOT(confirmExport()));
 
     connect(ui->radioButtonOther, SIGNAL(clicked()), this, SLOT(enableRevisionNumber()));
     connect(ui->radioButtonHEAD, SIGNAL(clicked()), this, SLOT(disableRevisionNumber()));
 
-    //Start Configurations
-    ui->radioButtonHEAD->setChecked(true);
-    ui->labelRevisionNumber->setEnabled(false);
-    ui->lineEditRevisionNumber->setEnabled(false);
+    connect(ui->repositoryRadioButton, SIGNAL(clicked()), this, SLOT(enableRepositoryOptions()));
+    connect(ui->workspaceRadioButton, SIGNAL(clicked()), this, SLOT(enableWorkspaceOptions()));
+
+    connect(ui->pushButtonChooseExportPath, SIGNAL(clicked()), this, SLOT(getExportPath()));
+
 
     //Window properties
-    setFixedSize(500,310);
+    setFixedSize(500,430);
     setWindowTitle("Export");
 }
 
@@ -33,7 +45,11 @@ void ExportDialog::setRepositoryPath(const QString &str)
 {
     ui->labelRepositoryPath->setText(str);
 }
-void ExportDialog::changeRepository()
+void ExportDialog::setWorkspacePath(const QString &str)
+{
+    ui->labelWorkspacePath->setText(str);
+}
+void ExportDialog::changePath()
 {
     emit showEnvironmentSettings();
 }
@@ -47,6 +63,25 @@ void ExportDialog::disableRevisionNumber()
 {
     ui->labelRevisionNumber->setEnabled(false);
     ui->lineEditRevisionNumber->setEnabled(false);
+}
+void ExportDialog::enableRepositoryOptions()
+{
+    ui->groupBox_2->setEnabled(true);
+    ui->labelRepositoryPath->setEnabled(true);
+    ui->buttonChangeRepository->setEnabled(true);
+    ui->labelWorkspacePath->setEnabled(false);
+    ui->buttonChangeWorkspace->setEnabled(false);
+    ui->workspaceRadioButton->setChecked(false);
+
+}
+void ExportDialog::enableWorkspaceOptions()
+{
+    ui->groupBox_2->setEnabled(false);
+    ui->labelRepositoryPath->setEnabled(false);
+    ui->buttonChangeRepository->setEnabled(false);
+    ui->labelWorkspacePath->setEnabled(true);
+    ui->buttonChangeWorkspace->setEnabled(true);
+    ui->repositoryRadioButton->setChecked(false);
 }
 void ExportDialog::confirmExport()
 {
@@ -65,4 +100,16 @@ void ExportDialog::confirmExport()
         //Export
     }
 
+}
+void ExportDialog::getExportPath()
+{
+    QString exportPath;
+
+    exportPath = QFileDialog::getExistingDirectory(
+                this,
+                "Choose the Export Path",
+                QString::null,
+                QFileDialog::ShowDirsOnly);
+
+    ui->lineEditExportPath->setText(exportPath);
 }

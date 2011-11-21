@@ -10,13 +10,27 @@
 #include<stdlib.h>
 #include <string.h>
 #include<iostream>
+#include<QtCore/QTextStream>
 using namespace std;
+
+QList<QString> messageErrorCO(){
+    QList<QString> error;
+
+    error.append("Checkout command is used to obtain one configuration from a repository.");
+    error.append("Usage: pato checkout --address ADDRESS --username USERNAME --password PASSWORD [--revision REVISION][--workspace WORKSPACE]");
+
+    return error;
+}
+
 
 void checkoutCLI::command(int argc, char** argv) {
     //treating cases that argc > 1
 
-    char* parameter;
+    QTextStream qout(stdout);
+
     PatoClientApi* clientAPI;
+    clientAPI = new PatoClientApi();
+    char* parameter;
 
     for (int i = 2; i < argc; i += 2) {
         parameter = argv[i];
@@ -39,7 +53,16 @@ void checkoutCLI::command(int argc, char** argv) {
 
     clientAPI = new PatoClientApi();
 
-    clientAPI->checkout(revision, address, username, password, workspace);
+    try {
+        clientAPI->checkout(revision, address, username, password, workspace);
+    } catch (PatoClientException& t) {
+        QList<QString> ls = messageErrorCO();
+        for(int i = 0; i < ls.size(); i++){
+            qout<<ls.at(i)<<endl;
+        }
+
+        //qout <<t.Message() << endl;
+    }
 
 
 
@@ -77,15 +100,13 @@ QString checkoutCLI::getWorkspace() const {
     return workspace;
 }
 
-void checkoutCLI::setRevision(int revision) {
+void checkoutCLI::setRevision(RevisionKey  revision) {
     this->revision = revision;
 }
 
-int checkoutCLI::getRevision() const {
+RevisionKey  checkoutCLI::getRevision() const {
     return revision;
 }
-
-
 
 checkoutCLI::checkoutCLI() {
     revision = -1;

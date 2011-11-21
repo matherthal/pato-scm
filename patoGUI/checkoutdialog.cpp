@@ -6,7 +6,11 @@ CheckoutDialog::CheckoutDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::CheckoutDialog)
 {
+    //Start Configurations
     ui->setupUi(this);
+    ui->radioButtonHEAD->setChecked(true);
+    ui->labelRevisionNumber->setEnabled(false);
+    ui->lineEditRevisionNumber->setEnabled(false);
 
     //Actions
     connect(ui->buttonChangeRepository, SIGNAL(clicked()), this, SLOT(changeRepository()));
@@ -16,22 +20,15 @@ CheckoutDialog::CheckoutDialog(QWidget *parent) :
     connect(ui->radioButtonOther, SIGNAL(clicked()), this, SLOT(enableRevisionNumber()));
     connect(ui->radioButtonHEAD, SIGNAL(clicked()), this, SLOT(disableRevisionNumber()));
 
-    //Start Configurations
-    ui->radioButtonHEAD->setChecked(true);
-    ui->labelRevisionNumber->setEnabled(false);
-    ui->lineEditRevisionNumber->setEnabled(false);
 
     //Window properties
     setFixedSize(500,250);
+    setWindowTitle("Check-out");
 }
 
 CheckoutDialog::~CheckoutDialog()
 {
     delete ui;
-}
-void CheckoutDialog::setTitle(const QString &str)
-{
-    setWindowTitle("Check-out - "+str);
 }
 void CheckoutDialog::setRepositoryPath(const QString &str)
 {
@@ -67,6 +64,8 @@ void CheckoutDialog::checkout()
         ui->lineEditRevisionNumber->setFocus();
     } else {
         //Checkout
+        //emit setRevisionNumber(ui->lineEditRevisionNumber->text());
+        //emit checkout();
     }
 
 }

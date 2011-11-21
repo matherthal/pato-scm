@@ -1,7 +1,8 @@
 #include "bdpatoFS.h"
 #include <iostream>
 
-#define PATH_BD "..\\patoDataModel\\BDPatoDataModel\\DataBase\\DataModelBD"
+#define PATH_BD "../patoDataModel/BDPatoDataModel/DataBase/DataModelBD.sqlite"
+//#define PATH_BD "DataModelBD.sqlite"
 namespace bd {
 
     BDPatoFS* BDPatoFS::bdPato = NULL;
@@ -12,6 +13,16 @@ namespace bd {
         initBD();
     }
 
+
+    BDPatoFS::~BDPatoFS()
+    {
+        db.close();
+        for(int i = 0; i < db.connectionNames().size(); i++)
+        {
+            QSqlDatabase::removeDatabase(db.connectionNames()[i]);
+        }
+    }
+
     BDPatoFS* BDPatoFS::getInstance()
     {
         if ( !bdPato )
@@ -20,131 +31,78 @@ namespace bd {
         return bdPato;
     }
 
-    void BDPatoFS::destroyInstance()
+    bool BDPatoFS::destroyInstance()
     {
         if ( bdPato )
         {
             delete bdPato;
             bdPato = NULL;
+
+            return true;
         }
+        return false;
     }
 
-    void BDPatoFS::initBD()
+    bool BDPatoFS::initBD()
     {
-        /*
-        try{
-            dataBase.open(PATH_BD);
-        }
-        catch (CppSQLite3Exception& e)
+        if ( db.connectionName().isEmpty() )
         {
-            //write the code error in file log
-            e.errorMessage();
-            return;
-        }
-        */
+            db = QSqlDatabase::addDatabase( "QSQLITE","ConnectionPatoFS" );
+            db.setDatabaseName(QDir::toNativeSeparators(PATH_BD));
 
-        db = QSqlDatabase::addDatabase( "QSQLITE" );
-        db.setDatabaseName(PATH_BD);
+            return db.open();
+        }
+        return true;
     }
 
     //sqls
 
-    //nao entendi pra que essa funcao...
-    void BDPatoFS::createSqlInsert(const std::string& data, std::string& sql)
+    //saving data - return a hash key
+    StorageKey BDPatoFS::saveData(const std::string& data)
     {
-        /*
-        std::string sqlInsert = "insert into armazenamento ( arma_id, arma_conteudo ) values ( null, '";
-        sqlInsert.append(data);
-        sqlInsert.append("' ); \n");
-
-        sql.append(sqlInsert);
-        */
-
-        //Cria um objeto query
+        //using hash key
+        QString key = QString(QCryptographicHash::hash((data.c_str()),QCryptographicHash::Md5).toHex());
         QSqlQuery query(db);
-        QString qdata = QString(data.c_str());
 
-        db.transaction();
+        std::string sqlFileInserted = "SELECT ARMA_CONTEUDO FROM ARMAZENAMENTO WHERE upper(arma_id) like upper('";
+        sqlFileInserted.append(key.toStdString());
+        sqlFileInserted.append("');");
 
-        query.prepare("INSERT INTO ARMAZENAMENTO (arma_conteudo) VALUES (:cont)");
-        query.bindValue(":cont", qdata);
-        query.exec();
-
-        db.commit();
-
-    }
-
-    //saving data
-    int BDPatoFS::saveData(const std::string& data)
-    {
-        /*
-        std::string sqlInsert = "insert into armazenamento ( arma_id, arma_conteudo ) values ( null, '";
-        sqlInsert.append(data);
-        sqlInsert.append("' );");
-
-        try{
-
-            dataBase.execDML("begin transaction;");
-            dataBase.execDML(sqlInsert.c_str());
-            dataBase.execDML("commit transaction;");
-
-            std::string sqlMaxId = "select max(arma_id) from armazenamento;";
-            CppSQLite3Query resultSet = dataBase.execQuery(sqlMaxId.c_str());
-            if ( !resultSet.eof() )
-            {
-                int maxID = resultSet.getIntField(0);
-                return maxID;
-            }
-
-            return -1;
-        }
-        catch(CppSQLite3Exception& e)
+        if ( query.exec(sqlFileInserted.c_str()) )
         {
-            dataBase.execDML("rollback;");
-            e.errorMessage();
-            return -1;
+            qDebug("rodou query");
+            if (query.next()) {
+                return key.toStdString();
+            }
         }
 
-       return -1;
-       */
+        std::string sqlInsert = "INSERT INTO ARMAZENAMENTO (arma_id, arma_conteudo) VALUES ";
+        sqlInsert.append("('");
+        sqlInsert.append(key.toStdString());
+        sqlInsert.append("','");
+        sqlInsert.append(data);
+        sqlInsert.append("');");
 
-        //Cria um objeto query
-        QSqlQuery query(db);
-        QString qdata = QString(data.c_str());
-        int key = -1;
-
-        db.transaction();
-
-        query.prepare("INSERT INTO ARMAZENAMENTO (arma_conteudo) VALUES (:cont)");
-        query.bindValue(":cont", qdata);
-        if (query.exec()) {
-
-            db.commit();
-            //última chave inserida...
-            query.exec("SELECT last_insert_rowid() FROM ARMAZENAMENTO");
-
-            while(query.next())
-                key = query.value(0).toInt();
-
-            return key;
+        qDebug(sqlInsert.c_str());
+        QSqlQuery queryInsert(db);
+        if (queryInsert.exec(sqlInsert.c_str()))
+        {
+            return key.toStdString();
         }
         else {
-
-            std::cout << query.lastError().text().toStdString() << std::endl;
-            db.rollback();
-            return -1;
+            return "-1";
         }
-
     }
 
-    bool BDPatoFS::saveData(const std::vector<std::string>& data, std::vector<int>& vecIdFile)
+    bool BDPatoFS::saveData(const std::vector<std::string>& data, std::vector<StorageKey>& vecIdFile)
     {
 
         std::vector<std::string>::const_iterator itData;
         for( itData = data.begin(); itData != data.end(); itData++ )
         {
-            int idFile = saveData((*itData));
-            if ( idFile == -1 )
+            std::string idFile = saveData((*itData));
+
+            if ( idFile == "-1" )
             {
                 deleteData(vecIdFile);
                 return false;
@@ -156,44 +114,16 @@ namespace bd {
         }
 
         return true;
-
     }
 
     //loading data
-    bool BDPatoFS::loadData(const int idFile, std::string& data)
+    bool BDPatoFS::loadData(StorageKey& idFile, std::string& data)
     {
-        /*
-        std::stringstream outIDFile;
-        outIDFile << idFile;
-
-        std::string sqlFile = "select arma_conteudo from armazenamento where arma_id = ";
-        sqlFile.append(outIDFile.str());
-        sqlFile.append(";");
-
-        try{
-            CppSQLite3Query resultSet = dataBase.execQuery(sqlFile.c_str());
-            if ( !resultSet.eof() )
-            {
-                data = resultSet.getStringField(0);
-                return true;
-            }
-
-            return false;
-        }
-        catch(CppSQLite3Exception& e)
-        {
-            e.errorMessage();
-            return false;
-        }
-
-        return false;
-        */
-
         QString file;
         QSqlQuery query(db);
 
-        query.prepare("SELECT content FROM ARMAZENAMENTO WHERE arma_id = :key");
-        query.bindValue(":key",idFile);
+        query.prepare("SELECT ARMA_CONTEUDO FROM ARMAZENAMENTO WHERE arma_id = :key");
+        query.bindValue(":key",idFile.c_str());
 
         query.exec();
 
@@ -206,63 +136,27 @@ namespace bd {
         return true;
 
     }
-    bool BDPatoFS::loadData(const std::vector<int>& vecIdFile, std::vector<std::string>& vecData)
+    bool BDPatoFS::loadData(const std::vector<StorageKey>& vecIdFile, std::vector<std::string>& vecData)
     {
-        /*
-        std::string sqlLoadData = "select arma_conteudo from armazenamento where arma_id in (";
-
-        std::vector<int>::const_iterator itIdFile;
-        for( itIdFile = vecIdFile.begin(); itIdFile != vecIdFile.end(); itIdFile++ )
-        {
-            if ( itIdFile != vecIdFile.begin() )
-                sqlLoadData.append(", ");
-
-            std::stringstream outIdFile;
-            outIdFile << (*itIdFile);
-
-            sqlLoadData.append(outIdFile.str());
-        }
-
-        try{
-            CppSQLite3Query resultSet = dataBase.execQuery(sqlLoadData.c_str());
-            while( !resultSet.eof() )
-            {
-                std::string data = resultSet.getStringField(0);
-                vecData.push_back(data);
-
-                resultSet.nextRow();
-            }
-
-            return true;
-        }
-        catch(CppSQLite3Exception& e)
-        {
-            e.errorMessage();
-            return false;
-        }
-
-        return false;
-        */
-
         QSqlQuery query(db);
-        QString sqlLoadData = "SELECT arma_conteudo FROM ARMAZENAMENTO WHERE arma_id IN (";
+        std::string sqlLoadData = "select arma_conteudo from armazenamento where ";
+        sqlLoadData.append("arma_id in('");
 
-        std::vector<int>::const_iterator itIdFile;
+        std::vector<std::string>::const_iterator itIdFile;
         for( itIdFile = vecIdFile.begin(); itIdFile != vecIdFile.end(); itIdFile++ )
         {
             if ( itIdFile != vecIdFile.begin() )
-                sqlLoadData.append(", ");
+                sqlLoadData.append("', '");
 
             sqlLoadData.append((*itIdFile));
         }
 
-        sqlLoadData.append(")");
+        sqlLoadData.append("');");
 
-        if (query.exec(sqlLoadData)) {
+        if (query.exec(sqlLoadData.c_str())) {
 
             while(query.next()) {
-                QString s = query.value(0).toString();
-
+                QString s = query.value(1).toString();
                 vecData.push_back(s.toStdString());
             }
 
@@ -274,48 +168,21 @@ namespace bd {
     }
 
     //delete data
-    bool BDPatoFS::deleteData(const std::vector<int>& idFile)
+    bool BDPatoFS::deleteData(const std::vector<StorageKey>& idFile)
     {
-        /*
-        std::string sqlDelete = "delete from armazenamento where arma_id in (";
-
-        std::vector<int>::const_iterator itIdFile;
-        for( itIdFile = idFile.begin(); itIdFile != idFile.end(); itIdFile++ )
-        {
-            if ( itIdFile != idFile.begin() )
-                sqlDelete.append(", ");
-
-            std::stringstream outIdFile;
-            outIdFile << (*itIdFile);
-
-            sqlDelete.append(outIdFile.str());
-        }
-
-        sqlDelete.append(");");
-
-        try{
-            dataBase.execDML(sqlDelete.c_str());
-            return true;
-        }
-        catch(CppSQLite3Exception& e)
-        {
-            e.errorMessage();
+        if (idFile.empty())
             return false;
-        }
-
-        return false;
-        */
 
         QSqlQuery query(db);
         QString sqlDelete = "delete from armazenamento where arma_id in (";
 
-        std::vector<int>::const_iterator itIdFile;
+        std::vector<std::string>::const_iterator itIdFile;
         for( itIdFile = idFile.begin(); itIdFile != idFile.end(); itIdFile++ )
         {
             if ( itIdFile != idFile.begin() )
                 sqlDelete.append(", ");
 
-            sqlDelete.append((*itIdFile));
+            sqlDelete.append((*itIdFile).c_str());
         }
 
         sqlDelete.append(")");

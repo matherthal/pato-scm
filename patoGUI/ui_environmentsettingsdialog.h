@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'environmentsettingsdialog.ui'
 **
-** Created: Tue 25. Oct 17:47:42 2011
+** Created: Tue 15. Nov 15:37:10 2011
 **      by: Qt User Interface Compiler version 4.7.4
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -31,7 +31,6 @@ public:
     QLabel *labelWorkspacePath;
     QLineEdit *lineEditRepositoryPath;
     QLineEdit *lineEditWorkspacePath;
-    QPushButton *pushButtonChooseRepository;
     QPushButton *pushButtonChooseWorkspace;
     QGroupBox *groupBox_2;
     QLabel *labelUserName;
@@ -60,16 +59,13 @@ public:
         labelWorkspacePath->setGeometry(QRect(10, 70, 91, 16));
         lineEditRepositoryPath = new QLineEdit(groupBox);
         lineEditRepositoryPath->setObjectName(QString::fromUtf8("lineEditRepositoryPath"));
-        lineEditRepositoryPath->setGeometry(QRect(10, 40, 431, 20));
+        lineEditRepositoryPath->setGeometry(QRect(10, 40, 511, 20));
         lineEditWorkspacePath = new QLineEdit(groupBox);
         lineEditWorkspacePath->setObjectName(QString::fromUtf8("lineEditWorkspacePath"));
         lineEditWorkspacePath->setGeometry(QRect(10, 90, 431, 20));
-        pushButtonChooseRepository = new QPushButton(groupBox);
-        pushButtonChooseRepository->setObjectName(QString::fromUtf8("pushButtonChooseRepository"));
-        pushButtonChooseRepository->setGeometry(QRect(450, 40, 75, 23));
         pushButtonChooseWorkspace = new QPushButton(groupBox);
         pushButtonChooseWorkspace->setObjectName(QString::fromUtf8("pushButtonChooseWorkspace"));
-        pushButtonChooseWorkspace->setGeometry(QRect(450, 90, 75, 23));
+        pushButtonChooseWorkspace->setGeometry(QRect(448, 90, 75, 23));
         groupBox_2 = new QGroupBox(EnvironmentSettingsDialog);
         groupBox_2->setObjectName(QString::fromUtf8("groupBox_2"));
         groupBox_2->setGeometry(QRect(10, 160, 531, 121));
@@ -87,13 +83,13 @@ public:
         lineEditUserPassword->setGeometry(QRect(10, 90, 151, 20));
         pushButtonApply = new QPushButton(EnvironmentSettingsDialog);
         pushButtonApply->setObjectName(QString::fromUtf8("pushButtonApply"));
-        pushButtonApply->setGeometry(QRect(390, 300, 75, 23));
+        pushButtonApply->setGeometry(QRect(388, 300, 75, 23));
         QIcon icon1;
         icon1.addFile(QString::fromUtf8(":/new/icons/okicon"), QSize(), QIcon::Normal, QIcon::Off);
         pushButtonApply->setIcon(icon1);
         pushButtonCancel = new QPushButton(EnvironmentSettingsDialog);
         pushButtonCancel->setObjectName(QString::fromUtf8("pushButtonCancel"));
-        pushButtonCancel->setGeometry(QRect(470, 300, 75, 23));
+        pushButtonCancel->setGeometry(QRect(468, 300, 75, 23));
         QIcon icon2;
         icon2.addFile(QString::fromUtf8(":/new/icons/cancelicon"), QSize(), QIcon::Normal, QIcon::Off);
         pushButtonCancel->setIcon(icon2);
@@ -109,7 +105,6 @@ public:
         groupBox->setTitle(QApplication::translate("EnvironmentSettingsDialog", "Default Paths:", 0, QApplication::UnicodeUTF8));
         labelRepositoryPath->setText(QApplication::translate("EnvironmentSettingsDialog", "Repository Path:", 0, QApplication::UnicodeUTF8));
         labelWorkspacePath->setText(QApplication::translate("EnvironmentSettingsDialog", "Workspace Path:", 0, QApplication::UnicodeUTF8));
-        pushButtonChooseRepository->setText(QApplication::translate("EnvironmentSettingsDialog", "Choose", 0, QApplication::UnicodeUTF8));
         pushButtonChooseWorkspace->setText(QApplication::translate("EnvironmentSettingsDialog", "Choose", 0, QApplication::UnicodeUTF8));
         groupBox_2->setTitle(QApplication::translate("EnvironmentSettingsDialog", "User Authentication:", 0, QApplication::UnicodeUTF8));
         labelUserName->setText(QApplication::translate("EnvironmentSettingsDialog", "User:", 0, QApplication::UnicodeUTF8));

@@ -1,7 +1,8 @@
 #ifndef BDPatoFS_H
 #define BDPatoFS_H
 
-#include "PatoFS_global.h"
+#include "../../PatoFS_global.h"
+#include "../../../patoBase/patotypes.h"
 
 //#include "CppSQLite3.h"
 
@@ -17,36 +18,35 @@ class PATOFSSHARED_EXPORT BDPatoFS
 {
 private:
     BDPatoFS();
-    QSqlDatabase db;
+    virtual ~BDPatoFS();
+
 
 public:
 
     //singleton´s pattern functions>
     static BDPatoFS* getInstance();
-    static void destroyInstance();
+    static bool destroyInstance();
     //<
 
     //init bd
-    void initBD();
-
-    //sqls
-    void createSqlInsert(const std::string& data, std::string& sql);
+    bool initBD();
 
     //saving data
-    int saveData(const std::string& data);
-    bool saveData(const std::vector<std::string>& data, std::vector<int>& vecIdFile);
+    std::string saveData(const std::string& data);
+    bool saveData(const std::vector<std::string>& data, std::vector<StorageKey>& vecIdFile);
 
     //loading data
-    bool loadData(const int idFile, std::string& data);
-    bool loadData(const std::vector<int>& vecIdFile, std::vector<std::string>& vecData);
+    bool loadData(std::string& idFile, std::string& data);
+    bool loadData(const std::vector<StorageKey>& vecIdFile, std::vector<std::string>& vecData);
 
     //delete data
-    bool deleteData(const std::vector<int>& idFile);
+    bool deleteData(const std::vector<StorageKey>& idFile);
 
 private:
 
     //singleton´s pattern variable
     static BDPatoFS *bdPato;
+    QSqlDatabase db;
 
     //CppSQLite3DB dataBase;
 };

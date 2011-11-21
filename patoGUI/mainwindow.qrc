@@ -11,5 +11,11 @@
         <file alias="remfile">images/removefile.png</file>
         <file alias="help">images/help.png</file>
         <file alias="update">images/update.png</file>
+        <file alias="diff">images/diff.png</file>
+        <file alias="log">images/log.png</file>
+        <file alias="browse">images/browse.png</file>
+        <file alias="dir">images/dir.png</file>
+        <file alias="esq">images/esq.png</file>
+        <file alias="file">images/file.png</file>
     </qresource>
 </RCC>
