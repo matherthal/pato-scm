@@ -217,6 +217,30 @@ int main(int argc, char *argv[]){
                 printf("Resultado: CORRETO!\nTempo: %lf\n\n",t);
             delete diff4;
         }
+
+        if(num==5 || num==-1){
+            printf("##### TESTE 5 #####\n");
+            string a("pato\nAlgorithm\nWell done.");
+            string b("git\nAlgorithm\nnot Well done.");
+            Tempo_CPU_Sistema(&s_CPU_inicial, &s_total_inicial);
+
+            Diff *diff5 = new Diff(a,b);
+            cout << diff5->to_string() << endl;
+            Tempo_CPU_Sistema(&s_CPU_final, &s_total_final);
+            t = s_CPU_final - s_CPU_inicial;
+
+            correct = !diff5->isEmpty();
+
+            correct = correct && diff5->getDiffItem(0)->getType()==DiffItem::Action_Change;
+            correct = correct && diff5->getDiffItem(1)->getType()==DiffItem::Action_Change;
+            correct = correct && diff5->getDiffItem(2) == NULL;
+
+            if(!correct)
+                printf("ERRADO!\n\nTempo: %lf\n\n",t);
+            else
+                printf("Resultado: CORRETO!\nTempo: %lf\n\n",t);
+            delete diff5;
+        }
     }
 
     if(strcmp(type,"merge")==0 || strcmp(type,"all")==0){
