@@ -1,5 +1,6 @@
 #ifndef DIFFITEM_H
 #define DIFFITEM_H
+#include <string>
 #include "lcs.h"
 class DiffItem
 {
@@ -24,6 +25,10 @@ public:
     int getToB();
     char* getLineA(int);
     char* getLineB(int);
+    int getLineALength(int _num_line);
+    int getLineBLength(int _num_line);
+    string to_string();
+    string to_string_short();
 };
 
 #endif // DIFFITEM_H

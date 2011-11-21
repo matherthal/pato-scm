@@ -1,0 +1,50 @@
+1045,1066d1044
+<script type="text/javascript">
+//<![CDATA[
+var ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl02 = document.all ? document.all["ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl02"] : document.getElementById("ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl02");
+ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl02.controltovalidate = "ctl00_Main_ctl09_ctl02_ctl02_ctl02_tbTitle";
+ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl02.errormessage = "*";
+ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl02.validationGroup = "CreateCommentForm";
+ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl02.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl02.initialvalue = "";
+var ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl10 = document.all ? document.all["ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl10"] : document.getElementById("ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl10");
+ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl10.controltovalidate = "ctl00_Main_ctl09_ctl02_ctl02_ctl02_tbName";
+ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl10.errormessage = "*";
+ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl10.validationGroup = "CreateCommentForm";
+ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl10.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl10.initialvalue = "";
+var ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl07 = document.all ? document.all["ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl07"] : document.getElementById("ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl07");
+ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl07.controltovalidate = "ctl00_Main_ctl09_ctl02_ctl02_ctl02_tbComment";
+ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl07.errormessage = "*";
+ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl07.validationGroup = "CreateCommentForm";
+ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl07.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl07.initialvalue = "";
+//]]>
+</script>
+2040a2019,2021
+function ValidatorOnSubmit() {
+function ValidatorOnSubmit() {
+
+2093c2074,2079
+			                by <a title="TrackBack" rel="nofollow" href="http://error-success.piku.org.uk/2011/03/31/static-class-variable-initialisation-in-c/">Static class variable initialisation in C++</a>
+			                by <a title="TrackBack" rel="nofollow" href="http://error-success.piku.org.uk/2011/03/31/static-class-variable-initialisation
+function ValidatorOnSubmit() {
+function ValidatorOnSubmit() {
+function ValidatorOnSubmit() {
+function ValidatorOnSubmit() {
+-in-c/">Static class variable initialisation in C++</a>
+2167a2154,2155
+function ValidatorOnSubmit() {
+
+2177a2166,2168
+function ValidatorOnSubmit() {
+function ValidatorOnSubmit() {
+
+2190c2181,2183
+Telligent_Modal.Configure('/utility/loading.htm',['Modal'],['ModalTitle'],['ModalClose'],['ModalContent'],['ModalFooter'],['ModalResize'],['ModalMask'],100);
+Telligent_Modal.Configure('/utility/loading.htm',['Modal'],['ModalTitle'],['ModalClose'],['ModalContent'],['ModalFooter'],['ModalResize']
+function ValidatorOnSubmit() {
+,['ModalMask'],100);
+2191a2185,2186
+function ValidatorOnSubmit() {
+

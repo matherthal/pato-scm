@@ -6,6 +6,7 @@
  */
 
 #include "statusCLI.h"
+#include "utils.h"
 #include "../patoClientAPI/patoclientapi.h"
 #include<iostream>
 #include<QtCore/QString>
@@ -29,6 +30,23 @@ QString statusCLI::GetWorkspace() const {
     return workspace;
 }
 
+QList<QString> messageErrorST(){
+    QList<QString> error;
+
+    error.append("Status command shows the files and directories situation.");
+    error.append("These situations can be:");
+    error.append(" A  added");
+    error.append(" M  modified");
+    error.append(" R  removed");
+    error.append(" C  clean");
+    error.append(" U  unversioned");
+    error.append(" ");
+    error.append("Usage: pato status [--workspace WORKSPACE]");
+
+    return error;
+}
+
+
 void statusCLI::command(int argc, char** argv) {
     PatoClientApi* clientAPI;
     clientAPI = new PatoClientApi();
@@ -44,13 +62,20 @@ void statusCLI::command(int argc, char** argv) {
         if (parameter == "--workspace") {
             workspace = argv[i + 1];
         } else {
-            qout << "[ERROR] " << parameter << " don't exist." << endl;
-            return;
+            workspace = utils::returnPath();
         }
 
     }
 
+    try {
+        clientAPI->status(workspace);
+    } catch (PatoClientException& t) {
+        QList<QString> ls = messageErrorST();
+        for(int i = 0; i < ls.size(); i++){
+            qout<<ls.at(i)<<endl;
+        }
 
-    clientAPI->status(workspace);
+        //qout << t.Message() << endl;
+    }
 
 }

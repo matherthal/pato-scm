@@ -8,8 +8,12 @@
       <itemPath>checkinCLI.h</itemPath>
       <itemPath>checkoutCLI.h</itemPath>
       <itemPath>cliReader.h</itemPath>
+      <itemPath>../patoClientAPI/diffCLI.h</itemPath>
+      <itemPath>logCLI.h</itemPath>
+      <itemPath>../patoClientAPI/mergeCLI.h</itemPath>
       <itemPath>statusCLI.h</itemPath>
       <itemPath>updateCLI.h</itemPath>
+      <itemPath>utils.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -22,8 +26,24 @@
         </logicalFolder>
         <itemPath>../patoClientAPI/PatoClientApi.pro</itemPath>
         <itemPath>../patoClientAPI/PatoClientApi_global.h</itemPath>
+        <itemPath>../patoClientAPI/PatoClientException.cpp</itemPath>
+        <itemPath>../patoClientAPI/PatoClientException.h</itemPath>
+        <itemPath>../patoClientAPI/addOutput.cpp</itemPath>
+        <itemPath>../patoClientAPI/addOutput.h</itemPath>
+        <itemPath>../patoClientAPI/checkinOutput.cpp</itemPath>
+        <itemPath>../patoClientAPI/checkinOutput.h</itemPath>
+        <itemPath>../patoClientAPI/checkoutOutput.cpp</itemPath>
+        <itemPath>../patoClientAPI/checkoutOutput.h</itemPath>
+        <itemPath>../patoClientAPI/diffOutput.cpp</itemPath>
+        <itemPath>../patoClientAPI/diffOutput.h</itemPath>
+        <itemPath>../patoClientAPI/logOutput.cpp</itemPath>
+        <itemPath>../patoClientAPI/logOutput.h</itemPath>
         <itemPath>../patoClientAPI/patoclientapi.cpp</itemPath>
         <itemPath>../patoClientAPI/patoclientapi.h</itemPath>
+        <itemPath>../patoClientAPI/statusOutput.cpp</itemPath>
+        <itemPath>../patoClientAPI/statusOutput.h</itemPath>
+        <itemPath>../patoClientAPI/updateOutput.cpp</itemPath>
+        <itemPath>../patoClientAPI/updateOutput.h</itemPath>
       </logicalFolder>
     </logicalFolder>
     <logicalFolder name="SourceFiles"
@@ -33,9 +53,13 @@
       <itemPath>checkinCLI.cpp</itemPath>
       <itemPath>checkoutCLI.cpp</itemPath>
       <itemPath>cliReader.cpp</itemPath>
+      <itemPath>../patoClientAPI/diffCLI.cpp</itemPath>
+      <itemPath>logCLI.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
+      <itemPath>../patoClientAPI/mergeCLI.cpp</itemPath>
       <itemPath>statusCLI.cpp</itemPath>
       <itemPath>updateCLI.cpp</itemPath>
+      <itemPath>utils.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"
@@ -52,6 +76,12 @@
   </logicalFolder>
   <sourceRootList>
     <Elem>../patoClientAPI</Elem>
+    <Elem>../patoWorkspace</Elem>
+    <Elem>../patoBase</Elem>
+    <Elem>../patoAlgorithms</Elem>
+    <Elem>../patoCommunication</Elem>
+    <Elem>../patoServerAPI</Elem>
+    <Elem>../patoDataModel</Elem>
   </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
@@ -66,11 +96,14 @@
             <pElem>../../../QtSDK/Desktop/Qt/474/gcc/include</pElem>
             <pElem>../../../QtSDK/Madde/targets/harmattan-nokia-meego-api/bin</pElem>
             <pElem>../../../QtSDK/Simulator/Qt/gcc/bin</pElem>
+            <pElem>../../../QtSDK/Desktop/Qt/474/gcc/bin</pElem>
+            <pElem>../../../QtSDK/Simulator/Qt/gcc/include/QtCore</pElem>
           </incDir>
         </ccTool>
         <linkerTool>
           <linkerAddLib>
             <pElem>../../../QtSDK/Desktop/Qt/474/gcc/lib</pElem>
+            <pElem>../../../QtSDK/Simulator/Qt/gcc/include/QtCore</pElem>
           </linkerAddLib>
           <linkerLibItems>
             <linkerLibLibItem>QtCore</linkerLibLibItem>

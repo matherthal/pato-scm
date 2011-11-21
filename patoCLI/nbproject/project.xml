@@ -11,6 +11,12 @@
             <make-dep-projects/>
             <sourceRootList>
                 <sourceRootElem>../patoClientAPI</sourceRootElem>
+                <sourceRootElem>../patoWorkspace</sourceRootElem>
+                <sourceRootElem>../patoBase</sourceRootElem>
+                <sourceRootElem>../patoAlgorithms</sourceRootElem>
+                <sourceRootElem>../patoCommunication</sourceRootElem>
+                <sourceRootElem>../patoServerAPI</sourceRootElem>
+                <sourceRootElem>../patoDataModel</sourceRootElem>
             </sourceRootList>
             <confList>
                 <confElem>

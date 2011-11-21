@@ -1,4 +1,4 @@
-/* 
+/*
  * File:   cliReader.cpp
  * Author: marapao
  * 
@@ -11,8 +11,10 @@
 #include "updateCLI.h"
 #include "addCLI.h"
 #include "statusCLI.h"
+#include "logCLI.h"
+#include "diffCLI.h"
+#include "mergeCLI.h"
 #include <iostream>
-#include <string.h>
 using namespace std;
 
 cliReader::cliReader() {
@@ -34,53 +36,86 @@ void cliReader::reader(int argc, char** argv) {
     statusCLI* st;
     updateCLI* up;
     addCLI* add;
-    
+    logCLI* log;
+    diffCLI* diff;
+    mergeCLI* merge;
+
     if (argc <= 1) {
-        cout << "Please specify a command" << endl;
+        cout << "Pato has the following commands:" << endl;
+        cout << "add (a)" << endl;
+        cout << "checkout (co)" << endl;
+        cout << "checkin (ci)" << endl;
+        cout << "diff" << endl;
+        cout << "log" << endl;
+        cout << "merge" << endl;
+        cout << "status" << endl;
+        cout << "update (up)" << endl;
+
         return;
     }
+    
     command = argv[1];
 
-    if ((strcmp(command, "checkout") == 0) || (strcmp(command, "co") == 0)) {
+    
+    
+    if (command == "checkout" || command == "co") {
         //call checkout command
 
         co = new checkoutCLI();
         co->command(argc, argv);
     }
-    else if ((strcmp(command, "checkin") == 0) || (strcmp(command, "ci") == 0)){
-        //call checkout command
+    else if (command == "checkin" || command == "ci"){
+        //call checkin command
 
         ci = new checkinCLI();
         ci->command(argc, argv);
     }
-    else if ((strcmp(command, "status") == 0) || (strcmp(command, "st") == 0)){
-        //call checkout command
+    else if (command == "status" || command == "st"){
+        //call status command
 
         st = new statusCLI;
         st->command(argc, argv);
     }
-    else if ((strcmp(command, "update") == 0) || (strcmp(command, "up") == 0)){
-        //call checkout command
+    else if (command == "update" || command == "up"){
+        //call update command
 
         up = new updateCLI;
         up->command(argc, argv);
     }
-    else if ((strcmp(command, "add") == 0) || (strcmp(command, "a") == 0)){
-        //call checkout command
+    else if (command == "add" || command == "a"){
+        //call add command
 
         add = new addCLI;
         add->command(argc, argv);
     }
-    
+    else if (command == "log"){
+        //call add command
+
+        log = new logCLI();
+        log->command(argc, argv);
+    }
+    else if (command == "diff"){
+        //call add command
+
+        diff = new diffCLI();
+        diff->command(argc, argv);
+    }
+    else if (command == "merge"){
+        //call add command
+
+        merge = new mergeCLI();
+        merge->command(argc, argv);
+    }
     else{
         cout<<"Invalid command!"<<endl; 
     }
 }
 
-void cliReader::setCommand(char* command) {
+void cliReader::setCommand(QString command) {
     this->command = command;
 }
 
-char* cliReader::getCommand() const {
+QString cliReader::getCommand() const {
     return command;
 }
+

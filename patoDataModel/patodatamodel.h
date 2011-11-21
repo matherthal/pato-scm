@@ -5,6 +5,8 @@
 
 #include <string>
 #include <vector>
+#include <list>
+#include <map>
 
 using namespace std;
 
@@ -13,12 +15,16 @@ private:
     PatoDataModel();
     static PatoDataModel* patoDataModel;
 
+    bool iniciouTransacao;
+    std::list<std::string> listPath;
+
 public:
 
     //singleton pattern
     static PatoDataModel* getInstance();
     static void destroyInstance();
 
+    bool initBD();
     //getters and setters >
     //a set of file keys from the latest version
     //int* getFileKey(const string& pFilePath);
@@ -31,12 +37,14 @@ public:
     //<
 
     //repositoy operations >
-    bool checkIn(std::vector<std::string>& filePath, std::string& project, std::string loginUser, std::string& message);
-    bool saveProjectElement(std::string& filePath, std::string& previousElement, std::string& project);
+    bool checkIn(std::map<std::string, std::string>& filePath, std::string& project, std::string& loginUser, std::string& message);
+    bool saveProjectElement(std::string& filePath, std::string& idFile, std::string& project/*, std::string& previousElement*/);
     bool insertRelationProjectElementTransaction();
 
-    bool checkOut(std::string& loginUser, std::string& password, std::string& project, int version, std::vector<std::string>& filePath);
-    bool showLog(std::string& loginUser, std::string& password, std::string& project, int version, std::vector<std::string>& filePath);
+    bool checkOut(std::string& loginUser, std::string& password, std::string& project, int version, std::map<std::string, std::string>& filePath);
+    bool showLog(std::string& loginUser, std::string& password, std::string& project, int version, std::map<std::string, std::string>& filePath);
+    std::string getLogMessage(int version);
+    bool showLogPathFile(std::string& path, std::vector<QString>& message);
     //<
 
     //user operations >
@@ -46,6 +54,12 @@ public:
 
     //project operations>
     bool validateProject( const string& projectName );
+    //<
+
+    //fileoperations >
+    std::string getPath( std::string& pathFile );
+    std::string getFile( std::string& pathFile );
+    bool isFile(std::string& path);
     //<
 
 };

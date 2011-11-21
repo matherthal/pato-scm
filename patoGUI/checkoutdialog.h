@@ -16,10 +16,11 @@ public:
     ~CheckoutDialog();
 signals:
     void showEnvironmentSettings();
+    //void checkout();
+    //void setRevisionNumber(const int &rev);
 private:
     Ui::CheckoutDialog *ui;
 public slots:
-    void setTitle(const QString &str);
     void setRepositoryPath(const QString &str);
     void changeRepository();
     void checkout();

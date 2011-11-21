@@ -7,13 +7,15 @@ EnvironmentSettingsDialog::EnvironmentSettingsDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::EnvironmentSettingsDialog)
 {
+    //Start Configurations
     ui->setupUi(this);
+    ui->lineEditUserPassword->setEchoMode(QLineEdit::Password);
 
-    //Connections
+    //Actions
     connect(ui->pushButtonCancel, SIGNAL(clicked()),this, SLOT(close()));
     connect(ui->pushButtonApply, SIGNAL(clicked()),this, SLOT(apply()));
 
-    connect(ui->pushButtonChooseRepository, SIGNAL(clicked()), this, SLOT(getRepositoryPath()));
+    //connect(ui->pushButtonChooseRepository, SIGNAL(clicked()), this, SLOT(getRepositoryPath()));
     connect(ui->pushButtonChooseWorkspace, SIGNAL(clicked()), this, SLOT(getWorkspacePath()));
 
 
@@ -23,18 +25,18 @@ EnvironmentSettingsDialog::EnvironmentSettingsDialog(QWidget *parent) :
 
 }
 
-void EnvironmentSettingsDialog::getRepositoryPath()
-{
-    QString repositoryPath;
+//void EnvironmentSettingsDialog::getRepositoryPath()
+//{
+//    QString repositoryPath;
 
-    repositoryPath = QFileDialog::getExistingDirectory(
-                this,
-                "Choose the Repository Path",
-                QString::null,
-                QFileDialog::ShowDirsOnly);
+//    repositoryPath = QFileDialog::getExistingDirectory(
+//                this,
+//                "Choose the Repository Path",
+//                QString::null,
+//                QFileDialog::ShowDirsOnly);
 
-    ui->lineEditRepositoryPath->setText(repositoryPath);
-}
+//    ui->lineEditRepositoryPath->setText(repositoryPath);
+//}
 void EnvironmentSettingsDialog::getWorkspacePath()
 {
     QString workspacePath;
@@ -62,8 +64,8 @@ void EnvironmentSettingsDialog::apply()
         //Apply configurations
         emit setWorkspacePath(ui->lineEditWorkspacePath->text());
         emit setRepositoryPath(ui->lineEditRepositoryPath->text());
-        //        emit setUserName(userNameEdit->text());
-        //        emit setUserPassword(userPasswordEdit->text());
+        emit setUserName(ui->lineEditUserName->text());
+        emit setUserPassword(ui->lineEditUserPassword->text());
         this->close();
     }
 }

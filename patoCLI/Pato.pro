@@ -8,7 +8,9 @@ QT       += core
 
 QT       -= gui
 
-TARGET = ../output/pato
+win32: TARGET = ../../output/pato
+unix:  TARGET = ../output/pato
+
 CONFIG   += console
 CONFIG   -= app_bundle
 
@@ -21,7 +23,11 @@ SOURCES += main.cpp \
     cliReader.cpp \
     checkoutCLI.cpp \
     checkinCLI.cpp \
-    addCLI.cpp
+    addCLI.cpp \
+    utils.cpp \
+    mergeCLI.cpp \
+    logCLI.cpp \
+    diffCLI.cpp
 
 HEADERS += \
     updateCLI.h \
@@ -29,6 +35,29 @@ HEADERS += \
     cliReader.h \
     checkoutCLI.h \
     checkinCLI.h \
-    addCLI.h
+    addCLI.h \
+    utils.h \
+    mergeCLI.h \
+    logCLI.h \
+    diffCLI.h
 
-LIBS += -L../output  -lPatoClientApi
+LIBS += -L"../output"  -lPatoClientApi -lPatoWorkspace -lPatoAlgorithms -lPatoBase
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

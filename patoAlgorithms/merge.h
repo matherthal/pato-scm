@@ -1,24 +1,32 @@
 #ifndef MERGE_H
 #define MERGE_H
+#include <fstream>
+#include <string>
 #include "diff.h"
+
+using namespace std;
 
 class Merge
 {
 private:
     Diff *diff;
-    ifstream *fileA;
-    ifstream *fileBase;
-    ifstream *fileB;
-    ofstream *mergeFile;
+    string merge;
+    Lcs *lcs_fileA_base;
+    Lcs *lcs_fileB_base;
+    const char *fileNameA,*fileNameB;
+    bool conflict;
     void doMerge();
     void doAdd(DiffItem*);
     void doDeletion(DiffItem*);
     void doChange(DiffItem*);
-    void insertLines(DiffItem*,int from,int to);
+    void insertLines(Lcs*,int from,int to);
+    bool is_in_lcs(int index,t_lcs *lcs);
+    void print();
 public:
-    Merge(char* _fileBase,char* _fileA,char* _fileB);
+    Merge(const char* _fileBase,const char* _fileA,const char* _fileB);
     ~Merge();
-    ofstream* getFile();
+    void getFile(char* _file_name);
+    bool has_conflict();
 };
 
 #endif // MERGE_H

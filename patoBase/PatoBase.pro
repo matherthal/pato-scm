@@ -6,7 +6,9 @@
 
 QT       -= gui
 
-TARGET = ../output/PatoBase
+win32: TARGET = ../../output/patobase
+unix:  TARGET = ../output/PatoBase
+
 TEMPLATE = lib
 CONFIG += staticlib
 

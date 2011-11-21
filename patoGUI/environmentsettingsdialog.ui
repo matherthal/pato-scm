@@ -60,7 +60,7 @@
      <rect>
       <x>10</x>
       <y>40</y>
-      <width>431</width>
+      <width>511</width>
       <height>20</height>
      </rect>
     </property>
@@ -75,23 +75,10 @@
      </rect>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButtonChooseRepository">
-    <property name="geometry">
-     <rect>
-      <x>450</x>
-      <y>40</y>
-      <width>75</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Choose</string>
-    </property>
-   </widget>
    <widget class="QPushButton" name="pushButtonChooseWorkspace">
     <property name="geometry">
      <rect>
-      <x>450</x>
+      <x>448</x>
       <y>90</y>
       <width>75</width>
       <height>23</height>
@@ -164,7 +151,7 @@
   <widget class="QPushButton" name="pushButtonApply">
    <property name="geometry">
     <rect>
-     <x>390</x>
+     <x>388</x>
      <y>300</y>
      <width>75</width>
      <height>23</height>
@@ -181,7 +168,7 @@
   <widget class="QPushButton" name="pushButtonCancel">
    <property name="geometry">
     <rect>
-     <x>470</x>
+     <x>468</x>
      <y>300</y>
      <width>75</width>
      <height>23</height>

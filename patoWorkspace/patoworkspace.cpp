@@ -1,12 +1,17 @@
 #include "patoworkspace.h"
 #include <QDir>
+#include "../patoBase/patofilestatus.h"
+#include "../patoAlgorithms/diff.h"
 #include "../patoBase/patoResourceAbstractFactory.h"
 #include "../patoBase/ifile.h"
 
 PatoWorkspace* PatoWorkspace::sigleWorkspace = NULL;
 
+const QString cWorkspaceControlFolder = ".pato";
 const QString cWorkspaceMetadata = ".pato.md";
 const QString cAddedMetadata = ".added.md";
+const QString cRemovedMetadata = ".removed.md";
+
 
 
 QString getDir(QString str)
@@ -43,6 +48,11 @@ void PatoWorkspace::free()
     }
 }
 
+bool PatoWorkspace::exists( QString path )
+{
+    return QFile( QString("%1/%2/%3").arg(path).arg(cWorkspaceControlFolder).arg(cWorkspaceMetadata) ).exists();
+}
+
 PatoWorkspace::PatoWorkspace()
 {
     ready = false;
@@ -53,6 +63,38 @@ PatoWorkspace::~PatoWorkspace()
 }
 
 //////////////PRIMEIRA FASE//////////////////////
+
+bool PatoWorkspace::makeBackup()
+{
+    return true;
+}
+
+bool PatoWorkspace::clearWorkspace()
+{
+    return true;
+}
+
+bool PatoWorkspace::cleanCopy(PatoVersionReturn params,  bool backup)
+{
+    return cleanCopy(params.path, params.files, params.address, params.revision, backup);
+}
+
+bool PatoWorkspace::cleanCopy( QString sourceDir, QStringList files, QString repoAddress, RevisionKey revision, bool backup)
+{
+    if (backup)
+    {
+        makeBackup();
+    }
+
+    clearWorkspace();
+    return create(sourceDir, files, repoAddress, revision);
+}
+
+bool PatoWorkspace::create(PatoVersionReturn params)
+{
+    return create(params.path, params.files, params.address, params.revision);
+}
+
 bool PatoWorkspace::create(QString sourceDir, QStringList files, QString repoAddress, RevisionKey revision )
 {
     if ( workPath.isEmpty())
@@ -73,7 +115,7 @@ bool PatoWorkspace::create(QString sourceDir, QStringList files, QString repoAdd
     defaultPath = repoAddress;
     revKey  = revision;
 
-    timespamp = QDateTime::currentDateTime();
+    timestamp = QDateTime::currentDateTime();
 
     for (int i=0; i < files.size(); i++)
     {
@@ -82,6 +124,8 @@ bool PatoWorkspace::create(QString sourceDir, QStringList files, QString repoAdd
     }
 
     writeMetadata();
+
+    copyRevision(revKey);
 
     ready = true;
     return true;
@@ -105,12 +149,19 @@ bool PatoWorkspace::setPath(QString directory, bool createDir)
     {
         readMetadata();
     }
+    else
+    {
+        lastError = "The given directory does not contain a pato repository.";
+        return false;
+    }
 
     return true;
 }
 
-bool PatoWorkspace::add( QString sourceDir, QStringList paths )
+QList< PatoFileStatus > PatoWorkspace::add( QString sourceDir, QStringList paths )
 {
+    QList< PatoFileStatus > ret;
+
     for (int i = 0; i < paths.size(); i++)
     {
         if (!versionedFiles.contains( paths[i] ))
@@ -119,14 +170,18 @@ bool PatoWorkspace::add( QString sourceDir, QStringList paths )
                 addedFiles.append(paths[i]);
 
             copyFile(sourceDir, workPath, paths[i] );
+
+            ret << PatoFileStatus( paths[i], PatoFileStatus::ADDED);
         }
         else
         {
-            qWarning() << QString("%1 - Already Versioned!!!").arg(paths[i]);
+            ret << PatoFileStatus( paths[i], PatoFileStatus::VERSIONED);
         }
     }
 
     writeMetadata();
+
+    return ret;
 }
 
 QList< PatoFileStatus > PatoWorkspace::status(PatoFileStatus::FileStatus statusFilter) const
@@ -139,12 +194,12 @@ QList< PatoFileStatus > PatoWorkspace::status(PatoFileStatus::FileStatus statusF
         {
             QFileInfo fileInfo( workPath + "/" + versionedFiles[i] );
 
-            if ( (statusFilter & PatoFileStatus::MODIFIED) && (fileInfo.lastModified() > timespamp ) )
+            if ( (statusFilter & PatoFileStatus::MODIFIED) && (fileInfo.lastModified() > timestamp ) )
             {
                 statusList.append( PatoFileStatus( versionedFiles[i], PatoFileStatus::MODIFIED ) );
             }
 
-            if ( (statusFilter & PatoFileStatus::CLEAN) && (fileInfo.lastModified() <= timespamp) )
+            if ( (statusFilter & PatoFileStatus::CLEAN) && (fileInfo.lastModified() <= timestamp) )
             {
                 statusList.append( PatoFileStatus( versionedFiles[i], PatoFileStatus::CLEAN ) );
             }
@@ -167,39 +222,67 @@ QList< PatoFileStatus > PatoWorkspace::status(PatoFileStatus::FileStatus statusF
         }
     }
 
-    qDebug() << "warning: status returns only modified and added files";
-
     return statusList;
 }
 
-bool PatoWorkspace::setRevision( RevisionKey revision,  bool commiting  )
+bool PatoWorkspace::setRevision(RevisionKey revision,  bool commiting )
 {
     qDebug() << QString("Old Revision: %1 -> New Revision: %2").arg(revKey).arg(revision);
 
-    revKey  = revision;
+    if (commiting)
+    {
+        versionedFiles << addedFiles; // added files are now versioned
+
+        for ( int i=0; i < removedFiles.size(); i++ ) //removed files should be removed.
+        {
+            bool bRemoved = QFile( workPath + "/" + removedFiles[i]).remove();
+            if (!bRemoved)
+                qWarning() << QString("There was a problem removing the following file: %1").arg(removedFiles[i]);
+        }
+    }
+
+    addedFiles.clear();
+    removedFiles.clear();
+
+
+    writeMetadata();
+
 
     if (commiting)
     {
-        versionedFiles << addedFiles;
+        copyRevision(revision);
+        removeRevision(revKey);
+    }
+
+    revKey  = revision;
+
+
+    return true;
+}
+
+bool PatoWorkspace::update( PatoChangeSet changeSet, bool clear )
+{
+    PatoChangeSet localChanges = changes();
+
+    if (!localChanges.isEmpty())
+    {
+
     }
     else
     {
-        if (addedFiles.size())
-        {
-            qWarning() << "Ignoring added files" ;
-        }
+        Q_ASSERT (  changeSet.start() == revision() );
+        //copyRevision( backupPath(revision()), backupPath(changeSet.end()) );
+        //PatoAlgorithms::ApplyChangeSet( backupPath(changeSet.end()), changeSet); //a clean .end() version;
+        //PatoAlgorithms::Merge( backupPath(changeSet.end()), changeSet); //a clean .end() version;
     }
-    addedFiles.clear();
-    writeMetadata();
-}
 
-bool PatoWorkspace::update( PatoChangeSet changeSet, RevisionKey revision)
-{
     changeSet = changeSet; //PatoAlgorithms::ApplyChangeSet( workPath, changeSet);
     qWarning() << "Update workspace needs PatoAlgorithms::ApplyChangeSet( workPath, changeSet)";
-    revKey  = revision;
+    revKey  = changeSet.end();
 
     writeMetadata();
+
+    return true;
 }
 
 RevisionKey PatoWorkspace::revision() const
@@ -218,13 +301,14 @@ void PatoWorkspace::writeMetadata(MetadataType types)
 {
     if (types & META_CONTROL)
     {
-        QFile file( workPath + "/" + cWorkspaceMetadata);
+        QFile file( metaFilePath( META_CONTROL, true ) );
         if (file.open( QFile::WriteOnly | QFile::Truncate))
         {
             QTextStream textStream(&file);
 
-            textStream << "Revision: " << revKey << endl;
-            textStream << "Default Repository: " << defaultPath << endl;
+            textStream << revKey << endl;
+            textStream << defaultPath << endl;
+            textStream << timestamp.toString() << endl;
 
             for (int i=0; i < versionedFiles.size(); i++)
             {
@@ -235,13 +319,13 @@ void PatoWorkspace::writeMetadata(MetadataType types)
         }
         else
         {
-            qWarning() << "Cannot open .pato.pm ";
+            qWarning() << "Cannot open " << cWorkspaceMetadata;
         }
     }
 
     if (types & META_ADDED)
     {
-        QFile file( workPath + "/" + cAddedMetadata);
+        QFile file( metaFilePath( META_ADDED, true ) );
         if (file.open( QFile::WriteOnly | QFile::Truncate))
         {
             QTextStream textStream(&file);
@@ -255,7 +339,27 @@ void PatoWorkspace::writeMetadata(MetadataType types)
         }
         else
         {
-            qWarning() << "Cannot open .added.pm ";
+            qWarning() << "Cannot open " << cAddedMetadata;
+        }
+    }
+
+    if (types & META_REMOVED)
+    {
+        QFile file( metaFilePath( META_REMOVED, true ) );
+        if (file.open( QFile::WriteOnly | QFile::Truncate))
+        {
+            QTextStream textStream(&file);
+
+            for (int i=0; i < removedFiles.size(); i++)
+            {
+                textStream << removedFiles[i] << endl;// << addedFiles;
+            }
+
+            file.close();
+        }
+        else
+        {
+            qWarning() << "Cannot open " << cRemovedMetadata;
         }
     }
 }
@@ -264,12 +368,14 @@ void PatoWorkspace::readMetadata(MetadataType types)
 {
     if (types & META_CONTROL)
     {
-        QFile file( workPath + "/" + cWorkspaceMetadata);
+        versionedFiles.clear();
+        QFile file( metaFilePath( META_CONTROL, true ));
         if (file.open( QFile::ReadOnly))
         {
             QTextStream textStream(&file);
             revKey = textStream.readLine().toInt();
             defaultPath = textStream.readLine();
+            timestamp.fromString( textStream.readLine() );
 
             while (!textStream.atEnd())
             {
@@ -280,7 +386,8 @@ void PatoWorkspace::readMetadata(MetadataType types)
 
     if (types & META_ADDED)
     {
-        QFile file( workPath + "/" + cAddedMetadata);
+        addedFiles.clear();
+        QFile file( metaFilePath( META_ADDED, true ) );
         if (file.open( QFile::ReadOnly))
         {
             QTextStream textStream(&file);
@@ -291,23 +398,103 @@ void PatoWorkspace::readMetadata(MetadataType types)
             }
         }
     }
+
+    if (types & META_REMOVED)
+    {
+        removedFiles.clear();
+        QFile file( metaFilePath( META_REMOVED, true ) );
+        if (file.open( QFile::ReadOnly))
+        {
+            QTextStream textStream(&file);
+
+            while (!textStream.atEnd())
+            {
+                removedFiles << textStream.readLine();
+            }
+        }
+    }
+}
+
+PatoChangeSet  PatoWorkspace::changes() const
+{
+    PatoChangeSet changeSet;
+
+    for (int i=0; i < versionedFiles.size(); i++)
+    {
+        Diff diff ( (workPath + "/" + versionedFiles[i]).toStdString().c_str(),
+                    (backupPath(revKey) + versionedFiles[i]).toStdString().c_str() );
+
+        if (!diff.isEmpty())
+        {
+            changeSet.add( versionedFiles[i], PatoFileStatus::MODIFIED , toByteArray(diff) );
+        }
+    }
+
+    for( int i=0; i < addedFiles.size(); i++)
+    {
+        changeSet.add( addedFiles[i], PatoFileStatus::ADDED, QByteArray());
+    }
+
+    for( int i=0; i < removedFiles.size(); i++)
+    {
+        changeSet.add(  removedFiles[i], PatoFileStatus::REMOVED, QByteArray());
+    }
+
+    return changeSet;
 }
 
 //////////////SEGUNDA FASE///////////////////////
-void PatoWorkspace::revert(/*path*/)
+void PatoWorkspace::revert(QStringList files)
 {
+    if (files.isEmpty())
+    {
+        for (int i=0; i < addedFiles.size(); i++)
+        {
+            QFile( workPath + "/" + addedFiles[i]).remove();
+        }
+
+        for (int i=0; i < versionedFiles.size(); i++)
+        {
+            QFile( workPath + "/" + versionedFiles[i]).remove();
+            copyFile( backupPath(revKey), workPath, versionedFiles[i] );
+        }
+
+        //the meta files
+        copyFile( backupPath(revKey), workPath, metaFilePath(META_CONTROL) );
+        addedFiles.clear();
+        removedFiles.clear();
+    }
+    else
+    {
+        for (int i=0; i < files.size(); i++)
+        {
+            QFile( workPath + "/" + files[i]).remove();
+            copyFile( backupPath(revKey), workPath, files[i] );
+
+            int index= removedFiles.indexOf(files[i]);
+            if (  index != -1)
+            {
+                removedFiles.removeAt(index);
+                versionedFiles << files[i];
+            }
+        }
+
+        writeMetadata();
+    }
 }
 
-void PatoWorkspace::currentFile(/*path*/)// File
+void PatoWorkspace::remove(QStringList files)
 {
-}
+    for (int i=0; i < files.size(); i++)
+    {
+        int index = versionedFiles.indexOf( files[i] );
 
-void PatoWorkspace::originalFile(/*path*/)// File
-{
-}
-
-void PatoWorkspace::remove(/*path*/)
-{
+        if ( index != -1 )
+        {
+            removedFiles << versionedFiles[index];
+            versionedFiles.removeAt(index);
+        }
+    }
 }
 
 void PatoWorkspace::copy(/*originalPath, destinationPath*/)
@@ -324,4 +511,66 @@ QString PatoWorkspace::getLastError() const
 bool PatoWorkspace::isReady() const
 {
     return ready;
+}
+
+
+void PatoWorkspace::copyRevision(RevisionKey key) const
+{
+    QString revPath = backupPath( key );
+
+    for (int i=0; i < versionedFiles.size(); i++)
+    {
+        QFile( workPath + "/" + versionedFiles[i]).remove();
+        copyFile( workPath, revPath, versionedFiles[i] ); //from workspace to backup;
+    }
+
+    //the meta file
+    copyFile( workPath, revPath, metaFilePath(META_CONTROL) );
+}
+
+void PatoWorkspace::removeRevision(RevisionKey key) const
+{
+    //read .pato.md;
+    //remove all files;
+    //remove all dirs;
+}
+
+QString PatoWorkspace::backupPath(RevisionKey rev) const
+{
+    return QString("%1/%2/%3/").arg( workPath ).arg( cWorkspaceControlFolder ).arg( rev );
+}
+
+QString PatoWorkspace::metaFilePath(MetadataType type, bool fullPath) const
+{
+    QString strFile;
+
+    switch(type)
+    {
+    case META_ADDED:
+        strFile = cAddedMetadata; break;
+
+    case META_CONTROL:
+        strFile = cWorkspaceMetadata; break;
+
+    case META_REMOVED:
+         strFile = cRemovedMetadata; break;
+
+    case META_ALL:
+    default:
+        return QString();
+    }
+
+    if (fullPath)
+    {
+        return QString("%1/%2/%3").arg( workPath ).arg( cWorkspaceControlFolder ).arg( strFile );
+    }
+
+    return QString("%1/%2").arg( cWorkspaceControlFolder ).arg( strFile );
+
+}
+
+
+QByteArray PatoWorkspace::toByteArray(Diff&) const
+{
+    return QByteArray();
 }
