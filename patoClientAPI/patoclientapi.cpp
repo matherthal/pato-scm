@@ -1,6 +1,7 @@
 #include "patoclientapi.h"
 #include "../patoBase/patotypes.h"
 #include "../patoWorkspace/patoworkspace.h"
+#include "../patoServerAPI/patoserverapi.h"
 #include "PatoClientException.h"
 #include "statusOutput.h"
 #include "updateOutput.h"
@@ -17,6 +18,7 @@ PatoClientApi::PatoClientApi() {
 
 QList<checkoutOutput> PatoClientApi::checkout(RevisionKey revision, QString address, QString username, QString password, QString workspace) throw (PatoClientException) {
 
+    std::map<std::string, std::string> mapp;
     QList<checkoutOutput> output;
     if (address == "") {
         throw (PatoClientException("The checkout command needs an address."));
@@ -29,6 +31,7 @@ QList<checkoutOutput> PatoClientApi::checkout(RevisionKey revision, QString addr
     PatoVersionReturn versionParams;// = communication->checkout( address, username, password, revision);
 
     PatoWorkspace* work = PatoWorkspace::instance();
+    PatoServerApi* server = PatoServerApi::getInstance();
 
     if ( PatoWorkspace::exists(workspace) )
     {
@@ -38,6 +41,8 @@ QList<checkoutOutput> PatoClientApi::checkout(RevisionKey revision, QString addr
     {
         work->create( versionParams );
     }
+
+    server->checkOut(address, username, password, revision, mapp);
 
     return output;
 }
@@ -132,9 +137,9 @@ void PatoClientApi::merge(QString path1, RevisionKey  revision1, QString path2, 
         throw (PatoClientException("The merge command needs a path."));
     } else if (workspace == "") {
         throw (PatoClientException("The merge command needs a workspace."));
-    } else if (revision1 == "") {
+    } else if (revision1 < -1 ) {
         throw (PatoClientException("The merge command needs a revision."));
-    } else if (revision2 == "") {
+    } else if (revision2 < -1) {
         throw (PatoClientException("The merge command needs a revision."));
     }
 }
@@ -146,9 +151,9 @@ void PatoClientApi::diff(QString path1, RevisionKey  revision1, QString path2, R
         throw (PatoClientException("The diff command needs a path."));
     } else if (path2 == "") {
         throw (PatoClientException("The diff command needs a path."));
-    } else if (revision1 == "") {
+    } else if (revision1 < -1) {
         throw (PatoClientException("The diff command needs a revision."));
-    } else if (revision2 == "") {
+    } else if (revision2 < -1) {
         throw (PatoClientException("The diff command needs a revision."));
     }
 }
