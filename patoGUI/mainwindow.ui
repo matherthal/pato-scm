@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -142,16 +145,28 @@
     <addaction name="actionRemove_File_Dir"/>
     <addaction name="separator"/>
     <addaction name="actionUpdate"/>
+    <addaction name="actionLog"/>
    </widget>
-   <widget class="QMenu" name="menuPato_Diff_Tool">
+   <widget class="QMenu" name="menuPatoOthers">
     <property name="title">
      <string>Pato-Diff Tool</string>
     </property>
     <addaction name="actionOpen"/>
    </widget>
+   <widget class="QMenu" name="menuRepository">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="title">
+     <string>Repository</string>
+    </property>
+    <addaction name="actionBrowse"/>
+    <addaction name="actionRepLog"/>
+   </widget>
    <addaction name="menuPato_SCM"/>
    <addaction name="menuWorkspace"/>
-   <addaction name="menuPato_Diff_Tool"/>
+   <addaction name="menuRepository"/>
+   <addaction name="menuPatoOthers"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusBar">
@@ -183,6 +198,9 @@
    <addaction name="actionExport"/>
   </widget>
   <widget class="QToolBar" name="workspaceToolBar">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="windowTitle">
     <string>toolBar</string>
    </property>
@@ -196,6 +214,7 @@
    <addaction name="actionRemove_File_Dir"/>
    <addaction name="separator"/>
    <addaction name="actionUpdate"/>
+   <addaction name="actionLog"/>
   </widget>
   <widget class="QToolBar" name="diffToolBar">
    <property name="windowTitle">
@@ -207,6 +226,7 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="actionBrowse"/>
    <addaction name="actionOpen"/>
   </widget>
   <widget class="QToolBar" name="helpToolBar">
@@ -282,6 +302,9 @@
    </property>
   </action>
   <action name="actionExport">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="mainwindow.qrc">
      <normaloff>:/new/icons/exporticon</normaloff>:/new/icons/exporticon</iconset>
@@ -386,6 +409,54 @@
    </property>
    <property name="statusTip">
     <string>Open Pato-Diff Tool</string>
+   </property>
+  </action>
+  <action name="actionBrowse">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="mainwindow.qrc">
+     <normaloff>:/new/icons/browse</normaloff>:/new/icons/browse</iconset>
+   </property>
+   <property name="text">
+    <string>Browse</string>
+   </property>
+   <property name="toolTip">
+    <string>Browse</string>
+   </property>
+   <property name="statusTip">
+    <string>Browse project at repository</string>
+   </property>
+  </action>
+  <action name="actionRepLog">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="mainwindow.qrc">
+     <normaloff>:/new/icons/log</normaloff>:/new/icons/log</iconset>
+   </property>
+   <property name="text">
+    <string>Repository Log</string>
+   </property>
+   <property name="statusTip">
+    <string>See revisions log from repository</string>
+   </property>
+  </action>
+  <action name="actionLog">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="mainwindow.qrc">
+     <normaloff>:/new/icons/log</normaloff>:/new/icons/log</iconset>
+   </property>
+   <property name="text">
+    <string>Log</string>
+   </property>
+   <property name="statusTip">
+    <string>Show revisions log</string>
    </property>
   </action>
  </widget>

@@ -1,8 +1,7 @@
 #ifndef PATOCLIENTAPI_H
 #define PATOCLIENTAPI_H
 
-//#include "PatoClientApi_global.h"
-#include"PatoClientApi_global.h"
+#include "PatoClientApi_global.h"
 
 class PatoClientApi {
 public:

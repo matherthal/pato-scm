@@ -1,7 +1,7 @@
 #include "bdpatodatamodel.h"
 #include <algorithm>
 
-#define PATH_BD "..\\patoDataModel\\BDPatoDataModel\\DataBase\\DataModelBD.sqlite"
+#define PATH_BD "../patoDataModel/BDPatoDataModel/DataBase/DataModelBD.sqlite"
 //#define PATH_BD "DataModelBD.sqlite"
 namespace bd {
 
@@ -44,7 +44,7 @@ namespace bd {
         if ( db.connectionName().isEmpty() )
         {
             db = QSqlDatabase::addDatabase( "QSQLITE","Connection" );
-            db.setDatabaseName(PATH_BD);
+            db.setDatabaseName(QDir::toNativeSeparators(PATH_BD));
         }
 
         return db.open();
@@ -908,8 +908,8 @@ namespace bd {
     bool BDPatoDataModel::insertFile(std::string& path, std::string& file, /*std::string& project,*/ std::string& idFile)
     {
         std::string strStatus;
-
-        if ( findPathLastVersion( path+file ) )
+        std::string strPathFile = path + file;
+        if ( findPathLastVersion(strPathFile) )
             strStatus = "M";
         else
             strStatus = "I";
