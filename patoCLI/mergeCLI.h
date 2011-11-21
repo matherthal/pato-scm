@@ -9,6 +9,7 @@
 #define	MERGECLI_H
 
 #include <QString>
+#include "../patoBase/patotypes.h"
 
 class mergeCLI {
 public:
@@ -18,20 +19,20 @@ public:
     void command(int argc, char** argv);
     void setWorkspace(QString workspace);
     QString getWorkspace() const;
-    void setRevision2(QString revision2);
-    QString getRevision2() const;
+    void setRevision2(RevisionKey revision2);
+    RevisionKey getRevision2() const;
     void setPath2(QString path2);
     QString getPath2() const;
-    void setRevision1(QString revision1);
-    QString getRevision1() const;
+    void setRevision1(RevisionKey revision1);
+    RevisionKey getRevision1() const;
     void setPath1(QString path1);
     QString getPath1() const;
 
 private:
 QString path1;
-    QString revision1;
+    RevisionKey revision1;
     QString path2;
-    QString revision2;
+    RevisionKey revision2;
     QString workspace;
 };
 

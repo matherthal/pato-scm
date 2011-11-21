@@ -79,10 +79,10 @@ void diffCLI::command(int argc, char** argv){
             path2 = argv[i + 1];
             qout<<"path2 = "<< path2<<endl;
         } else if (strcmp(parameter, "--revision1") == 0) {
-            revision1 = argv[i + 1];
+            revision1 = atoi(argv[i + 1]);
             qout<<"revision1 = "<< revision1<<endl;
         } else if (strcmp(parameter, "--revision2") == 0) {
-            revision2 = argv[i + 1];
+            revision2 = atoi(argv[i + 1]);
             qout<<"revision2 = "<< revision2<<endl;
         } else {
             qout << "[ERROR] " << parameter << " don't exist." << endl;
