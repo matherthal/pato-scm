@@ -16,10 +16,13 @@ private:
 public:
     static const int APPLY_TO_B = 0;
     static const int APPLY_TO_A = 1;
+    Patch(string delta,string file);
+    Patch(string delta,string file,int _apply_to);
     Patch(char* _delta_file_name,char* _file_name);
     Patch(char* _delta_file_name,char* _file_name,int _apply_to);
     void getFile(char* _file_name);
     void print();
+    string to_string();
 };
 
 #endif // PATCH_H
