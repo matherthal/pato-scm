@@ -872,11 +872,12 @@ namespace bd {
         return !listPathLastVersion.empty();
     }
 
-    bool BDPatoDataModel::findPathLastVersion(std::string& path)
+    bool BDPatoDataModel::findPathLastVersion(std::string path)
     {
         if ( listPathLastVersion.empty() )
             return false;
 
+        //end isnt a valid position at stl maps\sets
         std::list<std::string>::iterator itPath = std::find(listPathLastVersion.begin(), listPathLastVersion.end(), path);
         if ( itPath == listPathLastVersion.end() )
             return false;
