@@ -40,6 +40,8 @@ void removeDirectory(QString path)
 
     foreach ( QString file, dir.entryList( QDir::Files))
         QFile (QFileInfo( dir, file).absoluteFilePath()).remove();
+
+    dir.rmdir(dir.absolutePath());
 }
 
 void copyDirectory(QString path1, QString path2)
