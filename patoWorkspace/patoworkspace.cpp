@@ -31,6 +31,32 @@ void copyFile(QString path1, QString path2, QString file)
     QFile(path1 + '/' + file).copy(path2 + '/' + file);
 }
 
+void removeDirectory(QString path)
+{
+    QDir dir( path );
+
+    foreach (QString subDir, dir.entryList( QDir::Dirs | QDir::NoDotAndDotDot))
+        removeDirectory(subDir);
+
+    foreach ( QString file, dir.entryList( QDir::Files))
+        QFile (QFileInfo( dir, file).absoluteFilePath()).remove();
+
+    dir.rmdir(dir.absolutePath());
+}
+
+void copyDirectory(QString path1, QString path2)
+{
+    QDir dir( path1 );
+
+    foreach (QString subDir, dir.entryList( QDir::Dirs | QDir::NoDotAndDotDot))
+        copyDirectory(path1+"/"+subDir, path2+"/"+subDir);
+
+    foreach ( QString file, dir.entryList( QDir::Files))
+    {
+        copyFile (path1,path2, file);
+    }
+}
+
 PatoWorkspace* PatoWorkspace::instance()
 {
     if (!sigleWorkspace)
@@ -271,7 +297,7 @@ bool PatoWorkspace::update( PatoChangeSet changeSet, bool clear )
     else
     {
         Q_ASSERT (  changeSet.start() == revision() );
-        //copyRevision( backupPath(revision()), backupPath(changeSet.end()) );
+        copyDirectory( backupPath(revision()), backupPath(changeSet.end()) );
         //PatoAlgorithms::ApplyChangeSet( backupPath(changeSet.end()), changeSet); //a clean .end() version;
         //PatoAlgorithms::Merge( backupPath(changeSet.end()), changeSet); //a clean .end() version;
     }
@@ -530,9 +556,8 @@ void PatoWorkspace::copyRevision(RevisionKey key) const
 
 void PatoWorkspace::removeRevision(RevisionKey key) const
 {
-    //read .pato.md;
-    //remove all files;
-    //remove all dirs;
+    QString revPath = backupPath( key );
+    removeDirectory(revPath);
 }
 
 QString PatoWorkspace::backupPath(RevisionKey rev) const
