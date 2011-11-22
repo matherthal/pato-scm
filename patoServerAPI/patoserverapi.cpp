@@ -151,22 +151,20 @@ bool PatoServerApi::checkIn(QString project, QString username, QString password,
     return true;
 }
 
-bool PatoServerApi::showLog(QString project, QString username, QString password, QString& message, int version,
-             std::map<std::string, std::string>& filesLog)
+bool PatoServerApi::showLog(QString project, QString username, QString password, int version,
+             PatoLog& log)
 {
     string strUsername = username.toStdString();
     string strPw = password.toStdString();
     string strProj = project.toStdString();
 
-    message = PatoDataModel::getInstance()->getLogMessage(version).c_str();
-
-    return PatoDataModel::getInstance()->showLog(strUsername, strPw, strProj, version, filesLog );
+    return PatoDataModel::getInstance()->showLog(strUsername, strPw, strProj, version, log );
 }
 
-bool PatoServerApi::showLogPathFile(QString &path, std::vector<QString>& message)
+bool PatoServerApi::showLogPathFile(QString &path, std::vector<PatoLog>& vecLog)
 {
     string strPath = path.toStdString();
-    return PatoDataModel::getInstance()->showLogPathFile(strPath, message);
+    return PatoDataModel::getInstance()->showLogPathFile(strPath, vecLog);
 }
 
 

@@ -14,12 +14,18 @@ CONFIG += staticlib
 
 SOURCES += patobase.cpp \
     patofilestatus.cpp \
-    patochangeset.cpp
+    patochangeset.cpp \
+    patouser.cpp \
+    patolog.cpp \
+    patofile.cpp
 
 HEADERS += patobase.h \
     patofilestatus.h \
     patotypes.h \
-    patochangeset.h
+    patochangeset.h \
+    patouser.h \
+    patolog.h \
+    patofile.h
 
 unix:!symbian {
     maemo5 {
@@ -29,3 +35,5 @@ unix:!symbian {
     }
     INSTALLS += target
 }
+
+

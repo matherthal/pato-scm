@@ -7,7 +7,7 @@
 #include <vector>
 #include <list>
 #include <map>
-
+#include "../patoBase/patolog.h"
 using namespace std;
 
 class PATODATAMODELSHARED_EXPORT PatoDataModel {
@@ -42,9 +42,8 @@ public:
     bool insertRelationProjectElementTransaction();
 
     bool checkOut(std::string& loginUser, std::string& password, std::string& project, int version, std::map<std::string, std::string>& filePath);
-    bool showLog(std::string& loginUser, std::string& password, std::string& project, int version, std::map<std::string, std::string>& filePath);
-    std::string getLogMessage(int version);
-    bool showLogPathFile(std::string& path, std::vector<QString>& message);
+    bool showLog(std::string& loginUser, std::string& password, std::string& project, int version, PatoLog& log);
+    bool showLogPathFile(std::string& path, std::vector<PatoLog>& message);
     //<
 
     //user operations >
