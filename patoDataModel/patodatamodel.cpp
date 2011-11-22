@@ -98,22 +98,18 @@ bool PatoDataModel::checkOut(std::string& loginUser, std::string& password, std:
     return bd::BDPatoDataModel::getInstance()->getFilePath(project, version, filePath);
 }
 
-bool PatoDataModel::showLog(std::string& loginUser, std::string& password, std::string& project, int version, std::map<std::string, std::string>& filePath)
+bool PatoDataModel::showLog(std::string& loginUser, std::string& password, std::string& project, int version, PatoLog& log)
 {
     if ( !validateUserProject(loginUser, password, project) )
             return false;
 
-    return bd::BDPatoDataModel::getInstance()->getLog(project, version, filePath);
+    return bd::BDPatoDataModel::getInstance()->getLog(project, version, log);
 }
 
-std::string PatoDataModel::getLogMessage(int version)
-{
-    return bd::BDPatoDataModel::getInstance()->getLogMessage(version);
-}
 
-bool PatoDataModel::showLogPathFile(std::string& path, std::vector<QString> &message)
+bool PatoDataModel::showLogPathFile(std::string& path, std::vector<PatoLog>& log)
 {
-    return bd::BDPatoDataModel::getInstance()->getLogPathFile(path, message);
+    return bd::BDPatoDataModel::getInstance()->getLogPathFile(path, log);
 }
 
 //<
@@ -152,7 +148,7 @@ std::string PatoDataModel::getPath( std::string& pathFile )
 
 std::string PatoDataModel::getFile( std::string& pathFile )
 {
-    int posLastBar = pathFile.rfind("/");
+    int posLastBar = pathFile.rfind("\\");
     std::string file;
     if ( posLastBar > -1 )
     {

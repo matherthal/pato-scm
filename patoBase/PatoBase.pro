@@ -15,6 +15,8 @@ CONFIG += staticlib
 SOURCES += patobase.cpp \
     patofilestatus.cpp \
     patochangeset.cpp \
+    patouser.cpp \
+    patolog.cpp \
     testfilefactory.cpp \
     mockfile.cpp \
     ifile.cpp \
@@ -27,6 +29,8 @@ HEADERS += patobase.h \
     patofilestatus.h \
     patotypes.h \
     patochangeset.h \
+    patouser.h \
+    patolog.h \
     testfilefactory.h \
     mockfile.h \
     ifile.h \

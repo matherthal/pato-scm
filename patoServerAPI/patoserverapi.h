@@ -7,7 +7,7 @@
 #include<QtCore/QString>
 
 #include "../patoBase/patotypes.h"
-
+#include "../patoBase/patolog.h"
 using namespace std;
 
 class PATOSERVERAPISHARED_EXPORT PatoServerApi {
@@ -31,11 +31,11 @@ public:
                   std::map<std::string, std::string>& filesCheckIn);
 
     /*Show log of the files involved in a specific revision*/
-    bool showLog(QString project, QString username, QString password, QString& message, int version,
-                 std::map<std::string, std::string>& filesLog);
+    bool showLog(QString project, QString username, QString password, int version,
+                 PatoLog& log);
 
     /*Show all the revision that a specific file was involved in the transaction*/
-    bool showLogPathFile(QString& path, std::vector<QString>& message);
+    bool showLogPathFile(QString& path, std::vector<PatoLog>& vecLog);
 
     static PatoServerApi* getInstance();
     static void destroyInstance();

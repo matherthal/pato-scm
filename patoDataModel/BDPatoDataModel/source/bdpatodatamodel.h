@@ -10,6 +10,7 @@
 #include <list>
 #include <sstream>
 #include <QtSql>
+#include "../../../patoBase/patolog.h"
 
 using namespace std;
 
@@ -39,10 +40,10 @@ public:
     std::string getFileIdStored(std::string& nameFile);
     void getCompletePath(int idItemConfig, std::string& project, std::string& completePath);
     bool getFilePath(std::string& project, int version, std::map<std::string, std::string>& filePath);
-    bool getLog(std::string& project, int version, std::map<std::string, std::string>&  filePath);
-    std::string getLogMessage(int version);
+    bool getLog(std::string& project, int version, PatoLog&  log);
+    void getInfoTransaction(int version, PatoLog& log);
 
-    bool getLogPathFile(std::string& path, std::vector<QString>& message);
+    bool getLogPathFile(std::string& path, std::vector<PatoLog>& message);
     //<
 
 

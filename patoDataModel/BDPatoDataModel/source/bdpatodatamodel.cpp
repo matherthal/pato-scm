@@ -1,5 +1,6 @@
 #include "bdpatodatamodel.h"
 #include <algorithm>
+#include "../../../patoBase/patouser.h"
 
 #define PATH_BD "../patoDataModel/BDPatoDataModel/DataBase/DataModelBD.sqlite"
 //#define PATH_BD "DataModelBD.sqlite"
@@ -261,7 +262,7 @@ namespace bd {
         return false;
     }
 
-    bool BDPatoDataModel::getLog(std::string& project, int version, std::map<std::string, std::string>&  filePath)
+    bool BDPatoDataModel::getLog(std::string& project, int version, PatoLog&  log)
     {
         std::stringstream outVersion;
         if ( version == -1 )
@@ -272,15 +273,20 @@ namespace bd {
         else
             outVersion << version;
 
+        //get info log
+        getInfoTransaction(version, log);
+
+        qDebug() << log.getMessage().c_str();
+
 
         int projectId = getProjectId(project);
         std::stringstream outProjectId;
         outProjectId << projectId;
 
-        std::string sqlLog = "select (select itco_nome from item_configuracao where itco_id = p.itco_id) || ";
-        sqlLog.append("(select arqu_nome from arquivo where arqu_id = p.arqu_id), ");
-        sqlLog.append("(select arqu_cd_armazenamento from arquivo where arqu_id = p.arqu_id), ");
-        sqlLog.append("(select arqu_status from arquivo where arqu_id = p.arqu_id) ");
+        std::string sqlLog = "select p.arqu_id as idArquivo, (select itco_nome from item_configuracao where itco_id = p.itco_id) || ";
+        sqlLog.append("(select arqu_nome from arquivo where arqu_id = p.arqu_id) as arquivo, ");
+        sqlLog.append("(select arqu_cd_armazenamento from arquivo where arqu_id = p.arqu_id) as codArmazenamento, ");
+        sqlLog.append("(select arqu_status from arquivo where arqu_id = p.arqu_id) as status ");
         sqlLog.append("from proj_item_tran p where p.tran_id = ");
         sqlLog.append(outVersion.str());
         sqlLog.append(" and prit_in_transaction = 1;");
@@ -293,14 +299,22 @@ namespace bd {
         {
             while ( query.next() )
             {
-                std::string path = query.value(0).toString().toStdString();
-                path.append("\t");
-                path.append(query.value(2).toString().toStdString());
-                vecFilePath.push_back(path);
-                vecIdFile.push_back(query.value(1).toString().toStdString());
+                int idFile = query.value(0).toInt();
+                std::string nameFile = query.value(1).toString().toStdString();
+                std::string codArmazenamento = query.value(2).toString().toStdString();
+                std::string status = query.value(3).toString().toStdString();
+
+                PatoFile file;
+                file.setId(idFile);
+                file.setNameFile(nameFile);
+                file.setCodArmazenamento(codArmazenamento);
+                file.setStatus(status);
+
+                log.insertFile(file);
+
             }
 
-            createMapFile(vecFilePath, vecIdFile, filePath);
+            //createMapFile(vecFilePath, vecIdFile, filePath);
 
             return true;
         }
@@ -308,15 +322,16 @@ namespace bd {
         return false;
     }
 
-    bool BDPatoDataModel::getLogPathFile(std::string& path, std::vector<QString>& message)
+    bool BDPatoDataModel::getLogPathFile(std::string& path, std::vector<PatoLog>& vecLog)
     {
-        std::string strSqlLogPathFile = "SELECT * FROM (SELECT ( SELECT ITCO_NOME FROM ITEM_CONFIGURACAO ";
-        strSqlLogPathFile.append("WHERE ITCO_ID = P.ITCO_ID) || (SELECT ARQU_NOME FROM ARQUIVO WHERE ");
-        strSqlLogPathFile.append("ARQU_ID = P.ARQU_ID) AS PATH, (SELECT ARQU_STATUS FROM ARQUIVO WHERE ");
-        strSqlLogPathFile.append("ARQU_ID = P.ARQU_ID) || '\t' || P.TRAN_ID || '\t' || (SELECT (SELECT USUA_NOME FROM USUARIO ");
-        strSqlLogPathFile.append("WHERE USUA_ID = T.USUA_ID) || '\t' || T.TRAN_DATA || '\t' || T.TRAN_MSG ");
-        strSqlLogPathFile.append("FROM TRANSACAO T WHERE T.TRAN_ID = P.TRAN_ID) FROM PROJ_ITEM_TRAN P WHERE ");
-        strSqlLogPathFile.append("P.PRIT_IN_TRANSACTION = 1) T1 WHERE UPPER(T1.PATH) LIKE UPPER('");
+        std::string strSqlLogPathFile = "SELECT * FROM (SELECT P.ARQU_ID, ( SELECT ITCO_NOME FROM ITEM_CONFIGURACAO WHERE ITCO_ID = P.ITCO_ID) || (SELECT ARQU_NOME FROM ARQUIVO WHERE ARQU_ID = ";
+        strSqlLogPathFile.append("P.ARQU_ID) AS PATH, (SELECT ARQU_STATUS FROM ARQUIVO WHERE ARQU_ID = P.ARQU_ID) as status, P.TRAN_ID AS IDTRANSACAO, ");
+        strSqlLogPathFile.append("(SELECT T.USUA_ID  FROM TRANSACAO T WHERE T.TRAN_ID = P.TRAN_ID) AS IDUSUARIO, ");
+        strSqlLogPathFile.append("(SELECT (SELECT USUA_NOME FROM USUARIO ");
+        strSqlLogPathFile.append("WHERE USUA_ID = T.USUA_ID)  FROM TRANSACAO T WHERE T.TRAN_ID = P.TRAN_ID) AS NOME_USUARIO, ");
+        strSqlLogPathFile.append("(SELECT T.TRAN_DATA as data FROM TRANSACAO T WHERE T.TRAN_ID = P.TRAN_ID) AS DATA, ");
+        strSqlLogPathFile.append("(SELECT T.TRAN_MSG as message FROM TRANSACAO T WHERE T.TRAN_ID = P.TRAN_ID)  AS MESSAGE  FROM PROJ_ITEM_TRAN P WHERE P.PRIT_IN_TRANSACTION = 1) T1 ");
+        strSqlLogPathFile.append("WHERE UPPER(T1.PATH) LIKE UPPER('");
         strSqlLogPathFile.append(path);
         strSqlLogPathFile.append("');");
 
@@ -325,10 +340,24 @@ namespace bd {
         {
             while ( query.next())
             {
-                std::string strTempMessage = path;
-                strTempMessage.append("\t");
-                strTempMessage.append(query.value(1).toString().toStdString());
-                message.push_back(strTempMessage.c_str());
+                PatoFile file;
+                file.setId(query.value(0).toInt());
+                file.setNameFile(query.value(1).toString().toStdString());
+                file.setStatus(query.value(2).toString().toStdString());
+
+                PatoLog log;
+                log.setId(query.value(3).toInt());
+
+                PatoUser user;
+                user.setId(query.value(4).toInt());
+                user.setName(query.value(5).toString().toStdString());
+
+                log.setUser(user);
+                log.setData(query.value(6).toString().toStdString());
+                log.setMessage(query.value(7).toString().toStdString());
+                log.insertFile(file);
+
+                vecLog.push_back(log);
             }
             return true;
         }
@@ -336,33 +365,42 @@ namespace bd {
         return false;
     }
 
-    std::string BDPatoDataModel::getLogMessage(int version)
+    void BDPatoDataModel::getInfoTransaction(int version, PatoLog& log)
     {
         std::stringstream outVersion;
+        int transaction = 0;
         if ( version == -1 )
         {
-            int lastVersion = getLastAvailableVersion();
-            outVersion << lastVersion;
+            transaction = getLastAvailableVersion();
         }
-        else
-            outVersion << version;
 
-        std::string sqlTransaction = "select (select usua_nome from usuario where usua_id = t.usua_id) || '\t' || ";
-        sqlTransaction.append("t.tran_data || '\t' || t.tran_msg from transacao t where t.tran_id = " );
+        outVersion << transaction;
+
+        std::string sqlTransaction = "select t.usua_id, (select usua_nome from usuario where usua_id = t.usua_id), ";
+        sqlTransaction.append("t.tran_data, t.tran_msg from transacao t where t.tran_id = " );
         sqlTransaction.append(outVersion.str());
         sqlTransaction.append(";");
 
-        std::string message;
         QSqlQuery query(db);
         if ( query.exec(sqlTransaction.c_str()))
         {
             if ( query.next() )
             {
-                message = query.value(0).toString().toStdString();
+                int idUser = query.value(0).toInt();
+                std::string nameUser = query.value(1).toString().toStdString();
+                PatoUser user;
+                user.setId(idUser);
+                user.setName(nameUser);
+
+                std::string data = query.value(2).toString().toStdString();
+                std::string message = query.value(3).toString().toStdString();
+                log.setId(transaction);
+                log.setData(data);
+                log.setMessage(message);
+                log.setUser(user);
             }
         }
 
-        return message;
     }
 
 //<
