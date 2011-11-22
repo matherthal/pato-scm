@@ -5,7 +5,7 @@ QT -= gui
 QT       += sql
 
 win32: TARGET = ../../output/PatoDataModel
-unix: TARGET = $$PWD/../output/PatoDataModel
+unix: TARGET = ../output/PatoDataModel
 
 TEMPLATE = lib
 DEFINES += PATODATAMODEL_LIBRARY

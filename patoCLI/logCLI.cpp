@@ -35,7 +35,7 @@ void logCLI::command(int argc, char** argv) {
         if (strcmp(parameter, "--initialRevision") == 0) {
             initialRevision = atoi(argv[i + 1]);
         } else if (strcmp(parameter, "--finalRevision") == 0) {
-            finalRevision = argv[i + 1];
+            finalRevision = atoi(argv[i + 1]);
         } else if (strcmp(parameter, "--username") == 0) {
             username = argv[i + 1];
         } else if (strcmp(parameter, "--password") == 0) {

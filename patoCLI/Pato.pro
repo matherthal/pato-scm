@@ -41,7 +41,7 @@ HEADERS += \
     logCLI.h \
     diffCLI.h
 
-LIBS += -L"../output"  -lPatoClientApi -lPatoWorkspace -lPatoAlgorithms -lPatoBase
+LIBS += -L"../output"  -lPatoClientApi -lPatoWorkspace -lPatoAlgorithms -lPatoBase -lPatoServerApi -lPatoDataModel -lsqlite3 -lPatoFS
 
 
 

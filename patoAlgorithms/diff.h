@@ -28,12 +28,15 @@ private:
     void generateDiff(Lcs*);
     void addDiffItem(DiffItem*);
 public:
+    Diff(string,string);
     Diff(const char*,const char*);
     ~Diff();
     bool isEmpty();
     void print();
     DiffItem* getDiffItem(int _pos);
     void getFile(char* _file_name);
+    string to_delta_string();
+    string to_string();
 };
 
 #endif // DIFF_H

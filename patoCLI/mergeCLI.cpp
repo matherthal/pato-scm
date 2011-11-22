@@ -21,11 +21,11 @@ QString mergeCLI::getWorkspace() const {
     return workspace;
 }
 
-void mergeCLI::setRevision2(QString revision2) {
+void mergeCLI::setRevision2(RevisionKey revision2) {
     this->revision2 = revision2;
 }
 
-QString mergeCLI::getRevision2() const {
+RevisionKey mergeCLI::getRevision2() const {
     return revision2;
 }
 
@@ -37,11 +37,11 @@ QString mergeCLI::getPath2() const {
     return path2;
 }
 
-void mergeCLI::setRevision1(QString revision1) {
+void mergeCLI::setRevision1(RevisionKey revision1) {
     this->revision1 = revision1;
 }
 
-QString mergeCLI::getRevision1() const {
+RevisionKey mergeCLI::getRevision1() const {
     return revision1;
 }
 
@@ -89,10 +89,10 @@ void mergeCLI::command(int argc, char** argv){
             path2 = argv[i + 1];
             qout<<"path2 = "<< path2<<endl;
         } else if (strcmp(parameter, "--revision1") == 0) {
-            revision1 = argv[i + 1];
+            revision1 = atoi(argv[i + 1]);
             qout<<"revision1 = "<< revision1<<endl;
         } else if (strcmp(parameter, "--revision2") == 0) {
-            revision2 = argv[i + 1];
+            revision2 = atoi(argv[i + 1]);
             qout<<"revision2 = "<< revision2<<endl;
         } else if (strcmp(parameter, "--workspace") == 0) {
             workspace = argv[i + 1];

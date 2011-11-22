@@ -1,6 +1,16 @@
 #include "diff.h"
 #include <stdlib.h>
 
+Diff::Diff(string dataA,string dataB)
+{
+    diff = NULL;
+    last_diff = NULL;
+    first_diff = NULL;
+    position = -1;
+    Lcs *lcs = new Lcs(dataA,dataB);
+    calculateDiff(lcs);
+}
+
 Diff::Diff(const char *fileNameA,const char *fileNameB)
 {
     diff = NULL;
@@ -74,6 +84,26 @@ void Diff::print(){
         p->diffItem->print();
         p = p->next;
     }
+}
+
+string Diff::to_delta_string(){
+    string diff;
+    t_diff *p = first_diff;
+    while(p!=NULL){
+        diff+= p->diffItem->to_string_short();
+        p = p->next;
+    }
+    return diff;
+}
+
+string Diff::to_string(){
+    string diff;
+    t_diff *p = first_diff;
+    while(p!=NULL){
+        diff+= p->diffItem->to_string();
+        p = p->next;
+    }
+    return diff;
 }
 
 void Diff::generateDiff(Lcs *lcs){

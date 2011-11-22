@@ -17,7 +17,13 @@ SOURCES += patobase.cpp \
     patochangeset.cpp \
     patouser.cpp \
     patolog.cpp \
-    patofile.cpp
+    testfilefactory.cpp \
+    mockfile.cpp \
+    ifile.cpp \
+    filefactory.cpp \
+    file.cpp \
+    defaultlfilefactory.cpp \
+    patoResourceAbstractFactory.cpp
 
 HEADERS += patobase.h \
     patofilestatus.h \
@@ -25,8 +31,13 @@ HEADERS += patobase.h \
     patochangeset.h \
     patouser.h \
     patolog.h \
-    patofile.h
-
+    testfilefactory.h \
+    mockfile.h \
+    ifile.h \
+    filefactory.h \
+    file.h \
+    defaultlfilefactory.h \
+    patoResourceAbstractFactory.h
 unix:!symbian {
     maemo5 {
         target.path = /opt/usr/lib

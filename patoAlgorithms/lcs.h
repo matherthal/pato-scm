@@ -2,6 +2,7 @@
 #define LCS_H
 #include <iostream>
 #include <fstream>
+#include <string>
 using namespace std;
 
 struct biglinkedtable{
@@ -39,12 +40,13 @@ private:
     t_lcs* lcs_txt(int,int,int*);
     hashtable** init_hash(char*,unsigned int,unsigned int,int*);
     biglinkedtable*** build_linked_table();
-    void calculate_lcs();
+    void calculate_lcs(char *dataA,char *dataB);
     void free_lcs(t_lcs*);
     void free_hash(hashtable**,int);
     void free_table(biglinkedtable***,int);
     void add_to_table(int,int,int,int,int,int);
 public:
+    Lcs(string dataA,string dataB);
     Lcs(const char* _fileA,const char* _fileB);
     ~Lcs();
     t_lcs* get_lcs();

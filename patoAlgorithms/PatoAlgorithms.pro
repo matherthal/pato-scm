@@ -9,7 +9,7 @@ QT       -= gui
 win32: TARGET = ../../output/PatoAlgorithms
 unix:  TARGET = ../output/PatoAlgorithms
 
-TEMPLATE = lib
+TEMPLATE =
 
 DEFINES += PATOALGORITHMS_LIBRARY
 
