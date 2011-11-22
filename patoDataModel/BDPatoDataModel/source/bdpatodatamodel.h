@@ -74,6 +74,7 @@ public:
     bool insertFile(std::string& path, std::string& file, /*std::string& project,*/ std::string& idFile);
     int getIdLastFile(std::string& file);
     void createMapFile(std::vector<std::string>& _mergedPath, std::vector<std::string>& _mergedIdFile, std::map<std::string,std::string>& _filePath);
+    void getCodStorage(std::string& path, std::vector<std::string>& vecCodStorage);
     //<
 
     //folder operations>

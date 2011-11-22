@@ -1016,6 +1016,26 @@ namespace bd {
         }
     }
 
+    void BDPatoDataModel::getCodStorage(std::string& path, std::vector<std::string>& vecCodStorage)
+    {
+        std::string strSql = "select codArmazenamento from (select (select itco_nome from item_configuracao where itco_id = p.itco_id) || ";
+        strSql.append("(select arqu_nome from arquivo where arqu_id = p.arqu_id) as arquivo, p.tran_id as idTransacao, (select arqu_cd_armazenamento from arquivo where arqu_id = p.arqu_id) as codArmazenamento ");
+        strSql.append("from proj_item_tran p where p.prit_in_transaction = 1) where upper(arquivo) like upper('");
+        strSql.append(path);
+        strSql.append("') order by idTransacao;");
+
+
+        QSqlQuery query(db);
+        if ( query.exec(strSql.c_str()) )
+        {
+            while ( query.next() )
+            {
+                std::string codStorage = query.value(0).toString().toStdString();
+                vecCodStorage.push_back(codStorage);
+            }
+        }
+    }
+
 
     //<
 
