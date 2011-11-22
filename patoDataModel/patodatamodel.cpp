@@ -170,6 +170,11 @@ bool PatoDataModel::isFile(std::string &path)
     return bFile;
 }
 
+void PatoDataModel::getCodStorage(std::string& path, std::vector<std::string>& vecCodStorage)
+{
+    bd::BDPatoDataModel::getInstance()->getCodStorage(path, vecCodStorage);
+}
+
 //<
 
 

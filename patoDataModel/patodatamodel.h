@@ -59,6 +59,7 @@ public:
     std::string getPath( std::string& pathFile );
     std::string getFile( std::string& pathFile );
     bool isFile(std::string& path);
+    void getCodStorage(std::string& path, std::vector<std::string>& vecCodStorage);
     //<
 
 };
