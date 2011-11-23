@@ -60,7 +60,7 @@
      <rect>
       <x>10</x>
       <y>40</y>
-      <width>511</width>
+      <width>431</width>
       <height>20</height>
      </rect>
     </property>
@@ -86,6 +86,19 @@
     </property>
     <property name="text">
      <string>Choose</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButtonCreateRepository">
+    <property name="geometry">
+     <rect>
+      <x>450</x>
+      <y>40</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Create</string>
     </property>
    </widget>
   </widget>

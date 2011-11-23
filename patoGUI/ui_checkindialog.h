@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'checkindialog.ui'
 **
-** Created: Wed 9. Nov 22:42:48 2011
+** Created: Tue Nov 22 21:28:18 2011
 **      by: Qt User Interface Compiler version 4.7.4
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
