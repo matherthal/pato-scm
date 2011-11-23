@@ -2,6 +2,8 @@
 #include <iostream>
 
 #define PATH_BD "../patoDataModel/BDPatoDataModel/DataBase/DataModelBD.sqlite"
+#define PATO_TEMP_FOLDER "../output/pato_temp"
+
 //#define PATH_BD "DataModelBD.sqlite"
 namespace bd {
 
@@ -55,14 +57,101 @@ namespace bd {
         return true;
     }
 
+    //apply the file delta recursively until reach a complete file
+    std::string BDPatoFS::applyPatch(QString key) {
+
+        QSqlQuery query(db);
+        static int ind = 0;
+
+        QString data;
+        QString delta_tmp;
+
+        //query pega o conteudo e a chave para o delta do arquivo
+        query.prepare("SELECT ARMA_CONTEUDO, ARMA_DELTA_ID FROM ARMAZENAMENTO WHERE arma_id = :key");
+        query.bindValue(":key",key.toStdString().c_str());
+
+        if (query.exec()) {
+
+            while (query.next()) {
+
+                data = query.value(0).toString();
+                delta_tmp = query.value(1).toString();
+            }
+        }
+
+        if (delta_tmp.isEmpty()) {
+
+            return data.toStdString();
+        }
+
+        else {
+
+            //cria arquivo temporario contendo conteudo referente a chave passada
+            QString filePath = PATO_TEMP_FOLDER + key + ".temp";
+            QFile completeFile(filePath);
+
+            //abre o arquivo para escrita
+            completeFile.open(QIODevice::WriteOnly | QIODevice::Text);
+
+            //nome do arquivo temporario eh sua hash
+            filePath = PATO_TEMP_FOLDER + delta_tmp + ".temp";
+            QFile deltaFile(filePath);
+
+            //stream para grava conteudo no arquivo
+            QTextStream content1(&completeFile);
+            QTextStream content2(&deltaFile);
+
+            //chama recursao, passando chave do arquivo delta
+            std::string apply = applyPatch(delta_tmp);
+
+            //retorno da recursao eh uma string (arq completo), que sera gravado no fluxo p/ o arquivo
+            content1 << apply.c_str();
+            //outro arquivo contera o conteudo do arquivo referenciado pela chave primaria
+            content2 << data.toStdString().c_str();
+
+            //parametros para o patch
+            char* deltaChar = (char*) QFileInfo(deltaFile).absoluteFilePath().toStdString().c_str();
+            char* completeChar = (char*) QFileInfo(deltaFile).absoluteFilePath().toStdString().c_str();
+
+            //chama o algoritmo de patch, passando o arquivo delta e o arquivo completo
+            Patch patch(deltaChar, completeChar);
+
+            //arquivo para ser gravado o resultado do patch
+            filePath = PATO_TEMP_FOLDER + QString::number(ind++) + ".temp";
+            QFile newFile(filePath.toStdString().c_str());
+
+            //pega referencia ao arquivo contendo o resultado do patch
+            char* patchChar = (char*) QFileInfo(newFile).absoluteFilePath().toStdString().c_str();
+            patch.getFile(patchChar);
+
+            newFile.open(QIODevice::ReadOnly);
+
+            //le arquivo e retorna em forma de string
+            QTextStream stream ( &newFile );
+            QString buff;
+            while( !stream.atEnd()) {
+                 buff.append(stream.readLine());
+            }
+
+            return buff.toStdString();
+        }
+    }
+
     //sqls
 
     //saving data - return a hash key
+
+    //i'll need a file last version key to calculate the diff between them
     StorageKey BDPatoFS::saveData(const std::string& data)
     {
         //using hash key
         QString key = QString(QCryptographicHash::hash((data.c_str()),QCryptographicHash::Md5).toHex());
         QSqlQuery query(db);
+
+        Diff diff;
+
+        query.prepare("select arma_conteudo from aramazenamento where arma_id = :key");
+        query.bindValue(":key",key_delta);
 
         std::string sqlFileInserted = "SELECT ARMA_CONTEUDO FROM ARMAZENAMENTO WHERE upper(arma_id) like upper('";
         sqlFileInserted.append(key.toStdString());
@@ -70,7 +159,6 @@ namespace bd {
 
         if ( query.exec(sqlFileInserted.c_str()) )
         {
-            qDebug("rodou query");
             if (query.next()) {
                 return key.toStdString();
             }
@@ -83,7 +171,7 @@ namespace bd {
         sqlInsert.append(data);
         sqlInsert.append("');");
 
-        qDebug(sqlInsert.c_str());
+        //qDebug(sqlInsert.c_str());
         QSqlQuery queryInsert(db);
         if (queryInsert.exec(sqlInsert.c_str()))
         {
@@ -94,6 +182,7 @@ namespace bd {
         }
     }
 
+    //i'll need another parameter in this function: a list with the files last version keys
     bool BDPatoFS::saveData(const std::vector<std::string>& data, std::vector<StorageKey>& vecIdFile)
     {
 
@@ -122,6 +211,19 @@ namespace bd {
         QString file;
         QSqlQuery query(db);
 
+        if (!QDir(PATO_TEMP_FOLDER).exists())
+            QDir().mkdir(PATO_TEMP_FOLDER);
+
+        //chama funcao recursiva que monta o um arquivo, buscando seus deltas e versao completa
+        data = applyPatch(QString::fromStdString(idFile));
+
+        QStringList lista = QDir(PATO_TEMP_FOLDER).entryList();
+        for (int i = 0; i < lista.size(); i++) {
+            QDir(PATO_TEMP_FOLDER).remove(lista.at(i));
+        }
+
+
+        /*
         query.prepare("SELECT ARMA_CONTEUDO FROM ARMAZENAMENTO WHERE arma_id = :key");
         query.bindValue(":key",idFile.c_str());
 
@@ -133,13 +235,14 @@ namespace bd {
 
         data = file.toStdString();
 
+        */
         return true;
 
     }
     bool BDPatoFS::loadData(const std::vector<StorageKey>& vecIdFile, std::vector<std::string>& vecData)
     {
         QSqlQuery query(db);
-        std::string sqlLoadData = "select arma_conteudo from armazenamento where ";
+        std::string sqlLoadData = "select arma_conteudo, arma_delta_id from armazenamento where ";
         sqlLoadData.append("arma_id in('");
 
         std::vector<std::string>::const_iterator itIdFile;
@@ -153,11 +256,17 @@ namespace bd {
 
         sqlLoadData.append("');");
 
+        std::vector<StorageKey> vecDelta;
         if (query.exec(sqlLoadData.c_str())) {
 
             while(query.next()) {
-                QString s = query.value(1).toString();
+                QString s = query.value(0).toString();
                 vecData.push_back(s.toStdString());
+                QString keyDelta = query.value(1).toString();
+
+                qDebug(s.toStdString().c_str());
+                qDebug(keyDelta.toStdString().c_str());
+                vecDelta.push_back(keyDelta.toStdString());
             }
 
             return true;
