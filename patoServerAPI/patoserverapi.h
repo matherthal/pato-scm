@@ -39,8 +39,6 @@ public:
 
     static PatoServerApi* getInstance();
     static void destroyInstance();
-
-
 };
 
 #endif // PATOSERVERAPI_H
