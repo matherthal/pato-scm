@@ -276,8 +276,6 @@ namespace bd {
         //get info log
         getInfoTransaction(version, log);
 
-        qDebug() << log.getMessage().c_str();
-
 
         int projectId = getProjectId(project);
         std::stringstream outProjectId;
@@ -289,7 +287,9 @@ namespace bd {
         sqlLog.append("(select arqu_status from arquivo where arqu_id = p.arqu_id) as status ");
         sqlLog.append("from proj_item_tran p where p.tran_id = ");
         sqlLog.append(outVersion.str());
-        sqlLog.append(" and prit_in_transaction = 1;");
+        sqlLog.append(" and p.prit_in_transaction = 1 and proj_id = ");
+        sqlLog.append(outProjectId.str());
+        sqlLog.append(";");
 
         vecFilePath.clear();
         vecIdFile.clear();
@@ -322,16 +322,21 @@ namespace bd {
         return false;
     }
 
-    bool BDPatoDataModel::getLogPathFile(std::string& path, std::vector<PatoLog>& vecLog)
+    bool BDPatoDataModel::getLogPathFile(std::string project, std::string& path, std::vector<PatoLog>& vecLog)
     {
+        int idProject = getProjectId(project);
+        std::stringstream outIdProject;
+        outIdProject << idProject;
+
         std::string strSqlLogPathFile = "SELECT * FROM (SELECT P.ARQU_ID, ( SELECT ITCO_NOME FROM ITEM_CONFIGURACAO WHERE ITCO_ID = P.ITCO_ID) || (SELECT ARQU_NOME FROM ARQUIVO WHERE ARQU_ID = ";
         strSqlLogPathFile.append("P.ARQU_ID) AS PATH, (SELECT ARQU_STATUS FROM ARQUIVO WHERE ARQU_ID = P.ARQU_ID) as status, P.TRAN_ID AS IDTRANSACAO, ");
         strSqlLogPathFile.append("(SELECT T.USUA_ID  FROM TRANSACAO T WHERE T.TRAN_ID = P.TRAN_ID) AS IDUSUARIO, ");
         strSqlLogPathFile.append("(SELECT (SELECT USUA_NOME FROM USUARIO ");
         strSqlLogPathFile.append("WHERE USUA_ID = T.USUA_ID)  FROM TRANSACAO T WHERE T.TRAN_ID = P.TRAN_ID) AS NOME_USUARIO, ");
         strSqlLogPathFile.append("(SELECT T.TRAN_DATA as data FROM TRANSACAO T WHERE T.TRAN_ID = P.TRAN_ID) AS DATA, ");
-        strSqlLogPathFile.append("(SELECT T.TRAN_MSG as message FROM TRANSACAO T WHERE T.TRAN_ID = P.TRAN_ID)  AS MESSAGE  FROM PROJ_ITEM_TRAN P WHERE P.PRIT_IN_TRANSACTION = 1) T1 ");
-        strSqlLogPathFile.append("WHERE UPPER(T1.PATH) LIKE UPPER('");
+        strSqlLogPathFile.append("(SELECT T.TRAN_MSG as message FROM TRANSACAO T WHERE T.TRAN_ID = P.TRAN_ID)  AS MESSAGE  FROM PROJ_ITEM_TRAN P WHERE P.PRIT_IN_TRANSACTION = 1 AND P.PROJ_ID = ");
+        strSqlLogPathFile.append(outIdProject.str());
+        strSqlLogPathFile.append(" ) T1 WHERE UPPER(T1.PATH) LIKE UPPER('");
         strSqlLogPathFile.append(path);
         strSqlLogPathFile.append("');");
 
@@ -410,7 +415,7 @@ namespace bd {
     {
         std::string sqlUser = "select count(*) from usuario where usua_login like '";
         sqlUser.append(login);
-        sqlUser.append("' and usua_senha like '");
+        sqlUser.append("' and usua_pass like '");
         sqlUser.append(password);
         sqlUser.append("';");
 
@@ -469,7 +474,7 @@ namespace bd {
         sqlUserProject.append("upper(u.usua_login) like upper('");
         sqlUserProject.append(login);
         sqlUserProject.append("') and ");
-        sqlUserProject.append("upper(u.usua_senha) like upper('");
+        sqlUserProject.append("upper(u.usua_pass) like upper('");
         sqlUserProject.append(password);
         sqlUserProject.append("');");
 
@@ -546,6 +551,54 @@ namespace bd {
         }
 
         return -1;*/
+    }
+
+    bool BDPatoDataModel::createUser(std::string& nameUser, std::string& loginUser, std::string& pass)
+    {
+        std::string sqlInsert = "insert into usuario ( usua_id, usua_nome, usua_login, usua_pass) ";
+        sqlInsert.append("values(null, '");
+        sqlInsert.append(nameUser);
+        sqlInsert.append("','");
+        sqlInsert.append(loginUser);
+        sqlInsert.append("','");
+        sqlInsert.append(pass);
+        sqlInsert.append("');");
+
+        QSqlQuery query(db);
+        if ( query.exec(sqlInsert.c_str() ))
+        {
+            db.commit();
+            return true;
+        }
+
+        return false;
+    }
+
+    bool BDPatoDataModel::addUserProject(std::string loginUser, std::string& project)
+    {
+        int idProject = getProjectId(project);
+        int idUser = getUserId(loginUser);
+
+        std::stringstream outIdProject;
+        outIdProject << idProject;
+
+        std::stringstream outIdUser;
+        outIdUser << idUser;
+
+        std::string sqlInsert = "insert into projeto_usuario (prus_id, proj_id, usua_id) values ( null, ";
+        sqlInsert.append(outIdProject.str());
+        sqlInsert.append(", ");
+        sqlInsert.append(outIdUser.str());
+        sqlInsert.append(");");
+
+        QSqlQuery query(db);
+        if ( query.exec(sqlInsert.c_str() ))
+        {
+            db.commit();
+            return true;
+        }
+
+        return false;
     }
 
     //<
@@ -638,6 +691,23 @@ namespace bd {
         return -1;*/
 
     }
+
+    bool BDPatoDataModel::createProject(std::string& project)
+    {
+        std::string sqlInsert = "insert into projeto ( proj_id, proj_nome ) values ( null, '";
+        sqlInsert.append(project);
+        sqlInsert.append("');");
+
+        QSqlQuery query(db);
+        if ( query.exec(sqlInsert.c_str()) )
+        {
+            db.commit();
+            return true;
+        }
+
+        return false;
+    }
+
     //<
 
     //IC operations>

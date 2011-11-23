@@ -43,7 +43,7 @@ public:
     bool getLog(std::string& project, int version, PatoLog&  log);
     void getInfoTransaction(int version, PatoLog& log);
 
-    bool getLogPathFile(std::string& path, std::vector<PatoLog>& message);
+    bool getLogPathFile(std::string project,std::string& path, std::vector<PatoLog>& message);
     //<
 
 
@@ -51,11 +51,14 @@ public:
     bool validateUser(const string& login, const string& password);
     bool validateUserProject( const std::string& login, const std::string& password, const std::string& project );
     int getUserId(std::string& loginUser);
+    bool createUser(std::string& nameUser, std::string& loginUser,std::string& pass);
+    bool addUserProject(std::string loginUser, std::string& project);
     //<
 
     //project operations>
     bool validateProject( const string& projectName );
     int getProjectId(std::string& project);
+    bool createProject(std::string& project);
     //<
 
     //IC operations>
