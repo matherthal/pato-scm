@@ -18,14 +18,24 @@ PatoClientApi::PatoClientApi() {
 
 QString PatoClientApi::init(QString repoName, QString username, QString password)
 {
-    QString repoAddress;
+    QString repoAddress = "http://hardcoded.com/" + repoName;
     QStringList files;
     RevisionKey revision;
 
     PatoServerApi *serverApi = PatoServerApi::getInstance();
+    bool succeded = serverApi->createProject(repoName);
+    if (!succeded)
+        return "";
+
+    serverApi->createUser(username, username, password);
+    succeded = serverApi->addUserProject(username, repoName);
+    if (!succeded)
+        return "";
 
     PatoWorkspace *workspace = PatoWorkspace::instance();
-    workspace->create(repoName, files, repoAddress, revision);
+    succeded = workspace->create(repoName, files, repoAddress, revision);
+    if (!succeded)
+        return "";
 
     return repoAddress;
 }
