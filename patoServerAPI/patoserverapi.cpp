@@ -161,10 +161,49 @@ bool PatoServerApi::showLog(QString project, QString username, QString password,
     return PatoDataModel::getInstance()->showLog(strUsername, strPw, strProj, version, log );
 }
 
-bool PatoServerApi::showLogPathFile(QString &path, std::vector<PatoLog>& vecLog)
+bool PatoServerApi::showLogPathFile(QString& project, QString userLogin, QString password,
+                                    QString &path, std::vector<PatoLog>& vecLog)
 {
     string strPath = path.toStdString();
-    return PatoDataModel::getInstance()->showLogPathFile(strPath, vecLog);
+    string strProject = project.toStdString();
+    string strUsername = userLogin.toStdString();
+    string strPw = password.toStdString();
+
+    return PatoDataModel::getInstance()->showLogPathFile(strProject, strUsername, strPw, strPath, vecLog);
+}
+
+bool PatoServerApi::validateProject(QString& project)
+{
+    std::string strProject = project.toStdString();
+    return PatoDataModel::getInstance()->validateProject(strProject);
+}
+
+bool PatoServerApi::createProject(QString& project)
+{
+    std::string strProject = project.toStdString();
+    return PatoDataModel::getInstance()->createProject(strProject);
+}
+
+bool PatoServerApi::validateUser(QString& userLogin, QString& userPass)
+{
+    std::string strUserLogin = userLogin.toStdString();
+    std::string strUserPass = userPass.toStdString();
+    return PatoDataModel::getInstance()->validateUser(strUserLogin, strUserPass);
+}
+
+bool PatoServerApi::createUser(QString& userName, QString& userLogin, QString& userPass)
+{
+    std::string strUserName = userName.toStdString();
+    std::string strUserLogin = userLogin.toStdString();
+    std::string strUserPass = userPass.toStdString();
+    return PatoDataModel::getInstance()->createUser(strUserName, strUserLogin, strUserPass);
+}
+
+bool PatoServerApi::addUserProject(QString& user, QString project)
+{
+    std::string strUser = user.toStdString();
+    std::string strProject = project.toStdString();
+    return PatoDataModel::getInstance()->addUserProject(strUser, strProject);
 }
 
 

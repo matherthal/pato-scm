@@ -107,9 +107,27 @@ bool PatoDataModel::showLog(std::string& loginUser, std::string& password, std::
 }
 
 
-bool PatoDataModel::showLogPathFile(std::string& path, std::vector<PatoLog>& log)
+bool PatoDataModel::showLogPathFile(std::string project,  std::string& login, std::string& password, std::string& path, std::vector<PatoLog>& log)
 {
-    return bd::BDPatoDataModel::getInstance()->getLogPathFile(path, log);
+    if ( !validateUserProject(login, password, project) )
+            return false;
+
+    return bd::BDPatoDataModel::getInstance()->getLogPathFile(project, path, log);
+}
+
+bool PatoDataModel::createProject(std::string& project)
+{
+    return bd::BDPatoDataModel::getInstance()->createProject(project);
+}
+
+bool PatoDataModel::createUser(std::string& nameUser, std::string& loginUser,std::string& pass)
+{
+    return bd::BDPatoDataModel::getInstance()->createUser(nameUser, loginUser, pass);
+}
+
+bool PatoDataModel::addUserProject(std::string loginUser, std::string& project)
+{
+    return bd::BDPatoDataModel::getInstance()->addUserProject(loginUser, project);
 }
 
 //<

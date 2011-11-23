@@ -35,7 +35,14 @@ public:
                  PatoLog& log);
 
     /*Show all the revision that a specific file was involved in the transaction*/
-    bool showLogPathFile(QString& path, std::vector<PatoLog>& vecLog);
+    bool showLogPathFile(QString& project, QString userLogin, QString password, QString& path,
+                         std::vector<PatoLog>& vecLog);
+
+    bool validateProject(QString& project);
+    bool createProject(QString& project);
+    bool validateUser(QString& userLogin, QString& userPass);
+    bool createUser(QString& userName, QString& userLogin, QString& userPass );
+    bool addUserProject(QString& user, QString project);
 
     static PatoServerApi* getInstance();
     static void destroyInstance();
