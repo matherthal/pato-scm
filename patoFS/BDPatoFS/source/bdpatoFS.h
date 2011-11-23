@@ -3,6 +3,8 @@
 
 #include "../../PatoFS_global.h"
 #include "../../../patoBase/patotypes.h"
+#include "../../../patoAlgorithms/diff.h";
+#include "../../../patoAlgorithms/patch.h";
 
 //#include "CppSQLite3.h"
 
@@ -30,6 +32,8 @@ public:
 
     //init bd
     bool initBD();
+
+    std::string applyPatch(QString key);
 
     //saving data
     std::string saveData(const std::string& data);
