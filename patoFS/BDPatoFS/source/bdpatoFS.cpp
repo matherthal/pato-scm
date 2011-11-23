@@ -140,6 +140,8 @@ namespace bd {
     //sqls
 
     //saving data - return a hash key
+
+    //i'll need a file last version key to calculate the diff between them
     StorageKey BDPatoFS::saveData(const std::string& data)
     {
         //using hash key
@@ -148,7 +150,8 @@ namespace bd {
 
         Diff diff;
 
-        query.prepare("select arma_")
+        query.prepare("select arma_conteudo from aramazenamento where arma_id = :key");
+        query.bindValue(":key",key_delta);
 
         std::string sqlFileInserted = "SELECT ARMA_CONTEUDO FROM ARMAZENAMENTO WHERE upper(arma_id) like upper('";
         sqlFileInserted.append(key.toStdString());
