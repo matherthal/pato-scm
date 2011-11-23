@@ -20,8 +20,9 @@
 class PatoClientApi {
 public:
 
-    QList<logOutput> log(QString adress, QString username, QString password, RevisionKey initialRevision, RevisionKey finalRevision) throw(PatoClientException);
+    QString init(QString repoName, QString username, QString password);
 
+    QList<logOutput> log(QString adress, QString username, QString password, RevisionKey initialRevision, RevisionKey finalRevision) throw(PatoClientException);
 
     void merge(QString path1, RevisionKey revision1, QString path2, RevisionKey revision2, QString workspace) throw(PatoClientException);
     void diff(QString path1, RevisionKey revision1, QString path2, RevisionKey revision2) throw(PatoClientException);
