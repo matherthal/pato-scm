@@ -129,10 +129,9 @@ bool PatoWorkspace::create(QString sourceDir, QStringList files, QString repoAdd
         return false;
     }
 
-    PatoResourceAbstractFactory *factory = PatoResourceAbstractFactory::getInstance();
-    IFile *file = factory->createFile(workPath + "/" + cWorkspaceMetadata);
+    QFile file( metaFilePath( META_CONTROL, true) );
 
-    if ( file->exists() )
+    if ( file.exists() )
     {
         lastError = "Repository already created.";
         return false;
@@ -218,16 +217,21 @@ QList< PatoFileStatus > PatoWorkspace::status(PatoFileStatus::FileStatus statusF
     {
         if (  QFile( workPath + "/" + versionedFiles[i]).exists() )
         {
-            QFileInfo fileInfo( workPath + "/" + versionedFiles[i] );
-
-            if ( (statusFilter & PatoFileStatus::MODIFIED) && (fileInfo.lastModified() > timestamp ) )
+            if ( (statusFilter & PatoFileStatus::MODIFIED) && (statusFilter & PatoFileStatus::CLEAN) )
             {
-                statusList.append( PatoFileStatus( versionedFiles[i], PatoFileStatus::MODIFIED ) );
-            }
+                Diff diff ( (workPath + "/" + versionedFiles[i]).toStdString().c_str(),
+                            (backupPath(revKey) + versionedFiles[i]).toStdString().c_str() );
 
-            if ( (statusFilter & PatoFileStatus::CLEAN) && (fileInfo.lastModified() <= timestamp) )
-            {
-                statusList.append( PatoFileStatus( versionedFiles[i], PatoFileStatus::CLEAN ) );
+                if(diff.isEmpty())
+                {
+                    if (statusFilter & PatoFileStatus::CLEAN)
+                        statusList.append( PatoFileStatus( versionedFiles[i], PatoFileStatus::CLEAN ) );
+                }
+                else
+                {
+                    if (statusFilter & PatoFileStatus::MODIFIED)
+                        statusList.append( PatoFileStatus( versionedFiles[i], PatoFileStatus::MODIFIED ) );
+                }
             }
         }
         else
