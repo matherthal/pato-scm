@@ -2,7 +2,7 @@
 #define DIFFITEM_H
 #include <string>
 #include "lcs.h"
-class DiffItem
+class PATOALGORITHMSSHARED_EXPORT DiffItem
 {
 private:
     hashtable** htableA;
