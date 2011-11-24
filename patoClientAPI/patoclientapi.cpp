@@ -107,19 +107,20 @@ QList<checkoutOutput> PatoClientApi::checkout(RevisionKey revision, QString addr
 QList<logOutput> PatoClientApi::log(QString address, QString username, QString password, RevisionKey initialRevision, RevisionKey finalRevision) throw (PatoClientException) {
 
     QList<logOutput> output;
-
+    PatoLog log;
+    PatoServerApi* server = PatoServerApi::getInstance();
 
     if (username == "") {
         throw (PatoClientException("The log command needs an username."));
     } else if (password == "") {
         throw (PatoClientException("The log command needs a password."));
-        //    } else if (initialInt < -1) {
-        //        throw (PatoClientException("Invalid initial revision number."));
     }
-    /*else if (finalInt < -1 || finalInt < initialInt) {
-        throw (PatoClientException("Invalid initial revision number."));
-    }
-    */
+
+
+
+    server->showLog(address, username, password, initialRevision, log);
+
+
     return output;
 }
 
