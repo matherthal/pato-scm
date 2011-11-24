@@ -96,7 +96,7 @@ QList<logOutput> PatoClientApi::log(QString address, QString username, QString p
     return output;
 }
 
-QList< PatoFileStatus > PatoClientApi::checkin(QString address, QString username, QString password, QString workspace) throw (PatoClientException)
+QList< PatoFileStatus > PatoClientApi::checkin(QString address, QString username, QString password, QString workspace, QString message) throw (PatoClientException)
 {
     std::map<std::string, std::string> mapp;
     PatoServerApi* server = PatoServerApi::getInstance();
@@ -111,7 +111,7 @@ QList< PatoFileStatus > PatoClientApi::checkin(QString address, QString username
     PatoChangeSet myChanges = work->changes();
 
 
-    server->checkIn(address, username, password, mapp);
+    server->checkIn(address, username, password, message, mapp);
     //RevisionKey newRev = communication->checkin(address, username, password, myChanges);
     //work->setRevision( newRev ); //set new revision as commiting.
 
