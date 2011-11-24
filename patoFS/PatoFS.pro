@@ -47,5 +47,7 @@ unix:!symbian {
 symbian: LIBS += -lsqlite3
 #else:unix|win32: LIBS += -L"../output" -lsqlite3
 
+unix: LIBS += -L"../output" -lsqlite3 -lPatoAlgorithms
+
 INCLUDEPATH += $$PWD/BDPatoFS/source
 DEPENDPATH += $$PWD/BDPatoFS

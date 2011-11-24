@@ -351,21 +351,33 @@ namespace bd {
         {
             while ( query.next())
             {
+                std::string str;
+
                 PatoFile file;
                 file.setId(query.value(0).toInt());
-                file.setNameFile(query.value(1).toString().toStdString());
-                file.setStatus(query.value(2).toString().toStdString());
+
+                str = query.value(1).toString().toStdString();
+                file.setNameFile(str);
+
+                str = query.value(2).toString().toStdString();
+                file.setStatus(str);
 
                 PatoLog log;
                 log.setId(query.value(3).toInt());
 
                 PatoUser user;
                 user.setId(query.value(4).toInt());
-                user.setName(query.value(5).toString().toStdString());
+
+                str = query.value(5).toString().toStdString();
+                user.setName(str);
 
                 log.setUser(user);
-                log.setData(query.value(6).toString().toStdString());
-                log.setMessage(query.value(7).toString().toStdString());
+
+                str = query.value(6).toString().toStdString();
+                log.setData(str);
+
+                str = query.value(7).toString().toStdString();
+                log.setMessage(str);
                 log.insertFile(file);
 
                 vecLog.push_back(log);

@@ -3,8 +3,11 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include "PatoAlgorithms_global.h"
+
+
 using namespace std;
-class Patch
+class PATOALGORITHMSSHARED_EXPORT Patch
 {
 private:
     int type;

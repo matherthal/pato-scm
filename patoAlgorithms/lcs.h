@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include "PatoAlgorithms_global.h"
 using namespace std;
 
 struct biglinkedtable{
@@ -27,7 +28,7 @@ struct t_lcs{
 };
 typedef struct t_lcs t_lcs;
 
-class Lcs
+class PATOALGORITHMSSHARED_EXPORT Lcs
 {
 private:
     biglinkedtable ***table;
