@@ -40,7 +40,9 @@ bool PatoDataModel::checkIn(std::map<std::string, std::string>& filePath, std::s
 
     iniciouTransacao = true;
 
-    bd::BDPatoDataModel::getInstance()->getPathsLastVersion();
+    bd::BDPatoDataModel::getInstance()->insertProjectVersion(project);
+
+    bd::BDPatoDataModel::getInstance()->getPathsLastVersion(project);
 
     std::map<std::string, std::string>::iterator itFilePath;
     for( itFilePath = filePath.begin(); itFilePath != filePath.end(); itFilePath++ )
@@ -118,6 +120,11 @@ bool PatoDataModel::showLogPathFile(std::string project,  std::string& login, st
 bool PatoDataModel::createProject(std::string& project)
 {
     return bd::BDPatoDataModel::getInstance()->createProject(project);
+}
+
+bool PatoDataModel::insertProjectVersion(std::string& project)
+{
+    return bd::BDPatoDataModel::getInstance()->insertProjectVersion(project);
 }
 
 bool PatoDataModel::createUser(std::string& nameUser, std::string& loginUser,std::string& pass)
