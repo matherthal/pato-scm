@@ -3,8 +3,8 @@
 
 #include "../../PatoFS_global.h"
 #include "../../../patoBase/patotypes.h"
-#include "../../../patoAlgorithms/diff.h";
-#include "../../../patoAlgorithms/patch.h";
+#include "../../../patoAlgorithms/diff.h"
+#include "../../../patoAlgorithms/patch.h"
 
 //#include "CppSQLite3.h"
 
