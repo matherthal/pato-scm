@@ -45,7 +45,7 @@ void addCLI::command(int argc, char** argv) {
             workspace = argv[i + 1];
             i += 2;
         } else {
-            workspace = utils::returnPath();
+            workspace = utils::returnPath(argc, argv);
             qout << workspace << endl;
         }
 

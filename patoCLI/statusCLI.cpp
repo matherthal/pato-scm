@@ -62,7 +62,7 @@ void statusCLI::command(int argc, char** argv) {
         if (parameter == "--workspace") {
             workspace = argv[i + 1];
         } else {
-            workspace = utils::returnPath();
+            workspace = utils::returnPath(argc, argv);
         }
 
     }
