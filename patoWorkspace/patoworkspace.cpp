@@ -57,6 +57,19 @@ void copyDirectory(QString path1, QString path2)
     }
 }
 
+void getAllFiles( QString path1, QList<QString>& list)
+{
+    QDir dir( path1 );
+
+    foreach (QString subDir, dir.entryList( QDir::Dirs | QDir::NoDotAndDotDot))
+        getAllFiles(path1+"/"+subDir, list);
+
+    foreach ( QString file, dir.entryList( QDir::Files))
+    {
+        list << path1+"/"+file;
+    }
+}
+
 PatoWorkspace* PatoWorkspace::instance()
 {
     if (!sigleWorkspace)
@@ -128,6 +141,8 @@ bool PatoWorkspace::create(QString sourceDir, QStringList files, QString repoAdd
         lastError = "Work path is Empty.";
         return false;
     }
+
+    QDir().mkpath(workPath);
 
     QFile file( metaFilePath( META_CONTROL, true) );
 
@@ -213,6 +228,20 @@ QList< PatoFileStatus > PatoWorkspace::status(PatoFileStatus::FileStatus statusF
 {
     QList< PatoFileStatus > statusList;
 
+    QList<QString> allFiles;
+    getAllFiles(workPath,allFiles);
+
+    QString ignoredPath = workPath + "/" + cWorkspaceControlFolder;
+
+    foreach ( QString strFile, allFiles)
+    {
+
+        if ( strFile.indexOf( ignoredPath ) == -1 )
+        {
+
+        }
+    }
+
     for (int i=0; i < versionedFiles.size(); i++)
     {
         if (  QFile( workPath + "/" + versionedFiles[i]).exists() )
@@ -246,6 +275,15 @@ QList< PatoFileStatus > PatoWorkspace::status(PatoFileStatus::FileStatus statusF
     if (statusFilter & PatoFileStatus::ADDED)
     {
         for (int i=0; i < addedFiles.size(); i++)
+        {
+            statusList.append( PatoFileStatus( addedFiles[i], PatoFileStatus::ADDED ) );
+
+        }
+    }
+
+    if (statusFilter & PatoFileStatus::REMOVED)
+    {
+        for (int i=0; i < removedFiles.size(); i++)
         {
             statusList.append( PatoFileStatus( addedFiles[i], PatoFileStatus::ADDED ) );
 
@@ -349,6 +387,7 @@ void PatoWorkspace::writeMetadata(MetadataType types)
         }
         else
         {
+            qDebug() << metaFilePath( META_CONTROL, true );
             qWarning() << "Cannot open " << cWorkspaceMetadata;
         }
     }
@@ -369,6 +408,7 @@ void PatoWorkspace::writeMetadata(MetadataType types)
         }
         else
         {
+            qDebug() << metaFilePath( META_ADDED, true );
             qWarning() << "Cannot open " << cAddedMetadata;
         }
     }
@@ -389,6 +429,7 @@ void PatoWorkspace::writeMetadata(MetadataType types)
         }
         else
         {
+            qDebug() << metaFilePath( META_REMOVED, true );
             qWarning() << "Cannot open " << cRemovedMetadata;
         }
     }
@@ -582,7 +623,7 @@ QString PatoWorkspace::metaFilePath(MetadataType type, bool fullPath) const
         strFile = cWorkspaceMetadata; break;
 
     case META_REMOVED:
-         strFile = cRemovedMetadata; break;
+        strFile = cRemovedMetadata; break;
 
     case META_ALL:
     default:
