@@ -86,6 +86,7 @@ namespace bd {
 
         else {
 
+            /*
             //cria arquivo temporario contendo conteudo referente a chave passada
             QString filePath = PATO_TEMP_FOLDER + key + ".temp";
             QFile completeFile(filePath);
@@ -100,10 +101,12 @@ namespace bd {
             //stream para grava conteudo no arquivo
             QTextStream content1(&completeFile);
             QTextStream content2(&deltaFile);
+            */
 
             //chama recursao, passando chave do arquivo delta
             std::string apply = applyPatch(delta_tmp);
 
+            /*
             //retorno da recursao eh uma string (arq completo), que sera gravado no fluxo p/ o arquivo
             content1 << apply.c_str();
             //outro arquivo contera o conteudo do arquivo referenciado pela chave primaria
@@ -115,7 +118,12 @@ namespace bd {
 
             //chama o algoritmo de patch, passando o arquivo delta e o arquivo completo
             Patch patch(deltaChar, completeChar);
+            */
 
+            Patch patch(apply, data.toStdString());
+            std::string buff = patch.to_string();
+
+            /*
             //arquivo para ser gravado o resultado do patch
             filePath = PATO_TEMP_FOLDER + QString::number(ind++) + ".temp";
             QFile newFile(filePath.toStdString().c_str());
@@ -132,64 +140,57 @@ namespace bd {
             while( !stream.atEnd()) {
                  buff.append(stream.readLine());
             }
+            */
 
-            return buff.toStdString();
+            return buff;
         }
     }
 
     //sqls
 
     //saving data - return a hash key
-
-    //i'll need a file last version key to calculate the diff between them
-    StorageKey BDPatoFS::saveData(const std::string& data)
+    StorageKey BDPatoFS::saveData(const std::string& data, std::string& key_last_version)
     {
-        //using hash key
-        QString key = QString(QCryptographicHash::hash((data.c_str()),QCryptographicHash::Md5).toHex());
         QSqlQuery query(db);
 
-        Diff diff;
+        QString last_content;
+        QString last_delta;
 
-        query.prepare("select arma_conteudo from aramazenamento where arma_id = :key");
-        query.bindValue(":key",key_delta);
+        query.prepare("select arma_conteudo, arma_delta_id from aramazenamento where arma_id = :key");
+        query.bindValue(":key",key_last_version.c_str());
 
-        std::string sqlFileInserted = "SELECT ARMA_CONTEUDO FROM ARMAZENAMENTO WHERE upper(arma_id) like upper('";
-        sqlFileInserted.append(key.toStdString());
-        sqlFileInserted.append("');");
+        if ( query.exec() ) {
 
-        if ( query.exec(sqlFileInserted.c_str()) )
-        {
-            if (query.next()) {
-                return key.toStdString();
+            while (query.next()) {
+                last_content = query.value(0).toString();
+                last_delta = query.value(1).toString();
             }
         }
 
-        std::string sqlInsert = "INSERT INTO ARMAZENAMENTO (arma_id, arma_conteudo) VALUES ";
-        sqlInsert.append("('");
-        sqlInsert.append(key.toStdString());
-        sqlInsert.append("','");
-        sqlInsert.append(data);
-        sqlInsert.append("');");
+        Diff diff(last_content.toStdString(), data);
+        std::string delta = diff.to_delta_string();
 
-        //qDebug(sqlInsert.c_str());
-        QSqlQuery queryInsert(db);
-        if (queryInsert.exec(sqlInsert.c_str()))
-        {
-            return key.toStdString();
-        }
-        else {
-            return "-1";
-        }
+        //insert delta content in the data base in the data base
+        key_last_version = insertDataQuery(delta, last_delta.toStdString());
+
+        //delete the old content
+        std::vector<StorageKey> v;
+        v.push_back(key_last_version);
+        deleteData(v);
+
+        //insert the current version content in the data base
+        insertDataQuery(data, key_last_version);
+
     }
 
-    //i'll need another parameter in this function: a list with the files last version keys
-    bool BDPatoFS::saveData(const std::vector<std::string>& data, std::vector<StorageKey>& vecIdFile)
+    bool BDPatoFS::saveData(const std::vector<std::string>& data, std::vector<StorageKey>& vecIdFile, std::vector<std::string>& vecDeltIdFile)
     {
 
         std::vector<std::string>::const_iterator itData;
-        for( itData = data.begin(); itData != data.end(); itData++ )
+        std::vector<std::string>::iterator itDelta;
+        for( itData = data.begin(), itDelta = vecDeltIdFile.begin(); itData != data.end(); itData++, itDelta++)
         {
-            std::string idFile = saveData((*itData));
+            std::string idFile = saveData((*itData), (*itDelta));
 
             if ( idFile == "-1" )
             {
@@ -211,34 +212,13 @@ namespace bd {
         QString file;
         QSqlQuery query(db);
 
-        if (!QDir(PATO_TEMP_FOLDER).exists())
-            QDir().mkdir(PATO_TEMP_FOLDER);
-
-        //chama funcao recursiva que monta o um arquivo, buscando seus deltas e versao completa
+        //chama funcao recursiva que monta o arquivo, buscando seus deltas e versao completa
         data = applyPatch(QString::fromStdString(idFile));
 
-        QStringList lista = QDir(PATO_TEMP_FOLDER).entryList();
-        for (int i = 0; i < lista.size(); i++) {
-            QDir(PATO_TEMP_FOLDER).remove(lista.at(i));
-        }
-
-
-        /*
-        query.prepare("SELECT ARMA_CONTEUDO FROM ARMAZENAMENTO WHERE arma_id = :key");
-        query.bindValue(":key",idFile.c_str());
-
-        query.exec();
-
-        while (query.next()) {
-            file = query.value(0).toString();
-        }
-
-        data = file.toStdString();
-
-        */
         return true;
 
     }
+
     bool BDPatoFS::loadData(const std::vector<StorageKey>& vecIdFile, std::vector<std::string>& vecData)
     {
         QSqlQuery query(db);
@@ -275,6 +255,45 @@ namespace bd {
             return false;
         }
     }
+
+    //insert a content in the data base, with a pointer to its last version (delta)
+    std::string BDPatoFS::insertDataQuery(std::string data, std::string delta) {
+
+        QSqlQuery query(db);
+        //using hash key
+        QString key = QString(QCryptographicHash::hash((data.c_str()),QCryptographicHash::Md5).toHex());
+
+        std::string sqlFileInserted = "SELECT ARMA_CONTEUDO FROM ARMAZENAMENTO WHERE upper(arma_id) like upper('";
+        sqlFileInserted.append(key.toStdString());
+        sqlFileInserted.append("');");
+
+        if ( query.exec(sqlFileInserted.c_str()) )
+        {
+            if (query.next()) {
+                return key.toStdString();
+            }
+        }
+
+        std::string sqlInsert = "INSERT INTO ARMAZENAMENTO (arma_id, arma_conteudo, arma_delta_id) VALUES ";
+        sqlInsert.append("('");
+        sqlInsert.append(key.toStdString());
+        sqlInsert.append("','");
+        sqlInsert.append(data);
+        sqlInsert.append("','");
+        sqlInsert.append(delta);
+        sqlInsert.append("');");
+
+        //qDebug(sqlInsert.c_str());
+        QSqlQuery queryInsert(db);
+        if (queryInsert.exec(sqlInsert.c_str()))
+        {
+            return key.toStdString();
+        }
+        else {
+            return "-1";
+        }
+    }
+
 
     //delete data
     bool BDPatoFS::deleteData(const std::vector<StorageKey>& idFile)
