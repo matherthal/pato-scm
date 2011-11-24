@@ -7,7 +7,7 @@
 #include <vector>
 #include <list>
 #include <map>
-
+#include "../patoBase/patolog.h"
 using namespace std;
 
 class PATODATAMODELSHARED_EXPORT PatoDataModel {
@@ -42,24 +42,27 @@ public:
     bool insertRelationProjectElementTransaction();
 
     bool checkOut(std::string& loginUser, std::string& password, std::string& project, int version, std::map<std::string, std::string>& filePath);
-    bool showLog(std::string& loginUser, std::string& password, std::string& project, int version, std::map<std::string, std::string>& filePath);
-    std::string getLogMessage(int version);
-    bool showLogPathFile(std::string& path, std::vector<QString>& message);
+    bool showLog(std::string& loginUser, std::string& password, std::string& project, int version, PatoLog& log);
+    bool showLogPathFile(std::string project, std::string& login, std::string& password, std::string& path, std::vector<PatoLog>& message);
     //<
 
     //user operations >
     bool validateUser(const string& login, const string& password);
     bool validateUserProject(const string& login, const string& password, const string& project);
+    bool createUser(std::string& nameUser, std::string& loginUser,std::string& pass);
+    bool addUserProject(std::string loginUser, std::string& project);
     //<
 
     //project operations>
     bool validateProject( const string& projectName );
+    bool createProject(std::string& project);
     //<
 
     //fileoperations >
     std::string getPath( std::string& pathFile );
     std::string getFile( std::string& pathFile );
     bool isFile(std::string& path);
+    void getCodStorage(std::string& path, std::vector<std::string>& vecCodStorage);
     //<
 
 };

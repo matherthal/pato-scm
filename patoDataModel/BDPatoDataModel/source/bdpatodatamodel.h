@@ -10,6 +10,7 @@
 #include <list>
 #include <sstream>
 #include <QtSql>
+#include "../../../patoBase/patolog.h"
 
 using namespace std;
 
@@ -39,10 +40,10 @@ public:
     std::string getFileIdStored(std::string& nameFile);
     void getCompletePath(int idItemConfig, std::string& project, std::string& completePath);
     bool getFilePath(std::string& project, int version, std::map<std::string, std::string>& filePath);
-    bool getLog(std::string& project, int version, std::map<std::string, std::string>&  filePath);
-    std::string getLogMessage(int version);
+    bool getLog(std::string& project, int version, PatoLog&  log);
+    void getInfoTransaction(int version, PatoLog& log);
 
-    bool getLogPathFile(std::string& path, std::vector<QString>& message);
+    bool getLogPathFile(std::string project,std::string& path, std::vector<PatoLog>& message);
     //<
 
 
@@ -50,11 +51,14 @@ public:
     bool validateUser(const string& login, const string& password);
     bool validateUserProject( const std::string& login, const std::string& password, const std::string& project );
     int getUserId(std::string& loginUser);
+    bool createUser(std::string& nameUser, std::string& loginUser,std::string& pass);
+    bool addUserProject(std::string loginUser, std::string& project);
     //<
 
     //project operations>
     bool validateProject( const string& projectName );
     int getProjectId(std::string& project);
+    bool createProject(std::string& project);
     //<
 
     //IC operations>
@@ -73,6 +77,7 @@ public:
     bool insertFile(std::string& path, std::string& file, /*std::string& project,*/ std::string& idFile);
     int getIdLastFile(std::string& file);
     void createMapFile(std::vector<std::string>& _mergedPath, std::vector<std::string>& _mergedIdFile, std::map<std::string,std::string>& _filePath);
+    void getCodStorage(std::string& path, std::vector<std::string>& vecCodStorage);
     //<
 
     //folder operations>

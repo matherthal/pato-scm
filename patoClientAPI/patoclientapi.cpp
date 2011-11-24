@@ -16,6 +16,30 @@ using namespace std;
 PatoClientApi::PatoClientApi() {
 }
 
+QString PatoClientApi::init(QString repoName, QString username, QString password)
+{
+    QString repoAddress = "http://hardcoded.com/" + repoName;
+    QStringList files;
+    RevisionKey revision;
+
+    PatoServerApi *serverApi = PatoServerApi::getInstance();
+    bool succeded = serverApi->createProject(repoName);
+    if (!succeded)
+        return "";
+
+    serverApi->createUser(username, username, password);
+    succeded = serverApi->addUserProject(username, repoName);
+    if (!succeded)
+        return "";
+
+    PatoWorkspace *workspace = PatoWorkspace::instance();
+    succeded = workspace->create(repoName, files, repoAddress, revision);
+    if (!succeded)
+        return "";
+
+    return repoAddress;
+}
+
 QList<checkoutOutput> PatoClientApi::checkout(RevisionKey revision, QString address, QString username, QString password, QString workspace) throw (PatoClientException) {
 
     std::map<std::string, std::string> mapp;

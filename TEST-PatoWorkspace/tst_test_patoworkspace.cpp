@@ -1,6 +1,7 @@
 #include <QtCore/QString>
 #include <QtTest/QtTest>
 #include "../patoWorkspace/patoworkspace.h"
+#include "../patoBase/patoResourceAbstractFactory.h"
 
 const QString testDIR  = QString("./testDIR/");
 const QString testTMP  = QString("./testTMP/");
@@ -19,6 +20,7 @@ public:
     bool filesExist(QString dir, QStringList files);
 
 private Q_SLOTS:
+    void testCaseSetPath();
     void testCaseCreate();
     void testCaseTryToCreate();
     void testCaseOpen();
@@ -55,23 +57,32 @@ TEST_PatoWorkspace::TEST_PatoWorkspace()
 {
 }
 
+void TEST_PatoWorkspace::testCaseSetPath()
+{
+    PatoWorkspace *workspace = PatoWorkspace::instance();
+    QVERIFY(workspace->setPath(testDIR));
+}
+
 void TEST_PatoWorkspace::testCaseTryToCreate()
 {
+    PatoResourceAbstractFactory *factory = PatoResourceAbstractFactory::getInstance();
+    factory->setFactoryType(PatoResourceAbstractFactory::TEST);
+
     QStringList fileList = testFLIST;
 
-    QVERIFY(PatoWorkspace::instance()->setPath(testDIR));
+    PatoWorkspace *workspace = PatoWorkspace::instance();
+    QVERIFY(workspace->setPath(testDIR));
 
-    if ( PatoWorkspace::instance()->create(testCASE, fileList, QDir(testCASE).absolutePath(), 0) )
+    bool bCreated = workspace->create(testCASE, fileList, QDir(testCASE).absolutePath(), 0);
+    if (bCreated)
     {
-        QVERIFY( PatoWorkspace::instance()->revision() == 0 );
+        QVERIFY( workspace->revision() == 0 );
     }
     else
     {
-        qDebug() << PatoWorkspace::instance()->getLastError();
+        qDebug() << workspace->getLastError();
         QVERIFY( false );
     }
-
-    QVERIFY2(filesExist(testDIR, fileList), "One or more files missing");
 }
 
 void TEST_PatoWorkspace::testCaseCreate()

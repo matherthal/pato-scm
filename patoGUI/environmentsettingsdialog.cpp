@@ -2,6 +2,7 @@
 #include "mainwindow.h"
 #include "environmentsettingsdialog.h"
 #include "ui_environmentsettingsdialog.h"
+#include "..\patoClientApi\patoclientapi.h"
 
 EnvironmentSettingsDialog::EnvironmentSettingsDialog(QWidget *parent) :
     QDialog(parent),
@@ -15,7 +16,7 @@ EnvironmentSettingsDialog::EnvironmentSettingsDialog(QWidget *parent) :
     connect(ui->pushButtonCancel, SIGNAL(clicked()),this, SLOT(close()));
     connect(ui->pushButtonApply, SIGNAL(clicked()),this, SLOT(apply()));
 
-    //connect(ui->pushButtonChooseRepository, SIGNAL(clicked()), this, SLOT(getRepositoryPath()));
+    connect(ui->pushButtonCreateRepository, SIGNAL(clicked()), this, SLOT(createRepository()));
     connect(ui->pushButtonChooseWorkspace, SIGNAL(clicked()), this, SLOT(getWorkspacePath()));
 
 
@@ -23,6 +24,23 @@ EnvironmentSettingsDialog::EnvironmentSettingsDialog(QWidget *parent) :
     setWindowTitle(tr("Environment Settings"));
     setFixedSize(550,330);
 
+}
+
+void EnvironmentSettingsDialog::createRepository()
+{
+    PatoClientApi api;
+    QMessageBox msg;
+
+    QString repoName = ui->lineEditRepositoryPath->text();
+    QString repoAddress = api.init(repoName, ui->lineEditUserName->text(), ui->lineEditUserPassword->text());
+    if (repoAddress.isEmpty())
+        msg.setInformativeText("The creation failed.");
+    else
+        msg.setInformativeText("Repository criated!");
+
+    msg.exec();
+    ui->lineEditRepositoryPath->clear();
+    ui->lineEditRepositoryPath->setText(repoAddress);
 }
 
 //void EnvironmentSettingsDialog::getRepositoryPath()
@@ -37,6 +55,7 @@ EnvironmentSettingsDialog::EnvironmentSettingsDialog(QWidget *parent) :
 
 //    ui->lineEditRepositoryPath->setText(repositoryPath);
 //}
+
 void EnvironmentSettingsDialog::getWorkspacePath()
 {
     QString workspacePath;

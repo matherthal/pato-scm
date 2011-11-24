@@ -1,6 +1,16 @@
 #include "merge.h"
 #include <string.h>
 
+Merge::Merge(string base,string dataA, string dataB){
+    fileNameA = "string A";
+    fileNameB = "string B";
+    diff = new Diff(dataA,dataB);
+    conflict = false;
+    lcs_fileA_base = new Lcs(dataA,base);
+    lcs_fileB_base = new Lcs(dataB,base);
+
+    doMerge();
+}
 
 Merge::Merge(const char* _fileNameBase,const char* _fileNameA, const char* _fileNameB){
     fileNameA = _fileNameA;
@@ -9,7 +19,6 @@ Merge::Merge(const char* _fileNameBase,const char* _fileNameA, const char* _file
     conflict = false;
     lcs_fileA_base = new Lcs(_fileNameA,_fileNameBase);
     lcs_fileB_base = new Lcs(_fileNameB,_fileNameBase);
-    diff = new Diff(_fileNameA,_fileNameB);
 
     doMerge();
 }
@@ -169,4 +178,8 @@ void Merge::getFile(char* _file_name){
 
 void Merge::print(){
     cout << merge;
+}
+
+string Merge::to_string(){
+    return merge;
 }

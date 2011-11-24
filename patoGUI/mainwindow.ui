@@ -94,6 +94,19 @@
      <string>TextLabel</string>
     </property>
    </widget>
+   <widget class="QTableView" name="tableView">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>19</y>
+      <width>781</width>
+      <height>406</height>
+     </rect>
+    </property>
+    <attribute name="verticalHeaderVisible">
+     <bool>false</bool>
+    </attribute>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
@@ -302,9 +315,6 @@
    </property>
   </action>
   <action name="actionExport">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
    <property name="icon">
     <iconset resource="mainwindow.qrc">
      <normaloff>:/new/icons/exporticon</normaloff>:/new/icons/exporticon</iconset>
