@@ -1,0 +1,468 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>500</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="mainwindow.qrc">
+    <normaloff>:/new/icons/icon</normaloff>:/new/icons/icon</iconset>
+  </property>
+  <property name="toolTip">
+   <string>Pato-SCM</string>
+  </property>
+  <property name="statusTip">
+   <string>Ready</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <widget class="QTreeView" name="treeViewWorkspace">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>19</y>
+      <width>779</width>
+      <height>421</height>
+     </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="toolTip">
+     <string>Workspace View</string>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelWorkspace">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>0</y>
+      <width>81</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="toolTip">
+     <string>Workspace Path</string>
+    </property>
+    <property name="text">
+     <string>Workspace:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelWorkspacePath">
+    <property name="geometry">
+     <rect>
+      <x>90</x>
+      <y>0</y>
+      <width>691</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+      <italic>false</italic>
+     </font>
+    </property>
+    <property name="toolTip">
+     <string>Workspace Path</string>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>MS Shell Dlg 2</family>
+     <pointsize>10</pointsize>
+     <weight>50</weight>
+     <bold>false</bold>
+     <strikeout>false</strikeout>
+    </font>
+   </property>
+   <widget class="QMenu" name="menuPato_SCM">
+    <property name="toolTip">
+     <string/>
+    </property>
+    <property name="title">
+     <string>Pato-SCM</string>
+    </property>
+    <addaction name="actionEnvironment_Settings"/>
+    <addaction name="separator"/>
+    <addaction name="actionCheckin"/>
+    <addaction name="actionCheckout"/>
+    <addaction name="separator"/>
+    <addaction name="actionExport"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionHelp"/>
+    <addaction name="actionAbout_Pato_SCM"/>
+   </widget>
+   <widget class="QMenu" name="menuWorkspace">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="title">
+     <string>Workspace</string>
+    </property>
+    <addaction name="actionAdd_File_Dir"/>
+    <addaction name="actionRemove_File_Dir"/>
+    <addaction name="separator"/>
+    <addaction name="actionUpdate"/>
+    <addaction name="actionLog"/>
+   </widget>
+   <widget class="QMenu" name="menuPatoOthers">
+    <property name="title">
+     <string>Pato-Diff Tool</string>
+    </property>
+    <addaction name="actionOpen"/>
+   </widget>
+   <widget class="QMenu" name="menuRepository">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="title">
+     <string>Repository</string>
+    </property>
+    <addaction name="actionBrowse"/>
+    <addaction name="actionRepLog"/>
+   </widget>
+   <addaction name="menuPato_SCM"/>
+   <addaction name="menuWorkspace"/>
+   <addaction name="menuRepository"/>
+   <addaction name="menuPatoOthers"/>
+   <addaction name="menuHelp"/>
+  </widget>
+  <widget class="QStatusBar" name="statusBar">
+   <property name="statusTip">
+    <string>Ready</string>
+   </property>
+  </widget>
+  <widget class="QToolBar" name="mainToolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>24</width>
+     <height>24</height>
+    </size>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionEnvironment_Settings"/>
+   <addaction name="separator"/>
+   <addaction name="actionCheckin"/>
+   <addaction name="actionCheckout"/>
+   <addaction name="separator"/>
+   <addaction name="actionExport"/>
+  </widget>
+  <widget class="QToolBar" name="workspaceToolBar">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionAdd_File_Dir"/>
+   <addaction name="actionRemove_File_Dir"/>
+   <addaction name="separator"/>
+   <addaction name="actionUpdate"/>
+   <addaction name="actionLog"/>
+  </widget>
+  <widget class="QToolBar" name="diffToolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionBrowse"/>
+   <addaction name="actionOpen"/>
+  </widget>
+  <widget class="QToolBar" name="helpToolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::RightToLeft</enum>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionHelp"/>
+  </widget>
+  <action name="actionCheckout">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="mainwindow.qrc">
+     <normaloff>:/new/icons/checkouticon</normaloff>:/new/icons/checkouticon</iconset>
+   </property>
+   <property name="text">
+    <string>Check-out</string>
+   </property>
+   <property name="statusTip">
+    <string>Get revisions from the repository to the workspace</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
+  </action>
+  <action name="actionCheckin">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="mainwindow.qrc">
+     <normaloff>:/new/icons/checkinincon</normaloff>:/new/icons/checkinincon</iconset>
+   </property>
+   <property name="text">
+    <string>Check-in</string>
+   </property>
+   <property name="statusTip">
+    <string>Send the local changes to the repository</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
+  </action>
+  <action name="actionEnvironment_Settings">
+   <property name="icon">
+    <iconset resource="mainwindow.qrc">
+     <normaloff>:/new/icons/settingsicon</normaloff>:/new/icons/settingsicon</iconset>
+   </property>
+   <property name="text">
+    <string>Environment Settings</string>
+   </property>
+   <property name="statusTip">
+    <string>Pato-SCM environment settings</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
+  </action>
+  <action name="actionExport">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="mainwindow.qrc">
+     <normaloff>:/new/icons/exporticon</normaloff>:/new/icons/exporticon</iconset>
+   </property>
+   <property name="text">
+    <string>Export</string>
+   </property>
+   <property name="statusTip">
+    <string>Export project from the workspace or repository</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
+  </action>
+  <action name="actionHelp">
+   <property name="icon">
+    <iconset resource="mainwindow.qrc">
+     <normaloff>:/new/icons/help</normaloff>:/new/icons/help</iconset>
+   </property>
+   <property name="text">
+    <string>Help</string>
+   </property>
+   <property name="statusTip">
+    <string>Help</string>
+   </property>
+   <property name="iconVisibleInMenu">
+    <bool>true</bool>
+   </property>
+  </action>
+  <action name="actionAbout_Pato_SCM">
+   <property name="icon">
+    <iconset resource="mainwindow.qrc">
+     <normaloff>:/new/icons/icon</normaloff>:/new/icons/icon</iconset>
+   </property>
+   <property name="text">
+    <string>About Pato-SCM</string>
+   </property>
+   <property name="statusTip">
+    <string>About Pato-SCM</string>
+   </property>
+   <property name="iconVisibleInMenu">
+    <bool>true</bool>
+   </property>
+  </action>
+  <action name="actionAdd_File_Dir">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="mainwindow.qrc">
+     <normaloff>:/new/icons/addfile</normaloff>:/new/icons/addfile</iconset>
+   </property>
+   <property name="text">
+    <string>Add File/Dir</string>
+   </property>
+   <property name="statusTip">
+    <string>Start to control the selected file or dir</string>
+   </property>
+  </action>
+  <action name="actionRemove_File_Dir">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="mainwindow.qrc">
+     <normaloff>:/new/icons/remfile</normaloff>:/new/icons/remfile</iconset>
+   </property>
+   <property name="text">
+    <string>Remove File/Dir</string>
+   </property>
+   <property name="statusTip">
+    <string>Stop controlling the selected file or dir</string>
+   </property>
+  </action>
+  <action name="actionUpdate">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="mainwindow.qrc">
+     <normaloff>:/new/icons/update</normaloff>:/new/icons/update</iconset>
+   </property>
+   <property name="text">
+    <string>Update</string>
+   </property>
+   <property name="statusTip">
+    <string>Update the workspace with the new repository changes (Alert: Discart the local changes)</string>
+   </property>
+  </action>
+  <action name="actionOpen">
+   <property name="icon">
+    <iconset resource="mainwindow.qrc">
+     <normaloff>:/new/icons/diff</normaloff>:/new/icons/diff</iconset>
+   </property>
+   <property name="text">
+    <string>Open</string>
+   </property>
+   <property name="toolTip">
+    <string>Open Pato-Diff Tool</string>
+   </property>
+   <property name="statusTip">
+    <string>Open Pato-Diff Tool</string>
+   </property>
+  </action>
+  <action name="actionBrowse">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="mainwindow.qrc">
+     <normaloff>:/new/icons/browse</normaloff>:/new/icons/browse</iconset>
+   </property>
+   <property name="text">
+    <string>Browse</string>
+   </property>
+   <property name="toolTip">
+    <string>Browse</string>
+   </property>
+   <property name="statusTip">
+    <string>Browse project at repository</string>
+   </property>
+  </action>
+  <action name="actionRepLog">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="mainwindow.qrc">
+     <normaloff>:/new/icons/log</normaloff>:/new/icons/log</iconset>
+   </property>
+   <property name="text">
+    <string>Repository Log</string>
+   </property>
+   <property name="statusTip">
+    <string>See revisions log from repository</string>
+   </property>
+  </action>
+  <action name="actionLog">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="mainwindow.qrc">
+     <normaloff>:/new/icons/log</normaloff>:/new/icons/log</iconset>
+   </property>
+   <property name="text">
+    <string>Log</string>
+   </property>
+   <property name="statusTip">
+    <string>Show revisions log</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources>
+  <include location="mainwindow.qrc"/>
+ </resources>
+ <connections/>
+</ui>
