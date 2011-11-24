@@ -56,6 +56,7 @@ public:
     //project operations>
     bool validateProject( const string& projectName );
     bool createProject(std::string& project);
+    bool insertProjectVersion(std::string& project);
     //<
 
     //fileoperations >

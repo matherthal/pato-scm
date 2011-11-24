@@ -41,7 +41,7 @@ public:
     void getCompletePath(int idItemConfig, std::string& project, std::string& completePath);
     bool getFilePath(std::string& project, int version, std::map<std::string, std::string>& filePath);
     bool getLog(std::string& project, int version, PatoLog&  log);
-    void getInfoTransaction(int version, PatoLog& log);
+    void getInfoTransaction(std::string& project, int version, PatoLog& log);
 
     bool getLogPathFile(std::string project,std::string& path, std::vector<PatoLog>& message);
     //<
@@ -59,6 +59,12 @@ public:
     bool validateProject( const string& projectName );
     int getProjectId(std::string& project);
     bool createProject(std::string& project);
+    bool insertProjectVersion(std::string& project);
+    int getIdProjectLastVersion(std::string& project);
+    int getIdProjectVersion(std::string& project, int version);
+    int getIdProjectPreviusVersion(std::string& project);
+    void getIdProjectAllVersion(std::string& project, std::vector<int>& vecIdProject);
+    void getOutputOracleIn(std::vector<int>& vecIdProject, std::string& strAllIdProject);
     //<
 
     //IC operations>
@@ -71,7 +77,7 @@ public:
 
     //file operations>
     bool isFile(std::string& path);
-    bool getPathsLastVersion();
+    bool getPathsLastVersion(std::string& project);
     bool findPathLastVersion(std::string path);
     int getLastVersionFile(std::string& file);
     bool insertFile(std::string& path, std::string& file, /*std::string& project,*/ std::string& idFile);
