@@ -16,27 +16,54 @@ using namespace std;
 PatoClientApi::PatoClientApi() {
 }
 
-QString PatoClientApi::init(QString repoName, QString username, QString password)
+QString PatoClientApi::init(QString repoName, QString username, QString password, QString workspace)
 {
+
+    if (repoName == "") {
+        throw (PatoClientException("The init command needs an address."));
+    } else if (username == "") {
+        throw (PatoClientException("The init command needs an username."));
+    } else if (password == "") {
+        throw (PatoClientException("The init command needs a password."));
+    }
+    else if (workspace == "") {
+            throw (PatoClientException("The init command needs a password."));
+     }
+    qDebug()<<"create"<<endl;
+
     QString repoAddress = "http://hardcoded.com/" + repoName;
     QStringList files;
     RevisionKey revision;
 
     PatoServerApi *serverApi = PatoServerApi::getInstance();
-    bool succeded = serverApi->createProject(repoName);
-    if (!succeded)
-        return "";
 
-    serverApi->createUser(username, username, password);
+    bool succeded;
+    if(!serverApi->validateProject(repoName)){
+        succeded = serverApi->createProject(repoName);
+        if (!succeded)
+            return "";
+    }
+
+    if(!serverApi->validateUser(username, password))
+        serverApi->createUser(username, username, password);
+
+    //if(!serverApi->validateUserProject(username, repoName)){
     succeded = serverApi->addUserProject(username, repoName);
-    if (!succeded)
-        return "";
+    if (!succeded){
+        cout<<"1"<<endl;
+        throw (PatoClientException("Problem to create project and add user"));
+    }
+    //}
 
-    PatoWorkspace *workspace = PatoWorkspace::instance();
-    succeded = workspace->create(repoName, files, repoAddress, revision);
-    if (!succeded)
-        return "";
-
+    PatoWorkspace* work;
+    work = PatoWorkspace::instance();
+    qDebug()<<"create "<<workspace<<endl;
+    work->setPath(workspace, true);
+    succeded = work->create(workspace, files, repoAddress, revision);
+    if (!succeded){
+        qDebug()<<work->getLastError()<<endl;
+        throw (PatoClientException("Problem to create project and add user"));
+    }
     return repoAddress;
 }
 
@@ -128,7 +155,25 @@ QList< PatoFileStatus > PatoClientApi::add(QString workspace, QStringList files)
         throw (PatoClientException("The add command needs at least one file to add."));
     }
 
+    work->setPath(workspace);
+
     return work->add(workspace, files);
+}
+
+void PatoClientApi::remove(QString workspace, QStringList files) throw (PatoClientException)
+{
+    PatoWorkspace* work = PatoWorkspace::instance();
+
+    if (workspace == "") {
+        throw (PatoClientException("The add command needs a workspace."));
+    } else if (files.isEmpty()) {
+        throw (PatoClientException("The add command needs at least one file to add."));
+    }
+
+    work->setPath(workspace);
+
+    work->remove(files);
+
 }
 
 QList< PatoFileStatus > PatoClientApi::status(QString workspace) throw (PatoClientException) {

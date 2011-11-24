@@ -20,7 +20,7 @@
 class PatoClientApi {
 public:
 
-    QString init(QString repoName, QString username, QString password);
+    QString init(QString repoName, QString username, QString password, QString workspace);
 
     QList<logOutput> log(QString adress, QString username, QString password, RevisionKey initialRevision, RevisionKey finalRevision) throw(PatoClientException);
 
@@ -32,6 +32,7 @@ public:
     QList<PatoFileStatus> checkin(QString address, QString username, QString password, QString workspace, QString message)throw(PatoClientException);
     QList<PatoFileStatus> status(QString workspace) throw(PatoClientException);
     QList<PatoFileStatus> add(QString workspace, QStringList files) throw(PatoClientException);
+    void remove(QString workspace, QStringList files) throw(PatoClientException);
 
     PatoClientApi();
 

@@ -8,9 +8,9 @@
 PatoWorkspace* PatoWorkspace::sigleWorkspace = NULL;
 
 const QString cWorkspaceControlFolder = ".pato";
-const QString cWorkspaceMetadata = ".pato.md";
-const QString cAddedMetadata = ".added.md";
-const QString cRemovedMetadata = ".removed.md";
+const QString cWorkspaceMetadata = "pato.md";
+const QString cAddedMetadata = "added.md";
+const QString cRemovedMetadata = "removed.md";
 
 
 
@@ -54,6 +54,19 @@ void copyDirectory(QString path1, QString path2)
     foreach ( QString file, dir.entryList( QDir::Files))
     {
         copyFile (path1,path2, file);
+    }
+}
+
+void getAllFiles( QString path1, QList<QString>& list)
+{
+    QDir dir( path1 );
+
+    foreach (QString subDir, dir.entryList( QDir::Dirs | QDir::NoDotAndDotDot))
+        getAllFiles(path1+"/"+subDir, list);
+
+    foreach ( QString file, dir.entryList( QDir::Files))
+    {
+        list << path1+"/"+file;
     }
 }
 
@@ -129,10 +142,11 @@ bool PatoWorkspace::create(QString sourceDir, QStringList files, QString repoAdd
         return false;
     }
 
-    PatoResourceAbstractFactory *factory = PatoResourceAbstractFactory::getInstance();
-    IFile *file = factory->createFile(workPath + "/" + cWorkspaceMetadata);
+    QDir().mkpath(workPath);
 
-    if ( file->exists() )
+    QFile file( metaFilePath( META_CONTROL, true) );
+
+    if ( file.exists() )
     {
         lastError = "Repository already created.";
         return false;
@@ -170,10 +184,11 @@ bool PatoWorkspace::setPath(QString directory, bool createDir)
         lastError = "Directory doesn't exist";
     }
 
-    QFile file( directory + "/" + cWorkspaceMetadata);
+    QFile file( metaFilePath( META_CONTROL, true ));
     if ( (ready = file.exists()) )
     {
         readMetadata();
+
     }
     else
     {
@@ -214,42 +229,76 @@ QList< PatoFileStatus > PatoWorkspace::status(PatoFileStatus::FileStatus statusF
 {
     QList< PatoFileStatus > statusList;
 
-    for (int i=0; i < versionedFiles.size(); i++)
-    {
-        if (  QFile( workPath + "/" + versionedFiles[i]).exists() )
-        {
-            if ( (statusFilter & PatoFileStatus::MODIFIED) && (statusFilter & PatoFileStatus::CLEAN) )
-            {
-                Diff diff ( (workPath + "/" + versionedFiles[i]).toStdString().c_str(),
-                            (backupPath(revKey) + versionedFiles[i]).toStdString().c_str() );
+    QList<QString> allFiles;
+    getAllFiles(workPath,allFiles);
 
-                if(diff.isEmpty())
+    QString ignoredPath = workPath + "/" + cWorkspaceControlFolder;
+
+    foreach ( QString strFile, allFiles)
+    {
+        if ( strFile.indexOf( ignoredPath ) != 0 )
+        {
+            strFile.remove(0, (workPath + "/").length());
+
+            int nV = versionedFiles.indexOf(strFile);
+            if (nV != -1)
+            {
+                if (  QFile( workPath + "/" + versionedFiles[nV]).exists() )
                 {
-                    if (statusFilter & PatoFileStatus::CLEAN)
-                        statusList.append( PatoFileStatus( versionedFiles[i], PatoFileStatus::CLEAN ) );
+                    if ( (statusFilter & PatoFileStatus::MODIFIED) && (statusFilter & PatoFileStatus::CLEAN) )
+                    {
+                        Diff diff ( (workPath + "/" + versionedFiles[nV]).toStdString().c_str(),
+                                    (backupPath(revKey) + versionedFiles[nV]).toStdString().c_str() );
+
+                        if(diff.isEmpty())
+                        {
+                            if (statusFilter & PatoFileStatus::CLEAN)
+                                statusList.append( PatoFileStatus( strFile, PatoFileStatus::CLEAN ) );
+                        }
+                        else
+                        {
+                            if (statusFilter & PatoFileStatus::MODIFIED)
+                                statusList.append( PatoFileStatus( strFile, PatoFileStatus::MODIFIED ) );
+                        }
+                    }
                 }
                 else
                 {
-                    if (statusFilter & PatoFileStatus::MODIFIED)
-                        statusList.append( PatoFileStatus( versionedFiles[i], PatoFileStatus::MODIFIED ) );
+                    if ( statusFilter & PatoFileStatus::MISSING )
+                    {
+                        statusList.append( PatoFileStatus( strFile, PatoFileStatus::MISSING ) );
+                    }
                 }
             }
-        }
-        else
-        {
-            if ( statusFilter & PatoFileStatus::MISSING )
+            else
             {
-                statusList.append( PatoFileStatus( versionedFiles[i], PatoFileStatus::MISSING ) );
+                int nR = removedFiles.indexOf(strFile);
+                if (nR != -1)
+                {
+                    if ( statusFilter & PatoFileStatus::REMOVED )
+                    {
+                        statusList.append( PatoFileStatus( strFile, PatoFileStatus::REMOVED ) );
+                    }
+                }
+                else
+                {
+                    int nA = addedFiles.indexOf(strFile);
+                    if (nA != -1)
+                    {
+                        if ( statusFilter & PatoFileStatus::ADDED )
+                        {
+                            statusList.append( PatoFileStatus( strFile, PatoFileStatus::ADDED ) );
+                        }
+                    }
+                    else
+                    {
+                        if ( statusFilter & PatoFileStatus::UNVERSIONED )
+                        {
+                            statusList.append( PatoFileStatus( strFile, PatoFileStatus::UNVERSIONED ) );
+                        }
+                    }
+                }
             }
-        }
-    }
-
-    if (statusFilter & PatoFileStatus::ADDED)
-    {
-        for (int i=0; i < addedFiles.size(); i++)
-        {
-            statusList.append( PatoFileStatus( addedFiles[i], PatoFileStatus::ADDED ) );
-
         }
     }
 
@@ -350,6 +399,7 @@ void PatoWorkspace::writeMetadata(MetadataType types)
         }
         else
         {
+            qDebug() << metaFilePath( META_CONTROL, true );
             qWarning() << "Cannot open " << cWorkspaceMetadata;
         }
     }
@@ -370,6 +420,7 @@ void PatoWorkspace::writeMetadata(MetadataType types)
         }
         else
         {
+            qDebug() << metaFilePath( META_ADDED, true );
             qWarning() << "Cannot open " << cAddedMetadata;
         }
     }
@@ -390,6 +441,7 @@ void PatoWorkspace::writeMetadata(MetadataType types)
         }
         else
         {
+            qDebug() << metaFilePath( META_REMOVED, true );
             qWarning() << "Cannot open " << cRemovedMetadata;
         }
     }
@@ -525,7 +577,16 @@ void PatoWorkspace::remove(QStringList files)
             removedFiles << versionedFiles[index];
             versionedFiles.removeAt(index);
         }
+        else
+        {
+            index = addedFiles.indexOf( files[i] );
+            if ( index != -1 )
+            {
+                addedFiles.removeAt(index);
+            }
+        }
     }
+    writeMetadata();
 }
 
 void PatoWorkspace::copy(/*originalPath, destinationPath*/)
@@ -583,7 +644,7 @@ QString PatoWorkspace::metaFilePath(MetadataType type, bool fullPath) const
         strFile = cWorkspaceMetadata; break;
 
     case META_REMOVED:
-         strFile = cRemovedMetadata; break;
+        strFile = cRemovedMetadata; break;
 
     case META_ALL:
     default:

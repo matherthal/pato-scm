@@ -1,4 +1,4 @@
-/* 
+/*
  * File:   statusCLI.cpp
  * Author: marapao
  * 
@@ -8,9 +8,11 @@
 #include "statusCLI.h"
 #include "utils.h"
 #include "../patoClientAPI/patoclientapi.h"
+#include "../patoBase/patofilestatus.h"
 #include<iostream>
 #include<QtCore/QString>
 #include<QtCore/QTextStream>
+#include<QList>
 using namespace std;
 
 statusCLI::statusCLI() {
@@ -62,13 +64,37 @@ void statusCLI::command(int argc, char** argv) {
         if (parameter == "--workspace") {
             workspace = argv[i + 1];
         } else {
-            workspace = utils::returnPath();
+            workspace = utils::returnPath(argc, argv);
         }
 
     }
 
+    QList<PatoFileStatus> ls;
     try {
-        clientAPI->status(workspace);
+        ls = clientAPI->status(workspace);
+        for(int i = 0; i< ls.size(); ++i){
+
+            switch(ls.at(i).status()){
+            case PatoFileStatus::ADDED:
+                qout<< "A   ";break;
+            case PatoFileStatus::MODIFIED:
+                qout<< "M   ";break;
+            case PatoFileStatus::REMOVED:
+                qout<< "R   ";break;
+            case PatoFileStatus::CLEAN:
+                qout<< "C   ";break;
+            case PatoFileStatus::MISSING:
+                qout<< "!   ";break;
+            case PatoFileStatus::VERSIONED:
+                qout<< "V   ";break;
+            case PatoFileStatus::UNVERSIONED:
+                qout<< "U   ";break;
+
+            }
+
+            qout<<ls.at(i).fileName()<<endl;
+        }
+
     } catch (PatoClientException& t) {
         QList<QString> ls = messageErrorST();
         for(int i = 0; i < ls.size(); i++){

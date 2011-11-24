@@ -19,7 +19,6 @@ using namespace std;
  */
 int main(int argc, char** argv) {
 
-    
     cliReader* cli;
     
     cli = new cliReader();

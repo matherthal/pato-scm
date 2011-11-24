@@ -2,7 +2,7 @@
 #include "mainwindow.h"
 #include "environmentsettingsdialog.h"
 #include "ui_environmentsettingsdialog.h"
-#include "..\patoClientApi\patoclientapi.h"
+#include "../patoClientAPI/patoclientapi.h"
 
 EnvironmentSettingsDialog::EnvironmentSettingsDialog(QWidget *parent) :
     QDialog(parent),
