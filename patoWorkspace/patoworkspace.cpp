@@ -8,9 +8,9 @@
 PatoWorkspace* PatoWorkspace::sigleWorkspace = NULL;
 
 const QString cWorkspaceControlFolder = ".pato";
-const QString cWorkspaceMetadata = ".pato.md";
-const QString cAddedMetadata = ".added.md";
-const QString cRemovedMetadata = ".removed.md";
+const QString cWorkspaceMetadata = "pato.md";
+const QString cAddedMetadata = "added.md";
+const QString cRemovedMetadata = "removed.md";
 
 
 
@@ -333,6 +333,7 @@ QList< PatoFileStatus > PatoWorkspace::status(PatoFileStatus::FileStatus statusF
 
     if (statusFilter & PatoFileStatus::ADDED)
     {
+        qDebug()<<"addedFiles"<<addedFiles.size()<<endl;
         for (int i=0; i < addedFiles.size(); i++)
         {
             statusList.append( PatoFileStatus( addedFiles[i], PatoFileStatus::ADDED ) );

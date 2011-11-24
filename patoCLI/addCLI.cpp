@@ -26,7 +26,7 @@ QList<QString> messageError(){
     QList<QString> error;
 
     error.append("Add command is used to include artifactcs or directories under version control.");
-    error.append("Usage: pato add PATH....");
+    error.append("Usage: pato add --workspace WORKSPACE PATH....");
 
     return error;
 }
@@ -45,7 +45,7 @@ void addCLI::command(int argc, char** argv) {
             workspace = argv[i + 1];
             i += 2;
         } else {
-            workspace = utils::returnPath();
+            workspace = utils::returnPath(argc, argv);
             qout << workspace << endl;
         }
 
