@@ -6,7 +6,7 @@
 
 using namespace std;
 
-class Merge
+class PATOALGORITHMSSHARED_EXPORT Merge
 {
 private:
     Diff *diff;
