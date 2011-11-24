@@ -1238,6 +1238,8 @@ namespace bd {
         strSql.append(path);
         strSql.append("') order by idTransacao;");
 
+        qDebug(strSql.c_str());
+
 
         QSqlQuery query(db);
         if ( query.exec(strSql.c_str()) )

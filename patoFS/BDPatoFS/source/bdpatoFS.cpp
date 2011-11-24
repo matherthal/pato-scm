@@ -67,10 +67,11 @@ namespace bd {
         QString delta_tmp;
 
         //query pega o conteudo e a chave para o delta do arquivo
-        query.prepare("SELECT ARMA_CONTEUDO, ARMA_DELTA_ID FROM ARMAZENAMENTO WHERE arma_id = :key");
-        query.bindValue(":key",key.toStdString().c_str());
+        std::string strSql = "SELECT ARMA_CONTEUDO, ARMA_DELTA_ID FROM ARMAZENAMENTO WHERE arma_id like '";
+        strSql.append(key.toStdString().c_str());
+        strSql.append("';");
 
-        if (query.exec()) {
+        if (query.exec(strSql.c_str())) {
 
             while (query.next()) {
 
@@ -86,61 +87,16 @@ namespace bd {
 
         else {
 
-            /*
-            //cria arquivo temporario contendo conteudo referente a chave passada
-            QString filePath = PATO_TEMP_FOLDER + key + ".temp";
-            QFile completeFile(filePath);
-
-            //abre o arquivo para escrita
-            completeFile.open(QIODevice::WriteOnly | QIODevice::Text);
-
-            //nome do arquivo temporario eh sua hash
-            filePath = PATO_TEMP_FOLDER + delta_tmp + ".temp";
-            QFile deltaFile(filePath);
-
-            //stream para grava conteudo no arquivo
-            QTextStream content1(&completeFile);
-            QTextStream content2(&deltaFile);
-            */
 
             //chama recursao, passando chave do arquivo delta
             std::string apply = applyPatch(delta_tmp);
 
-            /*
-            //retorno da recursao eh uma string (arq completo), que sera gravado no fluxo p/ o arquivo
-            content1 << apply.c_str();
-            //outro arquivo contera o conteudo do arquivo referenciado pela chave primaria
-            content2 << data.toStdString().c_str();
-
-            //parametros para o patch
-            char* deltaChar = (char*) QFileInfo(deltaFile).absoluteFilePath().toStdString().c_str();
-            char* completeChar = (char*) QFileInfo(deltaFile).absoluteFilePath().toStdString().c_str();
-
-            //chama o algoritmo de patch, passando o arquivo delta e o arquivo completo
-            Patch patch(deltaChar, completeChar);
-            */
 
             Patch patch(apply, data.toStdString());
             std::string buff = patch.to_string();
 
-            /*
-            //arquivo para ser gravado o resultado do patch
-            filePath = PATO_TEMP_FOLDER + QString::number(ind++) + ".temp";
-            QFile newFile(filePath.toStdString().c_str());
+            qDebug(buff.c_str());
 
-            //pega referencia ao arquivo contendo o resultado do patch
-            char* patchChar = (char*) QFileInfo(newFile).absoluteFilePath().toStdString().c_str();
-            patch.getFile(patchChar);
-
-            newFile.open(QIODevice::ReadOnly);
-
-            //le arquivo e retorna em forma de string
-            QTextStream stream ( &newFile );
-            QString buff;
-            while( !stream.atEnd()) {
-                 buff.append(stream.readLine());
-            }
-            */
 
             return buff;
         }
@@ -156,16 +112,20 @@ namespace bd {
         QString last_content;
         QString last_delta;
 
-        qDebug("saveData - storage");
+        qDebug(key_last_version.c_str());
 
         if (!key_last_version.empty()) {
 
+            std::string key_delta_old = key_last_version;
+
             qDebug("key nao vazia");
+            std::string strSql = "select arma_conteudo, arma_delta_id from aramazenamento where arma_id like '";
+            strSql.append(key_last_version);
+            strSql.append("';");
 
-            query.prepare("select arma_conteudo, arma_delta_id from aramazenamento where arma_id = :key");
-            query.bindValue(":key",key_last_version.c_str());
+            qDebug(strSql.c_str());
 
-            if ( query.exec() ) {
+            if ( query.exec(strSql.c_str()) ) {
 
                 while (query.next()) {
                     last_content = query.value(0).toString();
@@ -175,13 +135,14 @@ namespace bd {
 
             Diff diff(last_content.toStdString(), data);
             std::string delta = diff.to_delta_string();
+            qDebug(delta.c_str());
 
             //insert delta content in the data base in the data base
             key_last_version = insertDataQuery(delta, last_delta.toStdString());
 
             //delete the old content
             std::vector<StorageKey> v;
-            v.push_back(key_last_version);
+            v.push_back(key_delta_old);
             deleteData(v);
         }
 
@@ -221,6 +182,7 @@ namespace bd {
         QString file;
         QSqlQuery query(db);
 
+        qDebug(idFile.c_str());
         //chama funcao recursiva que monta o arquivo, buscando seus deltas e versao completa
         data = applyPatch(QString::fromStdString(idFile));
 
@@ -276,6 +238,7 @@ namespace bd {
         sqlFileInserted.append(key.toStdString());
         sqlFileInserted.append("');");
 
+        qDebug(sqlFileInserted.c_str());
         if ( query.exec(sqlFileInserted.c_str()) )
         {
             if (query.next()) {
@@ -315,19 +278,21 @@ namespace bd {
             return false;
 
         QSqlQuery query(db);
-        QString sqlDelete = "delete from armazenamento where arma_id in (";
+        QString sqlDelete = "delete from armazenamento where arma_id in ('";
+
 
         std::vector<std::string>::const_iterator itIdFile;
         for( itIdFile = idFile.begin(); itIdFile != idFile.end(); itIdFile++ )
         {
             if ( itIdFile != idFile.begin() )
-                sqlDelete.append(", ");
+                sqlDelete.append("', '");
 
             sqlDelete.append((*itIdFile).c_str());
         }
 
-        sqlDelete.append(")");
+        sqlDelete.append("')");
 
+        qDebug(sqlDelete.toStdString().c_str());
         if (query.exec(sqlDelete)) {
             return true;
         }
