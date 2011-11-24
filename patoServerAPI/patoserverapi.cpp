@@ -108,29 +108,44 @@ bool PatoServerApi::checkIn(QString project, QString username, QString password,
     string strPw = password.toStdString();
     string strProj = project.toStdString();
 
+    //storage and versioning model references
+    PatoFS* storage = PatoFS::getInstance();
+    PatoDataModel* dataModel = PatoDataModel::getInstance();
+
     //validating project
-    if (!PatoDataModel::getInstance()->validateProject(strProj))
+    if (!dataModel->validateProject(strProj))
         return false;
 
     //validating user
-    if (!PatoDataModel::getInstance()->validateUser(strUsername, strPw))
+    if (!dataModel->validateUser(strUsername, strPw))
         return false;
 
     //test if a user is authorized
-    if (!PatoDataModel::getInstance()->validateUserProject(strUsername, strPw, strProj))
+    if (!dataModel->validateUserProject(strUsername, strPw, strProj))
         return false;
 
     //this function will fill the fileKey vector with all file keys
     vector<StorageKey> fileKey;
     std::vector<std::string> fileContent;
+    std::vector<std::string> deltaKey; //for each file, key for its last version
     std::map<std::string, std::string>::iterator itMap;
 
     for( itMap = filesCheckIn.begin(); itMap != filesCheckIn.end(); itMap++ )
     {
         fileContent.push_back(itMap->second);
+
+        //get the last version key from data model
+        std::vector<std::string> vecCodeStorage; //contains all versions key (last position contains the last version)
+        std::string path = itMap->first; //contains the file path (complete)
+
+        dataModel->getCodStorage(path, vecCodeStorage);
+
+        //put the last version key in a vector (for each file)
+        deltaKey.push_back(vecCodeStorage.back());
     }
 
-    PatoFS::getInstance()->saveData(fileContent, fileKey);
+    //for each file, its content, key (will be fill) and deltaKey (key of last version)
+    storage->saveData(fileContent, fileKey, deltaKey);
 
     vector<StorageKey>::iterator itFileKey;
     if ( fileKey.empty() )
@@ -145,7 +160,7 @@ bool PatoServerApi::checkIn(QString project, QString username, QString password,
         filePathKey[itPath->first] = (*itKey);
     }
 
-    if (!PatoDataModel::getInstance()->checkIn(filePathKey, strProj, strUsername, msg))
+    if (!dataModel->checkIn(filePathKey, strProj, strUsername, msg))
         return false;
 
     return true;
