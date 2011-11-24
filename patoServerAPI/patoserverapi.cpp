@@ -102,7 +102,6 @@ bool PatoServerApi::checkOut(QString path, QString username, QString password, i
 bool PatoServerApi::checkIn(QString project, QString username, QString password, QString message,
                             std::map<std::string, std::string>& filesCheckIn)
 {
-
     string msg = message.toStdString();
     string strUsername = username.toStdString();
     string strPw = password.toStdString();
@@ -141,8 +140,15 @@ bool PatoServerApi::checkIn(QString project, QString username, QString password,
         dataModel->getCodStorage(path, vecCodeStorage);
 
         //put the last version key in a vector (for each file)
-        deltaKey.push_back(vecCodeStorage.back());
+        if (!vecCodeStorage.empty()) {
+            deltaKey.push_back(vecCodeStorage.back());
+        }
+        else {
+            deltaKey.push_back(string(""));
+        }
     }
+
+    qDebug("salvando conteudo no armazenamento...");
 
     //for each file, its content, key (will be fill) and deltaKey (key of last version)
     storage->saveData(fileContent, fileKey, deltaKey);

@@ -156,30 +156,37 @@ namespace bd {
         QString last_content;
         QString last_delta;
 
-        query.prepare("select arma_conteudo, arma_delta_id from aramazenamento where arma_id = :key");
-        query.bindValue(":key",key_last_version.c_str());
+        qDebug("saveData - storage");
 
-        if ( query.exec() ) {
+        if (!key_last_version.empty()) {
 
-            while (query.next()) {
-                last_content = query.value(0).toString();
-                last_delta = query.value(1).toString();
+            qDebug("key nao vazia");
+
+            query.prepare("select arma_conteudo, arma_delta_id from aramazenamento where arma_id = :key");
+            query.bindValue(":key",key_last_version.c_str());
+
+            if ( query.exec() ) {
+
+                while (query.next()) {
+                    last_content = query.value(0).toString();
+                    last_delta = query.value(1).toString();
+                }
             }
+
+            Diff diff(last_content.toStdString(), data);
+            std::string delta = diff.to_delta_string();
+
+            //insert delta content in the data base in the data base
+            key_last_version = insertDataQuery(delta, last_delta.toStdString());
+
+            //delete the old content
+            std::vector<StorageKey> v;
+            v.push_back(key_last_version);
+            deleteData(v);
         }
 
-        Diff diff(last_content.toStdString(), data);
-        std::string delta = diff.to_delta_string();
-
-        //insert delta content in the data base in the data base
-        key_last_version = insertDataQuery(delta, last_delta.toStdString());
-
-        //delete the old content
-        std::vector<StorageKey> v;
-        v.push_back(key_last_version);
-        deleteData(v);
-
         //insert the current version content in the data base
-        insertDataQuery(data, key_last_version);
+        return insertDataQuery(data, key_last_version);
 
     }
 
@@ -190,6 +197,7 @@ namespace bd {
         std::vector<std::string>::iterator itDelta;
         for( itData = data.begin(), itDelta = vecDeltIdFile.begin(); itData != data.end(); itData++, itDelta++)
         {
+
             std::string idFile = saveData((*itData), (*itDelta));
 
             if ( idFile == "-1" )
@@ -201,6 +209,7 @@ namespace bd {
             {
                 vecIdFile.push_back(idFile);
             }
+
         }
 
         return true;
@@ -280,8 +289,12 @@ namespace bd {
         sqlInsert.append("','");
         sqlInsert.append(data);
         sqlInsert.append("','");
-        sqlInsert.append(delta);
+        if (!delta.empty())
+            sqlInsert.append(delta);
+        else
+            sqlInsert.append("NULL");
         sqlInsert.append("');");
+
 
         //qDebug(sqlInsert.c_str());
         QSqlQuery queryInsert(db);
