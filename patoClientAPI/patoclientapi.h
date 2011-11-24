@@ -20,7 +20,7 @@
 class PatoClientApi {
 public:
 
-    QString init(QString repoName, QString username, QString password);
+    QString init(QString repoName, QString username, QString password, QString workspace);
 
     QList<logOutput> log(QString adress, QString username, QString password, RevisionKey initialRevision, RevisionKey finalRevision) throw(PatoClientException);
 

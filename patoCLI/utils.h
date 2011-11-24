@@ -21,7 +21,7 @@ public:
     virtual ~utils();
     void SetPath(QString path);
     QString GetPath() const;
-    static QString returnPath();
+    static QString returnPath(int argc, char** argv);
 private:
     QString path;
 
