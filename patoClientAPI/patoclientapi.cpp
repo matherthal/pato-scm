@@ -26,7 +26,9 @@ QString PatoClientApi::init(QString repoName, QString username, QString password
     } else if (password == "") {
         throw (PatoClientException("The init command needs a password."));
     }
-
+    else if (workspace == "") {
+            throw (PatoClientException("The init command needs a password."));
+     }
     qDebug()<<"create"<<endl;
 
     QString repoAddress = "http://hardcoded.com/" + repoName;
@@ -55,7 +57,8 @@ QString PatoClientApi::init(QString repoName, QString username, QString password
 
     PatoWorkspace* work;
     work = PatoWorkspace::instance();
-    qDebug()<<"create"<<endl;
+    qDebug()<<"create "<<workspace<<endl;
+    work->setPath(workspace, true);
     succeded = work->create(workspace, files, repoAddress, revision);
     if (!succeded){
         qDebug()<<work->getLastError()<<endl;
