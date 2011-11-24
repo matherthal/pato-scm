@@ -14,6 +14,23 @@ const QString cRemovedMetadata = "removed.md";
 
 
 
+string toString( QString strfile )
+{
+    QString r;
+
+    QFile file (strfile);
+
+    if ( file.open( QFile::ReadOnly) )
+    {
+        QTextStream stream(&file);
+
+        r = stream.readAll();
+    }
+
+
+    return r.toStdString();
+}
+
 QString getDir(QString str)
 {
     str.replace('\\', '/');
@@ -545,6 +562,33 @@ void PatoWorkspace::readMetadata(MetadataType types)
         }
     }
 }
+
+ std::map<string,string> PatoWorkspace::changesToServer() const
+ {
+      std::map<string,string> ret;
+     for (int i=0; i < versionedFiles.size(); i++)
+     {
+         Diff diff ( (workPath + "/" + versionedFiles[i]).toStdString().c_str(),
+                     (backupPath(revKey) + versionedFiles[i]).toStdString().c_str() );
+
+         if (!diff.isEmpty())
+         {
+             ret [ (defaultRepositoryAddress() + "/" + versionedFiles[i]).toStdString() ] = toString(workPath + "/" + versionedFiles[i]);
+         }
+     }
+
+     for( int i=0; i < addedFiles.size(); i++)
+     {
+          ret [(defaultRepositoryAddress() + "/" + addedFiles[i]).toStdString()] = toString(workPath + "/" + addedFiles[i]);
+     }
+
+     for( int i=0; i < removedFiles.size(); i++)
+     {
+         ret [(defaultRepositoryAddress() + "/" + removedFiles[i]).toStdString()] = QString("").toStdString();
+     }
+
+     return ret;
+ }
 
 PatoChangeSet  PatoWorkspace::changes() const
 {

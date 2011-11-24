@@ -44,6 +44,7 @@ public:
     RevisionKey revision() const; //get current revision
     QList< PatoFileStatus > status(PatoFileStatus::FileStatus = PatoFileStatus::ALL) const; // return a list of file status
     PatoChangeSet changes() const; // return a list of file status
+    std::map<string,string> changesToServer() const; // return a list of file status
     /////////////////////////////////////////////////
 
     //////////////SEGUNDA FASE///////////////////////
