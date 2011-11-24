@@ -217,6 +217,30 @@ int main(int argc, char *argv[]){
                 printf("Resultado: CORRETO!\nTempo: %lf\n\n",t);
             delete diff4;
         }
+
+        if(num==5 || num==-1){
+            printf("##### TESTE 5 #####\n");
+            string a("pato\nAlgorithm\nWell done.");
+            string b("git\nAlgorithm\nnot Well done.");
+            Tempo_CPU_Sistema(&s_CPU_inicial, &s_total_inicial);
+
+            Diff *diff5 = new Diff(a,b);
+            cout << diff5->to_string() << endl;
+            Tempo_CPU_Sistema(&s_CPU_final, &s_total_final);
+            t = s_CPU_final - s_CPU_inicial;
+
+            correct = !diff5->isEmpty();
+
+            correct = correct && diff5->getDiffItem(0)->getType()==DiffItem::Action_Change;
+            correct = correct && diff5->getDiffItem(1)->getType()==DiffItem::Action_Change;
+            correct = correct && diff5->getDiffItem(2) == NULL;
+
+            if(!correct)
+                printf("ERRADO!\n\nTempo: %lf\n\n",t);
+            else
+                printf("Resultado: CORRETO!\nTempo: %lf\n\n",t);
+            delete diff5;
+        }
     }
 
     if(strcmp(type,"merge")==0 || strcmp(type,"all")==0){
@@ -268,6 +292,21 @@ int main(int argc, char *argv[]){
                 printf("Resultado: ERRADO!\n\n");
             else
                 printf("Resultado: CORRETO!\n\n");
+        }
+
+        if(num==5 || num==-1){
+            printf("##### TESTE 5 #####\n");
+            string base  ("Teste do merge\nVamor testar o merge\nMas esse eh com string");
+            string dataA ("Teste do merge\nVamor testar o merge\nMas esse eh com o q?");
+            string dataB ("Teste do merge\nNao vamos testar o merge\nMas esse eh com string\ntah blz");
+            string result("Teste do merge\n<<<<<<< string A\nVamor testar o merge\nMas esse eh com o q?\n=======\nNao vamos testar o merge\nMas esse eh com string\ntah blz\n>>>>>>> string B");
+            Merge *merge5 = new Merge(base,dataA,dataB);
+            Diff *diffM5 = new Diff(result,merge5->to_string());
+            if(!diffM5->isEmpty())
+                printf("Resultado: ERRADO!\n\n");
+            else
+                printf("Resultado: CORRETO!\n\n");
+            delete merge5;
         }
     }
 
@@ -352,6 +391,21 @@ int main(int argc, char *argv[]){
             else
                 printf("Resultado: CORRETO!\n\n");
             delete diffPt5;
+        }
+
+        if(num==6 || num==-1){
+            printf("##### TESTE 6 #####\n");
+            string dataA ("Teste do merge\nVamor testar o merge\nMas esse eh com o q?");
+            string dataB ("Teste do merge\nNao vamos testar o merge\nMas esse eh com string\ntah blz");
+            Diff *diffP6 = new Diff(dataA,dataB);
+            Patch *patch6 = new Patch(diffP6->to_delta_string(),dataB,Patch::APPLY_TO_B);
+
+            Diff *diffPt6 = new Diff(dataA,patch6->to_string());
+            if(!diffPt6->isEmpty())
+                printf("Resultado: ERRADO!\n\n");
+            else
+                printf("Resultado: CORRETO!\n\n");
+            delete diffPt6;
         }
     }
     return 0;

@@ -3,6 +3,55 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+Patch::Patch(string delta,string file){
+    ofstream fdelta;
+    fdelta.open("tmp.delta");
+    fdelta << delta;
+    fdelta.close();
+    ofstream ffile;
+    ffile.open("tmp.file");
+    ffile << file;
+    ffile.close();
+
+    delta_file_name = (char*)malloc(sizeof(char)*10);
+    strcpy(delta_file_name,"tmp.delta");
+
+    file_name = (char*)malloc(sizeof(char)*10);
+    strcpy(file_name,"tmp.file");
+
+    createPatchToA();
+
+    remove(delta_file_name);
+    remove(file_name);
+}
+
+Patch::Patch(string delta,string file,int _apply_to){
+    type = _apply_to;
+    ofstream fdelta;
+    fdelta.open("tmp.delta");
+    fdelta << delta;
+    fdelta.close();
+    ofstream ffile;
+    ffile.open("tmp.file");
+    ffile << file;
+    ffile.close();
+
+    delta_file_name = (char*)malloc(sizeof(char)*10);
+    strcpy(delta_file_name,"tmp.delta");
+
+    file_name = (char*)malloc(sizeof(char)*10);
+    strcpy(file_name,"tmp.file");
+
+    if(type == Patch::APPLY_TO_A){
+        createPatchToA();
+    }else{
+        createPatchToB();
+    }
+
+    remove(delta_file_name);
+    remove(file_name);
+}
+
 Patch::Patch(char* _delta_file_name,char* _file_name){
     delta_file_name = _delta_file_name;
     file_name=_file_name;
@@ -229,4 +278,8 @@ void Patch::getFile(char* _file_name){
 
 void Patch::print(){
     cout << result;
+}
+
+string Patch::to_string(){
+    return result;
 }

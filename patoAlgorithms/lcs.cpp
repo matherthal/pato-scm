@@ -24,7 +24,7 @@ unsigned int func_hash(char* str, unsigned int len)
 }
 
 char* init_str(char *str,unsigned int from,unsigned int *to){
-    if(str[*to]=='\n'){
+    if(str[*to]=='\n' || str[*to]=='\0'){
         unsigned int length = *to-from;
         char *tmp = (char*)malloc(sizeof(char)*(length+1));
         tmp[length]='\0';
@@ -58,6 +58,19 @@ hashtable** Lcs::init_hash(char *arq,unsigned int size,unsigned int i,int *lengt
     }
 }
 
+Lcs::Lcs(string dataA,string dataB)
+{
+    Lcs::sizeFileA = dataA.size();
+    Lcs::sizeFileB = dataB.size();
+    char *dA = new char[Lcs::sizeFileA+1];
+    char *dB = new char[Lcs::sizeFileB+1];
+    strcpy(dA,dataA.c_str());
+    strcpy(dB,dataB.c_str());
+    dA[dataA.size()] = '\0';
+    dB[dataB.size()] = '\0';
+    calculate_lcs(dA,dB);
+}
+
 Lcs::Lcs(const char *fileNameA,const char *fileNameB)
 {
     ifstream fileA,fileB;
@@ -70,9 +83,16 @@ Lcs::Lcs(const char *fileNameA,const char *fileNameB)
     Lcs::fileB = &fileB;
     Lcs::fileA->open(fileNameA,fstream::binary);
     Lcs::fileB->open(fileNameB,fstream::binary);
-    calculate_lcs();
-    Lcs::fileA->close();
-    Lcs::fileB->close();
+    if(Lcs::fileA->is_open() && Lcs::fileB->is_open()){
+        char *dataA,*dataB;
+        dataA = new char[Lcs::sizeFileA];
+        dataB = new char[Lcs::sizeFileB];
+        Lcs::fileA->read(dataA,Lcs::sizeFileA);
+        Lcs::fileB->read(dataB,Lcs::sizeFileB);
+        calculate_lcs(dataA,dataB);
+        Lcs::fileA->close();
+        Lcs::fileB->close();
+    }
 }
 
 Lcs::~Lcs(){
@@ -81,21 +101,14 @@ Lcs::~Lcs(){
     free_lcs(lcs);
 }
 
-void Lcs::calculate_lcs(){
-    if(fileA->is_open() && fileB->is_open()){
-        char *dataA,*dataB;
-        dataA = new char[sizeFileA];
-        dataB = new char[sizeFileB];
-        fileA->read(dataA,sizeFileA);
-        fileB->read(dataB,sizeFileB);
-        sizeHashA=0,sizeHashB=0;
-        htableA = init_hash(dataA,sizeFileA,0,&sizeHashA);
-        htableB = init_hash(dataB,sizeFileB,0,&sizeHashB);
-        table = build_linked_table();
-        length = 0;
-        lcs = lcs_txt(0,0,&length);
-        free_table(table,sizeHashA);
-    }
+void Lcs::calculate_lcs(char *dataA,char *dataB){
+    sizeHashA=0,sizeHashB=0;
+    htableA = init_hash(dataA,sizeFileA,0,&sizeHashA);
+    htableB = init_hash(dataB,sizeFileB,0,&sizeHashB);
+    table = build_linked_table();
+    length = 0;
+    lcs = lcs_txt(0,0,&length);
+    free_table(table,sizeHashA);
 }
 
 void Lcs::add_to_table(int i,int j,int indexA,int indexB,int next_i,int next_j){
