@@ -32,7 +32,7 @@ private:
     QString address;
     QString username;
     QString password;
-    
+    QString message;
     
 };
 

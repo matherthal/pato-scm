@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'environmentsettingsdialog.ui'
 **
-** Created: Tue 15. Nov 15:37:10 2011
+** Created: Tue Nov 22 23:36:34 2011
 **      by: Qt User Interface Compiler version 4.7.4
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -32,6 +32,7 @@ public:
     QLineEdit *lineEditRepositoryPath;
     QLineEdit *lineEditWorkspacePath;
     QPushButton *pushButtonChooseWorkspace;
+    QPushButton *pushButtonCreateRepository;
     QGroupBox *groupBox_2;
     QLabel *labelUserName;
     QLabel *labelUserPassword;
@@ -59,13 +60,16 @@ public:
         labelWorkspacePath->setGeometry(QRect(10, 70, 91, 16));
         lineEditRepositoryPath = new QLineEdit(groupBox);
         lineEditRepositoryPath->setObjectName(QString::fromUtf8("lineEditRepositoryPath"));
-        lineEditRepositoryPath->setGeometry(QRect(10, 40, 511, 20));
+        lineEditRepositoryPath->setGeometry(QRect(10, 40, 431, 20));
         lineEditWorkspacePath = new QLineEdit(groupBox);
         lineEditWorkspacePath->setObjectName(QString::fromUtf8("lineEditWorkspacePath"));
         lineEditWorkspacePath->setGeometry(QRect(10, 90, 431, 20));
         pushButtonChooseWorkspace = new QPushButton(groupBox);
         pushButtonChooseWorkspace->setObjectName(QString::fromUtf8("pushButtonChooseWorkspace"));
         pushButtonChooseWorkspace->setGeometry(QRect(448, 90, 75, 23));
+        pushButtonCreateRepository = new QPushButton(groupBox);
+        pushButtonCreateRepository->setObjectName(QString::fromUtf8("pushButtonCreateRepository"));
+        pushButtonCreateRepository->setGeometry(QRect(450, 40, 75, 23));
         groupBox_2 = new QGroupBox(EnvironmentSettingsDialog);
         groupBox_2->setObjectName(QString::fromUtf8("groupBox_2"));
         groupBox_2->setGeometry(QRect(10, 160, 531, 121));
@@ -106,6 +110,7 @@ public:
         labelRepositoryPath->setText(QApplication::translate("EnvironmentSettingsDialog", "Repository Path:", 0, QApplication::UnicodeUTF8));
         labelWorkspacePath->setText(QApplication::translate("EnvironmentSettingsDialog", "Workspace Path:", 0, QApplication::UnicodeUTF8));
         pushButtonChooseWorkspace->setText(QApplication::translate("EnvironmentSettingsDialog", "Choose", 0, QApplication::UnicodeUTF8));
+        pushButtonCreateRepository->setText(QApplication::translate("EnvironmentSettingsDialog", "Create", 0, QApplication::UnicodeUTF8));
         groupBox_2->setTitle(QApplication::translate("EnvironmentSettingsDialog", "User Authentication:", 0, QApplication::UnicodeUTF8));
         labelUserName->setText(QApplication::translate("EnvironmentSettingsDialog", "User:", 0, QApplication::UnicodeUTF8));
         labelUserPassword->setText(QApplication::translate("EnvironmentSettingsDialog", "Password:", 0, QApplication::UnicodeUTF8));

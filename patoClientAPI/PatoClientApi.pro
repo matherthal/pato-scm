@@ -32,4 +32,4 @@ HEADERS += patoclientapi.h\
     addOutput.h
 
 
-LIBS += -L../output/ -lPatoBase -lPatoWorkspace
+LIBS += -L../output/ -lPatoBase -lPatoWorkspace -lPatoServerApi

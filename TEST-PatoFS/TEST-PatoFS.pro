@@ -24,7 +24,7 @@ SOURCES += tst_patofstest.cpp
 
 symbian: LIBS += -lPatoFS
 else:
-unix: LIBS += -L"../output" -lPatoFS
+unix: LIBS += -L"../output" -lPatoFS -lPatoAlgorithms
 win32: LIBS += -L"../output/" -L"../patoDataModel/BDPatoDataModel/lib/" -lPatoFS -lsqlite3
 
 INCLUDEPATH += $$PWD/../patoFS

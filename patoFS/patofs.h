@@ -20,8 +20,8 @@ public:
 
     bool initBD();
     //saving data
-    std::string saveData(const std::string& data);
-    bool saveData(const std::vector<std::string>& data, std::vector<StorageKey>& vecIdFile);
+    std::string saveData(const std::string& data, std::string& key_last_version);
+    bool saveData(const std::vector<std::string>& data, std::vector<StorageKey>& vecIdFile, std::vector<StorageKey>& vecDeltaIdFile);
 
     //loading data
     bool loadData(StorageKey&  idFile, std::string& data);
