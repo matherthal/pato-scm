@@ -14,6 +14,8 @@
 #include "logCLI.h"
 #include "diffCLI.h"
 #include "mergeCLI.h"
+#include "initcli.h"
+#include "removecli.h"
 #include <iostream>
 using namespace std;
 
@@ -39,6 +41,8 @@ void cliReader::reader(int argc, char** argv) {
     logCLI* log;
     diffCLI* diff;
     mergeCLI* merge;
+    initCLI* init;
+    removeCLI* remove;
 
     if (argc <= 1) {
         cout << "Pato has the following commands:" << endl;
@@ -46,9 +50,11 @@ void cliReader::reader(int argc, char** argv) {
         cout << "checkout (co)" << endl;
         cout << "checkin (ci)" << endl;
         cout << "diff" << endl;
+        cout << "init" << endl;
         cout << "log" << endl;
         cout << "merge" << endl;
         cout << "status" << endl;
+        cout << "remove" << endl;
         cout << "update (up)" << endl;
 
         return;
@@ -88,6 +94,12 @@ void cliReader::reader(int argc, char** argv) {
         add = new addCLI;
         add->command(argc, argv);
     }
+    else if (command == "remove" || command == "r"){
+        //call add command
+
+        remove = new removeCLI;
+        remove->command(argc, argv);
+    }
     else if (command == "log"){
         //call add command
 
@@ -105,6 +117,12 @@ void cliReader::reader(int argc, char** argv) {
 
         merge = new mergeCLI();
         merge->command(argc, argv);
+    }
+    else if (command == "init"){
+        //call add command
+
+        init = new initCLI();
+        init->command(argc, argv);
     }
     else{
         cout<<"Invalid command!"<<endl; 

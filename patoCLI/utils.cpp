@@ -6,6 +6,7 @@
  */
 
 #include "utils.h"
+#include <QtGui/QApplication>
 
 utils::utils() {
 }
@@ -24,15 +25,19 @@ QString utils::GetPath() const {
     return path;
 }
 
-QString utils::returnPath(){
+QString utils::returnPath(int argc, char** argv){
 
-       system("pwd > caminho.txt");
+       /*system("pwd > caminho.txt");
         FILE* f = fopen("caminho.txt", "r");
 
         char caminho[300];
         fscanf(f, "%s", caminho);
 
         fclose(f);
-
         return (QString) caminho;
+
+*/
+        QApplication app(argc, argv);
+        return app.applicationDirPath();
+
 }

@@ -6,7 +6,7 @@
 
 QT       += core
 
-QT       -= gui
+#QT       -= gui
 
 win32: TARGET = ../../output/pato
 unix:  TARGET = ../output/pato
@@ -27,7 +27,9 @@ SOURCES += main.cpp \
     utils.cpp \
     mergeCLI.cpp \
     logCLI.cpp \
-    diffCLI.cpp
+    diffCLI.cpp \
+    initcli.cpp \
+    removecli.cpp
 
 HEADERS += \
     updateCLI.h \
@@ -39,9 +41,15 @@ HEADERS += \
     utils.h \
     mergeCLI.h \
     logCLI.h \
-    diffCLI.h
+    diffCLI.h \
+    initcli.h \
+    removecli.h
 
 LIBS += -L"../output"  -lPatoClientApi -lPatoWorkspace -lPatoAlgorithms -lPatoBase -lPatoServerApi -lPatoDataModel -lsqlite3 -lPatoFS -lPatoAlgorithms
+
+
+
+
 
 
 

@@ -9,15 +9,15 @@ class PatoFileStatus : public QObject
 public:
     enum FileStatus
     {
-        ADDED,
-        MODIFIED,
-        REMOVED,
-        CLEAN,
-        MISSING,
-        VERSIONED,
-        UNVERSIONED,
-        ERROR,
-        ALL
+        ADDED = 0x00000001,
+        MODIFIED = 0x00000002,
+        REMOVED = 0x00000004,
+        CLEAN = 0x00000008,
+        MISSING = 0x00000010,
+        VERSIONED = 0x00000020,
+        UNVERSIONED = 0x00000040,
+        ERROR = 0x00000080,
+        ALL = 0xFFFFFFFF
     };
 
 public:
@@ -31,6 +31,8 @@ public:
 
     void setFileName( QString );
     void setStatus( FileStatus );
+
+
 
     const PatoFileStatus& operator = (const PatoFileStatus&);
 
