@@ -129,10 +129,9 @@ bool PatoWorkspace::create(QString sourceDir, QStringList files, QString repoAdd
         return false;
     }
 
-    PatoResourceAbstractFactory *factory = PatoResourceAbstractFactory::getInstance();
-    IFile *file = factory->createFile(workPath + "/" + cWorkspaceMetadata);
+    QFile file( metaFilePath( META_CONTROL, true) );
 
-    if ( file->exists() )
+    if ( file.exists() )
     {
         lastError = "Repository already created.";
         return false;
