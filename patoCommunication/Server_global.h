@@ -1,0 +1,12 @@
+#ifndef PATOSERVER_GLOBAL_H
+#define PATOSERVER_GLOBAL_H
+
+#include <QtCore/qglobal.h>
+
+#if defined(PATOSERVER_LIBRARY)
+#  define PATOSERVERSHARED_EXPORT Q_DECL_EXPORT
+#else
+#  define PATOSERVERSHARED_EXPORT Q_DECL_IMPORT
+#endif
+
+#endif // PATOSERVER_GLOBAL_H
