@@ -160,6 +160,22 @@ QList< PatoFileStatus > PatoClientApi::add(QString workspace, QStringList files)
     return work->add(workspace, files);
 }
 
+void PatoClientApi::remove(QString workspace, QStringList files) throw (PatoClientException)
+{
+    PatoWorkspace* work = PatoWorkspace::instance();
+
+    if (workspace == "") {
+        throw (PatoClientException("The add command needs a workspace."));
+    } else if (files.isEmpty()) {
+        throw (PatoClientException("The add command needs at least one file to add."));
+    }
+
+    work->setPath(workspace);
+
+    work->remove(files);
+
+}
+
 QList< PatoFileStatus > PatoClientApi::status(QString workspace) throw (PatoClientException) {
 
     PatoWorkspace* work = PatoWorkspace::instance();

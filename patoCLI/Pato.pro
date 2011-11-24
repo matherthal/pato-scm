@@ -28,7 +28,8 @@ SOURCES += main.cpp \
     mergeCLI.cpp \
     logCLI.cpp \
     diffCLI.cpp \
-    initcli.cpp
+    initcli.cpp \
+    removecli.cpp
 
 HEADERS += \
     updateCLI.h \
@@ -41,9 +42,12 @@ HEADERS += \
     mergeCLI.h \
     logCLI.h \
     diffCLI.h \
-    initcli.h
+    initcli.h \
+    removecli.h
 
 LIBS += -L"../output"  -lPatoClientApi -lPatoWorkspace -lPatoAlgorithms -lPatoBase -lPatoServerApi -lPatoDataModel -lsqlite3 -lPatoFS -lPatoAlgorithms
+
+
 
 
 
