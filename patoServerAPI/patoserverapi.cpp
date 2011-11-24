@@ -108,6 +108,7 @@ bool PatoServerApi::checkIn(QString project, QString username, QString password,
     string strPw = password.toStdString();
     string strProj = project.toStdString();
 
+
     //validating project
     if (!PatoDataModel::getInstance()->validateProject(strProj))
         return false;
