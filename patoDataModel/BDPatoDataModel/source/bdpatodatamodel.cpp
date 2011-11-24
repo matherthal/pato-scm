@@ -231,18 +231,21 @@ namespace bd {
         std::stringstream outVersion;
         if ( version == -1 )
         {
-            int lastVersion = getLastAvailableVersion();
+            int lastVersion = getIdProjectLastVersion(project);
             outVersion << lastVersion;
         }
         else
-            outVersion << version;
+        {
+            outVersion << getIdProjectVersion(project, version);
+        }
 
         std::string sqlFilePath = "select (select itco_nome from item_configuracao where itco_id = p.itco_id) || ";
         sqlFilePath.append("(select arqu_nome from arquivo where arqu_id = p.arqu_id), ");
         sqlFilePath.append("(select arqu_cd_armazenamento from arquivo where arqu_id = p.arqu_id) ");
-        sqlFilePath.append("from proj_item_tran p where p.tran_id = ");
+        sqlFilePath.append("from proj_item_tran p where p.proj_id = ");
         sqlFilePath.append(outVersion.str());
         sqlFilePath.append(";");
+
 
         vecFilePath.clear();
         vecIdFile.clear();
@@ -267,14 +270,16 @@ namespace bd {
         std::stringstream outVersion;
         if ( version == -1 )
         {
-            int lastVersion = getLastAvailableVersion();
+            int lastVersion = getIdProjectLastVersion(project);
             outVersion << lastVersion;
         }
         else
-            outVersion << version;
+        {
+            outVersion << getIdProjectVersion(project, version);
+        }
 
         //get info log
-        getInfoTransaction(version, log);
+        getInfoTransaction(project, version, log);
 
 
         int projectId = getProjectId(project);
@@ -285,11 +290,9 @@ namespace bd {
         sqlLog.append("(select arqu_nome from arquivo where arqu_id = p.arqu_id) as arquivo, ");
         sqlLog.append("(select arqu_cd_armazenamento from arquivo where arqu_id = p.arqu_id) as codArmazenamento, ");
         sqlLog.append("(select arqu_status from arquivo where arqu_id = p.arqu_id) as status ");
-        sqlLog.append("from proj_item_tran p where p.tran_id = ");
+        sqlLog.append("from proj_item_tran p where p.proj_id = ");
         sqlLog.append(outVersion.str());
-        sqlLog.append(" and p.prit_in_transaction = 1 and proj_id = ");
-        sqlLog.append(outProjectId.str());
-        sqlLog.append(";");
+        sqlLog.append(" and p.prit_in_transaction = 1;");
 
         vecFilePath.clear();
         vecIdFile.clear();
@@ -324,9 +327,11 @@ namespace bd {
 
     bool BDPatoDataModel::getLogPathFile(std::string project, std::string& path, std::vector<PatoLog>& vecLog)
     {
-        int idProject = getProjectId(project);
-        std::stringstream outIdProject;
-        outIdProject << idProject;
+        std::vector<int> vecIdProject;
+        getIdProjectAllVersion(project, vecIdProject);
+
+        std::string strAllIdProject;
+        getOutputOracleIn(vecIdProject, strAllIdProject);
 
         std::string strSqlLogPathFile = "SELECT * FROM (SELECT P.ARQU_ID, ( SELECT ITCO_NOME FROM ITEM_CONFIGURACAO WHERE ITCO_ID = P.ITCO_ID) || (SELECT ARQU_NOME FROM ARQUIVO WHERE ARQU_ID = ";
         strSqlLogPathFile.append("P.ARQU_ID) AS PATH, (SELECT ARQU_STATUS FROM ARQUIVO WHERE ARQU_ID = P.ARQU_ID) as status, P.TRAN_ID AS IDTRANSACAO, ");
@@ -334,11 +339,12 @@ namespace bd {
         strSqlLogPathFile.append("(SELECT (SELECT USUA_NOME FROM USUARIO ");
         strSqlLogPathFile.append("WHERE USUA_ID = T.USUA_ID)  FROM TRANSACAO T WHERE T.TRAN_ID = P.TRAN_ID) AS NOME_USUARIO, ");
         strSqlLogPathFile.append("(SELECT T.TRAN_DATA as data FROM TRANSACAO T WHERE T.TRAN_ID = P.TRAN_ID) AS DATA, ");
-        strSqlLogPathFile.append("(SELECT T.TRAN_MSG as message FROM TRANSACAO T WHERE T.TRAN_ID = P.TRAN_ID)  AS MESSAGE  FROM PROJ_ITEM_TRAN P WHERE P.PRIT_IN_TRANSACTION = 1 AND P.PROJ_ID = ");
-        strSqlLogPathFile.append(outIdProject.str());
-        strSqlLogPathFile.append(" ) T1 WHERE UPPER(T1.PATH) LIKE UPPER('");
+        strSqlLogPathFile.append("(SELECT T.TRAN_MSG as message FROM TRANSACAO T WHERE T.TRAN_ID = P.TRAN_ID)  AS MESSAGE  FROM PROJ_ITEM_TRAN P WHERE P.PRIT_IN_TRANSACTION = 1 AND P.PROJ_ID IN ( ");
+        strSqlLogPathFile.append(strAllIdProject);
+        strSqlLogPathFile.append(")) WHERE UPPER(PATH) LIKE UPPER('");
         strSqlLogPathFile.append(path);
         strSqlLogPathFile.append("');");
+
 
         QSqlQuery query(db);
         if ( query.exec(strSqlLogPathFile.c_str()) )
@@ -382,21 +388,24 @@ namespace bd {
         return false;
     }
 
-    void BDPatoDataModel::getInfoTransaction(int version, PatoLog& log)
+    void BDPatoDataModel::getInfoTransaction(std::string& project, int version, PatoLog& log)
     {
         std::stringstream outVersion;
         int transaction = 0;
         if ( version == -1 )
         {
-            transaction = getLastAvailableVersion();
+            transaction = getIdProjectLastVersion(project);
         }
+        else
+            transaction = getIdProjectVersion(project, version);
 
         outVersion << transaction;
 
         std::string sqlTransaction = "select t.usua_id, (select usua_nome from usuario where usua_id = t.usua_id), ";
-        sqlTransaction.append("t.tran_data, t.tran_msg from transacao t where t.tran_id = " );
+        sqlTransaction.append("t.tran_data, t.tran_msg from transacao t where t.tran_id = (select distinct(tran_id) " );
+        sqlTransaction.append("from proj_item_tran where proj_id = ");
         sqlTransaction.append(outVersion.str());
-        sqlTransaction.append(";");
+        sqlTransaction.append(");");
 
         QSqlQuery query(db);
         if ( query.exec(sqlTransaction.c_str()))
@@ -706,9 +715,9 @@ namespace bd {
 
     bool BDPatoDataModel::createProject(std::string& project)
     {
-        std::string sqlInsert = "insert into projeto ( proj_id, proj_nome ) values ( null, '";
+        std::string sqlInsert = "insert into projeto ( proj_id, proj_nome, vers_id ) values ( null, '";
         sqlInsert.append(project);
-        sqlInsert.append("');");
+        sqlInsert.append("',0);");
 
         QSqlQuery query(db);
         if ( query.exec(sqlInsert.c_str()) )
@@ -718,6 +727,129 @@ namespace bd {
         }
 
         return false;
+    }
+
+    bool BDPatoDataModel::insertProjectVersion(std::string& project)
+    {
+        std::string sqlInsert = "insert into projeto ( proj_id, proj_nome, vers_id ) values ( null, '";
+        sqlInsert.append(project);
+        sqlInsert.append("',((select max(vers_id) from projeto where upper(proj_nome) like upper('");
+        sqlInsert.append(project);
+        sqlInsert.append("'))+1));");
+
+        QSqlQuery query(db);
+        if ( query.exec(sqlInsert.c_str()) )
+        {
+            db.commit();
+            return true;
+        }
+
+        return false;
+    }
+
+    int BDPatoDataModel::getIdProjectLastVersion(std::string& project)
+    {
+        std::string sqlSelect = "select proj_id from projeto where vers_id = (select max(vers_id) from ";
+        sqlSelect.append("projeto where upper(proj_nome) like upper('");
+        sqlSelect.append(project);
+        sqlSelect.append("'))and upper(proj_nome) like upper('");
+        sqlSelect.append(project);
+        sqlSelect.append("');");
+
+        int nIdProject = -1;
+        QSqlQuery query(db);
+        if ( query.exec(sqlSelect.c_str()) )
+        {
+            if ( query.next() )
+            {
+                nIdProject = query.value(0).toInt();
+            }
+        }
+
+        return nIdProject;
+    }
+
+    int BDPatoDataModel::getIdProjectVersion(std::string& project, int version)
+    {
+        std::stringstream outVersion;
+        outVersion << version;
+
+        std::string sqlSelect = "select proj_id from projeto where upper(proj_nome) like upper('";
+        sqlSelect.append(project);
+        sqlSelect.append("') and vers_id = ");
+        sqlSelect.append(outVersion.str());
+        sqlSelect.append(";");
+
+        int nIdProject = -1;
+        QSqlQuery query(db);
+        if ( query.exec(sqlSelect.c_str()) )
+        {
+            if ( query.next() )
+            {
+                nIdProject = query.value(0).toInt();
+            }
+        }
+
+        return nIdProject;
+
+    }
+
+    int BDPatoDataModel::getIdProjectPreviusVersion(std::string& project)
+    {
+        std::string sqlSelect = "select proj_id from projeto where upper(proj_nome) like upper('";
+        sqlSelect.append(project);
+        sqlSelect.append("') and vers_id = ((select max(vers_id) from projeto where upper(proj_nome) like upper('");
+        sqlSelect.append(project);
+        sqlSelect.append("'))-1);");
+
+        int nIdProject = -1;
+        QSqlQuery query(db);
+        if ( query.exec(sqlSelect.c_str()) )
+        {
+            if ( query.next() )
+            {
+                nIdProject = query.value(0).toInt();
+            }
+        }
+
+        return nIdProject;
+    }
+
+    void BDPatoDataModel::getIdProjectAllVersion(std::string& project, std::vector<int>& vecIdProject)
+    {
+        std::string sqlSelect = "select proj_id from projeto where upper(proj_nome) like upper('";
+        sqlSelect.append(project);
+        sqlSelect.append("');");
+
+        int nIdProject = -1;
+        QSqlQuery query(db);
+        if ( query.exec(sqlSelect.c_str()) )
+        {
+            while ( query.next() )
+            {
+                nIdProject = query.value(0).toInt();
+                vecIdProject.push_back(nIdProject);
+            }
+        }
+    }
+
+    void BDPatoDataModel::getOutputOracleIn(std::vector<int>& vecIdProject, std::string& strAllIdProject)
+    {
+
+        std::string temp;
+        for( unsigned int i = 0; i < vecIdProject.size(); i++ )
+        {
+            if ( !temp.empty() )
+            {
+                temp.append(", ");
+            }
+
+            std::stringstream outId;
+            outId << vecIdProject[i];
+            temp.append(outId.str());
+        }
+
+        strAllIdProject = temp;
     }
 
     //<
@@ -835,7 +967,7 @@ namespace bd {
         std::stringstream outLastFolder;
         outLastFolder << lastFolder;
 
-        int IdProject = getProjectId(project);
+        int IdProject = getIdProjectLastVersion(project);
         std::stringstream outProjectId;
         outProjectId << IdProject;
 
@@ -856,6 +988,8 @@ namespace bd {
         sqlInsertRelationElement.append(", ");
         sqlInsertRelationElement.append(outLastVersion.str());
         sqlInsertRelationElement.append(",1);");
+
+        qDebug(sqlInsertRelationElement.c_str());
 
         QSqlQuery query(db);
         if ( query.exec(sqlInsertRelationElement.c_str()) )
@@ -963,18 +1097,16 @@ namespace bd {
         return bFile;
     }
 
-    bool BDPatoDataModel::getPathsLastVersion()
+    bool BDPatoDataModel::getPathsLastVersion(std::string& project)
     {
-        int lastTransaction = getLastAvailableVersion();
-        if ( lastTransaction > 1 )
-            lastTransaction--;
+        int lastTransaction = getIdProjectPreviusVersion(project);
 
         std::stringstream outLastTransaction;
         outLastTransaction << lastTransaction;
 
         std::string sqlFindPath = "select ( select i.itco_nome from item_configuracao i where i.itco_id = p.itco_id ) || ";
         sqlFindPath.append("(select a.arqu_nome from arquivo a where a.arqu_id = p.arqu_id) from proj_item_tran p where ");
-        sqlFindPath.append("p. tran_id = ");
+        sqlFindPath.append("p.proj_id = ");
         sqlFindPath.append(outLastTransaction.str());
 
         listPathLastVersion.clear();
@@ -1105,6 +1237,8 @@ namespace bd {
         strSql.append("from proj_item_tran p where p.prit_in_transaction = 1) where upper(arquivo) like upper('");
         strSql.append(path);
         strSql.append("') order by idTransacao;");
+
+        qDebug(strSql.c_str());
 
 
         QSqlQuery query(db);
@@ -1258,18 +1392,22 @@ namespace bd {
         std::stringstream outMaxVersion;
         outMaxVersion << maxVersion;
 
-        int projectId = getProjectId(project);
+        int projectId = getIdProjectLastVersion(project);
         std::stringstream outProjectId;
         outProjectId << projectId;
 
         if ( maxVersion == 1 )
         {
             std::string sqlInsertRelationElement = "insert into proj_item_tran( prit_id, proj_id, itco_id, arqu_id, tran_id , prit_in_transaction) ";
-            sqlInsertRelationElement.append("(select null, proj_id, itco_id, arqu_id, ");
+            sqlInsertRelationElement.append("(select null, ");
+            sqlInsertRelationElement.append(outProjectId.str());
+            sqlInsertRelationElement.append(", itco_id, arqu_id, ");
             sqlInsertRelationElement.append(outMaxVersion.str());
-            sqlInsertRelationElement.append(", 0 from proj_tem_tran where tran_id = ");
+            sqlInsertRelationElement.append(", 0 from proj_item_tran where proj_id = ");
             sqlInsertRelationElement.append(outPreviousVersion.str());
             sqlInsertRelationElement.append(");");
+
+            qDebug(sqlInsertRelationElement.c_str());
 
             QSqlQuery query(db);
             query.exec(sqlInsertRelationElement.c_str());
@@ -1277,12 +1415,17 @@ namespace bd {
         }
         else
         {
+            int idProjectVersion = getIdProjectPreviusVersion(project);
+            std::stringstream outProjectIdVersion;
+            outProjectIdVersion << idProjectVersion;
 
             std::string sqlLastVersion = "select p.itco_id,(select itco_nome from item_configuracao where itco_id = p.itco_id),";
             sqlLastVersion.append("p.arqu_id, (select arqu_nome from arquivo where arqu_id = p.arqu_id) ");
-            sqlLastVersion.append("from proj_item_tran p where p.tran_id = ");
-            sqlLastVersion.append(outPreviousVersion.str());
+            sqlLastVersion.append("from proj_item_tran p where p.proj_id = ");
+            sqlLastVersion.append(outProjectIdVersion.str());
             sqlLastVersion.append(";");
+
+            qDebug(sqlLastVersion.c_str());
 
             QSqlQuery queryLastVersion(db);
             if ( queryLastVersion.exec(sqlLastVersion.c_str()) )
