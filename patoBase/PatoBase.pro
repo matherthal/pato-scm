@@ -27,7 +27,8 @@ SOURCES += patobase.cpp \
     patouser.cpp \
     patolog.cpp \
     patofilestatus.cpp \
-    patofile.cpp
+    patofile.cpp \
+    utils.cpp
 
 HEADERS += patobase.h \
     patofilestatus.h \
@@ -45,7 +46,8 @@ HEADERS += patobase.h \
     patouser.h \
     patolog.h \
     patofilestatus.h \
-    patofile.h
+    patofile.h \
+    utils.h
 unix:!symbian {
     maemo5 {
         target.path = /opt/usr/lib
@@ -54,7 +56,3 @@ unix:!symbian {
     }
     INSTALLS += target
 }
-
-
-
-
