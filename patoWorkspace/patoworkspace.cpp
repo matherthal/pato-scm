@@ -235,10 +235,69 @@ QList< PatoFileStatus > PatoWorkspace::status(PatoFileStatus::FileStatus statusF
 
     foreach ( QString strFile, allFiles)
     {
-
-        if ( strFile.indexOf( ignoredPath ) == -1 )
+        if ( strFile.indexOf( ignoredPath ) != 0 )
         {
+            strFile.remove(0, (workPath + "/").length());
 
+            int nV = versionedFiles.indexOf(strFile);
+            if (nV != -1)
+            {
+                if (  QFile( workPath + "/" + versionedFiles[nV]).exists() )
+                {
+                    if ( (statusFilter & PatoFileStatus::MODIFIED) && (statusFilter & PatoFileStatus::CLEAN) )
+                    {
+                        Diff diff ( (workPath + "/" + versionedFiles[nV]).toStdString().c_str(),
+                                    (backupPath(revKey) + versionedFiles[nV]).toStdString().c_str() );
+
+                        if(diff.isEmpty())
+                        {
+                            if (statusFilter & PatoFileStatus::CLEAN)
+                                statusList.append( PatoFileStatus( strFile, PatoFileStatus::CLEAN ) );
+                        }
+                        else
+                        {
+                            if (statusFilter & PatoFileStatus::MODIFIED)
+                                statusList.append( PatoFileStatus( strFile, PatoFileStatus::MODIFIED ) );
+                        }
+                    }
+                }
+                else
+                {
+                    if ( statusFilter & PatoFileStatus::MISSING )
+                    {
+                        statusList.append( PatoFileStatus( strFile, PatoFileStatus::MISSING ) );
+                    }
+                }
+            }
+            else
+            {
+                int nR = removedFiles.indexOf(strFile);
+                if (nR != -1)
+                {
+                    if ( statusFilter & PatoFileStatus::REMOVED )
+                    {
+                        statusList.append( PatoFileStatus( strFile, PatoFileStatus::REMOVED ) );
+                    }
+                }
+                else
+                {
+                    int nA = addedFiles.indexOf(strFile);
+                    if (nA != -1)
+                    {
+                        if ( statusFilter & PatoFileStatus::ADDED )
+                        {
+                            statusList.append( PatoFileStatus( strFile, PatoFileStatus::ADDED ) );
+                        }
+                    }
+                    else
+                    {
+                        if ( statusFilter & PatoFileStatus::UNVERSIONED )
+                        {
+                            statusList.append( PatoFileStatus( strFile, PatoFileStatus::UNVERSIONED ) );
+                        }
+                    }
+                }
+            }
         }
     }
 
