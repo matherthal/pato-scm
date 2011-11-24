@@ -15,6 +15,7 @@
 #include "diffCLI.h"
 #include "mergeCLI.h"
 #include "initcli.h"
+#include "removecli.h"
 #include <iostream>
 using namespace std;
 
@@ -41,6 +42,7 @@ void cliReader::reader(int argc, char** argv) {
     diffCLI* diff;
     mergeCLI* merge;
     initCLI* init;
+    removeCLI* remove;
 
     if (argc <= 1) {
         cout << "Pato has the following commands:" << endl;
@@ -52,6 +54,7 @@ void cliReader::reader(int argc, char** argv) {
         cout << "log" << endl;
         cout << "merge" << endl;
         cout << "status" << endl;
+        cout << "remove" << endl;
         cout << "update (up)" << endl;
 
         return;
@@ -90,6 +93,12 @@ void cliReader::reader(int argc, char** argv) {
 
         add = new addCLI;
         add->command(argc, argv);
+    }
+    else if (command == "remove" || command == "r"){
+        //call add command
+
+        remove = new removeCLI;
+        remove->command(argc, argv);
     }
     else if (command == "log"){
         //call add command

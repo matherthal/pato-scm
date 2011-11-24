@@ -92,7 +92,7 @@ void statusCLI::command(int argc, char** argv) {
 
             }
 
-            qout<<ls.at(i).fileName();
+            qout<<ls.at(i).fileName()<<endl;
         }
 
     } catch (PatoClientException& t) {

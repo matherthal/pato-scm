@@ -201,10 +201,11 @@ bool PatoWorkspace::setPath(QString directory, bool createDir)
         lastError = "Directory doesn't exist";
     }
 
-    QFile file( directory + "/" + cWorkspaceMetadata);
+    QFile file( metaFilePath( META_CONTROL, true ));
     if ( (ready = file.exists()) )
     {
         readMetadata();
+
     }
     else
     {
@@ -315,55 +316,6 @@ QList< PatoFileStatus > PatoWorkspace::status(PatoFileStatus::FileStatus statusF
                     }
                 }
             }
-        }
-    }
-
-    for (int i=0; i < versionedFiles.size(); i++)
-    {
-        if (  QFile( workPath + "/" + versionedFiles[i]).exists() )
-        {
-            if ( (statusFilter & PatoFileStatus::MODIFIED) && (statusFilter & PatoFileStatus::CLEAN) )
-            {
-                Diff diff ( (workPath + "/" + versionedFiles[i]).toStdString().c_str(),
-                            (backupPath(revKey) + versionedFiles[i]).toStdString().c_str() );
-
-                if(diff.isEmpty())
-                {
-                    if (statusFilter & PatoFileStatus::CLEAN)
-                        statusList.append( PatoFileStatus( versionedFiles[i], PatoFileStatus::CLEAN ) );
-                }
-                else
-                {
-                    if (statusFilter & PatoFileStatus::MODIFIED)
-                        statusList.append( PatoFileStatus( versionedFiles[i], PatoFileStatus::MODIFIED ) );
-                }
-            }
-        }
-        else
-        {
-            if ( statusFilter & PatoFileStatus::MISSING )
-            {
-                statusList.append( PatoFileStatus( versionedFiles[i], PatoFileStatus::MISSING ) );
-            }
-        }
-    }
-
-    if (statusFilter & PatoFileStatus::ADDED)
-    {
-        qDebug()<<"addedFiles"<<addedFiles.size()<<endl;
-        for (int i=0; i < addedFiles.size(); i++)
-        {
-            statusList.append( PatoFileStatus( addedFiles[i], PatoFileStatus::ADDED ) );
-
-        }
-    }
-
-    if (statusFilter & PatoFileStatus::REMOVED)
-    {
-        for (int i=0; i < removedFiles.size(); i++)
-        {
-            statusList.append( PatoFileStatus( addedFiles[i], PatoFileStatus::ADDED ) );
-
         }
     }
 
@@ -669,7 +621,16 @@ void PatoWorkspace::remove(QStringList files)
             removedFiles << versionedFiles[index];
             versionedFiles.removeAt(index);
         }
+        else
+        {
+            index = addedFiles.indexOf( files[i] );
+            if ( index != -1 )
+            {
+                addedFiles.removeAt(index);
+            }
+        }
     }
+    writeMetadata();
 }
 
 void PatoWorkspace::copy(/*originalPath, destinationPath*/)
