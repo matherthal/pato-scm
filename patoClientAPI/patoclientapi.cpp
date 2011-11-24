@@ -43,6 +43,9 @@ QString PatoClientApi::init(QString repoName, QString username, QString password
 QList<checkoutOutput> PatoClientApi::checkout(RevisionKey revision, QString address, QString username, QString password, QString workspace) throw (PatoClientException) {
 
     std::map<std::string, std::string> mapp;
+    bool success;
+
+
     QList<checkoutOutput> output;
     if (address == "") {
         throw (PatoClientException("The checkout command needs an address."));
@@ -66,7 +69,10 @@ QList<checkoutOutput> PatoClientApi::checkout(RevisionKey revision, QString addr
         work->create( versionParams );
     }
 
-    server->checkOut(address, username, password, revision, mapp);
+
+    success = server->checkOut(address, username, password, revision, mapp);
+
+
 
     return output;
 }
@@ -90,8 +96,11 @@ QList<logOutput> PatoClientApi::log(QString address, QString username, QString p
     return output;
 }
 
-QList< PatoFileStatus > PatoClientApi::checkin(QString address, QString username, QString password, QString workspace) throw (PatoClientException)
+QList< PatoFileStatus > PatoClientApi::checkin(QString address, QString username, QString password, QString workspace, QString message) throw (PatoClientException)
 {
+    std::map<std::string, std::string> mapp;
+    PatoServerApi* server = PatoServerApi::getInstance();
+
     if (username == "") {
         throw (PatoClientException("The checkin command needs an username."));
     } else if (password == "") {
@@ -101,8 +110,11 @@ QList< PatoFileStatus > PatoClientApi::checkin(QString address, QString username
     PatoWorkspace* work = PatoWorkspace::instance();
     PatoChangeSet myChanges = work->changes();
 
+
+    server->checkIn(address, username, password, message, mapp);
     //RevisionKey newRev = communication->checkin(address, username, password, myChanges);
     //work->setRevision( newRev ); //set new revision as commiting.
+
     return myChanges.status();
 }
 

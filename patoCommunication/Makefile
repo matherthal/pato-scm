@@ -29,6 +29,7 @@ MKDIR         = mkdir
 SUBTARGETS    =  \
 		debug \
 		release
+		../../../../QtSDK/Desktop/Qt/474/gcc/mkspecs/features/include_source_dir.prf \
 
 debug: $(MAKEFILE).Debug FORCE
 	$(MAKE) -f $(MAKEFILE).Debug
@@ -129,6 +130,7 @@ clean: debug-clean release-clean FORCE
 distclean: debug-distclean release-distclean FORCE
 	-$(DEL_FILE) Makefile
 
+check: first
 check: first
 
 debug-mocclean: $(MAKEFILE).Debug
