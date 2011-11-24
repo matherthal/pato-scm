@@ -25,7 +25,7 @@ QList<QString> messageErrorCI(){
     QList<QString> error;
 
     error.append("Checkin command is used to send changes from your workcopy to the repository.");
-    error.append("Usage: pato checkin --username USERNAME --password PASSWORD [--workspace WORKSPACE]");
+    error.append("Usage: pato checkin --username USERNAME --password PASSWORD --message MESSAGE [--workspace WORKSPACE]");
 
     return error;
 }
@@ -50,6 +50,8 @@ void checkinCLI::command(int argc, char** argv) {
             address = argv[i + 1];
         } else if (strcmp(parameter, "--workspace") == 0) {
             workspace = argv[i + 1];
+        } else if (strcmp(parameter, "--message") == 0) {
+        message = argv[i + 1];
         } else {
             cout << "[ERROR] " << parameter << " don't exist." << endl;
             return;
@@ -57,7 +59,7 @@ void checkinCLI::command(int argc, char** argv) {
     }
 
     try {
-        clientAPI->checkin(address, username, password, workspace);
+        clientAPI->checkin(address, username, password, workspace, message);
     } catch (PatoClientException& t) {
         QList<QString> ls = messageErrorCI();
         for(int i = 0; i < ls.size(); i++){
