@@ -84,6 +84,7 @@ public:
     int getIdLastFile(std::string& file);
     void createMapFile(std::vector<std::string>& _mergedPath, std::vector<std::string>& _mergedIdFile, std::map<std::string,std::string>& _filePath);
     void getCodStorage(std::string& path, std::vector<std::string>& vecCodStorage);
+    bool updateCodStorageFile(std::string& oldKey, std::string& newKey);
     //<
 
     //folder operations>

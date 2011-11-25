@@ -239,12 +239,12 @@ namespace bd {
             outVersion << getIdProjectVersion(project, version);
         }
 
-        std::string sqlFilePath = "select (select itco_nome from item_configuracao where itco_id = p.itco_id) || ";
+        std::string sqlFilePath = "select * from (select (select itco_nome from item_configuracao where itco_id = p.itco_id) || ";
         sqlFilePath.append("(select arqu_nome from arquivo where arqu_id = p.arqu_id), ");
-        sqlFilePath.append("(select arqu_cd_armazenamento from arquivo where arqu_id = p.arqu_id) ");
+        sqlFilePath.append("(select arqu_cd_armazenamento from arquivo where arqu_id = p.arqu_id), (select arqu_status from arquivo where arqu_id = p.arqu_id) as status ");
         sqlFilePath.append("from proj_item_tran p where p.proj_id = ");
         sqlFilePath.append(outVersion.str());
-        sqlFilePath.append(";");
+        sqlFilePath.append(") where status not like 'R';");
 
 
         vecFilePath.clear();
@@ -715,13 +715,14 @@ namespace bd {
 
     bool BDPatoDataModel::createProject(std::string& project)
     {
-        std::string sqlInsert = "insert into projeto ( proj_id, proj_nome, vers_id ) values ( null, '";
+        std::string sqlInsert = "insert into projeto ( proj_id, proj_nome, vers_id ) values ( 0, '";
         sqlInsert.append(project);
         sqlInsert.append("',0);");
-
+        qDebug(sqlInsert.c_str());
         QSqlQuery query(db);
         if ( query.exec(sqlInsert.c_str()) )
         {
+            qDebug("rodou query");
             db.commit();
             return true;
         }
@@ -1164,7 +1165,10 @@ namespace bd {
         if ( findPathLastVersion(strPathFile) )
             strStatus = "M";
         else
-            strStatus = "I";
+            if ( idFile.empty())
+                strStatus = "R";
+            else
+                strStatus = "I";
 
         std::string sqlInsertFile = "insert into arquivo( arqu_id, arqu_cd_armazenamento, arqu_nome, vers_id, arqu_status ) ";
         sqlInsertFile.append("values (null, '");
@@ -1250,6 +1254,24 @@ namespace bd {
                 vecCodStorage.push_back(codStorage);
             }
         }
+    }
+
+    bool BDPatoDataModel::updateCodStorageFile(std::string& oldKey, std::string& newKey)
+    {
+        std::string strSql = "update arquivo set arqu_cd_armazenamento = '";
+        strSql.append(newKey);
+        strSql.append("' where arqu_cd_armazenamento like '");
+        strSql.append(oldKey);
+        strSql.append("';");
+
+        QSqlQuery query(db);
+        if ( query.exec(strSql.c_str()))
+        {
+            db.commit();
+            return true;
+        }
+
+        return false;
     }
 
 

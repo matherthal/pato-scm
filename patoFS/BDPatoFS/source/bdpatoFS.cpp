@@ -119,20 +119,22 @@ namespace bd {
             std::string key_delta_old = key_last_version;
 
             qDebug("key nao vazia");
-            std::string strSql = "select arma_conteudo, arma_delta_id from aramazenamento where arma_id like '";
+            std::string strSql = "select arma_conteudo, arma_delta_id from armazenamento where arma_id like '";
             strSql.append(key_last_version);
             strSql.append("';");
 
             qDebug(strSql.c_str());
 
             if ( query.exec(strSql.c_str()) ) {
-
+                qDebug("rodou query de diff");
                 while (query.next()) {
                     last_content = query.value(0).toString();
                     last_delta = query.value(1).toString();
                 }
             }
 
+            qDebug() << "Ultimo conteudo: " << last_content.toStdString().c_str();
+            qDebug() << "Conteudo atual: " << data.c_str();
             Diff diff(last_content.toStdString(), data);
             std::string delta = diff.to_delta_string();
             qDebug(delta.c_str());

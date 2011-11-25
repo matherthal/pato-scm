@@ -200,6 +200,11 @@ void PatoDataModel::getCodStorage(std::string& path, std::vector<std::string>& v
     bd::BDPatoDataModel::getInstance()->getCodStorage(path, vecCodStorage);
 }
 
+bool PatoDataModel::updateCodStorageFile(std::string& oldKey, std::string& newKey)
+{
+    return bd::BDPatoDataModel::getInstance()->updateCodStorageFile(oldKey, newKey);
+}
+
 //<
 
 
