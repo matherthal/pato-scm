@@ -23,7 +23,7 @@ public:
 
     /*Retun a map ( in parameter ) with path of file and the content. If all steps are perfomed correct,
     the function´s return is true*/
-    bool checkOut(QString path, QString username, QString password, int revision,
+    int checkOut(QString path, QString username, QString password, int revision,
                   std::map<std::string, std::string>& filesCheckOut);
 
     /*Return true if all the paths are saved in datamodel*/

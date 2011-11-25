@@ -39,7 +39,7 @@ public:
     std::string getNameConfigItem(int idItemConfig, std::string& project);
     std::string getFileIdStored(std::string& nameFile);
     void getCompletePath(int idItemConfig, std::string& project, std::string& completePath);
-    bool getFilePath(std::string& project, int version, std::map<std::string, std::string>& filePath);
+    int getFilePath(std::string& project, int version, std::map<std::string, std::string>& filePath);
     bool getLog(std::string& project, int version, PatoLog&  log);
     void getInfoTransaction(std::string& project, int version, PatoLog& log);
 
@@ -65,6 +65,7 @@ public:
     int getIdProjectPreviusVersion(std::string& project);
     void getIdProjectAllVersion(std::string& project, std::vector<int>& vecIdProject);
     void getOutputOracleIn(std::vector<int>& vecIdProject, std::string& strAllIdProject);
+    int getLastVersionProject(std::string& project);
     //<
 
     //IC operations>

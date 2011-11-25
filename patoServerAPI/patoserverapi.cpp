@@ -38,20 +38,20 @@ void PatoServerApi::destroyInstance() {
     }
 }
 
-bool PatoServerApi::checkOut(QString path, QString username, QString password, int revision,
+int PatoServerApi::checkOut(QString path, QString username, QString password, int revision,
                              std::map<std::string, std::string>& filesCheckOut)
 {
     //validating project
     if (!PatoDataModel::getInstance()->validateProject(path.toStdString()))
-        return false;
+        return -1;
 
     //validating user
     if (!PatoDataModel::getInstance()->validateUser(username.toStdString(),password.toStdString()))
-        return false;
+        return -1;
 
     //test if the user is authorized
     if (!PatoDataModel::getInstance()->validateUserProject(username.toStdString(),password.toStdString(),path.toStdString()))
-        return false;
+        return -1;
 
     string strUsername = username.toStdString();
     string strPassword = password.toStdString();
@@ -64,8 +64,9 @@ bool PatoServerApi::checkOut(QString path, QString username, QString password, i
     map<string, StorageKey> filePath;
 
     //filePath is a map that contains file name and its keys (hash code)
-    if (!PatoDataModel::getInstance()->checkOut(strUsername, strPassword, strPath,revision, filePath))
-        return false;
+    int retCheckOut = PatoDataModel::getInstance()->checkOut(strUsername, strPassword, strPath,revision, filePath);
+    if ( retCheckOut == -1)
+        return -1;
 
     //file key (hash code)
     vector<StorageKey> key;
@@ -109,7 +110,7 @@ bool PatoServerApi::checkOut(QString path, QString username, QString password, i
        filesCheckOut[(*it).first] = conteudo;
     }
 
-    return true;
+    return retCheckOut;
 }
 
 bool PatoServerApi::checkIn(QString project, QString username, QString password, QString message,
