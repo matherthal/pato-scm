@@ -73,7 +73,7 @@ bool PatoDataModel::saveProjectElement(std::string& filePath, std::string& idFil
 
     std::string file = getFile(filePath);
 
-    qDebug() << "\n\nInserindo caminho: " << filePath.c_str();
+    //qDebug() << "\n\nInserindo caminho: " << filePath.c_str();
 
     std::list<std::string>::iterator itListPath = std::find(listPath.begin(), listPath.end(), path);
     if ( iniciouTransacao && itListPath == listPath.end() )

@@ -66,7 +66,7 @@ namespace bd {
         QString data;
         QString delta_tmp;
 
-        qDebug() << "applyPatch: key recebida: " << key.toStdString().c_str();
+        //qDebug() << "applyPatch: key recebida: " << key.toStdString().c_str();
 
         //query pega o conteudo e a chave para o delta do arquivo
         std::string strSql = "SELECT ARMA_CONTEUDO, ARMA_DELTA_ID FROM ARMAZENAMENTO WHERE arma_id like '";
@@ -84,26 +84,26 @@ namespace bd {
             }
         }
 
-        qDebug() << "Data: " << data.toStdString().c_str() << " Delta temp: " << delta_tmp.toStdString().c_str();
+        //qDebug() << "Data: " << data.toStdString().c_str() << " Delta temp: " << delta_tmp.toStdString().c_str();
         if (delta_tmp.isEmpty()) {
 
-            qDebug() << "Retornando: " << data.toStdString().c_str();
+            //qDebug() << "Retornando: " << data.toStdString().c_str();
             return data.toStdString();
         }
 
         else {
 
 
-            qDebug("applyPatch: dentro do else...");
+            //qDebug("applyPatch: dentro do else...");
             //chama recursao, passando chave do arquivo delta
             std::string apply = applyPatch(delta_tmp);
 
 
-            qDebug() << "parametros do patch: " << data.toStdString().c_str() << " e " << apply.c_str() << " !!!";
+            //qDebug() << "parametros do patch: " << data.toStdString().c_str() << " e " << apply.c_str() << " !!!";
             Patch patch(data.toStdString(), apply);
             std::string buff = patch.to_string();
 
-            qDebug() << "resultado do patch: " << buff.c_str();
+            //qDebug() << "resultado do patch: " << buff.c_str();
 
 
             return buff;
@@ -113,7 +113,7 @@ namespace bd {
     //sqls
 
     //saving data - return a hash key
-    StorageKey BDPatoFS::saveData(const std::string& data, std::string& key_last_version)
+    StorageKey BDPatoFS::saveData(const std::string& data, std::string& key_last_version, std::map<std::string, std::string>& idUpdate)
     {
         QSqlQuery query(db);
 
@@ -136,7 +136,7 @@ namespace bd {
             //qDebug() << "query do select conteudo da ultima versao (pra caluclar o delta): " << strSql.c_str();
 
             if ( query.exec(strSql.c_str()) ) {
-                qDebug("rodou query de diff");
+                //qDebug("rodou query de diff");
                 while (query.next()) {
                     last_content = query.value(0).toString();
                     last_delta = query.value(1).toString();
@@ -164,7 +164,8 @@ namespace bd {
             //qDebug() << "update: " << sqlUpdateDelta.c_str();
 
             if (!query.exec(sqlUpdateDelta.c_str())) {
-                qDebug() << "Erro: " << query.lastError().text().toStdString().c_str();
+                //qDebug() << "Erro: " << query.lastError().text().toStdString().c_str();
+                int a; a++; //faz nada!
             }
 
             //delete the old content
@@ -172,24 +173,31 @@ namespace bd {
             v.push_back(key_last_version);
             deleteData(v);
 
+            //filling vector to update in the data model
+            idUpdate.insert(std::make_pair<std::string, std::string>(key_last_version, key_delta));
+
             //return the key of the current version
             return key;
         }
+
+        //filling vector to update in the data model
+
 
         //insert the current version content in the data base
         return insertDataQuery(data, key_last_version);
 
     }
 
-    bool BDPatoFS::saveData(const std::vector<std::string>& data, std::vector<StorageKey>& vecIdFile, std::vector<std::string>& vecDeltIdFile)
+    bool BDPatoFS::saveData(const std::vector<std::string>& data, std::vector<StorageKey>& vecIdFile, std::vector<std::string>& vecDeltIdFile, std::map<std::string, std::string>& idUpdate)
     {
 
         std::vector<std::string>::const_iterator itData;
         std::vector<std::string>::iterator itDelta;
+        std::vector<std::string>::iterator itUpdate;
         for( itData = data.begin(), itDelta = vecDeltIdFile.begin(); itData != data.end(); itData++, itDelta++)
         {
 
-            std::string idFile = saveData((*itData), (*itDelta));
+            std::string idFile = saveData((*itData), (*itDelta), idUpdate);
 
             if ( idFile == "-1" )
             {
@@ -212,7 +220,7 @@ namespace bd {
         QString file;
         QSqlQuery query(db);
 
-        qDebug() << "loadData (sem vetores): chave passada: " << idFile.c_str();
+        //qDebug() << "loadData (sem vetores): chave passada: " << idFile.c_str();
         //chama funcao recursiva que monta o arquivo, buscando seus deltas e versao completa
         data = applyPatch(QString::fromStdString(idFile));
 
@@ -247,8 +255,8 @@ namespace bd {
                 vecData.push_back(s.toStdString());
                 QString keyDelta = query.value(1).toString();
 
-                qDebug() << "conteudo: " << s.toStdString().c_str();
-                qDebug() << "delta: " << keyDelta.toStdString().c_str();
+                //qDebug() << "conteudo: " << s.toStdString().c_str();
+                //qDebug() << "delta: " << keyDelta.toStdString().c_str();
                 vecDelta.push_back(keyDelta.toStdString());
             }
 
@@ -266,7 +274,7 @@ namespace bd {
         //using hash key
         QString key = QString(QCryptographicHash::hash((data.c_str()),QCryptographicHash::Md5).toHex());
 
-        qDebug() << "insertDataQuery: parametros recebidos: " << data.c_str() << " e " << delta.c_str() << " !!!";
+        //qDebug() << "insertDataQuery: parametros recebidos: " << data.c_str() << " e " << delta.c_str() << " !!!";
         std::string sqlFileInserted = "SELECT ARMA_CONTEUDO FROM ARMAZENAMENTO WHERE upper(arma_id) like upper('";
         sqlFileInserted.append(key.toStdString());
         sqlFileInserted.append("');");
@@ -287,12 +295,12 @@ namespace bd {
         sqlInsert.append("','");
         if (!delta.empty()) {
             sqlInsert.append(delta);
-            qDebug("Delta nao vazio...");
+            //qDebug("Delta nao vazio...");
         }
         sqlInsert.append("');");
 
 
-        qDebug() << "Query de insercao no banco: " << sqlInsert.c_str();
+        //qDebug() << "Query de insercao no banco: " << sqlInsert.c_str();
 
         QSqlQuery queryInsert(db);
         if (queryInsert.exec(sqlInsert.c_str()))

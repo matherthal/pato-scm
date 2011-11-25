@@ -89,6 +89,7 @@ bool PatoServerApi::checkOut(QString path, QString username, QString password, i
     }
     */
 
+    /*
     if(filePath.empty())
         qDebug("FERROU!");
     else {
@@ -96,13 +97,14 @@ bool PatoServerApi::checkOut(QString path, QString username, QString password, i
         for (it = filePath.begin(); it != filePath.end(); it++)
             qDebug() << "mapa:" << it->first.c_str() << " e " << it->second.c_str();
     }
+    */
 
     vector<string>::iterator cit;
     for ( it = filePath.begin(), cit = key.begin() ; it != filePath.end(); it++, cit++ ) {
 
        //if success, store in a map the file name (first) and file content (second)
        std::string conteudo;
-       qDebug() << "API server: Parametros do checkin (FS):" << it->second.c_str() << " e " << conteudo.c_str() << " !!";
+       //qDebug() << "API server: Parametros do checkin (FS):" << it->second.c_str() << " e " << conteudo.c_str() << " !!";
        PatoFS::getInstance()->loadData(it->second, conteudo);
        filesCheckOut[(*it).first] = conteudo;
     }
@@ -159,10 +161,18 @@ bool PatoServerApi::checkIn(QString project, QString username, QString password,
         }
     }
 
-    qDebug("salvando conteudo no armazenamento...");
+    //qDebug("salvando conteudo no armazenamento...");
 
+    std::map<std::string, std::string> idUpdate;
     //for each file, its content, key (will be fill) and deltaKey (key of last version)
-    storage->saveData(fileContent, fileKey, deltaKey);
+    storage->saveData(fileContent, fileKey, deltaKey, idUpdate);
+
+    std::map<std::string, std::string>::iterator itUpdate;
+    for (itUpdate = idUpdate.begin(); itUpdate != idUpdate.end(); itUpdate++) {
+        std::string old_key = itUpdate->first;
+        std::string new_key = itUpdate->second;
+        PatoDataModel::getInstance()->updateCodStorageFile(old_key, new_key);
+    }
 
     vector<StorageKey>::iterator itFileKey;
     if ( fileKey.empty() )

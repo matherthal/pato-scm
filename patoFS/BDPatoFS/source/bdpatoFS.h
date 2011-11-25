@@ -33,8 +33,8 @@ public:
     bool initBD();
 
     //saving data
-    std::string saveData(const std::string& data, std::string& key_last_version);
-    bool saveData(const std::vector<std::string>& data, std::vector<StorageKey>& vecIdFile, std::vector<std::string>& vecDeltaIdFile);
+    std::string saveData(const std::string& data, std::string& key_last_version, std::map<std::string, std::string>& idUpdate);
+    bool saveData(const std::vector<std::string>& data, std::vector<StorageKey>& vecIdFile, std::vector<std::string>& vecDeltaIdFile, std::map<std::string, std::string>& idUpdate);
 
     //loading data
     bool loadData(std::string& idFile, std::string& data);
