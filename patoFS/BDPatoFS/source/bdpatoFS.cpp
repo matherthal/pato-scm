@@ -120,11 +120,14 @@ namespace bd {
         QString last_content;
         QString last_delta;
 
-        qDebug() << "Key da ultima revisao salva: " << key_last_version.c_str();
+        //qDebug() << "Key da ultima revisao salva: " << key_last_version.c_str();
+
+        if (data.empty())
+            return std::string("");
 
         if (!key_last_version.empty()) {
 
-            qDebug("saveData: Entrou no if...");
+            //qDebug("saveData: Entrou no if...");
 
             std::string strSql = "select arma_conteudo, arma_delta_id from armazenamento where arma_id like '";
             strSql.append(key_last_version);
@@ -140,11 +143,11 @@ namespace bd {
                 }
             }
 
-            qDebug() << "Parametros do diff: " << last_content.toStdString().c_str() << " e " << data.c_str() << " !!!";
+            //qDebug() << "Parametros do diff: " << last_content.toStdString().c_str() << " e " << data.c_str() << " !!!";
             Diff diff(data, last_content.toStdString());
             std::string delta = diff.to_delta_string();
 
-            qDebug() << "Delta calculado: " << delta.c_str();
+            //qDebug() << "Delta calculado: " << delta.c_str();
 
             //insert the current version content in the data base
             std::string key = insertDataQuery(data, std::string(""));
@@ -158,7 +161,7 @@ namespace bd {
             sqlUpdateDelta.append(key_last_version);
             sqlUpdateDelta.append("';");
 
-            qDebug() << "update: " << sqlUpdateDelta.c_str();
+            //qDebug() << "update: " << sqlUpdateDelta.c_str();
 
             if (!query.exec(sqlUpdateDelta.c_str())) {
                 qDebug() << "Erro: " << query.lastError().text().toStdString().c_str();
