@@ -48,6 +48,11 @@ namespace bd {
             db.setDatabaseName(QDir::toNativeSeparators(PATH_BD));
         }
 
+        if (!QFile(db.databaseName().toStdString().c_str()).exists())
+            qDebug("Arquivo nao existe!");
+        else
+            qDebug("Arquivo existe. Abrindo banco...");
+
         return db.open();
     }
 
@@ -644,7 +649,6 @@ namespace bd {
             }
         }
 
-        return false;
   /*      try{
             std::string sqlUser = "select count(*) from projeto where proj_nome like '";
             sqlUser.append(projectName);
@@ -719,6 +723,8 @@ namespace bd {
         sqlInsert.append(project);
         sqlInsert.append("',0);");
 
+        qDebug(sqlInsert.c_str());
+
         QSqlQuery query(db);
         if ( query.exec(sqlInsert.c_str()) )
         {
@@ -726,6 +732,7 @@ namespace bd {
             return true;
         }
 
+        qDebug(query.lastError().text().toStdString().c_str());
         return false;
     }
 
