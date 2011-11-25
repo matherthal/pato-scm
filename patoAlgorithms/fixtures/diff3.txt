@@ -1,0 +1,9 @@
+3d2
+#include <sys/stat.h>
+7c6
+Diff::Diff(ifstream *fileA,ifstream *fileB, int _type)
+Diff::Diff(ifstream *fileA,ifstream *fileB)
+11d9
+    type = _type;
+16a15
+    Diff::fileB = fileB;
