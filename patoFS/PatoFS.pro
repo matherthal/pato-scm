@@ -46,7 +46,7 @@ unix:!symbian {
 
 symbian: LIBS += -lsqlite3
 #else:unix|win32: LIBS += -L"../output" -lsqlite3
-unix: LIBS += -L"../output" -lsqlite3 -lPatoAlgorithms
+unix: LIBS += -L"../output" -lPatoAlgorithms
 
 win32: LIBS += -L"../output" -lsqlite3 -lPatoAlgorithms
 
