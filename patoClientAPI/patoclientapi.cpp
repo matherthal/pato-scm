@@ -87,6 +87,9 @@ QList<checkoutOutput> PatoClientApi::checkout(RevisionKey revision, QString addr
     PatoWorkspace* work = PatoWorkspace::instance();
     PatoServerApi* server = PatoServerApi::getInstance();
 
+
+    success = server->checkOut(address, username, password, revision, mapp);
+
     if ( PatoWorkspace::exists(workspace) )
     {
         work->cleanCopy( versionParams, false);
@@ -97,7 +100,6 @@ QList<checkoutOutput> PatoClientApi::checkout(RevisionKey revision, QString addr
     }
 
 
-    success = server->checkOut(address, username, password, revision, mapp);
 
 
 
@@ -107,25 +109,26 @@ QList<checkoutOutput> PatoClientApi::checkout(RevisionKey revision, QString addr
 QList<logOutput> PatoClientApi::log(QString address, QString username, QString password, RevisionKey initialRevision, RevisionKey finalRevision) throw (PatoClientException) {
 
     QList<logOutput> output;
-
+    PatoLog log;
+    PatoServerApi* server = PatoServerApi::getInstance();
 
     if (username == "") {
         throw (PatoClientException("The log command needs an username."));
     } else if (password == "") {
         throw (PatoClientException("The log command needs a password."));
-        //    } else if (initialInt < -1) {
-        //        throw (PatoClientException("Invalid initial revision number."));
     }
-    /*else if (finalInt < -1 || finalInt < initialInt) {
-        throw (PatoClientException("Invalid initial revision number."));
-    }
-    */
+
+
+
+    server->showLog(address, username, password, initialRevision, log);
+
+
+
     return output;
 }
 
 QList< PatoFileStatus > PatoClientApi::checkin(QString address, QString username, QString password, QString workspace, QString message) throw (PatoClientException)
 {
-    std::map<std::string, std::string> mapp;
     PatoServerApi* server = PatoServerApi::getInstance();
 
     if (username == "") {
@@ -135,10 +138,13 @@ QList< PatoFileStatus > PatoClientApi::checkin(QString address, QString username
     }
 
     PatoWorkspace* work = PatoWorkspace::instance();
-    PatoChangeSet myChanges = work->changes();
+    std::map<std::string, std::string> myChanges = work->changesToServer();
 
 
-    server->checkIn(address, username, password, message, mapp);
+    if(server->checkIn(address, username, password, message, myChanges)){
+        work->setRevision(work->revision() + 1);
+    }
+
     //RevisionKey newRev = communication->checkin(address, username, password, myChanges);
     //work->setRevision( newRev ); //set new revision as commiting.
 
