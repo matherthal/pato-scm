@@ -79,6 +79,7 @@ bool PatoServerApi::checkOut(QString path, QString username, QString password, i
         key.push_back((*it).second);
     }
 
+    /*
     //trying to storage dat
     std::vector<std::string> content;
     if (!PatoFS::getInstance()->loadData(key, content)) {
@@ -86,12 +87,22 @@ bool PatoServerApi::checkOut(QString path, QString username, QString password, i
        //if an error occurs, return a null pointer
        return false;
     }
+    */
+
+    if(filePath.empty())
+        qDebug("FERROU!");
+    else {
+
+        for (it = filePath.begin(); it != filePath.end(); it++)
+            qDebug() << "mapa:" << it->first.c_str() << " e " << it->second.c_str();
+    }
 
     vector<string>::iterator cit;
     for ( it = filePath.begin(), cit = key.begin() ; it != filePath.end(); it++, cit++ ) {
 
        //if success, store in a map the file name (first) and file content (second)
        std::string conteudo;
+       qDebug() << "API server: Parametros do checkin (FS):" << it->second.c_str() << " e " << conteudo.c_str() << " !!";
        PatoFS::getInstance()->loadData(it->second, conteudo);
        filesCheckOut[(*it).first] = conteudo;
     }

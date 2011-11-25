@@ -66,10 +66,14 @@ namespace bd {
         QString data;
         QString delta_tmp;
 
+        qDebug() << "applyPatch: key recebida: " << key.toStdString().c_str();
+
         //query pega o conteudo e a chave para o delta do arquivo
         std::string strSql = "SELECT ARMA_CONTEUDO, ARMA_DELTA_ID FROM ARMAZENAMENTO WHERE arma_id like '";
         strSql.append(key.toStdString().c_str());
         strSql.append("';");
+
+        //qDebug() << "query selecionando contenudo e chave delta: " << strSql.c_str();
 
         if (query.exec(strSql.c_str())) {
 
@@ -80,22 +84,26 @@ namespace bd {
             }
         }
 
+        qDebug() << "Data: " << data.toStdString().c_str() << " Delta temp: " << delta_tmp.toStdString().c_str();
         if (delta_tmp.isEmpty()) {
 
+            qDebug() << "Retornando: " << data.toStdString().c_str();
             return data.toStdString();
         }
 
         else {
 
 
+            qDebug("applyPatch: dentro do else...");
             //chama recursao, passando chave do arquivo delta
             std::string apply = applyPatch(delta_tmp);
 
 
-            Patch patch(apply, data.toStdString());
+            qDebug() << "parametros do patch: " << data.toStdString().c_str() << " e " << apply.c_str() << " !!!";
+            Patch patch(data.toStdString(), apply);
             std::string buff = patch.to_string();
 
-            qDebug(buff.c_str());
+            qDebug() << "resultado do patch: " << buff.c_str();
 
 
             return buff;
@@ -112,18 +120,20 @@ namespace bd {
         QString last_content;
         QString last_delta;
 
-        qDebug(key_last_version.c_str());
+        //qDebug() << "Key da ultima revisao salva: " << key_last_version.c_str();
+
+        if (data.empty())
+            return std::string("");
 
         if (!key_last_version.empty()) {
 
-            std::string key_delta_old = key_last_version;
+            //qDebug("saveData: Entrou no if...");
 
-            qDebug("key nao vazia");
             std::string strSql = "select arma_conteudo, arma_delta_id from armazenamento where arma_id like '";
             strSql.append(key_last_version);
             strSql.append("';");
 
-            qDebug(strSql.c_str());
+            //qDebug() << "query do select conteudo da ultima versao (pra caluclar o delta): " << strSql.c_str();
 
             if ( query.exec(strSql.c_str()) ) {
                 qDebug("rodou query de diff");
@@ -133,19 +143,37 @@ namespace bd {
                 }
             }
 
-            qDebug() << "Ultimo conteudo: " << last_content.toStdString().c_str();
-            qDebug() << "Conteudo atual: " << data.c_str();
-            Diff diff(last_content.toStdString(), data);
+            //qDebug() << "Parametros do diff: " << last_content.toStdString().c_str() << " e " << data.c_str() << " !!!";
+            Diff diff(data, last_content.toStdString());
             std::string delta = diff.to_delta_string();
-            qDebug(delta.c_str());
+
+            //qDebug() << "Delta calculado: " << delta.c_str();
+
+            //insert the current version content in the data base
+            std::string key = insertDataQuery(data, std::string(""));
 
             //insert delta content in the data base in the data base
-            key_last_version = insertDataQuery(delta, last_delta.toStdString());
+            std::string key_delta = insertDataQuery(delta, key);
+
+            std::string sqlUpdateDelta = "update armazenamento set arma_delta_id = '";
+            sqlUpdateDelta.append(key_delta);
+            sqlUpdateDelta.append("' where arma_delta_id = '");
+            sqlUpdateDelta.append(key_last_version);
+            sqlUpdateDelta.append("';");
+
+            //qDebug() << "update: " << sqlUpdateDelta.c_str();
+
+            if (!query.exec(sqlUpdateDelta.c_str())) {
+                qDebug() << "Erro: " << query.lastError().text().toStdString().c_str();
+            }
 
             //delete the old content
             std::vector<StorageKey> v;
-            v.push_back(key_delta_old);
+            v.push_back(key_last_version);
             deleteData(v);
+
+            //return the key of the current version
+            return key;
         }
 
         //insert the current version content in the data base
@@ -184,7 +212,7 @@ namespace bd {
         QString file;
         QSqlQuery query(db);
 
-        qDebug(idFile.c_str());
+        qDebug() << "loadData (sem vetores): chave passada: " << idFile.c_str();
         //chama funcao recursiva que monta o arquivo, buscando seus deltas e versao completa
         data = applyPatch(QString::fromStdString(idFile));
 
@@ -209,6 +237,8 @@ namespace bd {
 
         sqlLoadData.append("');");
 
+        //qDebug() << "loadData: query selecinando chave e chave delta: " << sqlLoadData.c_str();
+
         std::vector<StorageKey> vecDelta;
         if (query.exec(sqlLoadData.c_str())) {
 
@@ -217,8 +247,8 @@ namespace bd {
                 vecData.push_back(s.toStdString());
                 QString keyDelta = query.value(1).toString();
 
-                qDebug(s.toStdString().c_str());
-                qDebug(keyDelta.toStdString().c_str());
+                qDebug() << "conteudo: " << s.toStdString().c_str();
+                qDebug() << "delta: " << keyDelta.toStdString().c_str();
                 vecDelta.push_back(keyDelta.toStdString());
             }
 
@@ -236,11 +266,12 @@ namespace bd {
         //using hash key
         QString key = QString(QCryptographicHash::hash((data.c_str()),QCryptographicHash::Md5).toHex());
 
+        qDebug() << "insertDataQuery: parametros recebidos: " << data.c_str() << " e " << delta.c_str() << " !!!";
         std::string sqlFileInserted = "SELECT ARMA_CONTEUDO FROM ARMAZENAMENTO WHERE upper(arma_id) like upper('";
         sqlFileInserted.append(key.toStdString());
         sqlFileInserted.append("');");
 
-        qDebug(sqlFileInserted.c_str());
+       // qDebug() << "Query verificando se chave ja existe: " << sqlFileInserted.c_str();
         if ( query.exec(sqlFileInserted.c_str()) )
         {
             if (query.next()) {
@@ -254,14 +285,15 @@ namespace bd {
         sqlInsert.append("','");
         sqlInsert.append(data);
         sqlInsert.append("','");
-        if (!delta.empty())
+        if (!delta.empty()) {
             sqlInsert.append(delta);
-        else
-            sqlInsert.append("NULL");
+            qDebug("Delta nao vazio...");
+        }
         sqlInsert.append("');");
 
 
-        //qDebug(sqlInsert.c_str());
+        qDebug() << "Query de insercao no banco: " << sqlInsert.c_str();
+
         QSqlQuery queryInsert(db);
         if (queryInsert.exec(sqlInsert.c_str()))
         {
@@ -294,7 +326,7 @@ namespace bd {
 
         sqlDelete.append("')");
 
-        qDebug(sqlDelete.toStdString().c_str());
+        //qDebug() << "Sql do delete: " << sqlDelete.toStdString().c_str();
         if (query.exec(sqlDelete)) {
             return true;
         }

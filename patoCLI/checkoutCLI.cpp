@@ -11,6 +11,8 @@
 #include <string.h>
 #include<iostream>
 #include<QtCore/QTextStream>
+#include "statusCLI.h"
+
 using namespace std;
 
 QList<QString> messageErrorCO(){
@@ -53,8 +55,10 @@ void checkoutCLI::command(int argc, char** argv) {
 
     clientAPI = new PatoClientApi();
 
-    try {
-        clientAPI->checkout(revision, address, username, password, workspace);
+    try
+    {
+        QList<PatoFileStatus> ret = clientAPI->checkout(revision, address, username, password, workspace);
+        statusCLI::PrintStatus(ret);
     } catch (PatoClientException& t) {
         QList<QString> ls = messageErrorCO();
         for(int i = 0; i < ls.size(); i++){

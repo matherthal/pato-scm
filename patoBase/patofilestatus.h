@@ -16,7 +16,10 @@ public:
         MISSING = 0x00000010,
         VERSIONED = 0x00000020,
         UNVERSIONED = 0x00000040,
-        ERROR = 0x00000080,
+        ERROR = 0x80000000,
+        UPDATED = 0x00000100,
+        MERGED = 0x00000200,
+        CREATED = 0x00000400,
         ALL = 0xFFFFFFFF
     };
 
