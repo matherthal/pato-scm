@@ -9,6 +9,7 @@
 #define	STATUSCLI_H
 
 #include<QtCore/QString>
+#include "../patoBase/patofilestatus.h"
 
 class statusCLI {
 public:
@@ -18,6 +19,9 @@ public:
     virtual ~statusCLI();
     void SetWorkspace(QString workspace);
     QString GetWorkspace() const;
+
+    static void PrintStatus(QList<PatoFileStatus> ls);
+
 private:
     QString workspace;
     

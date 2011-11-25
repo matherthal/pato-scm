@@ -69,32 +69,8 @@ void statusCLI::command(int argc, char** argv) {
 
     }
 
-    QList<PatoFileStatus> ls;
-    try {
-        ls = clientAPI->status(workspace);
-        for(int i = 0; i< ls.size(); ++i){
-
-            switch(ls.at(i).status()){
-            case PatoFileStatus::ADDED:
-                qout<< "A   ";break;
-            case PatoFileStatus::MODIFIED:
-                qout<< "M   ";break;
-            case PatoFileStatus::REMOVED:
-                qout<< "R   ";break;
-            case PatoFileStatus::CLEAN:
-                qout<< "C   ";break;
-            case PatoFileStatus::MISSING:
-                qout<< "!   ";break;
-            case PatoFileStatus::VERSIONED:
-                qout<< "V   ";break;
-            case PatoFileStatus::UNVERSIONED:
-                qout<< "U   ";break;
-
-            }
-
-            qout<<ls.at(i).fileName()<<endl;
-        }
-
+   try {
+         PrintStatus ( clientAPI->status(workspace) );
     } catch (PatoClientException& t) {
         QList<QString> ls = messageErrorST();
         for(int i = 0; i < ls.size(); i++){
@@ -104,4 +80,37 @@ void statusCLI::command(int argc, char** argv) {
         //qout << t.Message() << endl;
     }
 
+}
+
+void statusCLI::PrintStatus(QList<PatoFileStatus> ls)
+{
+    QTextStream qout(stdout);
+    for(int i = 0; i< ls.size(); ++i){
+
+        switch(ls.at(i).status()){
+        case PatoFileStatus::ADDED:
+            qout<< "A   ";break;
+        case PatoFileStatus::MODIFIED:
+            qout<< "M   ";break;
+        case PatoFileStatus::REMOVED:
+            qout<< "R   ";break;
+        case PatoFileStatus::CLEAN:
+            qout<< "C   ";break;
+        case PatoFileStatus::MISSING:
+            qout<< "!   ";break;
+        case PatoFileStatus::VERSIONED:
+            qout<< "V   ";break;
+        case PatoFileStatus::UNVERSIONED:
+            qout<< "U   ";break;
+        case PatoFileStatus::UPDATED:
+            qout<< "P   ";break;
+        case PatoFileStatus::MERGED:
+            qout<< "M   ";break;
+        case PatoFileStatus::CREATED:
+            qout<< "C   ";break;
+
+        }
+
+        qout<<ls.at(i).fileName()<<endl;
+    }
 }
