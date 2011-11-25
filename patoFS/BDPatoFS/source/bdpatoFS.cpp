@@ -84,7 +84,7 @@ namespace bd {
             }
         }
 
-        qDebug() << "Delta temp: " << delta_tmp.toStdString().c_str();
+        qDebug() << "Data: " << data.toStdString().c_str() << " Delta temp: " << delta_tmp.toStdString().c_str();
         if (delta_tmp.isEmpty()) {
 
             qDebug() << "Retornando: " << data.toStdString().c_str();
@@ -99,8 +99,8 @@ namespace bd {
             std::string apply = applyPatch(delta_tmp);
 
 
-            qDebug() << "parametros do diff: " << apply.c_str() << " e " << data.toStdString().c_str() << " !!!";
-            Patch patch(apply, data.toStdString());
+            qDebug() << "parametros do patch: " << data.toStdString().c_str() << " e " << apply.c_str() << " !!!";
+            Patch patch(data.toStdString(), apply);
             std::string buff = patch.to_string();
 
             qDebug() << "resultado do patch: " << buff.c_str();
@@ -141,7 +141,7 @@ namespace bd {
             }
 
             qDebug() << "Parametros do diff: " << last_content.toStdString().c_str() << " e " << data.c_str() << " !!!";
-            Diff diff(last_content.toStdString(), data);
+            Diff diff(data, last_content.toStdString());
             std::string delta = diff.to_delta_string();
 
             qDebug() << "Delta calculado: " << delta.c_str();
@@ -150,13 +150,26 @@ namespace bd {
             std::string key = insertDataQuery(data, std::string(""));
 
             //insert delta content in the data base in the data base
-            insertDataQuery(delta, key);
+            std::string key_delta = insertDataQuery(delta, key);
+
+            std::string sqlUpdateDelta = "update armazenamento set arma_delta_id = '";
+            sqlUpdateDelta.append(key_delta);
+            sqlUpdateDelta.append("' where arma_delta_id = '");
+            sqlUpdateDelta.append(key_last_version);
+            sqlUpdateDelta.append("';");
+
+            qDebug() << "update: " << sqlUpdateDelta.c_str();
+
+            if (!query.exec(sqlUpdateDelta.c_str())) {
+                qDebug() << "Erro: " << query.lastError().text().toStdString().c_str();
+            }
 
             //delete the old content
             std::vector<StorageKey> v;
             v.push_back(key_last_version);
             deleteData(v);
 
+            //return the key of the current version
             return key;
         }
 
