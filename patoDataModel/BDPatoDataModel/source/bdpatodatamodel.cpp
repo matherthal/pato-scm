@@ -48,10 +48,12 @@ namespace bd {
             db.setDatabaseName(QDir::toNativeSeparators(PATH_BD));
         }
 
+        /*
         if (!QFile(db.databaseName().toStdString().c_str()).exists())
             qDebug("Arquivo nao existe!");
         else
             qDebug("Arquivo existe. Abrindo banco...");
+            */
 
         return db.open();
     }
@@ -722,18 +724,17 @@ namespace bd {
         std::string sqlInsert = "insert into projeto ( proj_id, proj_nome, vers_id ) values ( 0, '";
         sqlInsert.append(project);
         sqlInsert.append("',0);");
-        qDebug(sqlInsert.c_str());
-        qDebug(sqlInsert.c_str());
+        //qDebug(sqlInsert.c_str());
 
         QSqlQuery query(db);
         if ( query.exec(sqlInsert.c_str()) )
         {
-            qDebug("rodou query");
+            //qDebug("rodou query");
             db.commit();
             return true;
         }
 
-        qDebug(query.lastError().text().toStdString().c_str());
+        //qDebug(query.lastError().text().toStdString().c_str());
         return false;
     }
 
@@ -997,7 +998,7 @@ namespace bd {
         sqlInsertRelationElement.append(outLastVersion.str());
         sqlInsertRelationElement.append(",1);");
 
-        qDebug(sqlInsertRelationElement.c_str());
+        //qDebug(sqlInsertRelationElement.c_str());
 
         QSqlQuery query(db);
         if ( query.exec(sqlInsertRelationElement.c_str()) )
@@ -1249,7 +1250,7 @@ namespace bd {
         strSql.append(path);
         strSql.append("') order by idTransacao;");
 
-        qDebug(strSql.c_str());
+        //qDebug(strSql.c_str());
 
 
         QSqlQuery query(db);
@@ -1436,7 +1437,7 @@ namespace bd {
             sqlInsertRelationElement.append(outPreviousVersion.str());
             sqlInsertRelationElement.append(");");
 
-            qDebug(sqlInsertRelationElement.c_str());
+            //qDebug(sqlInsertRelationElement.c_str());
 
             QSqlQuery query(db);
             query.exec(sqlInsertRelationElement.c_str());
@@ -1454,7 +1455,7 @@ namespace bd {
             sqlLastVersion.append(outProjectIdVersion.str());
             sqlLastVersion.append(";");
 
-            qDebug(sqlLastVersion.c_str());
+            //qDebug(sqlLastVersion.c_str());
 
             QSqlQuery queryLastVersion(db);
             if ( queryLastVersion.exec(sqlLastVersion.c_str()) )
