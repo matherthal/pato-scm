@@ -92,10 +92,10 @@ bool PatoDataModel::saveProjectElement(std::string& filePath, std::string& idFil
     return true;
 }
 
-bool PatoDataModel::checkOut(std::string& loginUser, std::string& password, std::string& project, int version, std::map<std::string, std::string>& filePath)
+int PatoDataModel::checkOut(std::string& loginUser, std::string& password, std::string& project, int version, std::map<std::string, std::string>& filePath)
 {
     if ( !validateUserProject(loginUser, password, project) )
-            return false;
+            return -1;
 
     return bd::BDPatoDataModel::getInstance()->getFilePath(project, version, filePath);
 }
@@ -161,7 +161,7 @@ bool PatoDataModel::validateProject( const string& projectName )
 //File operations>
 std::string PatoDataModel::getPath( std::string& pathFile )
 {
-    int posLastBar = pathFile.rfind("\\");
+    int posLastBar = pathFile.rfind("/");
     std::string path;
     if ( posLastBar > -1 )
     {
@@ -173,7 +173,7 @@ std::string PatoDataModel::getPath( std::string& pathFile )
 
 std::string PatoDataModel::getFile( std::string& pathFile )
 {
-    int posLastBar = pathFile.rfind("\\");
+    int posLastBar = pathFile.rfind("/");
     std::string file;
     if ( posLastBar > -1 )
     {

@@ -41,7 +41,7 @@ public:
     bool saveProjectElement(std::string& filePath, std::string& idFile, std::string& project/*, std::string& previousElement*/);
     bool insertRelationProjectElementTransaction();
 
-    bool checkOut(std::string& loginUser, std::string& password, std::string& project, int version, std::map<std::string, std::string>& filePath);
+    int checkOut(std::string& loginUser, std::string& password, std::string& project, int version, std::map<std::string, std::string>& filePath);
     bool showLog(std::string& loginUser, std::string& password, std::string& project, int version, PatoLog& log);
     bool showLogPathFile(std::string project, std::string& login, std::string& password, std::string& path, std::vector<PatoLog>& message);
     //<

@@ -200,7 +200,7 @@ namespace bd {
                 if ( !pathNameTemp.empty() )
                 {
                     std::string completePathTemp = completePath;
-                    completePathTemp.append("\\");
+                    completePathTemp.append("/");
                     completePathTemp.append(pathNameTemp);
                     getCompletePath(idDiretorioItemConfig, project, completePathTemp);
                 }
@@ -229,21 +229,25 @@ namespace bd {
 
 
 
-    bool BDPatoDataModel::getFilePath(std::string& project, int version, std::map<std::string, std::string>& filePath)
+    int BDPatoDataModel::getFilePath(std::string& project, int version, std::map<std::string, std::string>& filePath)
     {
         int projectId = getProjectId(project);
         std::stringstream outProjectId;
         outProjectId << projectId;
+
+        int nVersion = -1;
 
         std::stringstream outVersion;
         if ( version == -1 )
         {
             int lastVersion = getIdProjectLastVersion(project);
             outVersion << lastVersion;
+            nVersion = getLastVersionProject(project);
         }
         else
         {
             outVersion << getIdProjectVersion(project, version);
+            nVersion = version;
         }
 
         std::string sqlFilePath = "select * from (select (select itco_nome from item_configuracao where itco_id = p.itco_id) || ";
@@ -265,11 +269,10 @@ namespace bd {
                 vecIdFile.push_back(query.value(1).toString().toStdString());
             }
 
-            createMapFile(vecFilePath   , vecIdFile, filePath);
-            return true;
+            createMapFile(vecFilePath   , vecIdFile, filePath);            
         }
 
-        return false;
+        return nVersion;
     }
 
     bool BDPatoDataModel::getLog(std::string& project, int version, PatoLog&  log)
@@ -861,6 +864,25 @@ namespace bd {
         strAllIdProject = temp;
     }
 
+    int BDPatoDataModel::getLastVersionProject(std::string& project)
+    {
+        std::string strSql = "select max(vers_id) from projeto where upper(proj_nome) like upper('";
+        strSql.append(project);
+        strSql.append("');");
+
+        int nVersion = -1;
+        QSqlQuery query(db);
+        if ( query.exec(strSql.c_str()))
+        {
+            if ( query.next() )
+            {
+                nVersion = query.value(0).toInt();
+            }
+        }
+
+        return nVersion;
+    }
+
     //<
 
     //IC operations>
@@ -1288,7 +1310,7 @@ namespace bd {
     //folder operations>
     std::string BDPatoDataModel::getLastFolder(std::string& path)
     {
-        int posBarra = path.rfind("\\");
+        int posBarra = path.rfind("/");
         std::string lastElement;
         lastElement = path.substr(posBarra+1, path.length()-posBarra);
         return lastElement;
