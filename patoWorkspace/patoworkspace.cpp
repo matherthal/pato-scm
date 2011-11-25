@@ -2,6 +2,7 @@
 #include <QDir>
 #include "../patoBase/patofilestatus.h"
 #include "../patoAlgorithms/diff.h"
+#include "../patoAlgorithms/merge.h"
 #include "../patoBase/patoResourceAbstractFactory.h"
 #include "../patoBase/ifile.h"
 
@@ -322,7 +323,7 @@ QList< PatoFileStatus > PatoWorkspace::status(PatoFileStatus::FileStatus statusF
     return statusList;
 }
 
-bool PatoWorkspace::setRevision(RevisionKey revision,  bool commiting )
+bool PatoWorkspace::setRevision(RevisionKey revision,  bool commiting,  bool backup )
 {
     qDebug() << QString("Old Revision: %1 -> New Revision: %2").arg(revKey).arg(revision);
 
@@ -345,7 +346,7 @@ bool PatoWorkspace::setRevision(RevisionKey revision,  bool commiting )
     writeMetadata();
 
 
-    if (commiting)
+    if (commiting && backup )
     {
         copyRevision(revision);
         removeRevision(revKey);
@@ -355,6 +356,107 @@ bool PatoWorkspace::setRevision(RevisionKey revision,  bool commiting )
 
 
     return true;
+}
+
+QList< PatoFileStatus > PatoWorkspace::updateFromServer(std::map<string,string>& myChanges, RevisionKey rev, bool clear)
+{
+    QList< PatoFileStatus > r;
+
+    copyDirectory( backupPath(revision()), backupPath(rev) );
+
+    QString strPath = backupPath(rev);
+
+    PatoWorkspace s;
+    s.setPath(strPath);
+    s.applyFromServer(myChanges);
+    s.setRevision(rev,true,false);
+
+    std::map<string,string> localChanges = changesToServer();
+
+    std::map<string,string>::iterator itFind;
+    std::map<string,string>::iterator it;
+
+    int nSize =(defaultRepositoryAddress()+"/").length();
+
+    for (it = myChanges.begin(); it != myChanges.end(); it++)
+    {
+        QString strFile =  QString().fromStdString( it->first );
+        strFile.remove(0, nSize);
+
+       itFind = localChanges.find( it->first );
+
+       if ( itFind != localChanges.end() && !clear)
+       {
+           Merge merge( (backupPath(revision()) + "/" + strFile).toStdString(),
+                  (workPath + "/" + strFile).toStdString(),
+                  (backupPath(rev) + "/" + strFile).toStdString());
+
+           QFile file (workPath + "/" + strFile);
+           if ( file.open(QFile::WriteOnly | QFile::Truncate) )
+           {
+               QTextStream stream(&file);
+               stream << QString().fromStdString( merge.to_string() );
+           }
+           r << PatoFileStatus( strFile, PatoFileStatus::MERGED);
+
+       }
+       else
+       {
+           QFile file (workPath + "/" + strFile);
+           if (it->second.size())
+           {
+               if ( file.open(QFile::WriteOnly | QFile::Truncate) )
+               {
+                   QTextStream stream(&file);
+                   stream << QString().fromStdString( it->second );
+
+               }
+               if ( versionedFiles.indexOf(strFile) == -1)
+               {
+                    r << PatoFileStatus( strFile, PatoFileStatus::CREATED);
+               }
+               else
+               {
+                   r << PatoFileStatus( strFile, PatoFileStatus::UPDATED);
+               }
+           }
+           else
+           {
+               remove( QStringList() << strFile );
+               r << PatoFileStatus( strFile, PatoFileStatus::REMOVED);
+           }
+       }
+    }
+
+    setRevision(rev,true,false);
+
+    return r;
+}
+
+bool PatoWorkspace::applyFromServer(std::map<string,string>& myChanges)
+{
+    int nSize =(defaultRepositoryAddress()+"/").length();
+
+    std::map<string,string>::iterator it;
+    for (it = myChanges.begin(); it != myChanges.end(); it++)
+    {
+        QString strFile =  QString().fromStdString( it->first );
+        strFile.remove(0, nSize);
+
+        QFile file (workPath + "/" + strFile);
+        if (it->second.size())
+        {
+            if ( file.open(QFile::WriteOnly | QFile::Truncate) )
+            {
+                QTextStream stream(&file);
+                stream << QString().fromStdString( it->second );
+            }
+        }
+        else
+        {
+            remove( QStringList() << strFile );
+        }
+    }
 }
 
 bool PatoWorkspace::update( PatoChangeSet changeSet, bool clear )

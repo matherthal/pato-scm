@@ -27,7 +27,7 @@ public:
     void merge(QString path1, RevisionKey revision1, QString path2, RevisionKey revision2, QString workspace) throw(PatoClientException);
     void diff(QString path1, RevisionKey revision1, QString path2, RevisionKey revision2) throw(PatoClientException);
 
-    QList<checkoutOutput> checkout(RevisionKey revision, QString adress, QString username, QString password, QString workspace) throw(PatoClientException);
+    QList<PatoFileStatus> checkout(RevisionKey revision, QString adress, QString username, QString password, QString workspace) throw(PatoClientException);
     QList<PatoFileStatus> update(RevisionKey revision, QString adress, QString username, QString password, QString workspace, bool ignoreLocalChanges) throw(PatoClientException);
     QList<PatoFileStatus> checkin(QString address, QString username, QString password, QString workspace, QString message)throw(PatoClientException);
     QList<PatoFileStatus> status(QString workspace) throw(PatoClientException);
